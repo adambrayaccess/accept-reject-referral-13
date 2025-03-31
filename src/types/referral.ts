@@ -40,6 +40,7 @@ export type ReferralPriority = 'routine' | 'urgent' | 'emergency';
 
 export interface Referral {
   id: string;
+  ubrn: string;
   created: string;
   status: ReferralStatus;
   priority: ReferralPriority;

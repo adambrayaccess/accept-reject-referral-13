@@ -10,6 +10,7 @@ const MOCK_DELAY = 1000; // Simulate network latency
 const mockReferrals: Referral[] = [
   {
     id: 'REF-2023-001',
+    ubrn: '123456789012',
     created: '2023-06-15T09:30:00Z',
     status: 'new',
     priority: 'urgent',
@@ -60,6 +61,7 @@ const mockReferrals: Referral[] = [
   },
   {
     id: 'REF-2023-002',
+    ubrn: '234567890123',
     created: '2023-06-14T14:20:00Z',
     status: 'new',
     priority: 'routine',
@@ -102,6 +104,7 @@ const mockReferrals: Referral[] = [
   },
   {
     id: 'REF-2023-003',
+    ubrn: '345678901234',
     created: '2023-06-13T11:05:00Z',
     status: 'new',
     priority: 'emergency',

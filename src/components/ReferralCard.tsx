@@ -43,9 +43,15 @@ const ReferralCard = ({ referral }: ReferralCardProps) => {
               {referral.status.toUpperCase()}
             </span>
           </div>
-          <div className="flex items-center gap-1 text-muted-foreground text-sm">
-            <span>NHS:</span>
-            <span className="font-mono">{referral.patient.nhsNumber}</span>
+          <div className="flex flex-col gap-1">
+            <div className="flex items-center gap-1 text-muted-foreground text-sm">
+              <span>NHS:</span>
+              <span className="font-mono">{referral.patient.nhsNumber}</span>
+            </div>
+            <div className="flex items-center gap-1 text-muted-foreground text-sm">
+              <span>UBRN:</span>
+              <span className="font-mono">{referral.ubrn}</span>
+            </div>
           </div>
         </CardHeader>
         <CardContent className="pb-2">

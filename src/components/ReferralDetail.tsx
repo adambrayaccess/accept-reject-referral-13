@@ -34,6 +34,9 @@ const ReferralDetail = ({ referral }: ReferralDetailProps) => {
             <Badge variant="outline">
               {`Ref: ${referral.id}`}
             </Badge>
+            <Badge variant="outline" className="font-mono">
+              {`UBRN: ${referral.ubrn}`}
+            </Badge>
           </div>
         </div>
       </CardHeader>
