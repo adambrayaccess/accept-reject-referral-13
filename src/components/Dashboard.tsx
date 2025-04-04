@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { Referral } from '@/types/referral';
 import { fetchReferrals } from '@/services/apiService';
@@ -71,6 +70,7 @@ const Dashboard = () => {
         ref =>
           ref.patient.name.toLowerCase().includes(term) ||
           ref.patient.nhsNumber.toLowerCase().includes(term) ||
+          ref.ubrn.toLowerCase().includes(term) ||
           ref.id.toLowerCase().includes(term)
       );
     }
@@ -86,7 +86,6 @@ const Dashboard = () => {
     });
   };
 
-  // Extract unique specialties for the filter
   const specialties = ['all', ...new Set(referrals.map(ref => ref.specialty))];
 
   return (
@@ -103,7 +102,7 @@ const Dashboard = () => {
         <div className="relative">
           <Search className="absolute left-2 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
           <Input
-            placeholder="Search patient name, NHS number..."
+            placeholder="Search patient name, NHS number, UBRN..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             className="pl-8"
