@@ -7,6 +7,7 @@ export interface Patient {
   nhsNumber: string;
   address?: string;
   phone?: string;
+  medicalHistory?: MedicalHistory;
 }
 
 export interface Practitioner {
@@ -56,4 +57,32 @@ export interface ApiResponse<T> {
   data?: T;
   error?: string;
   loading: boolean;
+}
+
+// New interfaces for medical history data
+export interface VitalSign {
+  timestamp: string;
+  news2: number;
+  temperature: number;
+  heartRate: number;
+  respiration: number;
+  oxygenSaturation: number;
+  bloodPressureSystolic: number;
+  bloodPressureDiastolic: number;
+}
+
+export interface CardiogramDataPoint {
+  time: number;
+  value: number;
+}
+
+export interface Cardiogram {
+  timestamp: string;
+  data: CardiogramDataPoint[];
+  interpretation: string;
+}
+
+export interface MedicalHistory {
+  vitalSigns: VitalSign[];
+  cardiograms?: Cardiogram[];
 }

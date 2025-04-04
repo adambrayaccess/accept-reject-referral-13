@@ -6,6 +6,7 @@ import { Referral } from '@/types/referral';
 import ReferralDetail from '@/components/ReferralDetail';
 import AttachmentViewer from '@/components/AttachmentViewer';
 import ReferralActions from '@/components/ReferralActions';
+import MedicalHistory from '@/components/MedicalHistory';
 import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
 import { ArrowLeft } from 'lucide-react';
@@ -110,6 +111,7 @@ const ReferralView = () => {
       
       <div className="grid grid-cols-1 gap-6">
         <ReferralDetail referral={referral} />
+        <MedicalHistory patient={referral.patient} />
         <AttachmentViewer attachments={referral.attachments} />
         <ReferralActions referral={referral} onStatusChange={handleStatusChange} />
       </div>
