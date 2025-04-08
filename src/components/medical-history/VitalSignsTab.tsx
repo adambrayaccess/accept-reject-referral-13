@@ -1,6 +1,6 @@
 
 import { VitalSign } from '@/types/referral';
-import VitalSignsChart from './VitalSignsChart';
+import VitalSignsContainer from './VitalSignsContainer';
 
 interface VitalSignsTabProps {
   vitalSigns: VitalSign[] | undefined;
@@ -15,7 +15,7 @@ const VitalSignsTab = ({ vitalSigns }: VitalSignsTabProps) => {
 
   return (
     <div className="pb-4">
-      <VitalSignsChart vitalSigns={vitalSigns} />
+      <VitalSignsContainer vitalSigns={vitalSigns} />
     </div>
   );
 };
