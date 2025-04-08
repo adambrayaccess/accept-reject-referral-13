@@ -11,11 +11,10 @@ import {
   XAxis, 
   YAxis, 
   CartesianGrid, 
-  ResponsiveContainer,
-  Legend,
-  ReferenceLine
+  ReferenceLine,
+  Legend
 } from 'recharts';
-import { Activity, Heart, Thermometer, Wind } from 'lucide-react';
+import { Activity } from 'lucide-react';
 
 interface MedicalHistoryProps {
   patient: Patient;
@@ -24,16 +23,14 @@ interface MedicalHistoryProps {
 const MedicalHistory = ({ patient }: MedicalHistoryProps) => {
   const [selectedVitalType, setSelectedVitalType] = useState<string>('news2');
 
-  // NEWS2 color scale based on severity
-  const getNews2Color = (value: number) => {
-    if (value <= 4) return '#22c55e'; // green
-    if (value <= 6) return '#f59e0b'; // amber
-    return '#ef4444'; // red
-  };
-
   // Format the date for the X axis
   const formatDate = (date: string) => {
-    return format(new Date(date), 'dd/MM');
+    try {
+      return format(new Date(date), 'dd/MM');
+    } catch (error) {
+      console.error("Invalid date format:", date);
+      return "Invalid";
+    }
   };
 
   if (!patient.medicalHistory) {
@@ -49,6 +46,14 @@ const MedicalHistory = ({ patient }: MedicalHistoryProps) => {
     );
   }
 
+  // Check if vital signs data exists
+  const hasVitalSigns = patient.medicalHistory.vitalSigns && 
+                         patient.medicalHistory.vitalSigns.length > 0;
+                         
+  // Check if cardiogram data exists                       
+  const hasCardiograms = patient.medicalHistory.cardiograms && 
+                         patient.medicalHistory.cardiograms.length > 0;
+
   return (
     <Card>
       <CardHeader>
@@ -62,248 +67,264 @@ const MedicalHistory = ({ patient }: MedicalHistoryProps) => {
           </TabsList>
 
           <TabsContent value="vitals" className="space-y-4">
-            <div className="flex gap-4 mb-4">
-              <TabsList className="bg-muted/50">
-                <TabsTrigger 
-                  value="news2" 
-                  onClick={() => setSelectedVitalType('news2')}
-                  className={selectedVitalType === 'news2' ? 'bg-background' : ''}
-                >
-                  NEWS2 Score
-                </TabsTrigger>
-                <TabsTrigger 
-                  value="temperature" 
-                  onClick={() => setSelectedVitalType('temperature')}
-                  className={selectedVitalType === 'temperature' ? 'bg-background' : ''}
-                >
-                  Temperature
-                </TabsTrigger>
-                <TabsTrigger 
-                  value="heartRate" 
-                  onClick={() => setSelectedVitalType('heartRate')}
-                  className={selectedVitalType === 'heartRate' ? 'bg-background' : ''}
-                >
-                  Heart Rate
-                </TabsTrigger>
-                <TabsTrigger 
-                  value="respiration" 
-                  onClick={() => setSelectedVitalType('respiration')}
-                  className={selectedVitalType === 'respiration' ? 'bg-background' : ''}
-                >
-                  Respiration
-                </TabsTrigger>
-              </TabsList>
-            </div>
+            {hasVitalSigns ? (
+              <>
+                <div className="flex gap-4 mb-4 overflow-x-auto pb-2">
+                  <TabsList className="bg-muted/50">
+                    <TabsTrigger 
+                      value="news2" 
+                      onClick={() => setSelectedVitalType('news2')}
+                      className={selectedVitalType === 'news2' ? 'bg-background' : ''}
+                    >
+                      NEWS2 Score
+                    </TabsTrigger>
+                    <TabsTrigger 
+                      value="temperature" 
+                      onClick={() => setSelectedVitalType('temperature')}
+                      className={selectedVitalType === 'temperature' ? 'bg-background' : ''}
+                    >
+                      Temperature
+                    </TabsTrigger>
+                    <TabsTrigger 
+                      value="heartRate" 
+                      onClick={() => setSelectedVitalType('heartRate')}
+                      className={selectedVitalType === 'heartRate' ? 'bg-background' : ''}
+                    >
+                      Heart Rate
+                    </TabsTrigger>
+                    <TabsTrigger 
+                      value="respiration" 
+                      onClick={() => setSelectedVitalType('respiration')}
+                      className={selectedVitalType === 'respiration' ? 'bg-background' : ''}
+                    >
+                      Respiration
+                    </TabsTrigger>
+                  </TabsList>
+                </div>
 
-            <div className="h-[300px] w-full">
-              {selectedVitalType === 'news2' && (
-                <ChartContainer
-                  config={{
-                    low: { color: '#22c55e' },
-                    medium: { color: '#f59e0b' },
-                    high: { color: '#ef4444' }
-                  }}
-                >
-                  <LineChart
-                    data={patient.medicalHistory.vitalSigns}
-                    margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
-                  >
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis 
-                      dataKey="timestamp" 
-                      tickFormatter={formatDate}
-                      minTickGap={30}
-                    />
-                    <YAxis domain={[0, 20]} allowDecimals={false} />
-                    <ChartTooltip
-                      content={({ active, payload }) => {
-                        if (active && payload && payload.length) {
-                          const data = payload[0].payload as VitalSign;
-                          return (
-                            <div className="rounded-lg border bg-background p-2 shadow-sm">
-                              <div className="grid grid-cols-2 gap-2">
-                                <div className="font-medium">Date:</div>
-                                <div>{format(new Date(data.timestamp), 'dd MMM yyyy HH:mm')}</div>
-                                <div className="font-medium">NEWS2 Score:</div>
-                                <div>{data.news2}</div>
-                              </div>
-                            </div>
-                          );
-                        }
-                        return null;
+                <div className="h-[300px] w-full">
+                  {selectedVitalType === 'news2' && (
+                    <ChartContainer
+                      config={{
+                        low: { color: '#22c55e' },
+                        medium: { color: '#f59e0b' },
+                        high: { color: '#ef4444' }
                       }}
-                    />
-                    <ReferenceLine y={5} stroke="#f59e0b" strokeDasharray="3 3" />
-                    <ReferenceLine y={7} stroke="#ef4444" strokeDasharray="3 3" />
-                    <Line
-                      type="monotone"
-                      dataKey="news2"
-                      name="NEWS2 Score"
-                      stroke="#6366f1"
-                      strokeWidth={2}
-                      dot={{ r: 4 }}
-                      activeDot={{ r: 6, strokeWidth: 2 }}
-                    />
-                    <Legend />
-                  </LineChart>
-                </ChartContainer>
-              )}
-              
-              {selectedVitalType === 'temperature' && (
-                <ChartContainer
-                  config={{
-                    temperature: { color: '#ef4444' }
-                  }}
-                >
-                  <LineChart
-                    data={patient.medicalHistory.vitalSigns}
-                    margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
-                  >
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis 
-                      dataKey="timestamp" 
-                      tickFormatter={formatDate}
-                      minTickGap={30}
-                    />
-                    <YAxis domain={[35, 40]} ticks={[35, 36, 37, 38, 39, 40]} />
-                    <ChartTooltip
-                      content={({ active, payload }) => {
-                        if (active && payload && payload.length) {
-                          const data = payload[0].payload as VitalSign;
-                          return (
-                            <div className="rounded-lg border bg-background p-2 shadow-sm">
-                              <div className="grid grid-cols-2 gap-2">
-                                <div className="font-medium">Date:</div>
-                                <div>{format(new Date(data.timestamp), 'dd MMM yyyy HH:mm')}</div>
-                                <div className="font-medium">Temperature:</div>
-                                <div>{data.temperature}°C</div>
-                              </div>
-                            </div>
-                          );
-                        }
-                        return null;
+                    >
+                      <LineChart
+                        data={patient.medicalHistory.vitalSigns}
+                        margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
+                      >
+                        <CartesianGrid strokeDasharray="3 3" />
+                        <XAxis 
+                          dataKey="timestamp" 
+                          tickFormatter={formatDate}
+                          minTickGap={30}
+                        />
+                        <YAxis 
+                          domain={[0, 20]} 
+                          allowDecimals={false}
+                        />
+                        <ChartTooltip
+                          content={({ active, payload }) => {
+                            if (active && payload && payload.length) {
+                              const data = payload[0].payload as VitalSign;
+                              return (
+                                <div className="rounded-lg border bg-background p-2 shadow-sm">
+                                  <div className="grid grid-cols-2 gap-2">
+                                    <div className="font-medium">Date:</div>
+                                    <div>{format(new Date(data.timestamp), 'dd MMM yyyy HH:mm')}</div>
+                                    <div className="font-medium">NEWS2 Score:</div>
+                                    <div>{data.news2}</div>
+                                  </div>
+                                </div>
+                              );
+                            }
+                            return null;
+                          }}
+                        />
+                        <ReferenceLine y={5} stroke="#f59e0b" strokeDasharray="3 3" label="Medium" />
+                        <ReferenceLine y={7} stroke="#ef4444" strokeDasharray="3 3" label="High" />
+                        <Line
+                          type="monotone"
+                          dataKey="news2"
+                          name="NEWS2 Score"
+                          stroke="#6366f1"
+                          strokeWidth={2}
+                          dot={{ r: 4 }}
+                          activeDot={{ r: 6, strokeWidth: 2 }}
+                          isAnimationActive={false}
+                        />
+                        <Legend />
+                      </LineChart>
+                    </ChartContainer>
+                  )}
+                  
+                  {selectedVitalType === 'temperature' && (
+                    <ChartContainer
+                      config={{
+                        temperature: { color: '#ef4444' }
                       }}
-                    />
-                    <ReferenceLine y={37.8} stroke="#ef4444" strokeDasharray="3 3" label="Fever" />
-                    <Line
-                      type="monotone"
-                      dataKey="temperature"
-                      name="Temperature (°C)"
-                      stroke="#ef4444"
-                      strokeWidth={2}
-                      dot={{ r: 4 }}
-                      activeDot={{ r: 6, strokeWidth: 2 }}
-                    />
-                    <Legend />
-                  </LineChart>
-                </ChartContainer>
-              )}
-              
-              {selectedVitalType === 'heartRate' && (
-                <ChartContainer
-                  config={{
-                    heartRate: { color: '#ec4899' }
-                  }}
-                >
-                  <LineChart
-                    data={patient.medicalHistory.vitalSigns}
-                    margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
-                  >
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis 
-                      dataKey="timestamp" 
-                      tickFormatter={formatDate}
-                      minTickGap={30}
-                    />
-                    <YAxis domain={[40, 160]} />
-                    <ChartTooltip
-                      content={({ active, payload }) => {
-                        if (active && payload && payload.length) {
-                          const data = payload[0].payload as VitalSign;
-                          return (
-                            <div className="rounded-lg border bg-background p-2 shadow-sm">
-                              <div className="grid grid-cols-2 gap-2">
-                                <div className="font-medium">Date:</div>
-                                <div>{format(new Date(data.timestamp), 'dd MMM yyyy HH:mm')}</div>
-                                <div className="font-medium">Heart Rate:</div>
-                                <div>{data.heartRate} bpm</div>
-                              </div>
-                            </div>
-                          );
-                        }
-                        return null;
+                    >
+                      <LineChart
+                        data={patient.medicalHistory.vitalSigns}
+                        margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
+                      >
+                        <CartesianGrid strokeDasharray="3 3" />
+                        <XAxis 
+                          dataKey="timestamp" 
+                          tickFormatter={formatDate}
+                          minTickGap={30}
+                        />
+                        <YAxis 
+                          domain={[35, 40]} 
+                          ticks={[35, 36, 37, 38, 39, 40]}
+                        />
+                        <ChartTooltip
+                          content={({ active, payload }) => {
+                            if (active && payload && payload.length) {
+                              const data = payload[0].payload as VitalSign;
+                              return (
+                                <div className="rounded-lg border bg-background p-2 shadow-sm">
+                                  <div className="grid grid-cols-2 gap-2">
+                                    <div className="font-medium">Date:</div>
+                                    <div>{format(new Date(data.timestamp), 'dd MMM yyyy HH:mm')}</div>
+                                    <div className="font-medium">Temperature:</div>
+                                    <div>{data.temperature}°C</div>
+                                  </div>
+                                </div>
+                              );
+                            }
+                            return null;
+                          }}
+                        />
+                        <ReferenceLine y={37.8} stroke="#ef4444" strokeDasharray="3 3" label="Fever" />
+                        <Line
+                          type="monotone"
+                          dataKey="temperature"
+                          name="Temperature (°C)"
+                          stroke="#ef4444"
+                          strokeWidth={2}
+                          dot={{ r: 4 }}
+                          activeDot={{ r: 6, strokeWidth: 2 }}
+                          isAnimationActive={false}
+                        />
+                        <Legend />
+                      </LineChart>
+                    </ChartContainer>
+                  )}
+                  
+                  {selectedVitalType === 'heartRate' && (
+                    <ChartContainer
+                      config={{
+                        heartRate: { color: '#ec4899' }
                       }}
-                    />
-                    <ReferenceLine y={100} stroke="#f59e0b" strokeDasharray="3 3" label="Tachycardia" />
-                    <ReferenceLine y={60} stroke="#0ea5e9" strokeDasharray="3 3" label="Bradycardia" />
-                    <Line
-                      type="monotone"
-                      dataKey="heartRate"
-                      name="Heart Rate (bpm)"
-                      stroke="#ec4899"
-                      strokeWidth={2}
-                      dot={{ r: 4 }}
-                      activeDot={{ r: 6, strokeWidth: 2 }}
-                    />
-                    <Legend />
-                  </LineChart>
-                </ChartContainer>
-              )}
-              
-              {selectedVitalType === 'respiration' && (
-                <ChartContainer
-                  config={{
-                    respiration: { color: '#0ea5e9' }
-                  }}
-                >
-                  <LineChart
-                    data={patient.medicalHistory.vitalSigns}
-                    margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
-                  >
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis 
-                      dataKey="timestamp" 
-                      tickFormatter={formatDate}
-                      minTickGap={30}
-                    />
-                    <YAxis domain={[8, 30]} />
-                    <ChartTooltip
-                      content={({ active, payload }) => {
-                        if (active && payload && payload.length) {
-                          const data = payload[0].payload as VitalSign;
-                          return (
-                            <div className="rounded-lg border bg-background p-2 shadow-sm">
-                              <div className="grid grid-cols-2 gap-2">
-                                <div className="font-medium">Date:</div>
-                                <div>{format(new Date(data.timestamp), 'dd MMM yyyy HH:mm')}</div>
-                                <div className="font-medium">Respiration:</div>
-                                <div>{data.respiration} breaths/min</div>
-                              </div>
-                            </div>
-                          );
-                        }
-                        return null;
+                    >
+                      <LineChart
+                        data={patient.medicalHistory.vitalSigns}
+                        margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
+                      >
+                        <CartesianGrid strokeDasharray="3 3" />
+                        <XAxis 
+                          dataKey="timestamp" 
+                          tickFormatter={formatDate}
+                          minTickGap={30}
+                        />
+                        <YAxis domain={[40, 160]} />
+                        <ChartTooltip
+                          content={({ active, payload }) => {
+                            if (active && payload && payload.length) {
+                              const data = payload[0].payload as VitalSign;
+                              return (
+                                <div className="rounded-lg border bg-background p-2 shadow-sm">
+                                  <div className="grid grid-cols-2 gap-2">
+                                    <div className="font-medium">Date:</div>
+                                    <div>{format(new Date(data.timestamp), 'dd MMM yyyy HH:mm')}</div>
+                                    <div className="font-medium">Heart Rate:</div>
+                                    <div>{data.heartRate} bpm</div>
+                                  </div>
+                                </div>
+                              );
+                            }
+                            return null;
+                          }}
+                        />
+                        <ReferenceLine y={100} stroke="#f59e0b" strokeDasharray="3 3" label="Tachycardia" />
+                        <ReferenceLine y={60} stroke="#0ea5e9" strokeDasharray="3 3" label="Bradycardia" />
+                        <Line
+                          type="monotone"
+                          dataKey="heartRate"
+                          name="Heart Rate (bpm)"
+                          stroke="#ec4899"
+                          strokeWidth={2}
+                          dot={{ r: 4 }}
+                          activeDot={{ r: 6, strokeWidth: 2 }}
+                          isAnimationActive={false}
+                        />
+                        <Legend />
+                      </LineChart>
+                    </ChartContainer>
+                  )}
+                  
+                  {selectedVitalType === 'respiration' && (
+                    <ChartContainer
+                      config={{
+                        respiration: { color: '#0ea5e9' }
                       }}
-                    />
-                    <ReferenceLine y={20} stroke="#f59e0b" strokeDasharray="3 3" />
-                    <Line
-                      type="monotone"
-                      dataKey="respiration"
-                      name="Respiration Rate"
-                      stroke="#0ea5e9"
-                      strokeWidth={2}
-                      dot={{ r: 4 }}
-                      activeDot={{ r: 6, strokeWidth: 2 }}
-                    />
-                    <Legend />
-                  </LineChart>
-                </ChartContainer>
-              )}
-            </div>
+                    >
+                      <LineChart
+                        data={patient.medicalHistory.vitalSigns}
+                        margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
+                      >
+                        <CartesianGrid strokeDasharray="3 3" />
+                        <XAxis 
+                          dataKey="timestamp" 
+                          tickFormatter={formatDate}
+                          minTickGap={30}
+                        />
+                        <YAxis domain={[8, 30]} />
+                        <ChartTooltip
+                          content={({ active, payload }) => {
+                            if (active && payload && payload.length) {
+                              const data = payload[0].payload as VitalSign;
+                              return (
+                                <div className="rounded-lg border bg-background p-2 shadow-sm">
+                                  <div className="grid grid-cols-2 gap-2">
+                                    <div className="font-medium">Date:</div>
+                                    <div>{format(new Date(data.timestamp), 'dd MMM yyyy HH:mm')}</div>
+                                    <div className="font-medium">Respiration:</div>
+                                    <div>{data.respiration} breaths/min</div>
+                                  </div>
+                                </div>
+                              );
+                            }
+                            return null;
+                          }}
+                        />
+                        <ReferenceLine y={20} stroke="#f59e0b" strokeDasharray="3 3" label="Elevated" />
+                        <Line
+                          type="monotone"
+                          dataKey="respiration"
+                          name="Respiration Rate"
+                          stroke="#0ea5e9"
+                          strokeWidth={2}
+                          dot={{ r: 4 }}
+                          activeDot={{ r: 6, strokeWidth: 2 }}
+                          isAnimationActive={false}
+                        />
+                        <Legend />
+                      </LineChart>
+                    </ChartContainer>
+                  )}
+                </div>
+              </>
+            ) : (
+              <p className="text-muted-foreground">No vital signs data available for this patient.</p>
+            )}
           </TabsContent>
 
           <TabsContent value="cardiogram" className="space-y-4">
-            {patient.medicalHistory.cardiograms && patient.medicalHistory.cardiograms.length > 0 ? (
+            {hasCardiograms ? (
               <div className="space-y-6">
                 {patient.medicalHistory.cardiograms.map((cardiogram, index) => (
                   <div key={index} className="border rounded-lg p-4 space-y-2">
