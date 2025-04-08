@@ -13,7 +13,11 @@ const VitalSignsTab = ({ vitalSigns }: VitalSignsTabProps) => {
     return <p className="text-muted-foreground">No vital signs data available for this patient.</p>;
   }
 
-  return <VitalSignsChart vitalSigns={vitalSigns} />;
+  return (
+    <div className="pb-4">
+      <VitalSignsChart vitalSigns={vitalSigns} />
+    </div>
+  );
 };
 
 export default VitalSignsTab;

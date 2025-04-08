@@ -66,7 +66,7 @@ const VitalSignsChart = ({ vitalSigns }: VitalSignsChartProps) => {
         </TabsList>
       </div>
 
-      <div className="h-[300px] w-full">
+      <div className="h-[250px] w-full">
         {selectedVitalType === 'news2' && (
           <ChartContainer
             config={{
@@ -86,8 +86,9 @@ const VitalSignsChart = ({ vitalSigns }: VitalSignsChartProps) => {
                 minTickGap={30}
               />
               <YAxis 
-                domain={[0, 20]} 
+                domain={[0, 20]}
                 allowDecimals={false}
+                ticks={[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]}
               />
               <ChartTooltip
                 content={({ active, payload }) => {
@@ -142,7 +143,7 @@ const VitalSignsChart = ({ vitalSigns }: VitalSignsChartProps) => {
               />
               <YAxis 
                 domain={[35, 40]} 
-                ticks={[35, 36, 37, 38, 39, 40]}
+                ticks={[35, 35.5, 36, 36.5, 37, 37.5, 38, 38.5, 39, 39.5, 40]}
               />
               <ChartTooltip
                 content={({ active, payload }) => {
@@ -194,7 +195,10 @@ const VitalSignsChart = ({ vitalSigns }: VitalSignsChartProps) => {
                 tickFormatter={formatDate}
                 minTickGap={30}
               />
-              <YAxis domain={[40, 160]} />
+              <YAxis 
+                domain={[40, 160]}
+                ticks={[40, 50, 60, 70, 80, 90, 100, 110, 120, 130, 140, 150, 160]}
+              />
               <ChartTooltip
                 content={({ active, payload }) => {
                   if (active && payload && payload.length) {
@@ -246,7 +250,10 @@ const VitalSignsChart = ({ vitalSigns }: VitalSignsChartProps) => {
                 tickFormatter={formatDate}
                 minTickGap={30}
               />
-              <YAxis domain={[8, 30]} />
+              <YAxis 
+                domain={[8, 30]}
+                ticks={[8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30]}
+              />
               <ChartTooltip
                 content={({ active, payload }) => {
                   if (active && payload && payload.length) {

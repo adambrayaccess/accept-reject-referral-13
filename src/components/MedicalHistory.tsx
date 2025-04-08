@@ -24,7 +24,7 @@ const MedicalHistory = ({ patient }: MedicalHistoryProps) => {
   }
 
   return (
-    <Card>
+    <Card className="mb-6">
       <CardHeader>
         <CardTitle>Medical History</CardTitle>
       </CardHeader>
