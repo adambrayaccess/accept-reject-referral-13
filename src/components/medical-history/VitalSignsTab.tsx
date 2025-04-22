@@ -14,7 +14,7 @@ const VitalSignsTab = ({ vitalSigns }: VitalSignsTabProps) => {
   }
 
   return (
-    <div className="pb-4">
+    <div className="pb-8">
       <VitalSignsContainer vitalSigns={vitalSigns} />
     </div>
   );

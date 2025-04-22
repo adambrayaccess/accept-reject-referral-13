@@ -13,7 +13,7 @@ interface ChartDisplayProps {
 
 const ChartDisplay = ({ vitalSigns, selectedVitalType }: ChartDisplayProps) => {
   return (
-    <div className="h-[250px] w-full">
+    <div className="h-[300px] w-full pb-6">
       {selectedVitalType === 'news2' && (
         <NEWS2Chart vitalSigns={vitalSigns} />
       )}
