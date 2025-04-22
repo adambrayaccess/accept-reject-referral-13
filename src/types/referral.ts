@@ -1,4 +1,3 @@
-
 export interface Patient {
   id: string;
   name: string;
@@ -85,4 +84,16 @@ export interface Cardiogram {
 export interface MedicalHistory {
   vitalSigns: VitalSign[];
   cardiograms?: Cardiogram[];
+}
+
+export interface SpecialtyOption {
+  id: string;
+  name: string;
+}
+
+export interface HealthcareProfessional {
+  id: string;
+  name: string;
+  role: string;
+  specialty: string;
 }

@@ -1,10 +1,10 @@
-
 import { useState } from 'react';
 import { AlertDialog, AlertDialogContent, AlertDialogDescription, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger, AlertDialogFooter, AlertDialogCancel, AlertDialogAction } from '@/components/ui/alert-dialog';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { CheckCircle, XCircle, AlertTriangle } from 'lucide-react';
-import { Referral } from '@/types/referral';
+import { Referral, SpecialtyOption, HealthcareProfessional } from '@/types/referral';
 import { updateReferralStatus, sendHL7Message } from '@/services/apiService';
 import { useToast } from '@/components/ui/use-toast';
 
@@ -13,13 +13,44 @@ interface ReferralActionsProps {
   onStatusChange: () => void;
 }
 
+const specialties: SpecialtyOption[] = [
+  { id: 'card', name: 'Cardiology' },
+  { id: 'derm', name: 'Dermatology' },
+  { id: 'neur', name: 'Neurology' },
+  { id: 'orth', name: 'Orthopedics' },
+  { id: 'onco', name: 'Oncology' },
+];
+
+const healthcareProfessionals: HealthcareProfessional[] = [
+  { id: 'hp1', name: 'Dr. Sarah Jones', role: 'Consultant', specialty: 'card' },
+  { id: 'hp2', name: 'Dr. Michael Chen', role: 'Specialist', specialty: 'card' },
+  { id: 'hp3', name: 'Dr. Emma Wilson', role: 'Consultant', specialty: 'derm' },
+  { id: 'hp4', name: 'Dr. James Smith', role: 'Specialist', specialty: 'derm' },
+  { id: 'hp5', name: 'Dr. Lisa Brown', role: 'Consultant', specialty: 'neur' },
+];
+
 const ReferralActions = ({ referral, onStatusChange }: ReferralActionsProps) => {
   const [acceptNotes, setAcceptNotes] = useState('');
   const [rejectNotes, setRejectNotes] = useState('');
+  const [selectedSpecialty, setSelectedSpecialty] = useState<string>('');
+  const [selectedProfessional, setSelectedProfessional] = useState<string>('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { toast } = useToast();
 
+  const filteredProfessionals = healthcareProfessionals.filter(
+    hp => hp.specialty === selectedSpecialty
+  );
+
   const handleAccept = async () => {
+    if (!selectedSpecialty || !selectedProfessional) {
+      toast({
+        title: "Required Fields",
+        description: "Please select both a specialty and healthcare professional.",
+        variant: "destructive",
+      });
+      return;
+    }
+
     setIsSubmitting(true);
     try {
       // 1. Update the referral status
@@ -29,14 +60,15 @@ const ReferralActions = ({ referral, onStatusChange }: ReferralActionsProps) => 
       if (statusUpdated) {
         await sendHL7Message(referral.id, 'accept');
         
-        // 3. Show success toast
+        const professional = healthcareProfessionals.find(hp => hp.id === selectedProfessional);
+        const specialty = specialties.find(s => s.id === selectedSpecialty);
+        
         toast({
           title: "Referral Accepted",
-          description: "The referral has been accepted and an HL7 message has been sent to the EPR system.",
+          description: `The referral has been accepted and allocated to ${professional?.name} in ${specialty?.name}.`,
           variant: "default",
         });
         
-        // 4. Refresh the parent component
         onStatusChange();
       } else {
         throw new Error("Failed to update referral status");
@@ -87,7 +119,6 @@ const ReferralActions = ({ referral, onStatusChange }: ReferralActionsProps) => 
     }
   };
 
-  // If referral is already processed, show status instead of action buttons
   if (referral.status !== 'new') {
     return (
       <div className="border rounded-lg p-4 bg-muted/50">
@@ -121,10 +152,46 @@ const ReferralActions = ({ referral, onStatusChange }: ReferralActionsProps) => 
           <AlertDialogHeader>
             <AlertDialogTitle>Accept Referral</AlertDialogTitle>
             <AlertDialogDescription>
-              You are about to accept this referral. This will send an HL7 message to the EPR system.
+              Please allocate this referral to a specialty and healthcare professional.
             </AlertDialogDescription>
           </AlertDialogHeader>
-          <div className="my-4">
+          <div className="space-y-4 my-4">
+            <div className="space-y-2">
+              <label className="text-sm font-medium">Specialty</label>
+              <Select value={selectedSpecialty} onValueChange={setSelectedSpecialty}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Select specialty" />
+                </SelectTrigger>
+                <SelectContent>
+                  {specialties.map((specialty) => (
+                    <SelectItem key={specialty.id} value={specialty.id}>
+                      {specialty.name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+
+            <div className="space-y-2">
+              <label className="text-sm font-medium">Healthcare Professional</label>
+              <Select 
+                value={selectedProfessional} 
+                onValueChange={setSelectedProfessional}
+                disabled={!selectedSpecialty}
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder={selectedSpecialty ? "Select professional" : "Select specialty first"} />
+                </SelectTrigger>
+                <SelectContent>
+                  {filteredProfessionals.map((professional) => (
+                    <SelectItem key={professional.id} value={professional.id}>
+                      {professional.name} - {professional.role}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+
             <Textarea
               placeholder="Add optional notes (e.g., appointment details)"
               value={acceptNotes}
@@ -135,7 +202,7 @@ const ReferralActions = ({ referral, onStatusChange }: ReferralActionsProps) => 
             <AlertDialogCancel>Cancel</AlertDialogCancel>
             <AlertDialogAction 
               onClick={handleAccept} 
-              disabled={isSubmitting}
+              disabled={isSubmitting || !selectedSpecialty || !selectedProfessional}
               className="bg-success hover:bg-success/90"
             >
               {isSubmitting ? "Processing..." : "Confirm"}
