@@ -1,49 +1,8 @@
-import { Referral, Attachment, ReferralStatus, CardiogramDataPoint } from '@/types/referral';
-
-// This is a mock API service that would be replaced with actual API calls
-// to the NHS Digital E-Referral Service FHIR API in a production environment
-
-const MOCK_DELAY = 1000; // Simulate network latency
-
-// Generate sample ECG data
-const generateECGData = (): CardiogramDataPoint[] => {
-  const data: CardiogramDataPoint[] = [];
-  const cycles = 10; // 10 heart beats
-  
-  for (let i = 0; i < cycles * 100; i++) {
-    const time = i;
-    let value = 0;
-    
-    // P wave
-    if (i % 100 < 10) {
-      value = Math.sin(i % 100 * Math.PI / 10) * 0.3;
-    }
-    // QRS complex
-    else if (i % 100 < 15) {
-      value = -0.6;
-    }
-    else if (i % 100 < 20) {
-      value = 1.2;
-    }
-    else if (i % 100 < 25) {
-      value = -0.2;
-    }
-    // T wave
-    else if (i % 100 < 40) {
-      value = Math.sin(i % 100 * Math.PI / 20) * 0.4;
-    }
-    
-    // Add some noise
-    value += (Math.random() - 0.5) * 0.1;
-    
-    data.push({ time, value });
-  }
-  
-  return data;
-};
+import { Referral } from '@/types/referral';
+import { generateECGData } from '@/utils/ecgGenerator';
 
 // Mock referrals data
-const mockReferrals: Referral[] = [
+export const mockReferrals: Referral[] = [
   {
     id: 'REF-2023-001',
     ubrn: '123456789012',
@@ -361,69 +320,3 @@ const mockReferrals: Referral[] = [
     ]
   }
 ];
-
-// Get all referrals
-export const fetchReferrals = async (): Promise<Referral[]> => {
-  // Simulate API call
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve(mockReferrals);
-    }, MOCK_DELAY);
-  });
-};
-
-// Get single referral by ID
-export const fetchReferralById = async (id: string): Promise<Referral | null> => {
-  // Simulate API call
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      const referral = mockReferrals.find(ref => ref.id === id);
-      resolve(referral || null);
-    }, MOCK_DELAY);
-  });
-};
-
-// Get attachment content (in a real app, this would fetch the actual file)
-export const fetchAttachment = async (referralId: string, attachmentId: string): Promise<Attachment | null> => {
-  // Simulate API call
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      const referral = mockReferrals.find(ref => ref.id === referralId);
-      const attachment = referral?.attachments.find(att => att.id === attachmentId);
-      resolve(attachment || null);
-    }, MOCK_DELAY);
-  });
-};
-
-// Update referral status
-export const updateReferralStatus = async (
-  referralId: string, 
-  status: ReferralStatus, 
-  notes?: string
-): Promise<boolean> => {
-  // Simulate API call
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      const referralIndex = mockReferrals.findIndex(ref => ref.id === referralId);
-      if (referralIndex !== -1) {
-        mockReferrals[referralIndex].status = status;
-        // In a real app, we'd also save the notes and send the appropriate HL7 message
-        console.log(`Referral ${referralId} status updated to ${status}. Notes: ${notes || 'None'}`);
-        resolve(true);
-      } else {
-        resolve(false);
-      }
-    }, MOCK_DELAY);
-  });
-};
-
-// In a real implementation, this would send an HL7 message to the EPR system
-export const sendHL7Message = async (referralId: string, action: 'accept' | 'reject'): Promise<boolean> => {
-  // Simulate sending HL7 message
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      console.log(`HL7 message sent for referral ${referralId}: ${action.toUpperCase()}`);
-      resolve(true);
-    }, MOCK_DELAY);
-  });
-};

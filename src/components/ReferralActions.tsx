@@ -5,7 +5,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { CheckCircle, XCircle, AlertTriangle } from 'lucide-react';
 import { Referral, SpecialtyOption, HealthcareProfessional } from '@/types/referral';
-import { updateReferralStatus, sendHL7Message } from '@/services/apiService';
+import { updateReferralStatus, sendHL7Message } from '@/services/referralService';
 import { useToast } from '@/components/ui/use-toast';
 
 interface ReferralActionsProps {

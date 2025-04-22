@@ -1,7 +1,6 @@
-
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { fetchReferralById } from '@/services/apiService';
+import { fetchReferralById } from '@/services/referralService';
 import { Referral } from '@/types/referral';
 import ReferralDetail from '@/components/ReferralDetail';
 import AttachmentViewer from '@/components/AttachmentViewer';

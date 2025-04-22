@@ -1,7 +1,6 @@
-
 import { useState, useEffect } from 'react';
 import { Referral } from '@/types/referral';
-import { fetchReferrals } from '@/services/apiService';
+import { fetchReferrals } from '@/services/referralService';
 import { useToast } from '@/components/ui/use-toast';
 
 export const useDashboardData = () => {
