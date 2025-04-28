@@ -11,6 +11,8 @@ export const useDashboardData = () => {
   const [statusFilter, setStatusFilter] = useState<string>('all');
   const [priorityFilter, setPriorityFilter] = useState<string>('all');
   const [specialtyFilter, setSpecialtyFilter] = useState<string>('all');
+  const [sortField, setSortField] = useState<string>('created');
+  const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('desc');
   const { toast } = useToast();
 
   const loadReferrals = async () => {
@@ -36,28 +38,25 @@ export const useDashboardData = () => {
   }, []);
 
   useEffect(() => {
-    filterReferrals();
-  }, [searchTerm, statusFilter, priorityFilter, specialtyFilter, referrals]);
+    filterAndSortReferrals();
+  }, [searchTerm, statusFilter, priorityFilter, specialtyFilter, sortField, sortDirection, referrals]);
 
-  const filterReferrals = () => {
+  const filterAndSortReferrals = () => {
     let filtered = [...referrals];
 
-    // Filter by status
+    // Apply existing filters
     if (statusFilter !== 'all') {
       filtered = filtered.filter(ref => ref.status === statusFilter);
     }
 
-    // Filter by priority
     if (priorityFilter !== 'all') {
       filtered = filtered.filter(ref => ref.priority === priorityFilter);
     }
 
-    // Filter by specialty
     if (specialtyFilter !== 'all') {
       filtered = filtered.filter(ref => ref.specialty === specialtyFilter);
     }
 
-    // Filter by search term
     if (searchTerm) {
       const term = searchTerm.toLowerCase();
       filtered = filtered.filter(
@@ -68,6 +67,23 @@ export const useDashboardData = () => {
           ref.id.toLowerCase().includes(term)
       );
     }
+
+    // Apply sorting
+    filtered.sort((a, b) => {
+      let valueA = sortField.includes('.') 
+        ? sortField.split('.').reduce((obj, key) => obj[key], a)
+        : a[sortField];
+      let valueB = sortField.includes('.')
+        ? sortField.split('.').reduce((obj, key) => obj[key], b)
+        : b[sortField];
+
+      if (typeof valueA === 'string') valueA = valueA.toLowerCase();
+      if (typeof valueB === 'string') valueB = valueB.toLowerCase();
+
+      if (valueA < valueB) return sortDirection === 'asc' ? -1 : 1;
+      if (valueA > valueB) return sortDirection === 'asc' ? 1 : -1;
+      return 0;
+    });
 
     setFilteredReferrals(filtered);
   };
@@ -95,6 +111,10 @@ export const useDashboardData = () => {
     specialtyFilter,
     setSpecialtyFilter,
     specialties,
-    handleRefresh
+    handleRefresh,
+    sortField,
+    setSortField,
+    sortDirection,
+    setSortDirection
   };
 };

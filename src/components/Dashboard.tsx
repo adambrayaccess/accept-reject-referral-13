@@ -1,9 +1,9 @@
-
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
 import { RefreshCw } from 'lucide-react';
 import SearchBar from './dashboard/SearchBar';
 import FilterBar from './dashboard/FilterBar';
+import SortControls from './dashboard/SortControls';
 import ReferralGrid from './dashboard/ReferralGrid';
 import { useDashboardData } from '@/hooks/useDashboardData';
 
@@ -21,7 +21,11 @@ const Dashboard = () => {
     setSpecialtyFilter,
     specialties,
     handleRefresh,
-    referrals
+    referrals,
+    sortField,
+    setSortField,
+    sortDirection,
+    setSortDirection
   } = useDashboardData();
 
   return (
@@ -44,6 +48,15 @@ const Dashboard = () => {
           specialtyFilter={specialtyFilter}
           setSpecialtyFilter={setSpecialtyFilter}
           specialties={specialties}
+        />
+      </div>
+
+      <div className="flex justify-end">
+        <SortControls
+          sortField={sortField}
+          setSortField={setSortField}
+          sortDirection={sortDirection}
+          setSortDirection={setSortDirection}
         />
       </div>
 
