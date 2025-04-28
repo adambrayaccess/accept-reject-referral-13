@@ -1,6 +1,4 @@
-
 import { Referral } from '@/types/referral';
-import { generateECGData } from '@/utils/ecgGenerator';
 import { mockPatients } from './patients';
 import { mockPractitioners } from './practitioners';
 
@@ -41,6 +39,44 @@ export const mockReferrals: Referral[] = [
         size: 1245000
       }
     ]
+  },
+  {
+    id: 'AGE-2024-001',
+    created: '2024-04-27T14:20:00Z',
+    status: 'new',
+    priority: 'routine',
+    patient: mockPatients[1],
+    referrer: mockPractitioners[3],
+    specialty: 'Dermatology',
+    service: 'General Dermatology',
+    clinicalInfo: {
+      reason: 'Persistent rash on trunk and limbs',
+      history: 'Patient presents with pruritic rash present for 3 months. Not responding to OTC treatments.',
+      diagnosis: 'Suspected eczema/dermatitis',
+      medications: ['Cetirizine 10mg OD', 'Hydrocortisone 1% cream BD'],
+      allergies: [],
+      notes: 'Referral from Access Group Elemental GP'
+    },
+    attachments: []
+  },
+  {
+    id: 'AGE-2024-002',
+    created: '2024-04-26T09:15:00Z',
+    status: 'new',
+    priority: 'urgent',
+    patient: mockPatients[2],
+    referrer: mockPractitioners[4],
+    specialty: 'Cardiology',
+    service: 'Rapid Access Chest Pain Clinic',
+    clinicalInfo: {
+      reason: 'Chest pain on exertion',
+      history: 'Patient reports intermittent chest pain during moderate exercise.',
+      diagnosis: 'Suspected angina',
+      medications: ['Aspirin 75mg OD'],
+      allergies: [],
+      notes: 'Referral from Access Group Elemental GP'
+    },
+    attachments: []
   },
   {
     id: 'REF-2023-002',
