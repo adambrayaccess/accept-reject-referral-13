@@ -10,7 +10,8 @@ import {
   CartesianGrid, 
   ReferenceLine,
   Legend,
-  Dot
+  Dot,
+  ResponsiveContainer
 } from 'recharts';
 import { formatDate, formatDetailDate } from '../utils/dateUtils';
 import { NEWS2Details } from './NEWS2Details';
@@ -51,8 +52,8 @@ const NEWS2Chart = ({ vitalSigns }: NEWS2ChartProps) => {
   };
 
   return (
-    <div className="space-y-4">
-      <div className="h-[250px]">
+    <div className="space-y-4 w-full">
+      <div className="h-[220px] w-full">
         <ChartContainer
           config={{
             low: { color: '#22c55e' },
@@ -62,18 +63,22 @@ const NEWS2Chart = ({ vitalSigns }: NEWS2ChartProps) => {
         >
           <LineChart
             data={sortedVitalSigns}
-            margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
+            margin={{ top: 5, right: 20, left: 10, bottom: 5 }}
           >
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis 
               dataKey="timestamp" 
               tickFormatter={formatDate}
               minTickGap={30}
+              scale="time"
+              tick={{fontSize: 12}}
             />
             <YAxis 
               domain={[0, 15]}
               allowDecimals={false}
-              ticks={[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]}
+              ticks={[0, 3, 5, 7, 10, 15]}
+              width={25}
+              tick={{fontSize: 12}}
             />
             <ChartTooltip
               content={({ active, payload }) => {
@@ -96,8 +101,8 @@ const NEWS2Chart = ({ vitalSigns }: NEWS2ChartProps) => {
                 return null;
               }}
             />
-            <ReferenceLine y={5} stroke="#f59e0b" strokeDasharray="3 3" label="Medium" />
-            <ReferenceLine y={7} stroke="#ef4444" strokeDasharray="3 3" label="High" />
+            <ReferenceLine y={5} stroke="#f59e0b" strokeDasharray="3 3" label={{ value: "Medium", position: "right", fill: "#f59e0b", fontSize: 12 }} />
+            <ReferenceLine y={7} stroke="#ef4444" strokeDasharray="3 3" label={{ value: "High", position: "right", fill: "#ef4444", fontSize: 12 }} />
             <Line
               type="monotone"
               dataKey="news2"
@@ -108,7 +113,7 @@ const NEWS2Chart = ({ vitalSigns }: NEWS2ChartProps) => {
               activeDot={{ r: 6, strokeWidth: 2 }}
               isAnimationActive={false}
             />
-            <Legend />
+            <Legend iconSize={10} wrapperStyle={{ fontSize: '12px' }} />
           </LineChart>
         </ChartContainer>
       </div>
@@ -129,7 +134,7 @@ const NEWS2Chart = ({ vitalSigns }: NEWS2ChartProps) => {
         vitalSigns={
           selectedVitalSign 
             ? [selectedVitalSign] 
-            : sortedVitalSigns.slice(-5).reverse()
+            : sortedVitalSigns.slice(-3).reverse()
         } 
         highlightRow={selectedVitalSign?.timestamp}
       />

@@ -13,7 +13,7 @@ interface ChartDisplayProps {
 
 const ChartDisplay = ({ vitalSigns, selectedVitalType }: ChartDisplayProps) => {
   return (
-    <div className="w-full">
+    <div className="w-full overflow-x-auto">
       {selectedVitalType === 'news2' && (
         <NEWS2Chart vitalSigns={vitalSigns} />
       )}

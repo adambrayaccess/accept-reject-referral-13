@@ -28,7 +28,7 @@ const MedicalHistory = ({ patient }: MedicalHistoryProps) => {
       <CardHeader>
         <CardTitle>Medical History</CardTitle>
       </CardHeader>
-      <CardContent className="p-4 md:p-6">
+      <CardContent className="p-4 md:p-6 overflow-hidden">
         <Tabs defaultValue="vitals" className="space-y-4">
           <TabsList>
             <TabsTrigger value="vitals">Vital Signs</TabsTrigger>

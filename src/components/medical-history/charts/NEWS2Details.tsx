@@ -40,45 +40,47 @@ export const NEWS2Details = ({ vitalSigns, highlightRow }: NEWS2DetailsProps) =>
   const hasMoreData = vitalSigns.length > 3;
 
   return (
-    <div className="rounded-md border">
-      <Table>
-        <TableHeader>
-          <TableRow>
-            <TableHead>Date/Time</TableHead>
-            <TableHead>Respiration</TableHead>
-            <TableHead>SpO2</TableHead>
-            <TableHead>Blood Pressure</TableHead>
-            <TableHead>Heart Rate</TableHead>
-            <TableHead>Temperature</TableHead>
-            <TableHead>NEWS2 Score</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {displayVitalSigns.map((vital) => {
-            const isHighlighted = vital.timestamp === highlightRow;
-            const riskCategory = getRiskCategory(vital.news2);
-            
-            return (
-              <TableRow 
-                key={vital.timestamp}
-                className={cn(
-                  isHighlighted && 'bg-primary/10'
-                )}
-              >
-                <TableCell className="font-medium">{formatDetailDate(vital.timestamp)}</TableCell>
-                <TableCell>{vital.respiration} /min</TableCell>
-                <TableCell>{vital.oxygenSaturation}%</TableCell>
-                <TableCell>{vital.bloodPressureSystolic}/{vital.bloodPressureDiastolic}</TableCell>
-                <TableCell>{vital.heartRate} bpm</TableCell>
-                <TableCell>{vital.temperature}°C</TableCell>
-                <TableCell className={riskCategory.color}>
-                  {vital.news2} ({riskCategory.category})
-                </TableCell>
-              </TableRow>
-            );
-          })}
-        </TableBody>
-      </Table>
+    <div className="rounded-md border overflow-hidden">
+      <div className="overflow-x-auto">
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead>Date/Time</TableHead>
+              <TableHead>Respiration</TableHead>
+              <TableHead>SpO2</TableHead>
+              <TableHead>Blood Pressure</TableHead>
+              <TableHead>Heart Rate</TableHead>
+              <TableHead>Temperature</TableHead>
+              <TableHead>NEWS2 Score</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {displayVitalSigns.map((vital) => {
+              const isHighlighted = vital.timestamp === highlightRow;
+              const riskCategory = getRiskCategory(vital.news2);
+              
+              return (
+                <TableRow 
+                  key={vital.timestamp}
+                  className={cn(
+                    isHighlighted && 'bg-primary/10'
+                  )}
+                >
+                  <TableCell className="font-medium">{formatDetailDate(vital.timestamp)}</TableCell>
+                  <TableCell>{vital.respiration} /min</TableCell>
+                  <TableCell>{vital.oxygenSaturation}%</TableCell>
+                  <TableCell>{vital.bloodPressureSystolic}/{vital.bloodPressureDiastolic}</TableCell>
+                  <TableCell>{vital.heartRate} bpm</TableCell>
+                  <TableCell>{vital.temperature}°C</TableCell>
+                  <TableCell className={riskCategory.color}>
+                    {vital.news2} ({riskCategory.category})
+                  </TableCell>
+                </TableRow>
+              );
+            })}
+          </TableBody>
+        </Table>
+      </div>
       
       {hasMoreData && (
         <div className="flex justify-end p-2">
