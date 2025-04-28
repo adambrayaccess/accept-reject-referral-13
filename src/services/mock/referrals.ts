@@ -1,3 +1,4 @@
+
 import { Referral } from '@/types/referral';
 import { mockPatients } from './patients';
 import { mockPractitioners } from './practitioners';
@@ -42,6 +43,7 @@ export const mockReferrals: Referral[] = [
   },
   {
     id: 'AGE-2024-001',
+    ubrn: 'AGE001',
     created: '2024-04-27T14:20:00Z',
     status: 'new',
     priority: 'routine',
@@ -61,6 +63,7 @@ export const mockReferrals: Referral[] = [
   },
   {
     id: 'AGE-2024-002',
+    ubrn: 'AGE002',
     created: '2024-04-26T09:15:00Z',
     status: 'new',
     priority: 'urgent',

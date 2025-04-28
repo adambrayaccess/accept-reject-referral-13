@@ -78,7 +78,7 @@ const CreateReferralModal = ({ isOpen, onClose, onSubmit }: CreateReferralModalP
           
           <div className="space-y-2">
             <Label htmlFor="priority">Priority</Label>
-            <Select value={priority} onValueChange={setPriority}>
+            <Select value={priority} onValueChange={(value: ReferralPriority) => setPriority(value)}>
               <SelectTrigger>
                 <SelectValue placeholder="Select priority" />
               </SelectTrigger>
@@ -103,7 +103,7 @@ const CreateReferralModal = ({ isOpen, onClose, onSubmit }: CreateReferralModalP
 
           <div className="space-y-2">
             <Label htmlFor="practitioner">Referring Practitioner</Label>
-            <Select value={practitionerId} onValueChange={setPractitionerId}>
+            <Select value={practitionerId} onValueChange={(value: string) => setPractitionerId(value)}>
               <SelectTrigger>
                 <SelectValue placeholder="Select practitioner" />
               </SelectTrigger>
