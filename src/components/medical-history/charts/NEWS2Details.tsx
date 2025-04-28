@@ -94,13 +94,13 @@ export const NEWS2Details = ({ vitalSigns, highlightRow }: NEWS2DetailsProps) =>
                 <Table>
                   <TableHeader>
                     <TableRow>
-                      <TableHead sticky>Date/Time</TableHead>
-                      <TableHead sticky>Respiration</TableHead>
-                      <TableHead sticky>SpO2</TableHead>
-                      <TableHead sticky>Blood Pressure</TableHead>
-                      <TableHead sticky>Heart Rate</TableHead>
-                      <TableHead sticky>Temperature</TableHead>
-                      <TableHead sticky>NEWS2 Score</TableHead>
+                      <TableHead>Date/Time</TableHead>
+                      <TableHead>Respiration</TableHead>
+                      <TableHead>SpO2</TableHead>
+                      <TableHead>Blood Pressure</TableHead>
+                      <TableHead>Heart Rate</TableHead>
+                      <TableHead>Temperature</TableHead>
+                      <TableHead>NEWS2 Score</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
