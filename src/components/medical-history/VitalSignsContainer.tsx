@@ -12,16 +12,18 @@ const VitalSignsContainer = ({ vitalSigns }: VitalSignsContainerProps) => {
   const [selectedVitalType, setSelectedVitalType] = useState<VitalSignType>('news2');
 
   return (
-    <div className="w-full overflow-hidden">
+    <div className="w-full h-full">
       <VitalSignSelector 
         selectedType={selectedVitalType} 
         onSelectType={setSelectedVitalType} 
       />
 
-      <ChartDisplay 
-        vitalSigns={vitalSigns}
-        selectedVitalType={selectedVitalType}
-      />
+      <div className="w-full h-fit">
+        <ChartDisplay 
+          vitalSigns={vitalSigns}
+          selectedVitalType={selectedVitalType}
+        />
+      </div>
     </div>
   );
 };

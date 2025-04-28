@@ -25,21 +25,21 @@ const MedicalHistory = ({ patient }: MedicalHistoryProps) => {
 
   return (
     <Card className="mb-6">
-      <CardHeader>
+      <CardHeader className="pb-2">
         <CardTitle>Medical History</CardTitle>
       </CardHeader>
-      <CardContent className="p-4 md:p-6 overflow-hidden">
-        <Tabs defaultValue="vitals" className="space-y-4">
+      <CardContent className="p-4 overflow-hidden">
+        <Tabs defaultValue="vitals" className="space-y-2">
           <TabsList>
             <TabsTrigger value="vitals">Vital Signs</TabsTrigger>
             <TabsTrigger value="cardiogram">Cardiogram Data</TabsTrigger>
           </TabsList>
 
-          <TabsContent value="vitals" className="space-y-6">
+          <TabsContent value="vitals" className="mt-2">
             <VitalSignsTab vitalSigns={patient.medicalHistory.vitalSigns} />
           </TabsContent>
 
-          <TabsContent value="cardiogram" className="space-y-6">
+          <TabsContent value="cardiogram" className="mt-2">
             <CardiogramView cardiograms={patient.medicalHistory.cardiograms || []} />
           </TabsContent>
         </Tabs>
