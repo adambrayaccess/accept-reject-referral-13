@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
@@ -10,6 +9,7 @@ import ReferralActions from './ReferralActions';
 import { Referral } from '@/types/referral';
 import { FilePlus } from 'lucide-react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import CreateReferralModal from './CreateReferralModal';
 
 interface ReferralWorkspaceProps {
   referral: Referral;
@@ -29,10 +29,10 @@ type TriageStatus = typeof triageStatuses[number];
 const ReferralWorkspace = ({ referral, onStatusChange }: ReferralWorkspaceProps) => {
   const [note, setNote] = useState('');
   const [triageStatus, setTriageStatus] = useState<TriageStatus>('received');
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const { toast } = useToast();
 
   const handleAddNote = () => {
-    // This would typically integrate with a backend service
     if (!note.trim()) {
       toast({
         title: "Error",
@@ -57,11 +57,26 @@ const ReferralWorkspace = ({ referral, onStatusChange }: ReferralWorkspaceProps)
     });
   };
 
+  const handleCreateReferral = (newReferral: Partial<Referral>) => {
+    toast({
+      title: "Referral Created",
+      description: `Manual referral ${newReferral.id} has been created`,
+    });
+  };
+
   return (
     <div className="flex flex-col h-full gap-4">
       <Card>
-        <CardHeader>
+        <CardHeader className="flex flex-row items-center justify-between">
           <CardTitle>Triage Actions</CardTitle>
+          <Button 
+            variant="outline" 
+            size="sm"
+            onClick={() => setIsCreateModalOpen(true)}
+          >
+            <FilePlus className="mr-2 h-4 w-4" />
+            Create Referral
+          </Button>
         </CardHeader>
         <CardContent>
           <div className="space-y-4">
@@ -147,6 +162,12 @@ const ReferralWorkspace = ({ referral, onStatusChange }: ReferralWorkspaceProps)
           </ScrollArea>
         </CardContent>
       </Card>
+
+      <CreateReferralModal
+        isOpen={isCreateModalOpen}
+        onClose={() => setIsCreateModalOpen(false)}
+        onSubmit={handleCreateReferral}
+      />
     </div>
   );
 };
