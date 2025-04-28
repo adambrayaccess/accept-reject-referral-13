@@ -1,13 +1,19 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
-import { RefreshCw } from 'lucide-react';
+import { FilePlus, RefreshCw } from 'lucide-react';
 import SearchBar from './dashboard/SearchBar';
 import FilterBar from './dashboard/FilterBar';
 import SortControls from './dashboard/SortControls';
 import ReferralGrid from './dashboard/ReferralGrid';
 import { useDashboardData } from '@/hooks/useDashboardData';
+import { useState } from 'react';
+import CreateReferralModal from './CreateReferralModal';
+import { useToast } from '@/hooks/use-toast';
+import { Referral } from '@/types/referral';
 
 const Dashboard = () => {
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+  const { toast } = useToast();
   const {
     filteredReferrals,
     isLoading,
@@ -28,14 +34,28 @@ const Dashboard = () => {
     setSortDirection
   } = useDashboardData();
 
+  const handleCreateReferral = (newReferral: Partial<Referral>) => {
+    toast({
+      title: "Referral Created",
+      description: `Manual referral ${newReferral.id} has been created`,
+    });
+    handleRefresh();
+  };
+
   return (
     <div className="space-y-6">
       <div className="flex flex-col sm:flex-row justify-between gap-4">
         <h1 className="text-2xl font-bold">Referral Dashboard</h1>
-        <Button variant="outline" onClick={handleRefresh} className="w-full sm:w-auto">
-          <RefreshCw className="mr-2 h-4 w-4" />
-          Refresh
-        </Button>
+        <div className="flex gap-2 w-full sm:w-auto">
+          <Button variant="outline" onClick={() => setIsCreateModalOpen(true)} className="flex-1 sm:flex-initial">
+            <FilePlus className="mr-2 h-4 w-4" />
+            Create Referral
+          </Button>
+          <Button variant="outline" onClick={handleRefresh} className="flex-1 sm:flex-initial">
+            <RefreshCw className="mr-2 h-4 w-4" />
+            Refresh
+          </Button>
+        </div>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -87,6 +107,12 @@ const Dashboard = () => {
           />
         </TabsContent>
       </Tabs>
+
+      <CreateReferralModal
+        isOpen={isCreateModalOpen}
+        onClose={() => setIsCreateModalOpen(false)}
+        onSubmit={handleCreateReferral}
+      />
     </div>
   );
 };
