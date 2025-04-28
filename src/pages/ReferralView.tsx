@@ -17,7 +17,12 @@ const ReferralView = () => {
   const [relatedReferrals, setRelatedReferrals] = useState<{
     serviceTotal: number;
     activeTotal: number;
-  }>({ serviceTotal: 0, activeTotal: 0 });
+    activeSpecialties: string[];
+  }>({ 
+    serviceTotal: 0, 
+    activeTotal: 0,
+    activeSpecialties: []
+  });
   const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
   const { toast } = useToast();
@@ -44,10 +49,12 @@ const ReferralView = () => {
       const patientReferrals = await fetchPatientReferrals(data.patient.id);
       const serviceReferrals = patientReferrals.filter(ref => ref.specialty === data.specialty && ref.id !== data.id);
       const activeReferrals = patientReferrals.filter(ref => ref.status !== 'rejected' && ref.id !== data.id);
+      const activeSpecialties = Array.from(new Set(activeReferrals.map(ref => ref.specialty)));
       
       setRelatedReferrals({
         serviceTotal: serviceReferrals.length,
         activeTotal: activeReferrals.length,
+        activeSpecialties
       });
     } catch (error) {
       console.error('Error fetching referral:', error);

@@ -10,6 +10,7 @@ interface ReferralDetailProps {
   relatedReferrals: {
     serviceTotal: number;
     activeTotal: number;
+    activeSpecialties: string[];
   };
 }
 
@@ -92,16 +93,31 @@ const ReferralDetail = ({ referral, relatedReferrals }: ReferralDetailProps) => 
               )}
               
               <div className="col-span-1 md:col-span-2">
-                <div className="flex gap-4 p-3 bg-muted rounded-lg mt-2">
-                  <div>
-                    <div className="text-sm text-muted-foreground">Other referrals to {referral.specialty}</div>
-                    <div className="text-2xl font-bold">{relatedReferrals.serviceTotal}</div>
+                <div className="flex flex-col gap-4 p-3 bg-muted rounded-lg mt-2">
+                  <div className="flex gap-4">
+                    <div>
+                      <div className="text-sm text-muted-foreground">Other referrals to {referral.specialty}</div>
+                      <div className="text-2xl font-bold">{relatedReferrals.serviceTotal}</div>
+                    </div>
+                    <Separator orientation="vertical" className="h-auto" />
+                    <div>
+                      <div className="text-sm text-muted-foreground">Active referrals</div>
+                      <div className="text-2xl font-bold">{relatedReferrals.activeTotal}</div>
+                    </div>
                   </div>
-                  <Separator orientation="vertical" />
-                  <div>
-                    <div className="text-sm text-muted-foreground">Active referrals</div>
-                    <div className="text-2xl font-bold">{relatedReferrals.activeTotal}</div>
-                  </div>
+                  {relatedReferrals.activeSpecialties && relatedReferrals.activeSpecialties.length > 0 && (
+                    <>
+                      <Separator />
+                      <div>
+                        <div className="text-sm text-muted-foreground mb-1">Active referral specialties:</div>
+                        <div className="flex flex-wrap gap-2">
+                          {relatedReferrals.activeSpecialties.map((specialty, index) => (
+                            <Badge key={index} variant="secondary">{specialty}</Badge>
+                          ))}
+                        </div>
+                      </div>
+                    </>
+                  )}
                 </div>
               </div>
             </div>
