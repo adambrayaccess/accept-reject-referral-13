@@ -8,7 +8,7 @@ import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
 import ReferralActions from './ReferralActions';
 import { Referral } from '@/types/referral';
-import { FileTextPlus } from 'lucide-react';
+import { FilePlus } from 'lucide-react';
 
 interface ReferralWorkspaceProps {
   referral: Referral;
@@ -86,7 +86,7 @@ const ReferralWorkspace = ({ referral, onStatusChange }: ReferralWorkspaceProps)
               onClick={handleAddNote} 
               className="w-full"
             >
-              <FileTextPlus className="mr-2 h-4 w-4" />
+              <FilePlus className="mr-2 h-4 w-4" />
               Add Note
             </Button>
           </div>

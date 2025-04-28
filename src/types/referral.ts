@@ -38,6 +38,19 @@ export interface ClinicalInfo {
 export type ReferralStatus = 'new' | 'accepted' | 'rejected';
 export type ReferralPriority = 'routine' | 'urgent' | 'emergency';
 
+export interface AuditLogEntry {
+  timestamp: string;
+  user: string;
+  action: string;
+  notes?: string;
+}
+
+export interface CollaborationNote {
+  timestamp: string;
+  author: string;
+  content: string;
+}
+
 export interface Referral {
   id: string;
   ubrn: string;
@@ -50,6 +63,8 @@ export interface Referral {
   service?: string;
   clinicalInfo: ClinicalInfo;
   attachments: Attachment[];
+  auditLog?: AuditLogEntry[];
+  collaborationNotes?: CollaborationNote[];
 }
 
 export interface ApiResponse<T> {
@@ -58,7 +73,6 @@ export interface ApiResponse<T> {
   loading: boolean;
 }
 
-// New interfaces for medical history data
 export interface VitalSign {
   timestamp: string;
   news2: number;
