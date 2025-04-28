@@ -9,14 +9,26 @@ import { useToast } from '@/hooks/use-toast';
 import ReferralActions from './ReferralActions';
 import { Referral } from '@/types/referral';
 import { FilePlus } from 'lucide-react';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
 interface ReferralWorkspaceProps {
   referral: Referral;
   onStatusChange: () => void;
 }
 
+const triageStatuses = [
+  'received',
+  'reviewing',
+  'pre-assessment',
+  'post-assessment',
+  'triaged'
+] as const;
+
+type TriageStatus = typeof triageStatuses[number];
+
 const ReferralWorkspace = ({ referral, onStatusChange }: ReferralWorkspaceProps) => {
   const [note, setNote] = useState('');
+  const [triageStatus, setTriageStatus] = useState<TriageStatus>('received');
   const { toast } = useToast();
 
   const handleAddNote = () => {
@@ -37,6 +49,14 @@ const ReferralWorkspace = ({ referral, onStatusChange }: ReferralWorkspaceProps)
     setNote('');
   };
 
+  const handleTriageStatusChange = (status: TriageStatus) => {
+    setTriageStatus(status);
+    toast({
+      title: "Status Updated",
+      description: `Triage status changed to ${status}`,
+    });
+  };
+
   return (
     <div className="flex flex-col h-full gap-4">
       <Card>
@@ -44,13 +64,34 @@ const ReferralWorkspace = ({ referral, onStatusChange }: ReferralWorkspaceProps)
           <CardTitle>Triage Actions</CardTitle>
         </CardHeader>
         <CardContent>
-          <ReferralActions referral={referral} onStatusChange={onStatusChange} />
+          <div className="space-y-4">
+            <ReferralActions referral={referral} onStatusChange={onStatusChange} />
+            <div className="space-y-2">
+              <label className="text-sm font-medium">Triage Status</label>
+              <Select
+                disabled={referral.status !== 'accepted'}
+                value={triageStatus}
+                onValueChange={(value: TriageStatus) => handleTriageStatusChange(value)}
+              >
+                <SelectTrigger className="w-full">
+                  <SelectValue placeholder="Select triage status" />
+                </SelectTrigger>
+                <SelectContent>
+                  {triageStatuses.map((status) => (
+                    <SelectItem key={status} value={status}>
+                      {status.charAt(0).toUpperCase() + status.slice(1).replace('-', ' ')}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
         </CardContent>
       </Card>
 
       <Card className="flex-1">
         <CardHeader>
-          <CardTitle>Workspace</CardTitle>
+          <CardTitle>Triage Workspace</CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
           <Accordion type="single" collapsible className="w-full">
