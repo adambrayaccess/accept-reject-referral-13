@@ -10,6 +10,7 @@ import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
 import { ArrowLeft } from 'lucide-react';
 import { useToast } from '@/components/ui/use-toast';
+import ReferralWorkspace from '@/components/ReferralWorkspace';
 
 const ReferralView = () => {
   const { id } = useParams<{ id: string }>();
@@ -113,7 +114,7 @@ const ReferralView = () => {
   }
 
   return (
-    <div className="container py-6 space-y-6">
+    <div className="container py-6">
       <Button variant="ghost" onClick={handleBack} className="mb-4">
         <ArrowLeft className="mr-2 h-4 w-4" />
         Back to Dashboard
@@ -128,14 +129,22 @@ const ReferralView = () => {
         </div>
       </div>
       
-      <div className="grid grid-cols-1 gap-6">
-        <ReferralDetail 
-          referral={referral} 
-          relatedReferrals={relatedReferrals}
-        />
-        <MedicalHistory patient={referral.patient} />
-        <AttachmentViewer attachments={referral.attachments} />
-        <ReferralActions referral={referral} onStatusChange={handleStatusChange} />
+      <div className="grid grid-cols-1 lg:grid-cols-[1fr,400px] gap-6">
+        <div className="space-y-6">
+          <ReferralDetail 
+            referral={referral} 
+            relatedReferrals={relatedReferrals}
+          />
+          <MedicalHistory patient={referral.patient} />
+          <AttachmentViewer attachments={referral.attachments} />
+        </div>
+        
+        <div className="h-[calc(100vh-12rem)] sticky top-6">
+          <ReferralWorkspace 
+            referral={referral}
+            onStatusChange={handleStatusChange}
+          />
+        </div>
       </div>
     </div>
   );
