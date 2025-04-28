@@ -1,4 +1,3 @@
-
 import { Referral, ReferralStatus } from '@/types/referral';
 import { mockReferrals } from './mockData';
 
@@ -19,6 +18,16 @@ export const fetchReferralById = async (id: string): Promise<Referral | null> =>
     setTimeout(() => {
       const referral = mockReferrals.find(ref => ref.id === id);
       resolve(referral || null);
+    }, MOCK_DELAY);
+  });
+};
+
+// Get all referrals for a patient
+export const fetchPatientReferrals = async (patientId: string): Promise<Referral[]> => {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      const patientReferrals = mockReferrals.filter(ref => ref.patient.id === patientId);
+      resolve(patientReferrals);
     }, MOCK_DELAY);
   });
 };
@@ -52,4 +61,3 @@ export const sendHL7Message = async (referralId: string, action: 'accept' | 'rej
     }, MOCK_DELAY);
   });
 };
-

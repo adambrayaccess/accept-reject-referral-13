@@ -1,4 +1,3 @@
-
 import { Referral } from '@/types/referral';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -8,6 +7,10 @@ import { format } from 'date-fns';
 
 interface ReferralDetailProps {
   referral: Referral;
+  relatedReferrals: {
+    serviceTotal: number;
+    activeTotal: number;
+  };
 }
 
 const getPriorityClass = (priority: Referral['priority']) => {
@@ -21,7 +24,7 @@ const getPriorityClass = (priority: Referral['priority']) => {
   }
 };
 
-const ReferralDetail = ({ referral }: ReferralDetailProps) => {
+const ReferralDetail = ({ referral, relatedReferrals }: ReferralDetailProps) => {
   return (
     <Card>
       <CardHeader>
@@ -87,6 +90,20 @@ const ReferralDetail = ({ referral }: ReferralDetailProps) => {
                   <div className="info-value">{referral.patient.phone}</div>
                 </div>
               )}
+              
+              <div className="col-span-1 md:col-span-2">
+                <div className="flex gap-4 p-3 bg-muted rounded-lg mt-2">
+                  <div>
+                    <div className="text-sm text-muted-foreground">Other referrals to {referral.specialty}</div>
+                    <div className="text-2xl font-bold">{relatedReferrals.serviceTotal}</div>
+                  </div>
+                  <Separator orientation="vertical" />
+                  <div>
+                    <div className="text-sm text-muted-foreground">Active referrals</div>
+                    <div className="text-2xl font-bold">{relatedReferrals.activeTotal}</div>
+                  </div>
+                </div>
+              </div>
             </div>
           </TabsContent>
           

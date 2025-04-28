@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { fetchReferralById } from '@/services/referralService';
+import { fetchReferralById, fetchPatientReferrals } from '@/services/referralService';
 import { Referral } from '@/types/referral';
 import ReferralDetail from '@/components/ReferralDetail';
 import AttachmentViewer from '@/components/AttachmentViewer';
@@ -14,6 +14,10 @@ import { useToast } from '@/components/ui/use-toast';
 const ReferralView = () => {
   const { id } = useParams<{ id: string }>();
   const [referral, setReferral] = useState<Referral | null>(null);
+  const [relatedReferrals, setRelatedReferrals] = useState<{
+    serviceTotal: number;
+    activeTotal: number;
+  }>({ serviceTotal: 0, activeTotal: 0 });
   const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
   const { toast } = useToast();
@@ -36,6 +40,15 @@ const ReferralView = () => {
       }
       
       setReferral(data);
+      
+      const patientReferrals = await fetchPatientReferrals(data.patient.id);
+      const serviceReferrals = patientReferrals.filter(ref => ref.specialty === data.specialty && ref.id !== data.id);
+      const activeReferrals = patientReferrals.filter(ref => ref.status !== 'rejected' && ref.id !== data.id);
+      
+      setRelatedReferrals({
+        serviceTotal: serviceReferrals.length,
+        activeTotal: activeReferrals.length,
+      });
     } catch (error) {
       console.error('Error fetching referral:', error);
       toast({
@@ -109,7 +122,10 @@ const ReferralView = () => {
       </div>
       
       <div className="grid grid-cols-1 gap-6">
-        <ReferralDetail referral={referral} />
+        <ReferralDetail 
+          referral={referral} 
+          relatedReferrals={relatedReferrals}
+        />
         <MedicalHistory patient={referral.patient} />
         <AttachmentViewer attachments={referral.attachments} />
         <ReferralActions referral={referral} onStatusChange={handleStatusChange} />
