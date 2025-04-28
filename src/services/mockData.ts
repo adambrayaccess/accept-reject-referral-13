@@ -318,5 +318,119 @@ export const mockReferrals: Referral[] = [
         size: 2345000
       }
     ]
+  },
+  {
+    id: 'REF-2023-004',
+    ubrn: '456789012345',
+    created: '2023-06-12T15:45:00Z',
+    status: 'new',
+    priority: 'routine',
+    patient: {
+      id: 'P004',
+      name: 'Emma Thompson',
+      birthDate: '1990-03-15',
+      gender: 'female',
+      nhsNumber: '456 789 0123',
+      address: '25 High Street, Leeds, LS1 4HG',
+      phone: '07700 900234',
+      medicalHistory: {
+        vitalSigns: [
+          {
+            timestamp: '2023-06-10T10:30:00Z',
+            news2: 0,
+            temperature: 36.7,
+            heartRate: 70,
+            respiration: 14,
+            oxygenSaturation: 98,
+            bloodPressureSystolic: 125,
+            bloodPressureDiastolic: 75
+          }
+        ]
+      }
+    },
+    referrer: {
+      id: 'DR004',
+      name: 'Dr. James Wilson',
+      role: 'General Practitioner',
+      organization: 'The Access Group Elemental GP',
+      contact: 'james.wilson@nhs.net'
+    },
+    specialty: 'Rheumatology',
+    service: 'General Rheumatology',
+    clinicalInfo: {
+      reason: 'Joint pain and stiffness',
+      history: 'Patient reports morning stiffness and joint pain in hands and knees for past 3 months.',
+      diagnosis: 'Suspected rheumatoid arthritis',
+      medications: ['Paracetamol PRN', 'Ibuprofen 400mg TDS'],
+      allergies: ['None known'],
+      notes: 'Family history of rheumatoid arthritis (mother)'
+    },
+    attachments: [
+      {
+        id: 'ATT-006',
+        title: 'Blood Test Results',
+        contentType: 'application/pdf',
+        url: '/mock-data/bloods.pdf',
+        date: '2023-06-11T14:30:00Z',
+        size: 1567000
+      }
+    ]
+  },
+  {
+    id: 'REF-2023-005',
+    ubrn: '567890123456',
+    created: '2023-06-11T09:15:00Z',
+    status: 'new',
+    priority: 'urgent',
+    patient: {
+      id: 'P005',
+      name: 'David Roberts',
+      birthDate: '1955-08-22',
+      gender: 'male',
+      nhsNumber: '567 890 1234',
+      address: '7 Church Lane, Bristol, BS1 5TR',
+      phone: '07700 900567',
+      medicalHistory: {
+        vitalSigns: [
+          {
+            timestamp: '2023-06-09T11:00:00Z',
+            news2: 2,
+            temperature: 37.1,
+            heartRate: 82,
+            respiration: 16,
+            oxygenSaturation: 96,
+            bloodPressureSystolic: 142,
+            bloodPressureDiastolic: 88
+          }
+        ]
+      }
+    },
+    referrer: {
+      id: 'DR005',
+      name: 'Dr. Sophie Brown',
+      role: 'General Practitioner',
+      organization: 'The Access Group Elemental GP',
+      contact: 'sophie.brown@nhs.net'
+    },
+    specialty: 'Gastroenterology',
+    service: 'Rapid Access',
+    clinicalInfo: {
+      reason: 'Weight loss and change in bowel habits',
+      history: 'Unintentional weight loss of 5kg over 2 months. Change in bowel habits with occasional blood in stool.',
+      diagnosis: 'Suspected colorectal cancer',
+      medications: ['Omeprazole 20mg OD'],
+      allergies: ['Penicillin'],
+      notes: 'Colonoscopy urgently required'
+    },
+    attachments: [
+      {
+        id: 'ATT-007',
+        title: 'FIT Test Result',
+        contentType: 'application/pdf',
+        url: '/mock-data/fit-test.pdf',
+        date: '2023-06-10T15:45:00Z',
+        size: 985000
+      }
+    ]
   }
 ];
