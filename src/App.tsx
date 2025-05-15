@@ -7,6 +7,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
 import ReferralView from "./pages/ReferralView";
 import NotFound from "./pages/NotFound";
+import SpecialtySelection from "./pages/SpecialtySelection";
 
 const queryClient = new QueryClient();
 
@@ -17,6 +18,7 @@ const App = () => (
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/referral/:id" element={<ReferralView />} />
+          <Route path="/select-specialty" element={<SpecialtySelection />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
         <Toaster />

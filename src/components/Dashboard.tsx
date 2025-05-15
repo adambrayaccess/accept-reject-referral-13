@@ -1,3 +1,4 @@
+
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
 import { FilePlus, RefreshCw } from 'lucide-react';
@@ -6,14 +7,18 @@ import FilterBar from './dashboard/FilterBar';
 import SortControls from './dashboard/SortControls';
 import ReferralGrid from './dashboard/ReferralGrid';
 import { useDashboardData } from '@/hooks/useDashboardData';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import CreateReferralModal from './CreateReferralModal';
 import { useToast } from '@/hooks/use-toast';
 import { Referral } from '@/types/referral';
+import { useNavigate } from 'react-router-dom';
 
 const Dashboard = () => {
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const { toast } = useToast();
+  const navigate = useNavigate();
+  const [currentSpecialty, setCurrentSpecialty] = useState<string | null>(null);
+  
   const {
     filteredReferrals,
     isLoading,
@@ -34,6 +39,21 @@ const Dashboard = () => {
     setSortDirection
   } = useDashboardData();
 
+  useEffect(() => {
+    // Check if specialty is selected
+    const storedSpecialty = localStorage.getItem('selectedSpecialty');
+    if (storedSpecialty) {
+      setCurrentSpecialty(storedSpecialty);
+      // Auto-filter by the selected specialty
+      if (specialties.includes(storedSpecialty)) {
+        setSpecialtyFilter(storedSpecialty);
+      }
+    } else {
+      // Redirect to specialty selection if none selected
+      navigate('/select-specialty');
+    }
+  }, [specialties]);
+
   const handleCreateReferral = (newReferral: Partial<Referral>) => {
     toast({
       title: "Referral Created",
@@ -42,10 +62,26 @@ const Dashboard = () => {
     handleRefresh();
   };
 
+  const handleChangeSpecialty = () => {
+    navigate('/select-specialty');
+  };
+
   return (
     <div className="space-y-6">
       <div className="flex flex-col sm:flex-row justify-between gap-4">
-        <h1 className="text-2xl font-bold">Referral Dashboard</h1>
+        <div>
+          <h1 className="text-2xl font-bold">Referral Dashboard</h1>
+          {currentSpecialty && (
+            <div className="flex items-center mt-1">
+              <span className="text-sm text-muted-foreground mr-2">
+                Triaging for: <span className="font-medium text-foreground">{currentSpecialty}</span>
+              </span>
+              <Button variant="link" size="sm" className="p-0 h-auto" onClick={handleChangeSpecialty}>
+                Change
+              </Button>
+            </div>
+          )}
+        </div>
         <div className="flex gap-2 w-full sm:w-auto">
           <Button variant="outline" onClick={() => setIsCreateModalOpen(true)} className="flex-1 sm:flex-initial">
             <FilePlus className="mr-2 h-4 w-4" />
