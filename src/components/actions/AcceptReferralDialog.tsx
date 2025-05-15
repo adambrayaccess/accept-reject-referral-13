@@ -5,30 +5,15 @@ import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { CheckCircle } from 'lucide-react';
-import { Referral, SpecialtyOption, HealthcareProfessional } from '@/types/referral';
+import { Referral } from '@/types/referral';
 import { updateReferralStatus, sendHL7Message } from '@/services/referralService';
-import { useToast } from '@/hooks/use-toast';
+import { useToast } from '@/components/ui/use-toast';
+import { specialties, healthcareProfessionals } from '@/data/specialtyOptions';
 
 interface AcceptReferralDialogProps {
   referral: Referral;
   onStatusChange: () => void;
 }
-
-const specialties: SpecialtyOption[] = [
-  { id: 'card', name: 'Cardiology' },
-  { id: 'derm', name: 'Dermatology' },
-  { id: 'neur', name: 'Neurology' },
-  { id: 'orth', name: 'Orthopedics' },
-  { id: 'onco', name: 'Oncology' },
-];
-
-const healthcareProfessionals: HealthcareProfessional[] = [
-  { id: 'hp1', name: 'Dr. Sarah Jones', role: 'Consultant', specialty: 'card' },
-  { id: 'hp2', name: 'Dr. Michael Chen', role: 'Specialist', specialty: 'card' },
-  { id: 'hp3', name: 'Dr. Emma Wilson', role: 'Consultant', specialty: 'derm' },
-  { id: 'hp4', name: 'Dr. James Smith', role: 'Specialist', specialty: 'derm' },
-  { id: 'hp5', name: 'Dr. Lisa Brown', role: 'Consultant', specialty: 'neur' },
-];
 
 const AcceptReferralDialog = ({ referral, onStatusChange }: AcceptReferralDialogProps) => {
   const [acceptNotes, setAcceptNotes] = useState('');
