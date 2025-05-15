@@ -5,32 +5,35 @@ import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { CheckCircle } from 'lucide-react';
-import { Referral } from '@/types/referral';
+import { Referral, TriageStatus } from '@/types/referral';
 import { updateReferralStatus, sendHL7Message } from '@/services/referralService';
 import { useToast } from '@/components/ui/use-toast';
-import { specialties, healthcareProfessionals } from '@/data/specialtyOptions';
+import { healthcareProfessionals } from '@/data/specialtyOptions';
 
 interface AcceptReferralDialogProps {
   referral: Referral;
   onStatusChange: () => void;
 }
 
+const triageStatusOptions: { value: TriageStatus; label: string }[] = [
+  { value: 'pre-assessment', label: 'Pre-Assessment' },
+  { value: 'assessed', label: 'Assessed' },
+  { value: 'pre-admission-assessment', label: 'Pre-admission Assessment' },
+  { value: 'waiting-list', label: 'Waiting List' },
+];
+
 const AcceptReferralDialog = ({ referral, onStatusChange }: AcceptReferralDialogProps) => {
   const [acceptNotes, setAcceptNotes] = useState('');
-  const [selectedSpecialty, setSelectedSpecialty] = useState<string>('');
   const [selectedProfessional, setSelectedProfessional] = useState<string>('');
+  const [selectedStatus, setSelectedStatus] = useState<TriageStatus | ''>('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { toast } = useToast();
 
-  const filteredProfessionals = healthcareProfessionals.filter(
-    hp => hp.specialty === selectedSpecialty
-  );
-
   const handleAccept = async () => {
-    if (!selectedSpecialty || !selectedProfessional) {
+    if (!selectedProfessional || !selectedStatus) {
       toast({
         title: "Required Fields",
-        description: "Please select both a specialty and healthcare professional.",
+        description: "Please select both a healthcare professional and initial status.",
         variant: "destructive",
       });
       return;
@@ -46,11 +49,12 @@ const AcceptReferralDialog = ({ referral, onStatusChange }: AcceptReferralDialog
         await sendHL7Message(referral.id, 'accept');
         
         const professional = healthcareProfessionals.find(hp => hp.id === selectedProfessional);
-        const specialty = specialties.find(s => s.id === selectedSpecialty);
         
         toast({
           title: "Referral Accepted",
-          description: `The referral has been accepted and allocated to ${professional?.name} in ${specialty?.name}.`,
+          description: `The referral has been accepted and allocated to ${professional?.name} with status: ${
+            triageStatusOptions.find(s => s.value === selectedStatus)?.label
+          }.`,
           variant: "default",
         });
         
@@ -82,20 +86,20 @@ const AcceptReferralDialog = ({ referral, onStatusChange }: AcceptReferralDialog
         <AlertDialogHeader>
           <AlertDialogTitle>Accept Referral</AlertDialogTitle>
           <AlertDialogDescription>
-            Please allocate this referral to a specialty and healthcare professional.
+            Please allocate this referral to a healthcare professional and set initial status.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <div className="space-y-4 my-4">
           <div className="space-y-2">
-            <label className="text-sm font-medium">Specialty</label>
-            <Select value={selectedSpecialty} onValueChange={setSelectedSpecialty}>
+            <label className="text-sm font-medium">Healthcare Professional</label>
+            <Select value={selectedProfessional} onValueChange={setSelectedProfessional}>
               <SelectTrigger>
-                <SelectValue placeholder="Select specialty" />
+                <SelectValue placeholder="Select professional" />
               </SelectTrigger>
               <SelectContent>
-                {specialties.map((specialty) => (
-                  <SelectItem key={specialty.id} value={specialty.id}>
-                    {specialty.name}
+                {healthcareProfessionals.map((professional) => (
+                  <SelectItem key={professional.id} value={professional.id}>
+                    {professional.name} - {professional.role}
                   </SelectItem>
                 ))}
               </SelectContent>
@@ -103,19 +107,18 @@ const AcceptReferralDialog = ({ referral, onStatusChange }: AcceptReferralDialog
           </div>
 
           <div className="space-y-2">
-            <label className="text-sm font-medium">Healthcare Professional</label>
+            <label className="text-sm font-medium">Initial Status</label>
             <Select 
-              value={selectedProfessional} 
-              onValueChange={setSelectedProfessional}
-              disabled={!selectedSpecialty}
+              value={selectedStatus} 
+              onValueChange={(value: TriageStatus) => setSelectedStatus(value)}
             >
               <SelectTrigger>
-                <SelectValue placeholder={selectedSpecialty ? "Select professional" : "Select specialty first"} />
+                <SelectValue placeholder="Select status" />
               </SelectTrigger>
               <SelectContent>
-                {filteredProfessionals.map((professional) => (
-                  <SelectItem key={professional.id} value={professional.id}>
-                    {professional.name} - {professional.role}
+                {triageStatusOptions.map((status) => (
+                  <SelectItem key={status.value} value={status.value}>
+                    {status.label}
                   </SelectItem>
                 ))}
               </SelectContent>
@@ -132,7 +135,7 @@ const AcceptReferralDialog = ({ referral, onStatusChange }: AcceptReferralDialog
           <AlertDialogCancel>Cancel</AlertDialogCancel>
           <AlertDialogAction 
             onClick={handleAccept} 
-            disabled={isSubmitting || !selectedSpecialty || !selectedProfessional}
+            disabled={isSubmitting || !selectedProfessional || !selectedStatus}
             className="bg-success hover:bg-success/90"
           >
             {isSubmitting ? "Processing..." : "Confirm"}
