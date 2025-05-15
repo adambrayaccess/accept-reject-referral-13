@@ -1,3 +1,4 @@
+
 export interface Patient {
   id: string;
   name: string;
@@ -37,6 +38,7 @@ export interface ClinicalInfo {
 
 export type ReferralStatus = 'new' | 'accepted' | 'rejected';
 export type ReferralPriority = 'routine' | 'urgent' | 'emergency';
+export type TriageStatus = 'pre-assessment' | 'assessed' | 'pre-admission-assessment' | 'waiting-list';
 
 export interface AuditLogEntry {
   timestamp: string;
@@ -65,6 +67,7 @@ export interface Referral {
   attachments: Attachment[];
   auditLog?: AuditLogEntry[];
   collaborationNotes?: CollaborationNote[];
+  triageStatus?: TriageStatus;
 }
 
 export interface ApiResponse<T> {

@@ -7,29 +7,36 @@ import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
 import ReferralActions from './ReferralActions';
-import { Referral } from '@/types/referral';
-import { FilePlus } from 'lucide-react';
+import { Referral, TriageStatus } from '@/types/referral';
+import { FilePlus, Clipboard } from 'lucide-react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { updateTriageStatus } from '@/services/referralService';
 
 interface ReferralWorkspaceProps {
   referral: Referral;
   onStatusChange: () => void;
 }
 
-const triageStatuses = [
-  'received',
-  'reviewing',
-  'pre-assessment',
-  'post-assessment',
-  'triaged'
-] as const;
-
-type TriageStatus = typeof triageStatuses[number];
+const triageStatuses: { value: TriageStatus; label: string }[] = [
+  { value: 'pre-assessment', label: 'Pre-Assessment' },
+  { value: 'assessed', label: 'Assessed' },
+  { value: 'pre-admission-assessment', label: 'Pre-admission Assessment' },
+  { value: 'waiting-list', label: 'Waiting List' },
+];
 
 const ReferralWorkspace = ({ referral, onStatusChange }: ReferralWorkspaceProps) => {
   const [note, setNote] = useState('');
-  const [triageStatus, setTriageStatus] = useState<TriageStatus>('received');
+  const [triageStatus, setTriageStatus] = useState<TriageStatus | ''>('');
+  const [triageNotes, setTriageNotes] = useState('');
+  const [isUpdatingStatus, setIsUpdatingStatus] = useState(false);
   const { toast } = useToast();
+
+  // Initialize triage status from referral if available
+  useState(() => {
+    if (referral.triageStatus) {
+      setTriageStatus(referral.triageStatus);
+    }
+  });
 
   const handleAddNote = () => {
     if (!note.trim()) {
@@ -48,12 +55,42 @@ const ReferralWorkspace = ({ referral, onStatusChange }: ReferralWorkspaceProps)
     setNote('');
   };
 
-  const handleTriageStatusChange = (status: TriageStatus) => {
-    setTriageStatus(status);
-    toast({
-      title: "Status Updated",
-      description: `Triage status changed to ${status}`,
-    });
+  const handleTriageStatusChange = async () => {
+    if (!triageStatus) {
+      toast({
+        title: "Required Field",
+        description: "Please select a triage status",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    setIsUpdatingStatus(true);
+    try {
+      const updated = await updateTriageStatus(referral.id, triageStatus, triageNotes);
+      
+      if (updated) {
+        toast({
+          title: "Status Updated",
+          description: `Triage status changed to ${
+            triageStatuses.find(s => s.value === triageStatus)?.label
+          }`,
+        });
+        setTriageNotes('');
+        onStatusChange();
+      } else {
+        throw new Error("Failed to update triage status");
+      }
+    } catch (error) {
+      console.error("Error updating triage status:", error);
+      toast({
+        title: "Error",
+        description: "Failed to update triage status. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsUpdatingStatus(false);
+    }
   };
 
   return (
@@ -65,25 +102,54 @@ const ReferralWorkspace = ({ referral, onStatusChange }: ReferralWorkspaceProps)
         <CardContent>
           <div className="space-y-4">
             <ReferralActions referral={referral} onStatusChange={onStatusChange} />
-            <div className="space-y-2">
-              <label className="text-sm font-medium">Triage Status</label>
-              <Select
-                disabled={referral.status !== 'accepted'}
-                value={triageStatus}
-                onValueChange={(value: TriageStatus) => handleTriageStatusChange(value)}
-              >
-                <SelectTrigger className="w-full">
-                  <SelectValue placeholder="Select triage status" />
-                </SelectTrigger>
-                <SelectContent>
-                  {triageStatuses.map((status) => (
-                    <SelectItem key={status} value={status}>
-                      {status.charAt(0).toUpperCase() + status.slice(1).replace('-', ' ')}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
+            
+            {referral.status === 'accepted' && (
+              <div className="space-y-4 pt-4 border-t">
+                <h3 className="text-sm font-medium">Update Triage Status</h3>
+                <div className="space-y-2">
+                  <label className="text-sm font-medium">Status</label>
+                  <Select
+                    value={triageStatus}
+                    onValueChange={(value: TriageStatus) => setTriageStatus(value)}
+                  >
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select triage status" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {triageStatuses.map((status) => (
+                        <SelectItem key={status.value} value={status.value}>
+                          {status.label}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+                
+                <Textarea
+                  placeholder="Add notes about status change (optional)"
+                  value={triageNotes}
+                  onChange={(e) => setTriageNotes(e.target.value)}
+                />
+                
+                <Button 
+                  className="w-full" 
+                  onClick={handleTriageStatusChange}
+                  disabled={isUpdatingStatus || !triageStatus}
+                >
+                  <Clipboard className="mr-2 h-4 w-4" />
+                  {isUpdatingStatus ? "Updating Status..." : "Update Status"}
+                </Button>
+                
+                {referral.triageStatus && (
+                  <div className="text-sm text-muted-foreground">
+                    Current status: {
+                      triageStatuses.find(s => s.value === referral.triageStatus)?.label || 
+                      referral.triageStatus
+                    }
+                  </div>
+                )}
+              </div>
+            )}
           </div>
         </CardContent>
       </Card>
