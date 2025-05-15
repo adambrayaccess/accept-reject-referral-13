@@ -7,19 +7,13 @@ interface FilterBarProps {
   setStatusFilter: (value: string) => void;
   priorityFilter: string;
   setPriorityFilter: (value: string) => void;
-  specialtyFilter: string;
-  setSpecialtyFilter: (value: string) => void;
-  specialties: string[];
 }
 
 const FilterBar = ({
   statusFilter,
   setStatusFilter,
   priorityFilter,
-  setPriorityFilter,
-  specialtyFilter,
-  setSpecialtyFilter,
-  specialties
+  setPriorityFilter
 }: FilterBarProps) => {
   return (
     <>
@@ -49,22 +43,6 @@ const FilterBar = ({
             <SelectItem value="routine">Routine</SelectItem>
             <SelectItem value="urgent">Urgent</SelectItem>
             <SelectItem value="emergency">Emergency</SelectItem>
-          </SelectContent>
-        </Select>
-      </div>
-
-      <div className="flex items-center gap-2">
-        <Filter className="h-4 w-4 text-muted-foreground flex-shrink-0" />
-        <Select value={specialtyFilter} onValueChange={setSpecialtyFilter}>
-          <SelectTrigger>
-            <SelectValue placeholder="Specialty" />
-          </SelectTrigger>
-          <SelectContent>
-            {specialties.map((specialty, index) => (
-              <SelectItem key={index} value={specialty}>
-                {specialty === 'all' ? 'All Specialties' : specialty}
-              </SelectItem>
-            ))}
           </SelectContent>
         </Select>
       </div>

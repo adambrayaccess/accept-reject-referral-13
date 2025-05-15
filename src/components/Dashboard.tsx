@@ -28,9 +28,6 @@ const Dashboard = () => {
     setStatusFilter,
     priorityFilter,
     setPriorityFilter,
-    specialtyFilter,
-    setSpecialtyFilter,
-    specialties,
     handleRefresh,
     referrals,
     sortField,
@@ -44,15 +41,11 @@ const Dashboard = () => {
     const storedSpecialty = localStorage.getItem('selectedSpecialty');
     if (storedSpecialty) {
       setCurrentSpecialty(storedSpecialty);
-      // Auto-filter by the selected specialty
-      if (specialties.includes(storedSpecialty)) {
-        setSpecialtyFilter(storedSpecialty);
-      }
     } else {
       // Redirect to specialty selection if none selected
       navigate('/select-specialty');
     }
-  }, [specialties]);
+  }, []);
 
   const handleCreateReferral = (newReferral: Partial<Referral>) => {
     toast({
@@ -94,16 +87,13 @@ const Dashboard = () => {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <SearchBar searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
         <FilterBar
           statusFilter={statusFilter}
           setStatusFilter={setStatusFilter}
           priorityFilter={priorityFilter}
           setPriorityFilter={setPriorityFilter}
-          specialtyFilter={specialtyFilter}
-          setSpecialtyFilter={setSpecialtyFilter}
-          specialties={specialties}
         />
       </div>
 

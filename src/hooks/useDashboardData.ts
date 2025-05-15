@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { Referral } from '@/types/referral';
 import { fetchReferrals } from '@/services/referralService';
@@ -10,7 +11,6 @@ export const useDashboardData = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState<string>('all');
   const [priorityFilter, setPriorityFilter] = useState<string>('all');
-  const [specialtyFilter, setSpecialtyFilter] = useState<string>('all');
   const [sortField, setSortField] = useState<string>('created');
   const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('desc');
   const { toast } = useToast();
@@ -39,7 +39,7 @@ export const useDashboardData = () => {
 
   useEffect(() => {
     filterAndSortReferrals();
-  }, [searchTerm, statusFilter, priorityFilter, specialtyFilter, sortField, sortDirection, referrals]);
+  }, [searchTerm, statusFilter, priorityFilter, sortField, sortDirection, referrals]);
 
   const filterAndSortReferrals = () => {
     let filtered = [...referrals];
@@ -51,10 +51,6 @@ export const useDashboardData = () => {
 
     if (priorityFilter !== 'all') {
       filtered = filtered.filter(ref => ref.priority === priorityFilter);
-    }
-
-    if (specialtyFilter !== 'all') {
-      filtered = filtered.filter(ref => ref.specialty === specialtyFilter);
     }
 
     if (searchTerm) {
@@ -96,8 +92,6 @@ export const useDashboardData = () => {
     });
   };
 
-  const specialties = ['all', ...new Set(referrals.map(ref => ref.specialty))];
-
   return {
     referrals,
     filteredReferrals,
@@ -108,9 +102,6 @@ export const useDashboardData = () => {
     setStatusFilter,
     priorityFilter,
     setPriorityFilter,
-    specialtyFilter,
-    setSpecialtyFilter,
-    specialties,
     handleRefresh,
     sortField,
     setSortField,
