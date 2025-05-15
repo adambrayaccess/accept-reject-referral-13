@@ -46,7 +46,18 @@ export const useDashboardData = () => {
 
     // Apply existing filters
     if (statusFilter !== 'all') {
-      filtered = filtered.filter(ref => ref.status === statusFilter);
+      // Check both status and triageStatus fields
+      filtered = filtered.filter(ref => {
+        // Check standard status field (new, accepted, rejected)
+        if (['new', 'accepted', 'rejected', 'refer-to-another-specialty'].includes(statusFilter)) {
+          return ref.status === statusFilter;
+        }
+        // Check triageStatus field for other status values
+        else if (ref.triageStatus) {
+          return ref.triageStatus === statusFilter;
+        }
+        return false;
+      });
     }
 
     if (priorityFilter !== 'all') {

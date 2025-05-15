@@ -28,6 +28,11 @@ const FilterBar = ({
             <SelectItem value="new">New</SelectItem>
             <SelectItem value="accepted">Accepted</SelectItem>
             <SelectItem value="rejected">Rejected</SelectItem>
+            <SelectItem value="pre-assessment">Pre-Assessment</SelectItem>
+            <SelectItem value="assessed">Assessed</SelectItem>
+            <SelectItem value="pre-admission-assessment">Pre-admission Assessment</SelectItem>
+            <SelectItem value="waiting-list">Waiting List</SelectItem>
+            <SelectItem value="refer-to-another-specialty">Refer to Another Specialty</SelectItem>
           </SelectContent>
         </Select>
       </div>
