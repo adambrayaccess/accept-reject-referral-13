@@ -4,7 +4,7 @@ import { Referral } from '@/types/referral';
 import { fetchReferrals } from '@/services/referralService';
 import { useToast } from '@/components/ui/use-toast';
 
-export const useDashboardData = () => {
+export const useDashboardData = (currentSpecialty: string | null = null) => {
   const [referrals, setReferrals] = useState<Referral[]>([]);
   const [filteredReferrals, setFilteredReferrals] = useState<Referral[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -18,7 +18,13 @@ export const useDashboardData = () => {
   const loadReferrals = async () => {
     setIsLoading(true);
     try {
-      const data = await fetchReferrals();
+      let data = await fetchReferrals();
+      
+      // Filter referrals by specialty if one is selected
+      if (currentSpecialty) {
+        data = data.filter(ref => ref.specialty === currentSpecialty);
+      }
+      
       setReferrals(data);
       setFilteredReferrals(data);
     } catch (error) {
@@ -35,7 +41,7 @@ export const useDashboardData = () => {
 
   useEffect(() => {
     loadReferrals();
-  }, []);
+  }, [currentSpecialty]); // Re-load when specialty changes
 
   useEffect(() => {
     filterAndSortReferrals();

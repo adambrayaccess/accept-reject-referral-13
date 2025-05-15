@@ -19,6 +19,7 @@ const Dashboard = () => {
   const navigate = useNavigate();
   const [currentSpecialty, setCurrentSpecialty] = useState<string | null>(null);
   
+  // Pass the currentSpecialty to the useDashboardData hook
   const {
     filteredReferrals,
     isLoading,
@@ -34,7 +35,7 @@ const Dashboard = () => {
     setSortField,
     sortDirection,
     setSortDirection
-  } = useDashboardData();
+  } = useDashboardData(currentSpecialty);
 
   useEffect(() => {
     // Check if specialty is selected
