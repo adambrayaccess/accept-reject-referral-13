@@ -20,6 +20,7 @@ const triageStatusOptions: { value: TriageStatus; label: string }[] = [
   { value: 'assessed', label: 'Assessed' },
   { value: 'pre-admission-assessment', label: 'Pre-admission Assessment' },
   { value: 'waiting-list', label: 'Waiting List' },
+  { value: 'refer-to-another-specialty', label: 'Refer to Another Specialty' },
 ];
 
 const AcceptReferralDialog = ({ referral, onStatusChange }: AcceptReferralDialogProps) => {
@@ -91,22 +92,6 @@ const AcceptReferralDialog = ({ referral, onStatusChange }: AcceptReferralDialog
         </AlertDialogHeader>
         <div className="space-y-4 my-4">
           <div className="space-y-2">
-            <label className="text-sm font-medium">Healthcare Professional</label>
-            <Select value={selectedProfessional} onValueChange={setSelectedProfessional}>
-              <SelectTrigger>
-                <SelectValue placeholder="Select professional" />
-              </SelectTrigger>
-              <SelectContent>
-                {healthcareProfessionals.map((professional) => (
-                  <SelectItem key={professional.id} value={professional.id}>
-                    {professional.name} - {professional.role}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
-
-          <div className="space-y-2">
             <label className="text-sm font-medium">Initial Status</label>
             <Select 
               value={selectedStatus} 
@@ -119,6 +104,22 @@ const AcceptReferralDialog = ({ referral, onStatusChange }: AcceptReferralDialog
                 {triageStatusOptions.map((status) => (
                   <SelectItem key={status.value} value={status.value}>
                     {status.label}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+
+          <div className="space-y-2">
+            <label className="text-sm font-medium">Healthcare Professional</label>
+            <Select value={selectedProfessional} onValueChange={setSelectedProfessional}>
+              <SelectTrigger>
+                <SelectValue placeholder="Select professional" />
+              </SelectTrigger>
+              <SelectContent>
+                {healthcareProfessionals.map((professional) => (
+                  <SelectItem key={professional.id} value={professional.id}>
+                    {professional.name} - {professional.role}
                   </SelectItem>
                 ))}
               </SelectContent>

@@ -38,7 +38,7 @@ export interface ClinicalInfo {
 
 export type ReferralStatus = 'new' | 'accepted' | 'rejected';
 export type ReferralPriority = 'routine' | 'urgent' | 'emergency';
-export type TriageStatus = 'pre-assessment' | 'assessed' | 'pre-admission-assessment' | 'waiting-list';
+export type TriageStatus = 'pre-assessment' | 'assessed' | 'pre-admission-assessment' | 'waiting-list' | 'refer-to-another-specialty';
 
 export interface AuditLogEntry {
   timestamp: string;
