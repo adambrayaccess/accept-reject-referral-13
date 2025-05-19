@@ -12,7 +12,8 @@ const SpecialtySelection = () => {
     'Orthopedics',
     'Psychiatry',
     'Pulmonology',
-    'Rheumatology'
+    'Rheumatology',
+    'Mental Health'
   ];
 
   return (

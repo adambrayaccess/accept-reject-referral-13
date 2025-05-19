@@ -7,6 +7,7 @@ export const specialties: SpecialtyOption[] = [
   { id: 'neur', name: 'Neurology' },
   { id: 'orth', name: 'Orthopedics' },
   { id: 'onco', name: 'Oncology' },
+  { id: 'mhea', name: 'Mental Health' },
 ];
 
 export const healthcareProfessionals: HealthcareProfessional[] = [
@@ -15,4 +16,6 @@ export const healthcareProfessionals: HealthcareProfessional[] = [
   { id: 'hp3', name: 'Dr. Emma Wilson', role: 'Consultant', specialty: 'derm' },
   { id: 'hp4', name: 'Dr. James Smith', role: 'Specialist', specialty: 'derm' },
   { id: 'hp5', name: 'Dr. Lisa Brown', role: 'Consultant', specialty: 'neur' },
+  { id: 'hp6', name: 'Dr. Robert Taylor', role: 'Consultant', specialty: 'mhea' },
+  { id: 'hp7', name: 'Dr. Maria Lopez', role: 'Specialist', specialty: 'mhea' },
 ];
