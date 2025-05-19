@@ -34,3 +34,57 @@ export const mentalHealthReferrals: Referral[] = [
     ]
   }
 ];
+
+// Generate 49 more mock referrals
+const additionalMentalHealthReferrals: Referral[] = Array.from({ length: 49 }, (_, i) => {
+  const index = i + 1; // Start from 1 since we already have 1 referral
+  const patientIndex = index % mockPatients.length;
+  const practitionerIndex = index % mockPractitioners.length;
+  const priorityOptions: Referral['priority'][] = ['routine', 'urgent', 'emergency'];
+  const priority = priorityOptions[index % 3];
+  
+  // Generate a date between 1 and 365 days ago
+  const daysAgo = Math.floor(Math.random() * 365) + 1;
+  const date = new Date();
+  date.setDate(date.getDate() - daysAgo);
+  
+  return {
+    id: `MH-2024-${(index + 1).toString().padStart(3, '0')}`,
+    ubrn: `MH${(1000000 + index).toString().padStart(8, '0')}`,
+    created: date.toISOString(),
+    status: 'new',
+    priority,
+    patient: mockPatients[patientIndex],
+    referrer: mockPractitioners[practitionerIndex],
+    specialty: 'Mental Health',
+    service: index % 4 === 0 ? 'Community Mental Health Team' : 
+             index % 4 === 1 ? 'Crisis Team' : 
+             index % 4 === 2 ? 'Eating Disorder Service' : 'IAPT',
+    clinicalInfo: {
+      reason: index % 5 === 0 ? 'Depression and anxiety' : 
+              index % 5 === 1 ? 'Suicidal ideation' : 
+              index % 5 === 2 ? 'Psychosis' : 
+              index % 5 === 3 ? 'Eating disorder' : 'Substance misuse',
+      history: `Patient with ${index % 2 === 0 ? 'acute' : 'chronic'} symptoms for past ${Math.floor(Math.random() * 12) + 1} months.`,
+      diagnosis: index % 4 === 0 ? 'Major depressive disorder' : 
+                index % 4 === 1 ? 'Bipolar affective disorder' : 
+                index % 4 === 2 ? 'Schizophrenia' : 'Personality disorder',
+      medications: ['Sertraline 50mg OD', 'Olanzapine 5mg ON'],
+      allergies: index % 10 === 0 ? ['Sulfa drugs'] : [],
+      notes: `Patient has ${index % 2 === 0 ? 'no significant' : 'family'} history of mental health conditions.`
+    },
+    attachments: index % 3 === 0 ? [
+      {
+        id: `MH-ATT-${index}-1`,
+        title: 'Risk Assessment',
+        contentType: 'application/pdf',
+        url: '/mock-data/risk-assessment.pdf',
+        date: new Date(date.getTime() - 86400000).toISOString(), // 1 day before referral
+        size: 1856000
+      }
+    ] : []
+  };
+});
+
+// Combine the original referrals with the additional ones
+export const allMentalHealthReferrals = [...mentalHealthReferrals, ...additionalMentalHealthReferrals];

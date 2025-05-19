@@ -34,3 +34,55 @@ export const rheumatologyReferrals: Referral[] = [
     ]
   }
 ];
+
+// Generate 49 more mock referrals
+const additionalRheumatologyReferrals: Referral[] = Array.from({ length: 49 }, (_, i) => {
+  const index = i + 1; // Start from 1 since we already have 1 referral
+  const patientIndex = index % mockPatients.length;
+  const practitionerIndex = index % mockPractitioners.length;
+  const priorityOptions: Referral['priority'][] = ['routine', 'urgent', 'emergency'];
+  const priority = priorityOptions[index % 3];
+  
+  // Generate a date between 1 and 365 days ago
+  const daysAgo = Math.floor(Math.random() * 365) + 1;
+  const date = new Date();
+  date.setDate(date.getDate() - daysAgo);
+  
+  return {
+    id: `RHEU-2024-${index.toString().padStart(3, '0')}`,
+    ubrn: `R${(1000000 + index).toString().padStart(8, '0')}`,
+    created: date.toISOString(),
+    status: 'new',
+    priority,
+    patient: mockPatients[patientIndex],
+    referrer: mockPractitioners[practitionerIndex],
+    specialty: 'Rheumatology',
+    service: index % 3 === 0 ? 'General Rheumatology' : 
+             index % 3 === 1 ? 'Early Inflammatory Arthritis' : 'Connective Tissue Disease',
+    clinicalInfo: {
+      reason: index % 4 === 0 ? 'Joint pain and stiffness' : 
+              index % 4 === 1 ? 'Back pain' : 
+              index % 4 === 2 ? 'Systemic symptoms with joint pain' : 'Gout',
+      history: `Patient with ${index % 2 === 0 ? 'new onset' : 'chronic'} symptoms for past ${Math.floor(Math.random() * 12) + 1} months.`,
+      diagnosis: index % 4 === 0 ? 'Suspected rheumatoid arthritis' : 
+                index % 4 === 1 ? 'Suspected ankylosing spondylitis' : 
+                index % 4 === 2 ? 'Suspected lupus' : 'Suspected gout',
+      medications: ['Paracetamol PRN', 'Ibuprofen 400mg TDS'],
+      allergies: index % 5 === 0 ? ['Sulfa drugs'] : [],
+      notes: `Patient has ${index % 2 === 0 ? 'no significant' : 'family'} history of rheumatological conditions.`
+    },
+    attachments: index % 3 === 0 ? [
+      {
+        id: `RHEU-ATT-${index}-1`,
+        title: 'Blood Test Results',
+        contentType: 'application/pdf',
+        url: '/mock-data/bloods.pdf',
+        date: new Date(date.getTime() - 86400000).toISOString(), // 1 day before referral
+        size: 1567000
+      }
+    ] : []
+  };
+});
+
+// Combine the original referrals with the additional ones
+export const allRheumatologyReferrals = [...rheumatologyReferrals, ...additionalRheumatologyReferrals];

@@ -1,28 +1,36 @@
 
-import { cardiologyReferrals } from './cardiology';
-import { dermatologyReferrals } from './dermatology';
-import { neurologyReferrals } from './neurology';
-import { rheumatologyReferrals } from './rheumatology';
-import { gastroenterologyReferrals } from './gastroenterology';
-import { mentalHealthReferrals } from './mentalhealth';
+import { cardiologyReferrals as originalCardiologyReferrals, allCardiologyReferrals } from './cardiology';
+import { dermatologyReferrals as originalDermatologyReferrals, allDermatologyReferrals } from './dermatology';
+import { neurologyReferrals as originalNeurologyReferrals, allNeurologyReferrals } from './neurology';
+import { rheumatologyReferrals as originalRheumatologyReferrals, allRheumatologyReferrals } from './rheumatology';
+import { gastroenterologyReferrals as originalGastroenterologyReferrals, allGastroenterologyReferrals } from './gastroenterology';
+import { mentalHealthReferrals as originalMentalHealthReferrals, allMentalHealthReferrals } from './mentalhealth';
 import { Referral } from '@/types/referral';
 
-// Combine all specialty referrals
+// Export the original referrals to maintain backward compatibility
+export const cardiologyReferrals = originalCardiologyReferrals;
+export const dermatologyReferrals = originalDermatologyReferrals;
+export const neurologyReferrals = originalNeurologyReferrals;
+export const rheumatologyReferrals = originalRheumatologyReferrals;
+export const gastroenterologyReferrals = originalGastroenterologyReferrals;
+export const mentalHealthReferrals = originalMentalHealthReferrals;
+
+// Combine all specialty referrals from the full sets (50 per specialty)
 export const mockReferrals: Referral[] = [
-  ...cardiologyReferrals,
-  ...dermatologyReferrals,
-  ...neurologyReferrals,
-  ...rheumatologyReferrals,
-  ...gastroenterologyReferrals,
-  ...mentalHealthReferrals
+  ...allCardiologyReferrals,
+  ...allDermatologyReferrals,
+  ...allNeurologyReferrals,
+  ...allRheumatologyReferrals,
+  ...allGastroenterologyReferrals,
+  ...allMentalHealthReferrals
 ];
 
-// Export individual specialty referrals for more granular access
+// Export the full sets as well for when more data is needed
 export {
-  cardiologyReferrals,
-  dermatologyReferrals,
-  neurologyReferrals,
-  rheumatologyReferrals,
-  gastroenterologyReferrals,
-  mentalHealthReferrals
+  allCardiologyReferrals,
+  allDermatologyReferrals,
+  allNeurologyReferrals,
+  allRheumatologyReferrals,
+  allGastroenterologyReferrals,
+  allMentalHealthReferrals
 };
