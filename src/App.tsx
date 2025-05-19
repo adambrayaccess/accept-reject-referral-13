@@ -8,6 +8,7 @@ import Index from "./pages/Index";
 import ReferralView from "./pages/ReferralView";
 import NotFound from "./pages/NotFound";
 import SpecialtySelection from "./pages/SpecialtySelection";
+import CohortBuilder from "./pages/CohortBuilder";
 
 const queryClient = new QueryClient();
 
@@ -19,6 +20,7 @@ const App = () => (
           <Route path="/" element={<Index />} />
           <Route path="/referral/:id" element={<ReferralView />} />
           <Route path="/select-specialty" element={<SpecialtySelection />} />
+          <Route path="/cohort-builder" element={<CohortBuilder />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
         <Toaster />

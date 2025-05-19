@@ -1,7 +1,7 @@
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
-import { FilePlus, RefreshCw } from 'lucide-react';
+import { FilePlus, RefreshCw, Users } from 'lucide-react';
 import SearchBar from './dashboard/SearchBar';
 import FilterBar from './dashboard/FilterBar';
 import SortControls from './dashboard/SortControls';
@@ -60,6 +60,10 @@ const Dashboard = () => {
     navigate('/select-specialty');
   };
 
+  const navigateToCohortBuilder = () => {
+    navigate('/cohort-builder');
+  };
+
   return (
     <div className="space-y-6">
       <div className="flex flex-col sm:flex-row justify-between gap-4">
@@ -77,6 +81,10 @@ const Dashboard = () => {
           )}
         </div>
         <div className="flex gap-2 w-full sm:w-auto">
+          <Button variant="outline" onClick={navigateToCohortBuilder} className="flex-1 sm:flex-initial">
+            <Users className="mr-2 h-4 w-4" />
+            Cohort Builder
+          </Button>
           <Button variant="outline" onClick={() => setIsCreateModalOpen(true)} className="flex-1 sm:flex-initial">
             <FilePlus className="mr-2 h-4 w-4" />
             Create Referral

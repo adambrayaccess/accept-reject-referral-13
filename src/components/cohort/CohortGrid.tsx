@@ -1,0 +1,133 @@
+
+import { Referral } from '@/types/referral';
+import { Card, CardContent } from '@/components/ui/card';
+import { Checkbox } from '@/components/ui/checkbox';
+import { Badge } from '@/components/ui/badge';
+import { differenceInDays } from 'date-fns';
+import { MapPin, Calendar, Flag } from 'lucide-react';
+
+interface CohortGridProps {
+  referrals: Referral[];
+  isLoading: boolean;
+  selectedReferrals: Referral[];
+  onSelectReferral: (referral: Referral) => void;
+  showTagsOnly?: boolean;
+}
+
+const CohortGrid = ({ 
+  referrals, 
+  isLoading, 
+  selectedReferrals,
+  onSelectReferral,
+  showTagsOnly = false 
+}: CohortGridProps) => {
+  if (isLoading) {
+    return (
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 py-6">
+        {[...Array(3)].map((_, index) => (
+          <div key={index} className="h-64 rounded-lg border border-border bg-card animate-pulse" />
+        ))}
+      </div>
+    );
+  }
+
+  if (referrals.length === 0) {
+    return (
+      <div className="py-12 text-center">
+        <p className="text-muted-foreground">
+          {showTagsOnly ? 
+            'No tagged referrals found.' : 
+            'No referrals match your filter criteria.'}
+        </p>
+      </div>
+    );
+  }
+
+  const calculateReferralAgeDays = (created: string) => {
+    return differenceInDays(new Date(), new Date(created));
+  };
+
+  const calculatePatientAge = (birthDate: string) => {
+    return Math.floor(differenceInDays(new Date(), new Date(birthDate)) / 365);
+  };
+
+  const getLocationFromAddress = (address?: string) => {
+    if (!address) return 'Unknown';
+    const parts = address.split(',');
+    return parts.pop()?.trim() || 'Unknown';
+  };
+
+  const getPriorityColor = (priority: string) => {
+    switch (priority) {
+      case 'routine': return 'bg-blue-100 text-blue-800 hover:bg-blue-200';
+      case 'urgent': return 'bg-orange-100 text-orange-800 hover:bg-orange-200';
+      case 'emergency': return 'bg-red-100 text-red-800 hover:bg-red-200';
+      default: return 'bg-gray-100 text-gray-800';
+    }
+  };
+
+  return (
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 py-6">
+      {referrals.map((referral) => {
+        const isSelected = selectedReferrals.some(r => r.id === referral.id);
+        const referralAge = calculateReferralAgeDays(referral.created);
+        const patientAge = calculatePatientAge(referral.patient.birthDate);
+        const location = getLocationFromAddress(referral.patient.address);
+        const tags = referral.tags || [];
+
+        return (
+          <Card 
+            key={referral.id} 
+            className={`overflow-hidden transition-shadow hover:shadow-md ${isSelected ? 'ring-2 ring-primary' : ''}`}
+          >
+            <CardContent className="p-0">
+              <div className="flex items-center justify-between p-4 border-b">
+                <div className="flex items-center space-x-4">
+                  <Checkbox 
+                    checked={isSelected}
+                    onCheckedChange={() => onSelectReferral(referral)}
+                    id={`select-${referral.id}`}
+                  />
+                  <div>
+                    <h3 className="font-medium">{referral.patient.name}</h3>
+                    <p className="text-sm text-muted-foreground">NHS: {referral.patient.nhsNumber}</p>
+                  </div>
+                </div>
+                <Badge className={getPriorityColor(referral.priority)}>
+                  {referral.priority}
+                </Badge>
+              </div>
+              
+              <div className="p-4 space-y-3">
+                <div className="flex items-center space-x-2 text-sm">
+                  <Calendar className="h-4 w-4 text-muted-foreground" />
+                  <span>Referral age: <strong>{referralAge} days</strong></span>
+                </div>
+                
+                <div className="flex items-center space-x-2 text-sm">
+                  <Calendar className="h-4 w-4 text-muted-foreground" />
+                  <span>Patient age: <strong>{patientAge} years</strong></span>
+                </div>
+                
+                <div className="flex items-center space-x-2 text-sm">
+                  <MapPin className="h-4 w-4 text-muted-foreground" />
+                  <span>Location: <strong>{location}</strong></span>
+                </div>
+                
+                {tags.length > 0 && (
+                  <div className="flex flex-wrap gap-2 pt-2">
+                    {tags.map(tag => (
+                      <Badge key={tag} variant="outline">{tag}</Badge>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </CardContent>
+          </Card>
+        );
+      })}
+    </div>
+  );
+};
+
+export default CohortGrid;

@@ -68,6 +68,11 @@ export interface Referral {
   auditLog?: AuditLogEntry[];
   collaborationNotes?: CollaborationNote[];
   triageStatus?: TriageStatus;
+  tags?: string[];
+  // Calculated fields (for filtering)
+  calculatedReferralAge?: number;
+  calculatedPatientAge?: number;
+  calculatedLocation?: string;
 }
 
 export interface ApiResponse<T> {
