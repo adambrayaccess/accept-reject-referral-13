@@ -1,6 +1,15 @@
 
 import { Filter } from 'lucide-react';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { 
+  DropdownMenu, 
+  DropdownMenuContent, 
+  DropdownMenuGroup, 
+  DropdownMenuItem, 
+  DropdownMenuLabel, 
+  DropdownMenuSeparator, 
+  DropdownMenuTrigger 
+} from '@/components/ui/dropdown-menu';
+import { Button } from '@/components/ui/button';
 
 interface FilterBarProps {
   statusFilter: string;
@@ -15,43 +24,121 @@ const FilterBar = ({
   priorityFilter,
   setPriorityFilter
 }: FilterBarProps) => {
-  return (
-    <>
-      <div className="flex items-center gap-2">
-        <Filter className="h-4 w-4 text-muted-foreground flex-shrink-0" />
-        <Select value={statusFilter} onValueChange={setStatusFilter}>
-          <SelectTrigger>
-            <SelectValue placeholder="Status" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="all">All Statuses</SelectItem>
-            <SelectItem value="new">New</SelectItem>
-            <SelectItem value="accepted">Accepted</SelectItem>
-            <SelectItem value="rejected">Rejected</SelectItem>
-            <SelectItem value="pre-assessment">Pre-Assessment</SelectItem>
-            <SelectItem value="assessed">Assessed</SelectItem>
-            <SelectItem value="pre-admission-assessment">Pre-admission Assessment</SelectItem>
-            <SelectItem value="waiting-list">Waiting List</SelectItem>
-            <SelectItem value="refer-to-another-specialty">Refer to Another Specialty</SelectItem>
-          </SelectContent>
-        </Select>
-      </div>
+  // Calculate active filter count
+  const activeFilterCount = (statusFilter !== 'all' ? 1 : 0) + 
+                           (priorityFilter !== 'all' ? 1 : 0);
 
-      <div className="flex items-center gap-2">
-        <Filter className="h-4 w-4 text-muted-foreground flex-shrink-0" />
-        <Select value={priorityFilter} onValueChange={setPriorityFilter}>
-          <SelectTrigger>
-            <SelectValue placeholder="Priority" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="all">All Priorities</SelectItem>
-            <SelectItem value="routine">Routine</SelectItem>
-            <SelectItem value="urgent">Urgent</SelectItem>
-            <SelectItem value="emergency">Emergency</SelectItem>
-          </SelectContent>
-        </Select>
-      </div>
-    </>
+  // Helper function to determine if a filter item is active
+  const isActive = (type: 'status' | 'priority', value: string) => {
+    return (type === 'status' && statusFilter === value) ||
+           (type === 'priority' && priorityFilter === value);
+  };
+  
+  return (
+    <div className="relative">
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button variant="outline" className="flex items-center gap-2">
+            <Filter className="h-4 w-4 text-muted-foreground" />
+            <span>Filters</span>
+            {activeFilterCount > 0 && (
+              <span className="ml-1 flex h-5 w-5 items-center justify-center rounded-full bg-primary text-xs text-white">
+                {activeFilterCount}
+              </span>
+            )}
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent className="w-56">
+          <DropdownMenuLabel>Status</DropdownMenuLabel>
+          <DropdownMenuGroup>
+            <DropdownMenuItem 
+              className={isActive('status', 'all') ? 'bg-accent text-accent-foreground' : ''}
+              onClick={() => setStatusFilter('all')}
+            >
+              All Statuses
+            </DropdownMenuItem>
+            <DropdownMenuItem 
+              className={isActive('status', 'new') ? 'bg-accent text-accent-foreground' : ''}
+              onClick={() => setStatusFilter('new')}
+            >
+              New
+            </DropdownMenuItem>
+            <DropdownMenuItem 
+              className={isActive('status', 'accepted') ? 'bg-accent text-accent-foreground' : ''}
+              onClick={() => setStatusFilter('accepted')}
+            >
+              Accepted
+            </DropdownMenuItem>
+            <DropdownMenuItem 
+              className={isActive('status', 'rejected') ? 'bg-accent text-accent-foreground' : ''}
+              onClick={() => setStatusFilter('rejected')}
+            >
+              Rejected
+            </DropdownMenuItem>
+            <DropdownMenuItem 
+              className={isActive('status', 'pre-assessment') ? 'bg-accent text-accent-foreground' : ''}
+              onClick={() => setStatusFilter('pre-assessment')}
+            >
+              Pre-Assessment
+            </DropdownMenuItem>
+            <DropdownMenuItem 
+              className={isActive('status', 'assessed') ? 'bg-accent text-accent-foreground' : ''}
+              onClick={() => setStatusFilter('assessed')}
+            >
+              Assessed
+            </DropdownMenuItem>
+            <DropdownMenuItem 
+              className={isActive('status', 'pre-admission-assessment') ? 'bg-accent text-accent-foreground' : ''}
+              onClick={() => setStatusFilter('pre-admission-assessment')}
+            >
+              Pre-admission Assessment
+            </DropdownMenuItem>
+            <DropdownMenuItem 
+              className={isActive('status', 'waiting-list') ? 'bg-accent text-accent-foreground' : ''}
+              onClick={() => setStatusFilter('waiting-list')}
+            >
+              Waiting List
+            </DropdownMenuItem>
+            <DropdownMenuItem 
+              className={isActive('status', 'refer-to-another-specialty') ? 'bg-accent text-accent-foreground' : ''}
+              onClick={() => setStatusFilter('refer-to-another-specialty')}
+            >
+              Refer to Another Specialty
+            </DropdownMenuItem>
+          </DropdownMenuGroup>
+
+          <DropdownMenuSeparator />
+
+          <DropdownMenuLabel>Priority</DropdownMenuLabel>
+          <DropdownMenuGroup>
+            <DropdownMenuItem
+              className={isActive('priority', 'all') ? 'bg-accent text-accent-foreground' : ''}
+              onClick={() => setPriorityFilter('all')}
+            >
+              All Priorities
+            </DropdownMenuItem>
+            <DropdownMenuItem
+              className={isActive('priority', 'routine') ? 'bg-accent text-accent-foreground' : ''}
+              onClick={() => setPriorityFilter('routine')}
+            >
+              Routine
+            </DropdownMenuItem>
+            <DropdownMenuItem
+              className={isActive('priority', 'urgent') ? 'bg-accent text-accent-foreground' : ''}
+              onClick={() => setPriorityFilter('urgent')}
+            >
+              Urgent
+            </DropdownMenuItem>
+            <DropdownMenuItem
+              className={isActive('priority', 'emergency') ? 'bg-accent text-accent-foreground' : ''}
+              onClick={() => setPriorityFilter('emergency')}
+            >
+              Emergency
+            </DropdownMenuItem>
+          </DropdownMenuGroup>
+        </DropdownMenuContent>
+      </DropdownMenu>
+    </div>
   );
 };
 

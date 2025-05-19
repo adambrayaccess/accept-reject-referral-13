@@ -88,23 +88,24 @@ const Dashboard = () => {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <SearchBar searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
-        <FilterBar
-          statusFilter={statusFilter}
-          setStatusFilter={setStatusFilter}
-          priorityFilter={priorityFilter}
-          setPriorityFilter={setPriorityFilter}
-        />
-      </div>
-
-      <div className="flex justify-end">
-        <SortControls
-          sortField={sortField}
-          setSortField={setSortField}
-          sortDirection={sortDirection}
-          setSortDirection={setSortDirection}
-        />
+      <div className="flex flex-col md:flex-row gap-4 items-start">
+        <div className="w-full md:flex-1">
+          <SearchBar searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
+        </div>
+        <div className="flex gap-2 w-full md:w-auto">
+          <FilterBar
+            statusFilter={statusFilter}
+            setStatusFilter={setStatusFilter}
+            priorityFilter={priorityFilter}
+            setPriorityFilter={setPriorityFilter}
+          />
+          <SortControls
+            sortField={sortField}
+            setSortField={setSortField}
+            sortDirection={sortDirection}
+            setSortDirection={setSortDirection}
+          />
+        </div>
       </div>
 
       <Tabs defaultValue="all" className="w-full">
