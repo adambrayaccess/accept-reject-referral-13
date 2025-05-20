@@ -49,13 +49,13 @@ const CohortBuilder = () => {
         </Button>
         <div>
           <Button variant="outline" onClick={handleRefresh} className="ml-2">
-            Refresh Cohort
+            Refresh List
           </Button>
         </div>
       </div>
 
       <div>
-        <h1 className="text-2xl font-bold">Patient Cohort Builder</h1>
+        <h1 className="text-2xl font-bold">Waiting List Manager</h1>
         {currentSpecialty && (
           <p className="text-muted-foreground">
             Managing waiting list for: <span className="font-medium text-foreground">{currentSpecialty}</span>
@@ -63,13 +63,50 @@ const CohortBuilder = () => {
         )}
       </div>
 
-      <Tabs defaultValue="builder" className="w-full">
+      <Tabs defaultValue="waitingList" className="w-full">
         <TabsList>
-          <TabsTrigger value="builder">Build Cohort</TabsTrigger>
+          <TabsTrigger value="waitingList">Waiting List</TabsTrigger>
+          <TabsTrigger value="cohortBuilder">Cohort Builder</TabsTrigger>
           <TabsTrigger value="tagged">Tagged Patients</TabsTrigger>
         </TabsList>
         
-        <TabsContent value="builder" className="space-y-4">
+        <TabsContent value="waitingList" className="space-y-4">
+          <div className="flex justify-between items-center">
+            <div>
+              <span className="text-sm font-medium">{cohortReferrals.length} patients on waiting list</span>
+              {selectedReferrals.length > 0 && (
+                <span className="ml-2 text-sm text-muted-foreground">
+                  ({selectedReferrals.length} selected)
+                </span>
+              )}
+            </div>
+            
+            <div className="space-x-2">
+              {selectedReferrals.length > 0 ? (
+                <Button variant="outline" size="sm" onClick={clearSelection}>
+                  Clear Selection
+                </Button>
+              ) : (
+                <Button variant="outline" size="sm" onClick={() => selectAll(cohortReferrals)}>
+                  Select All
+                </Button>
+              )}
+            </div>
+          </div>
+          
+          {selectedReferrals.length > 0 && (
+            <TagManager selectedReferrals={selectedReferrals} onTagged={clearSelection} />
+          )}
+          
+          <CohortGrid 
+            referrals={cohortReferrals}
+            isLoading={isLoading}
+            selectedReferrals={selectedReferrals}
+            onSelectReferral={toggleReferralSelection}
+          />
+        </TabsContent>
+        
+        <TabsContent value="cohortBuilder" className="space-y-4">
           <CohortFilters filters={filters} setFilters={setFilters} />
           
           <div className="flex justify-between items-center">
