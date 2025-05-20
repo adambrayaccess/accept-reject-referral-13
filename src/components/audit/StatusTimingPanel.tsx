@@ -46,7 +46,7 @@ const StatusTimingPanel = ({ entries = [] }: StatusTimingPanelProps) => {
   }
 
   return (
-    <Card className="mt-4">
+    <Card>
       <CardHeader className="pb-2">
         <CardTitle className="text-md flex items-center">
           <Clock className="mr-2 h-4 w-4" />

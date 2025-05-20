@@ -11,6 +11,8 @@ interface AuditLogProps {
 const AuditLog = ({ entries = [] }: AuditLogProps) => {
   return (
     <div className="space-y-4">
+      <StatusTimingPanel entries={entries} />
+      
       <Accordion type="single" collapsible className="w-full">
         <AccordionItem value="audit">
           <AccordionTrigger>Audit Log</AccordionTrigger>
@@ -31,8 +33,6 @@ const AuditLog = ({ entries = [] }: AuditLogProps) => {
           </AccordionContent>
         </AccordionItem>
       </Accordion>
-      
-      <StatusTimingPanel entries={entries} />
     </div>
   );
 };
