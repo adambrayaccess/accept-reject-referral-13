@@ -129,7 +129,7 @@ const ReferralView = () => {
         </div>
       </div>
       
-      <div className="grid grid-cols-1 lg:grid-cols-[1fr,400px] gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-[1fr,600px] gap-6">
         <div className="space-y-6">
           <ReferralDetail 
             referral={referral} 
