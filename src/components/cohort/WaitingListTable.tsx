@@ -31,7 +31,7 @@ const WaitingListTable = ({
   onSelectReferral,
   onReorderReferrals
 }: WaitingListTableProps) => {
-  const [draggedIndex, setDraggedIndex] = useState<number | null>(null);
+  const [draggedItem, setDraggedItem] = useState<Referral | null>(null);
   const [dragOverIndex, setDragOverIndex] = useState<number | null>(null);
 
   if (isLoading) {
@@ -75,45 +75,57 @@ const WaitingListTable = ({
     }
   };
 
-  const handleDragStart = (e: React.DragEvent, index: number) => {
-    setDraggedIndex(index);
+  const handleDragStart = (e: React.DragEvent, referral: Referral) => {
+    setDraggedItem(referral);
     e.dataTransfer.effectAllowed = 'move';
+    e.dataTransfer.setData('text/html', '');
   };
 
   const handleDragOver = (e: React.DragEvent, index: number) => {
     e.preventDefault();
+    e.dataTransfer.dropEffect = 'move';
     setDragOverIndex(index);
   };
 
-  const handleDragLeave = () => {
-    setDragOverIndex(null);
+  const handleDragLeave = (e: React.DragEvent) => {
+    // Only clear drag over if we're leaving the table row entirely
+    const rect = e.currentTarget.getBoundingClientRect();
+    const x = e.clientX;
+    const y = e.clientY;
+    
+    if (x < rect.left || x >= rect.right || y < rect.top || y >= rect.bottom) {
+      setDragOverIndex(null);
+    }
   };
 
   const handleDrop = (e: React.DragEvent, dropIndex: number) => {
     e.preventDefault();
     
-    if (draggedIndex === null || draggedIndex === dropIndex) {
-      setDraggedIndex(null);
+    if (!draggedItem) return;
+    
+    const draggedIndex = referrals.findIndex(r => r.id === draggedItem.id);
+    
+    if (draggedIndex === dropIndex) {
+      setDraggedItem(null);
       setDragOverIndex(null);
       return;
     }
 
     const newReferrals = [...referrals];
-    const draggedReferral = newReferrals[draggedIndex];
     
     // Remove the dragged item
     newReferrals.splice(draggedIndex, 1);
     
     // Insert at new position
-    newReferrals.splice(dropIndex, 0, draggedReferral);
+    newReferrals.splice(dropIndex, 0, draggedItem);
     
     onReorderReferrals(newReferrals);
-    setDraggedIndex(null);
+    setDraggedItem(null);
     setDragOverIndex(null);
   };
 
   const handleDragEnd = () => {
-    setDraggedIndex(null);
+    setDraggedItem(null);
     setDragOverIndex(null);
   };
 
@@ -142,12 +154,13 @@ const WaitingListTable = ({
             const location = getLocationFromAddress(referral.patient.address);
             const tags = referral.tags || [];
             const isDraggedOver = dragOverIndex === index;
+            const isDragging = draggedItem?.id === referral.id;
 
             return (
               <TableRow 
                 key={referral.id}
                 draggable
-                onDragStart={(e) => handleDragStart(e, index)}
+                onDragStart={(e) => handleDragStart(e, referral)}
                 onDragOver={(e) => handleDragOver(e, index)}
                 onDragLeave={handleDragLeave}
                 onDrop={(e) => handleDrop(e, index)}
@@ -155,8 +168,8 @@ const WaitingListTable = ({
                 className={`
                   ${isSelected ? 'bg-muted' : ''}
                   ${isDraggedOver ? 'border-t-2 border-primary' : ''}
-                  ${draggedIndex === index ? 'opacity-50' : ''}
-                  cursor-move transition-colors
+                  ${isDragging ? 'opacity-50' : ''}
+                  cursor-move transition-all duration-200
                 `}
               >
                 <TableCell>
@@ -164,6 +177,7 @@ const WaitingListTable = ({
                     variant="ghost"
                     size="sm"
                     className="h-8 w-8 p-0 cursor-grab active:cursor-grabbing"
+                    onMouseDown={(e) => e.preventDefault()}
                   >
                     <GripVertical className="h-4 w-4 text-muted-foreground" />
                   </Button>
