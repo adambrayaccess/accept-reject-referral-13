@@ -14,84 +14,84 @@
     --popover: 0 0% 100%;
     --popover-foreground: 222.2 84% 4.9%;
 
-    /* Primary: Teal colors from the design system */
-    --primary: 173 100% 22%; /* TL100 #007A78 */
+    /* Primary: Teal colors - adjusted for WCAG compliance */
+    --primary: 173 100% 20%; /* Darker for better contrast #006664 */
     --primary-foreground: 0 0% 100%;
 
     /* Secondary: Light teal for secondary elements */
-    --secondary: 173 25% 85%; /* TL020 */
-    --secondary-foreground: 173 100% 15%;
+    --secondary: 173 20% 90%; /* Lighter background #E8F4F4 */
+    --secondary-foreground: 173 100% 15%; /* Dark text #004D4A */
 
-    --muted: 173 15% 92%; /* TL010 */
-    --muted-foreground: 173 30% 40%;
+    --muted: 173 15% 95%; /* Very light background #F5F9F9 */
+    --muted-foreground: 173 30% 35%; /* Medium contrast text #567878 */
 
-    --accent: 173 40% 75%; /* TL050 */
-    --accent-foreground: 173 100% 15%;
+    --accent: 173 30% 85%; /* Light accent background #D1E7E7 */
+    --accent-foreground: 173 100% 15%; /* Dark accent text #004D4A */
 
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive: 0 84.2% 45%; /* Darker red for contrast #D73527 */
+    --destructive-foreground: 0 0% 100%;
 
-    --border: 173 15% 88%;
-    --input: 173 15% 88%;
-    --ring: 173 100% 22%;
+    --border: 173 15% 85%; /* Light border #D8E5E5 */
+    --input: 173 15% 85%; /* Light input border #D8E5E5 */
+    --ring: 173 100% 20%; /* Focus ring matches primary #006664 */
 
     --radius: 0.5rem;
 
-    /* Success: Green colors from design system */
-    --success: 142 45% 35%; /* GL100 */
+    /* Success: Green colors - WCAG compliant */
+    --success: 142 45% 30%; /* Darker green #2D7D4A */
     --success-foreground: 0 0% 100%;
 
-    /* Warning: Blue colors from design system */
-    --warning: 206 80% 45%; /* BL100 */
+    /* Warning: Blue colors - WCAG compliant */
+    --warning: 206 80% 35%; /* Darker blue #1F5F99 */
     --warning-foreground: 0 0% 100%;
 
-    /* Purple secondary accent */
-    --purple: 320 35% 45%; /* PL100 */
+    /* Purple secondary accent - WCAG compliant */
+    --purple: 320 35% 35%; /* Darker purple #8A4A6B */
     --purple-foreground: 0 0% 100%;
   }
 
   .dark {
-    --background: 173 15% 8%;
-    --foreground: 173 10% 95%;
+    --background: 173 15% 6%; /* Very dark teal background #0F1515 */
+    --foreground: 173 10% 95%; /* Light text #F0F2F2 */
 
-    --card: 173 15% 8%;
-    --card-foreground: 173 10% 95%;
+    --card: 173 15% 8%; /* Dark card background #141A1A */
+    --card-foreground: 173 10% 95%; /* Light card text #F0F2F2 */
 
-    --popover: 173 15% 8%;
-    --popover-foreground: 173 10% 95%;
+    --popover: 173 15% 8%; /* Dark popover background #141A1A */
+    --popover-foreground: 173 10% 95%; /* Light popover text #F0F2F2 */
 
-    /* Primary: Darker teal for dark mode */
-    --primary: 173 80% 35%; /* TD100 */
-    --primary-foreground: 173 15% 8%;
+    /* Primary: Lighter teal for dark mode contrast */
+    --primary: 173 80% 45%; /* Bright teal #1AB3AF */
+    --primary-foreground: 173 15% 8%; /* Dark text on primary #141A1A */
 
-    /* Secondary: Darker secondary for dark mode */
-    --secondary: 173 20% 15%; /* TD050 */
-    --secondary-foreground: 173 20% 85%;
+    /* Secondary: Dark secondary with good contrast */
+    --secondary: 173 20% 15%; /* Dark secondary background #24302F */
+    --secondary-foreground: 173 30% 85%; /* Light secondary text #C7D6D6 */
 
-    --muted: 173 15% 12%; /* TD020 */
-    --muted-foreground: 173 10% 60%;
+    --muted: 173 15% 12%; /* Dark muted background #1C2323 */
+    --muted-foreground: 173 10% 65%; /* Medium contrast muted text #9BA5A5 */
 
-    --accent: 173 25% 20%; /* TD050 */
-    --accent-foreground: 173 20% 85%;
+    --accent: 173 25% 20%; /* Dark accent background #2E3D3C */
+    --accent-foreground: 173 20% 85%; /* Light accent text #C7D6D6 */
 
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive: 0 62.8% 55%; /* Lighter red for dark mode #E85A4F */
+    --destructive-foreground: 173 15% 8%; /* Dark text on destructive #141A1A */
 
-    --border: 173 15% 15%;
-    --input: 173 15% 15%;
-    --ring: 173 80% 35%;
+    --border: 173 15% 18%; /* Dark border #2A3333 */
+    --input: 173 15% 18%; /* Dark input border #2A3333 */
+    --ring: 173 80% 45%; /* Focus ring matches primary #1AB3AF */
 
-    /* Success: Darker green for dark mode */
-    --success: 142 45% 40%; /* GD100 */
-    --success-foreground: 0 0% 100%;
+    /* Success: Lighter green for dark mode */
+    --success: 142 45% 50%; /* Bright green #4CAF6A */
+    --success-foreground: 173 15% 8%; /* Dark text on success #141A1A */
 
-    /* Warning: Darker blue for dark mode */
-    --warning: 206 60% 50%; /* BD100 */
-    --warning-foreground: 0 0% 100%;
+    /* Warning: Lighter blue for dark mode */
+    --warning: 206 70% 55%; /* Bright blue #4A90E2 */
+    --warning-foreground: 173 15% 8%; /* Dark text on warning #141A1A */
 
     /* Purple secondary accent for dark mode */
-    --purple: 320 40% 50%; /* PD100 */
-    --purple-foreground: 0 0% 100%;
+    --purple: 320 40% 60%; /* Bright purple #C299B0 */
+    --purple-foreground: 173 15% 8%; /* Dark text on purple #141A1A */
   }
 }
 
