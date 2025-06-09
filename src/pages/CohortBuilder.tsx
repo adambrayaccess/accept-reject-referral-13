@@ -6,24 +6,47 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { ArrowLeft } from 'lucide-react';
 import CohortFilters from '@/components/cohort/CohortFilters';
 import CohortGrid from '@/components/cohort/CohortGrid';
+import WaitingListTable from '@/components/cohort/WaitingListTable';
+import WaitingListControls from '@/components/cohort/WaitingListControls';
 import { useCohortData } from '@/hooks/useCohortData';
+import { useWaitingListData } from '@/hooks/useWaitingListData';
 import TagManager from '@/components/cohort/TagManager';
 
 const CohortBuilder = () => {
   const [currentSpecialty, setCurrentSpecialty] = useState<string | null>(null);
   const navigate = useNavigate();
   
+  // Cohort builder data (for cohort builder and tagged tabs)
   const {
     cohortReferrals,
-    isLoading,
+    isLoading: cohortLoading,
     filters,
     setFilters,
-    handleRefresh,
-    selectedReferrals,
-    toggleReferralSelection,
-    clearSelection,
-    selectAll,
+    handleRefresh: refreshCohort,
+    selectedReferrals: cohortSelected,
+    toggleReferralSelection: toggleCohortSelection,
+    clearSelection: clearCohortSelection,
+    selectAll: selectAllCohort,
   } = useCohortData(currentSpecialty);
+
+  // Waiting list data (for waiting list tab)
+  const {
+    referrals: waitingListReferrals,
+    isLoading: waitingListLoading,
+    filters: waitingListFilters,
+    updateFilters: updateWaitingListFilters,
+    clearFilters: clearWaitingListFilters,
+    sortField,
+    setSortField,
+    sortDirection,
+    setSortDirection,
+    selectedReferrals: waitingListSelected,
+    toggleReferralSelection: toggleWaitingListSelection,
+    clearSelection: clearWaitingListSelection,
+    selectAll: selectAllWaitingList,
+    handleRefresh: refreshWaitingList,
+    reorderReferrals
+  } = useWaitingListData(currentSpecialty);
 
   useEffect(() => {
     // Check if specialty is selected
@@ -47,11 +70,6 @@ const CohortBuilder = () => {
           <ArrowLeft className="mr-2 h-4 w-4" />
           Back to Dashboard
         </Button>
-        <div>
-          <Button variant="outline" onClick={handleRefresh} className="ml-2">
-            Refresh List
-          </Button>
-        </div>
       </div>
 
       <div>
@@ -73,36 +91,56 @@ const CohortBuilder = () => {
         <TabsContent value="waitingList" className="space-y-4">
           <div className="flex justify-between items-center">
             <div>
-              <span className="text-sm font-medium">{cohortReferrals.length} patients on waiting list</span>
-              {selectedReferrals.length > 0 && (
+              <span className="text-sm font-medium">{waitingListReferrals.length} patients on waiting list</span>
+              {waitingListSelected.length > 0 && (
                 <span className="ml-2 text-sm text-muted-foreground">
-                  ({selectedReferrals.length} selected)
+                  ({waitingListSelected.length} selected)
                 </span>
               )}
             </div>
             
             <div className="space-x-2">
-              {selectedReferrals.length > 0 ? (
-                <Button variant="outline" size="sm" onClick={clearSelection}>
+              <Button variant="outline" onClick={refreshWaitingList} className="ml-2">
+                Refresh List
+              </Button>
+              {waitingListSelected.length > 0 ? (
+                <Button variant="outline" size="sm" onClick={clearWaitingListSelection}>
                   Clear Selection
                 </Button>
               ) : (
-                <Button variant="outline" size="sm" onClick={() => selectAll(cohortReferrals)}>
+                <Button variant="outline" size="sm" onClick={() => selectAllWaitingList(waitingListReferrals)}>
                   Select All
                 </Button>
               )}
             </div>
           </div>
+
+          <WaitingListControls
+            searchTerm={waitingListFilters.search}
+            onSearchChange={(value) => updateWaitingListFilters({ search: value })}
+            sortField={sortField}
+            onSortFieldChange={setSortField}
+            sortDirection={sortDirection}
+            onSortDirectionChange={setSortDirection}
+            priorityFilter={waitingListFilters.priority}
+            onPriorityFilterChange={(priority) => updateWaitingListFilters({ priority })}
+            locationFilter={waitingListFilters.location}
+            onLocationFilterChange={(location) => updateWaitingListFilters({ location })}
+            ageFilter={waitingListFilters.ageRange}
+            onAgeFilterChange={(ageRange) => updateWaitingListFilters({ ageRange })}
+            onClearFilters={clearWaitingListFilters}
+          />
           
-          {selectedReferrals.length > 0 && (
-            <TagManager selectedReferrals={selectedReferrals} onTagged={clearSelection} />
+          {waitingListSelected.length > 0 && (
+            <TagManager selectedReferrals={waitingListSelected} onTagged={clearWaitingListSelection} />
           )}
           
-          <CohortGrid 
-            referrals={cohortReferrals}
-            isLoading={isLoading}
-            selectedReferrals={selectedReferrals}
-            onSelectReferral={toggleReferralSelection}
+          <WaitingListTable 
+            referrals={waitingListReferrals}
+            isLoading={waitingListLoading}
+            selectedReferrals={waitingListSelected}
+            onSelectReferral={toggleWaitingListSelection}
+            onReorderReferrals={reorderReferrals}
           />
         </TabsContent>
         
@@ -112,44 +150,47 @@ const CohortBuilder = () => {
           <div className="flex justify-between items-center">
             <div>
               <span className="text-sm font-medium">{cohortReferrals.length} patients in cohort</span>
-              {selectedReferrals.length > 0 && (
+              {cohortSelected.length > 0 && (
                 <span className="ml-2 text-sm text-muted-foreground">
-                  ({selectedReferrals.length} selected)
+                  ({cohortSelected.length} selected)
                 </span>
               )}
             </div>
             
             <div className="space-x-2">
-              {selectedReferrals.length > 0 ? (
-                <Button variant="outline" size="sm" onClick={clearSelection}>
+              <Button variant="outline" onClick={refreshCohort} className="ml-2">
+                Refresh List
+              </Button>
+              {cohortSelected.length > 0 ? (
+                <Button variant="outline" size="sm" onClick={clearCohortSelection}>
                   Clear Selection
                 </Button>
               ) : (
-                <Button variant="outline" size="sm" onClick={() => selectAll(cohortReferrals)}>
+                <Button variant="outline" size="sm" onClick={() => selectAllCohort(cohortReferrals)}>
                   Select All
                 </Button>
               )}
             </div>
           </div>
           
-          {selectedReferrals.length > 0 && (
-            <TagManager selectedReferrals={selectedReferrals} onTagged={clearSelection} />
+          {cohortSelected.length > 0 && (
+            <TagManager selectedReferrals={cohortSelected} onTagged={clearCohortSelection} />
           )}
           
           <CohortGrid 
             referrals={cohortReferrals}
-            isLoading={isLoading}
-            selectedReferrals={selectedReferrals}
-            onSelectReferral={toggleReferralSelection}
+            isLoading={cohortLoading}
+            selectedReferrals={cohortSelected}
+            onSelectReferral={toggleCohortSelection}
           />
         </TabsContent>
         
         <TabsContent value="tagged">
           <CohortGrid 
             referrals={cohortReferrals.filter(ref => ref.tags && ref.tags.length > 0)}
-            isLoading={isLoading}
-            selectedReferrals={selectedReferrals}
-            onSelectReferral={toggleReferralSelection}
+            isLoading={cohortLoading}
+            selectedReferrals={cohortSelected}
+            onSelectReferral={toggleCohortSelection}
             showTagsOnly
           />
         </TabsContent>
