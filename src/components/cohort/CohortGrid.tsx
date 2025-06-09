@@ -81,7 +81,7 @@ const CohortGrid = ({
             className={`overflow-hidden transition-shadow hover:shadow-md ${isSelected ? 'ring-2 ring-primary' : ''}`}
           >
             <CardContent className="p-0">
-              <div className="flex items-center justify-between p-4 border-b">
+              <div className="flex items-center justify-between p-4">
                 <div className="flex items-center space-x-4">
                   <Checkbox 
                     checked={isSelected}
