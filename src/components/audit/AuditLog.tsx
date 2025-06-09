@@ -45,21 +45,26 @@ const AuditLog = ({ entries = [] }: AuditLogProps) => {
               <Table>
                 <TableHeader>
                   <TableRow>
-                    <TableHead>Action</TableHead>
-                    <TableHead>User</TableHead>
-                    <TableHead>Timestamp</TableHead>
-                    <TableHead>Time Since Previous</TableHead>
-                    <TableHead>Notes</TableHead>
+                    <TableHead className="w-[25%]">Action</TableHead>
+                    <TableHead className="w-[15%]">User</TableHead>
+                    <TableHead className="w-[20%]">Timestamp</TableHead>
+                    <TableHead className="w-[15%]">Time Since</TableHead>
+                    <TableHead className="w-[25%]">Notes</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
                   {entriesWithTiming.map((entry, index) => (
                     <TableRow key={index}>
-                      <TableCell className="font-medium">{entry.action}</TableCell>
-                      <TableCell>{entry.user}</TableCell>
-                      <TableCell>{new Date(entry.timestamp).toLocaleString()}</TableCell>
-                      <TableCell>{entry.timeSincePrevious}</TableCell>
-                      <TableCell>{entry.notes || '-'}</TableCell>
+                      <TableCell className="font-medium w-[25%] break-words">{entry.action}</TableCell>
+                      <TableCell className="w-[15%] break-words">{entry.user}</TableCell>
+                      <TableCell className="w-[20%] text-xs break-words">
+                        {new Date(entry.timestamp).toLocaleDateString()}<br />
+                        <span className="text-muted-foreground">
+                          {new Date(entry.timestamp).toLocaleTimeString()}
+                        </span>
+                      </TableCell>
+                      <TableCell className="w-[15%] text-xs break-words">{entry.timeSincePrevious}</TableCell>
+                      <TableCell className="w-[25%] text-xs break-words">{entry.notes || '-'}</TableCell>
                     </TableRow>
                   ))}
                 </TableBody>
