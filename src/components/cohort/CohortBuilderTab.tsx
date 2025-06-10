@@ -1,6 +1,6 @@
 
 import CohortFilters from './CohortFilters';
-import CohortGrid from './CohortGrid';
+import WaitingListTable from './WaitingListTable';
 import TagManager from './TagManager';
 import SelectionControls from './SelectionControls';
 import { Referral } from '@/types/referral';
@@ -28,6 +28,11 @@ const CohortBuilderTab = ({
   selectAll,
   handleRefresh
 }: CohortBuilderTabProps) => {
+  const handleReorderReferrals = (reorderedReferrals: Referral[]) => {
+    // For now, just log the reordering - in a real app this would update the backend
+    console.log('Reordered referrals:', reorderedReferrals.map(r => r.patient.name));
+  };
+
   return (
     <div className="space-y-4">
       <CohortFilters filters={filters} setFilters={setFilters} />
@@ -45,11 +50,12 @@ const CohortBuilderTab = ({
         <TagManager selectedReferrals={selectedReferrals} onTagged={clearSelection} />
       )}
       
-      <CohortGrid 
+      <WaitingListTable 
         referrals={referrals}
         isLoading={isLoading}
         selectedReferrals={selectedReferrals}
         onSelectReferral={toggleReferralSelection}
+        onReorderReferrals={handleReorderReferrals}
       />
     </div>
   );
