@@ -10,6 +10,7 @@ import { Referral } from '@/types/referral';
 import { differenceInDays } from 'date-fns';
 import { useNavigate } from 'react-router-dom';
 import SpecialtySelector from '@/components/SpecialtySelector';
+import AllocationView from '@/components/allocation/AllocationView';
 
 interface SpecialtyStats {
   specialty: string;
