@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -7,6 +8,7 @@ import { RefreshCw, Users, FileText, Clock } from 'lucide-react';
 import { useDashboardData } from '@/hooks/useDashboardData';
 import { useToast } from '@/hooks/use-toast';
 import { Referral } from '@/types/referral';
+import { differenceInDays } from 'date-fns';
 
 interface SpecialtyStats {
   specialty: string;
@@ -19,11 +21,30 @@ interface SpecialtyStats {
   waitingList: number;
   preAdmission: number;
   referToOther: number;
+  averageWaitDays: number;
+  longestWaitDays: number;
 }
 
 const AdminPage = () => {
   const { referrals, isLoading, handleRefresh } = useDashboardData();
   const { toast } = useToast();
+
+  const calculateWaitingListStats = (waitingListReferrals: Referral[]) => {
+    if (waitingListReferrals.length === 0) {
+      return { averageWaitDays: 0, longestWaitDays: 0 };
+    }
+
+    const waitDays = waitingListReferrals.map(ref => 
+      differenceInDays(new Date(), new Date(ref.created))
+    );
+
+    const averageWaitDays = Math.round(
+      waitDays.reduce((sum, days) => sum + days, 0) / waitDays.length
+    );
+    const longestWaitDays = Math.max(...waitDays);
+
+    return { averageWaitDays, longestWaitDays };
+  };
 
   const calculateSpecialtyStats = (): SpecialtyStats[] => {
     const specialtyMap = new Map<string, SpecialtyStats>();
@@ -42,7 +63,9 @@ const AdminPage = () => {
           assessed: 0,
           waitingList: 0,
           preAdmission: 0,
-          referToOther: 0
+          referToOther: 0,
+          averageWaitDays: 0,
+          longestWaitDays: 0
         });
       }
 
@@ -80,6 +103,16 @@ const AdminPage = () => {
           stats.referToOther++;
           break;
       }
+    });
+
+    // Calculate waiting list stats for each specialty
+    specialtyMap.forEach((stats, specialty) => {
+      const waitingListReferrals = referrals.filter(
+        ref => ref.specialty === specialty && ref.triageStatus === 'waiting-list'
+      );
+      const waitStats = calculateWaitingListStats(waitingListReferrals);
+      stats.averageWaitDays = waitStats.averageWaitDays;
+      stats.longestWaitDays = waitStats.longestWaitDays;
     });
 
     return Array.from(specialtyMap.values()).sort((a, b) => b.total - a.total);
@@ -201,9 +234,17 @@ const AdminPage = () => {
               <div key={stats.specialty} className="border rounded-lg p-4">
                 <div className="flex justify-between items-center mb-3">
                   <h3 className="text-lg font-semibold">{stats.specialty}</h3>
-                  <Badge variant="outline" className="text-lg px-3 py-1">
-                    {stats.total} total
-                  </Badge>
+                  <div className="flex items-center gap-3">
+                    {stats.waitingList > 0 && (
+                      <div className="text-sm text-muted-foreground">
+                        Avg wait: <span className="font-medium text-orange-600">{stats.averageWaitDays}d</span>
+                        {' '} | Longest: <span className="font-medium text-red-600">{stats.longestWaitDays}d</span>
+                      </div>
+                    )}
+                    <Badge variant="outline" className="text-lg px-3 py-1">
+                      {stats.total} total
+                    </Badge>
+                  </div>
                 </div>
                 
                 <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-9 gap-2">
