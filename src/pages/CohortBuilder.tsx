@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -7,6 +8,7 @@ import CohortFilters from '@/components/cohort/CohortFilters';
 import CohortGrid from '@/components/cohort/CohortGrid';
 import WaitingListTable from '@/components/cohort/WaitingListTable';
 import WaitingListControls from '@/components/cohort/WaitingListControls';
+import WaitingListCharts from '@/components/cohort/WaitingListCharts';
 import { useCohortData } from '@/hooks/useCohortData';
 import { useWaitingListData } from '@/hooks/useWaitingListData';
 import TagManager from '@/components/cohort/TagManager';
@@ -87,7 +89,9 @@ const CohortBuilder = () => {
           <TabsTrigger value="tagged">Tagged Patients</TabsTrigger>
         </TabsList>
         
-        <TabsContent value="waitingList" className="space-y-4">
+        <TabsContent value="waitingList" className="space-y-6">
+          <WaitingListCharts referrals={waitingListReferrals} />
+          
           <div className="flex justify-between items-center">
             <div>
               <span className="text-sm font-medium">{waitingListReferrals.length} patients on waiting list</span>
