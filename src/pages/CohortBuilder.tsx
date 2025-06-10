@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -84,7 +83,7 @@ const CohortBuilder = () => {
       <Tabs defaultValue="waitingList" className="w-full">
         <TabsList>
           <TabsTrigger value="waitingList">Waiting List</TabsTrigger>
-          <TabsTrigger value="cohortBuilder">Cohort Builder</TabsTrigger>
+          <TabsTrigger value="cohortBuilder">Waiting List Management</TabsTrigger>
           <TabsTrigger value="tagged">Tagged Patients</TabsTrigger>
         </TabsList>
         
