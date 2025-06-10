@@ -1,3 +1,4 @@
+
 import { Referral } from '@/types/referral';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -14,14 +15,14 @@ interface ReferralDetailProps {
   };
 }
 
-const getPriorityClass = (priority: Referral['priority']) => {
+const getPriorityVariant = (priority: Referral['priority']) => {
   switch (priority) {
     case 'emergency':
-      return 'priority-high';
+      return 'destructive';
     case 'urgent':
-      return 'priority-medium';
+      return 'secondary';
     default:
-      return 'priority-low';
+      return 'outline';
   }
 };
 
@@ -32,7 +33,7 @@ const ReferralDetail = ({ referral, relatedReferrals }: ReferralDetailProps) => 
         <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-2">
           <CardTitle>Referral Details</CardTitle>
           <div className="flex items-center gap-2">
-            <Badge className={getPriorityClass(referral.priority)}>
+            <Badge variant={getPriorityVariant(referral.priority)}>
               {referral.priority.toUpperCase()}
             </Badge>
             <Badge variant="outline">

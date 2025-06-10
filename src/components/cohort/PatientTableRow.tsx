@@ -11,7 +11,7 @@ import {
   calculateReferralAgeDays,
   calculatePatientAge,
   getLocationFromAddress,
-  getPriorityColor
+  getPriorityVariant
 } from './utils/waitingListUtils';
 
 interface PatientTableRowProps {
@@ -91,7 +91,7 @@ const PatientTableRow = ({
       </TableCell>
       <TableCell>{patientAge} years</TableCell>
       <TableCell>
-        <Badge className={getPriorityColor(referral.priority)}>
+        <Badge variant={getPriorityVariant(referral.priority)}>
           {referral.priority}
         </Badge>
       </TableCell>

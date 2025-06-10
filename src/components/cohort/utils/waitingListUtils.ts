@@ -15,11 +15,11 @@ export const getLocationFromAddress = (address?: string) => {
   return parts.pop()?.trim() || 'Unknown';
 };
 
-export const getPriorityColor = (priority: string) => {
+export const getPriorityVariant = (priority: string) => {
   switch (priority) {
-    case 'routine': return 'bg-blue-100 text-blue-800 hover:bg-blue-200';
-    case 'urgent': return 'bg-orange-100 text-orange-800 hover:bg-orange-200';
-    case 'emergency': return 'bg-red-100 text-red-800 hover:bg-red-200';
-    default: return 'bg-gray-100 text-gray-800';
+    case 'emergency': return 'destructive';
+    case 'urgent': return 'secondary';
+    case 'routine': return 'outline';
+    default: return 'outline';
   }
 };

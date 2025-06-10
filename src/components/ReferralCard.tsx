@@ -10,14 +10,14 @@ interface ReferralCardProps {
   referral: Referral;
 }
 
-const getPriorityClass = (priority: Referral['priority']) => {
+const getPriorityVariant = (priority: Referral['priority']) => {
   switch (priority) {
     case 'emergency':
-      return 'priority-high';
+      return 'destructive';
     case 'urgent':
-      return 'priority-medium';
+      return 'secondary';
     default:
-      return 'priority-low';
+      return 'outline';
   }
 };
 
@@ -68,7 +68,7 @@ const ReferralCard = ({ referral }: ReferralCardProps) => {
             </div>
             
             <div className="flex items-center gap-2 text-sm mt-1">
-              <Badge variant="outline" className={getPriorityClass(referral.priority)}>
+              <Badge variant={getPriorityVariant(referral.priority)}>
                 {getPriorityLabel(referral.priority)}
               </Badge>
               
