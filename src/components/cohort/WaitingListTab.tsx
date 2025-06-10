@@ -1,4 +1,5 @@
-
+import WaitingListDashboard from './WaitingListDashboard';
+import ReferralTrendsChart from './ReferralTrendsChart';
 import WaitingListCharts from './WaitingListCharts';
 import WaitingListControls from './WaitingListControls';
 import WaitingListTable from './WaitingListTable';
@@ -43,6 +44,13 @@ const WaitingListTab = ({
 }: WaitingListTabProps) => {
   return (
     <div className="space-y-6">
+      {/* Business Intelligence Dashboard */}
+      <WaitingListDashboard referrals={referrals} />
+      
+      {/* Referral Trends Chart */}
+      <ReferralTrendsChart referrals={referrals} />
+      
+      {/* Existing Charts */}
       <WaitingListCharts referrals={referrals} />
       
       <SelectionControls
