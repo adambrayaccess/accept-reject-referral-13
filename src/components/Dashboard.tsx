@@ -1,7 +1,7 @@
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
-import { FilePlus, RefreshCw, Users } from 'lucide-react';
+import { FilePlus, RefreshCw, Users, Shield } from 'lucide-react';
 import SearchBar from './dashboard/SearchBar';
 import FilterBar from './dashboard/FilterBar';
 import SortControls from './dashboard/SortControls';
@@ -64,6 +64,10 @@ const Dashboard = () => {
     navigate('/cohort-builder');
   };
 
+  const navigateToAdmin = () => {
+    navigate('/admin');
+  };
+
   return (
     <div className="space-y-6">
       <div className="flex flex-col sm:flex-row justify-between gap-4">
@@ -81,6 +85,10 @@ const Dashboard = () => {
           )}
         </div>
         <div className="flex gap-2 w-full sm:w-auto">
+          <Button variant="outline" onClick={navigateToAdmin} className="flex-1 sm:flex-initial">
+            <Shield className="mr-2 h-4 w-4" />
+            Admin
+          </Button>
           <Button variant="outline" onClick={navigateToCohortBuilder} className="flex-1 sm:flex-initial">
             <Users className="mr-2 h-4 w-4" />
             Cohort Builder
