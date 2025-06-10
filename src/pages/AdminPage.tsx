@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -119,7 +118,7 @@ const AdminPage = () => {
     <div className="container py-6 space-y-6">
       <div className="flex flex-col sm:flex-row justify-between items-start gap-4">
         <div>
-          <h1 className="text-3xl font-bold">Admin Dashboard</h1>
+          <h1 className="text-3xl font-bold">Super User Dashboard</h1>
           <p className="text-muted-foreground">Overview of all referrals across specialties</p>
         </div>
         <Button onClick={handleRefresh} variant="outline">

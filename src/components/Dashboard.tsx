@@ -1,4 +1,3 @@
-
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
 import { FilePlus, RefreshCw, Users, Shield } from 'lucide-react';
@@ -87,7 +86,7 @@ const Dashboard = () => {
         <div className="flex gap-2 w-full sm:w-auto">
           <Button variant="outline" onClick={navigateToAdmin} className="flex-1 sm:flex-initial">
             <Shield className="mr-2 h-4 w-4" />
-            Admin
+            Super User
           </Button>
           <Button variant="outline" onClick={navigateToCohortBuilder} className="flex-1 sm:flex-initial">
             <Users className="mr-2 h-4 w-4" />
