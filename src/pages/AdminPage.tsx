@@ -4,7 +4,6 @@ import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { RefreshCw, ArrowLeft } from 'lucide-react';
 import { useDashboardData } from '@/hooks/useDashboardData';
-import { useToast } from '@/hooks/use-toast';
 import { useNavigate } from 'react-router-dom';
 import { useAdminStatistics } from '@/hooks/useAdminStatistics';
 import OverallStatsCards from '@/components/admin/OverallStatsCards';
@@ -16,7 +15,6 @@ const AdminPage = () => {
   const [currentSpecialty, setCurrentSpecialty] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState('overview');
   const { referrals, isLoading, handleRefresh } = useDashboardData(currentSpecialty);
-  const { toast } = useToast();
   const navigate = useNavigate();
   const { specialtyStats, overallStats } = useAdminStatistics(referrals);
 
@@ -35,7 +33,6 @@ const AdminPage = () => {
   ];
 
   useEffect(() => {
-    // Check if specialty is selected
     const storedSpecialty = localStorage.getItem('selectedSpecialty');
     if (storedSpecialty) {
       setCurrentSpecialty(storedSpecialty);
@@ -96,7 +93,6 @@ const AdminPage = () => {
         </div>
       </div>
 
-      {/* Specialty Selector */}
       <AdminSpecialtySelector
         specialties={specialties}
         currentSpecialty={currentSpecialty}
@@ -104,7 +100,6 @@ const AdminPage = () => {
         onShowAll={handleShowAll}
       />
 
-      {/* Tabs for Overview and Allocation */}
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
         <TabsList className="grid w-full grid-cols-2">
           <TabsTrigger value="overview">Overview</TabsTrigger>
@@ -114,10 +109,7 @@ const AdminPage = () => {
         </TabsList>
 
         <TabsContent value="overview" className="space-y-6">
-          {/* Overall Statistics */}
           <OverallStatsCards stats={overallStats} />
-
-          {/* Specialty Breakdown */}
           <SpecialtyBreakdown 
             specialtyStats={specialtyStats} 
             currentSpecialty={currentSpecialty} 
