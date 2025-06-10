@@ -1,14 +1,15 @@
-
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { RefreshCw, Users, FileText, Clock } from 'lucide-react';
+import { RefreshCw, Users, FileText, Clock, ArrowLeft } from 'lucide-react';
 import { useDashboardData } from '@/hooks/useDashboardData';
 import { useToast } from '@/hooks/use-toast';
 import { Referral } from '@/types/referral';
 import { differenceInDays } from 'date-fns';
+import { useNavigate } from 'react-router-dom';
+import SpecialtySelector from '@/components/SpecialtySelector';
 
 interface SpecialtyStats {
   specialty: string;
@@ -26,8 +27,41 @@ interface SpecialtyStats {
 }
 
 const AdminPage = () => {
-  const { referrals, isLoading, handleRefresh } = useDashboardData();
+  const [currentSpecialty, setCurrentSpecialty] = useState<string | null>(null);
+  const { referrals, isLoading, handleRefresh } = useDashboardData(currentSpecialty);
   const { toast } = useToast();
+  const navigate = useNavigate();
+
+  const specialties = [
+    'Cardiology',
+    'Dermatology', 
+    'Endocrinology',
+    'Gastroenterology',
+    'Neurology',
+    'Oncology',
+    'Orthopedics',
+    'Psychiatry',
+    'Pulmonology',
+    'Rheumatology',
+    'Mental Health'
+  ];
+
+  useEffect(() => {
+    // Check if specialty is selected
+    const storedSpecialty = localStorage.getItem('selectedSpecialty');
+    if (storedSpecialty) {
+      setCurrentSpecialty(storedSpecialty);
+    }
+  }, []);
+
+  const handleSpecialtySelect = (specialty: string) => {
+    setCurrentSpecialty(specialty);
+    localStorage.setItem('selectedSpecialty', specialty);
+  };
+
+  const handleReturnToSpecialtySelection = () => {
+    navigate('/select-specialty');
+  };
 
   const calculateWaitingListStats = (waitingListReferrals: Referral[]) => {
     if (waitingListReferrals.length === 0) {
@@ -152,13 +186,59 @@ const AdminPage = () => {
       <div className="flex flex-col sm:flex-row justify-between items-start gap-4">
         <div>
           <h1 className="text-3xl font-bold">Super User Dashboard</h1>
-          <p className="text-muted-foreground">Overview of all referrals across specialties</p>
+          <p className="text-muted-foreground">
+            {currentSpecialty 
+              ? `Overview of ${currentSpecialty} referrals` 
+              : 'Overview of all referrals across specialties'
+            }
+          </p>
         </div>
-        <Button onClick={handleRefresh} variant="outline">
-          <RefreshCw className="mr-2 h-4 w-4" />
-          Refresh Data
-        </Button>
+        <div className="flex gap-2">
+          <Button onClick={handleReturnToSpecialtySelection} variant="outline">
+            <ArrowLeft className="mr-2 h-4 w-4" />
+            Change Specialty
+          </Button>
+          <Button onClick={handleRefresh} variant="outline">
+            <RefreshCw className="mr-2 h-4 w-4" />
+            Refresh Data
+          </Button>
+        </div>
       </div>
+
+      {/* Specialty Selector */}
+      <Card>
+        <CardHeader>
+          <CardTitle>Specialty Filter</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="flex items-center gap-4">
+            <div className="flex-1">
+              <SpecialtySelector
+                specialties={['All Specialties', ...specialties]}
+                onSpecialtySelect={(specialty) => {
+                  if (specialty === 'All Specialties') {
+                    setCurrentSpecialty(null);
+                    localStorage.removeItem('selectedSpecialty');
+                  } else {
+                    handleSpecialtySelect(specialty);
+                  }
+                }}
+              />
+            </div>
+            {currentSpecialty && (
+              <Button 
+                variant="outline" 
+                onClick={() => {
+                  setCurrentSpecialty(null);
+                  localStorage.removeItem('selectedSpecialty');
+                }}
+              >
+                Show All
+              </Button>
+            )}
+          </div>
+        </CardContent>
+      </Card>
 
       {/* Overall Statistics */}
       <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
@@ -226,7 +306,9 @@ const AdminPage = () => {
       {/* Specialty Breakdown */}
       <Card>
         <CardHeader>
-          <CardTitle>Specialty Breakdown</CardTitle>
+          <CardTitle>
+            {currentSpecialty ? `${currentSpecialty} Breakdown` : 'Specialty Breakdown'}
+          </CardTitle>
         </CardHeader>
         <CardContent>
           <div className="space-y-4">
