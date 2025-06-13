@@ -36,7 +36,7 @@ export interface ClinicalInfo {
   notes?: string;
 }
 
-export type ReferralStatus = 'new' | 'accepted' | 'rejected';
+export type ReferralStatus = 'new' | 'accepted' | 'rejected' | 'forwarded';
 export type ReferralPriority = 'routine' | 'urgent' | 'emergency';
 export type TriageStatus = 'pre-assessment' | 'assessed' | 'pre-admission-assessment' | 'waiting-list' | 'refer-to-another-specialty';
 
@@ -51,6 +51,14 @@ export interface CollaborationNote {
   timestamp: string;
   author: string;
   content: string;
+}
+
+export interface ForwardingInfo {
+  originalReferrer: Practitioner;
+  originalSpecialty: string;
+  forwardedBy: string;
+  forwardedAt: string;
+  forwardingNotes?: string;
 }
 
 export interface Referral {
@@ -69,6 +77,7 @@ export interface Referral {
   collaborationNotes?: CollaborationNote[];
   triageStatus?: TriageStatus;
   tags?: string[];
+  forwardingInfo?: ForwardingInfo;
   // Calculated fields (for filtering)
   calculatedReferralAge?: number;
   calculatedPatientAge?: number;

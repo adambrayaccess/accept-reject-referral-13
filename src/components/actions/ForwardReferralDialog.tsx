@@ -34,11 +34,12 @@ const ForwardReferralDialog = ({ referral, onStatusChange }: ForwardReferralDial
     setIsSubmitting(true);
     try {
       // 1. Update the referral status to indicate it's been forwarded
-      const statusUpdated = await updateReferralStatus(referral.id, 'accepted', forwardNotes);
+      const forwardingNotes = `Referral forwarded to ${specialties.find(s => s.id === selectedSpecialty)?.name}. ${forwardNotes}`.trim();
+      const statusUpdated = await updateReferralStatus(referral.id, 'forwarded', forwardingNotes);
       
       // 2. Send HL7 message to EPR indicating the forward
       if (statusUpdated) {
-        await sendHL7Message(referral.id, 'accept');
+        await sendHL7Message(referral.id, 'forward');
         
         const specialty = specialties.find(s => s.id === selectedSpecialty);
         
@@ -76,7 +77,7 @@ const ForwardReferralDialog = ({ referral, onStatusChange }: ForwardReferralDial
         <AlertDialogHeader>
           <AlertDialogTitle>Forward Referral</AlertDialogTitle>
           <AlertDialogDescription>
-            Forward this referral to another specialty team. This will send an HL7 message to the EPR system.
+            Forward this referral to another specialty team. This will send an HL7 message to the EPR system and track the original referral source.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <div className="space-y-4 my-4">
