@@ -1,10 +1,10 @@
+
 import { Referral } from '@/types/referral';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import { format } from 'date-fns';
-import { Forward } from 'lucide-react';
 
 interface ReferralDetailProps {
   referral: Referral;
@@ -26,19 +26,6 @@ const getPriorityVariant = (priority: Referral['priority']) => {
   }
 };
 
-const getStatusVariant = (status: Referral['status']) => {
-  switch (status) {
-    case 'forwarded':
-      return 'secondary';
-    case 'accepted':
-      return 'default';
-    case 'rejected':
-      return 'destructive';
-    default:
-      return 'outline';
-  }
-};
-
 const ReferralDetail = ({ referral, relatedReferrals }: ReferralDetailProps) => {
   return (
     <Card>
@@ -49,9 +36,6 @@ const ReferralDetail = ({ referral, relatedReferrals }: ReferralDetailProps) => 
             <Badge variant={getPriorityVariant(referral.priority)}>
               {referral.priority.toUpperCase()}
             </Badge>
-            <Badge variant={getStatusVariant(referral.status)}>
-              {referral.status.toUpperCase()}
-            </Badge>
             <Badge variant="outline">
               {`Ref: ${referral.id}`}
             </Badge>
@@ -60,22 +44,6 @@ const ReferralDetail = ({ referral, relatedReferrals }: ReferralDetailProps) => 
             </Badge>
           </div>
         </div>
-        
-        {referral.forwardingInfo && (
-          <div className="flex items-center gap-2 p-3 bg-muted rounded-lg">
-            <Forward className="h-4 w-4 text-muted-foreground" />
-            <div className="text-sm">
-              <span className="text-muted-foreground">Forwarded from:</span>
-              <span className="font-medium ml-1">{referral.forwardingInfo.originalSpecialty}</span>
-              <span className="text-muted-foreground ml-2">by</span>
-              <span className="font-medium ml-1">{referral.forwardingInfo.originalReferrer.name}</span>
-              <span className="text-muted-foreground ml-2">on</span>
-              <span className="font-medium ml-1">
-                {format(new Date(referral.forwardingInfo.forwardedAt), 'dd MMM yyyy, HH:mm')}
-              </span>
-            </div>
-          </div>
-        )}
       </CardHeader>
       <CardContent>
         <Tabs defaultValue="patient">
@@ -167,25 +135,6 @@ const ReferralDetail = ({ referral, relatedReferrals }: ReferralDetailProps) => 
                 <div className="info-label">Service</div>
                 <div className="info-value">{referral.service}</div>
               </div>
-            )}
-            
-            {referral.forwardingInfo && (
-              <>
-                <Separator />
-                <div>
-                  <div className="info-label">Original Referral Source</div>
-                  <div className="info-value">
-                    {referral.forwardingInfo.originalReferrer.name} - {referral.forwardingInfo.originalSpecialty}
-                  </div>
-                </div>
-                
-                {referral.forwardingInfo.forwardingNotes && (
-                  <div>
-                    <div className="info-label">Forwarding Notes</div>
-                    <div className="mt-1 whitespace-pre-line">{referral.forwardingInfo.forwardingNotes}</div>
-                  </div>
-                )}
-              </>
             )}
             
             <Separator />
