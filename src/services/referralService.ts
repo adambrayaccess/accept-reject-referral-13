@@ -87,7 +87,7 @@ export const updateTriageStatus = async (
 };
 
 // In a real implementation, this would send an HL7 message to the EPR system
-export const sendHL7Message = async (referralId: string, action: 'accept' | 'reject'): Promise<boolean> => {
+export const sendHL7Message = async (referralId: string, action: 'accept' | 'reject' | 'forward'): Promise<boolean> => {
   return new Promise((resolve) => {
     setTimeout(() => {
       console.log(`HL7 message sent for referral ${referralId}: ${action.toUpperCase()}`);
