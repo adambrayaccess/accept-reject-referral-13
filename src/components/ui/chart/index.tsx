@@ -2,7 +2,6 @@
 import { ChartContainer } from './ChartContainer'
 import { ChartTooltip, ChartTooltipContent } from './ChartTooltip'
 import { ChartLegend, ChartLegendContent } from './ChartLegend'
-import { ChartStyle } from './ChartStyle'
 import { useChart } from './ChartContext'
 import type { ChartConfig } from './ChartContext'
 
@@ -12,7 +11,6 @@ export {
   ChartTooltipContent,
   ChartLegend,
   ChartLegendContent,
-  ChartStyle,
   useChart
 }
 

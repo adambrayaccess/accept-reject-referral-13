@@ -3,7 +3,6 @@ import * as React from "react"
 import * as RechartsPrimitive from "recharts"
 import { cn } from "@/lib/utils"
 import { ChartContext, ChartContextProps, ChartConfig } from "./ChartContext"
-import { ChartStyle } from "./ChartStyle"
 
 const ChartContainer = React.forwardRef<
   HTMLDivElement,
@@ -28,7 +27,6 @@ const ChartContainer = React.forwardRef<
         )}
         {...props}
       >
-        <ChartStyle id={chartId} config={config} />
         <RechartsPrimitive.ResponsiveContainer>
           {children}
         </RechartsPrimitive.ResponsiveContainer>
