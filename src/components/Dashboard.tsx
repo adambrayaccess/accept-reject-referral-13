@@ -111,7 +111,9 @@ const Dashboard = () => {
           </div>
         </div>
 
-        <StatisticsBar onRefresh={handleRefresh} />
+        <div className="px-4">
+          <StatisticsBar onRefresh={handleRefresh} />
+        </div>
 
         <div className="container space-y-6">
           <div className="flex flex-col md:flex-row gap-4 items-start">
