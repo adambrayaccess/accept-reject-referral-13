@@ -8,6 +8,7 @@ import CohortBuilderTab from '@/components/cohort/CohortBuilderTab';
 import TaggedPatientsTab from '@/components/cohort/TaggedPatientsTab';
 import { useCohortData } from '@/hooks/useCohortData';
 import { useWaitingListData } from '@/hooks/useWaitingListData';
+import Titlebar from '@/components/Titlebar';
 
 const CohortBuilder = () => {
   const [currentSpecialty, setCurrentSpecialty] = useState<string | null>(null);
@@ -61,62 +62,66 @@ const CohortBuilder = () => {
   };
 
   return (
-    <div className="container py-6 space-y-6">
-      <CohortBuilderHeader 
-        currentSpecialty={currentSpecialty}
-        onBack={handleBack}
-      />
+    <div className="min-h-screen bg-gray-50">
+      <Titlebar />
+      
+      <div className="container py-6 space-y-6">
+        <CohortBuilderHeader 
+          currentSpecialty={currentSpecialty}
+          onBack={handleBack}
+        />
 
-      <Tabs defaultValue="waitingList" className="w-full">
-        <TabsList>
-          <TabsTrigger value="waitingList">Waiting List</TabsTrigger>
-          <TabsTrigger value="cohortBuilder">Waiting List Management</TabsTrigger>
-          <TabsTrigger value="tagged">Tagged Patients</TabsTrigger>
-        </TabsList>
-        
-        <TabsContent value="waitingList" className="space-y-6">
-          <WaitingListTab
-            referrals={waitingListReferrals}
-            isLoading={waitingListLoading}
-            filters={waitingListFilters}
-            updateFilters={updateWaitingListFilters}
-            clearFilters={clearWaitingListFilters}
-            sortField={sortField}
-            setSortField={setSortField}
-            sortDirection={sortDirection}
-            setSortDirection={setSortDirection}
-            selectedReferrals={waitingListSelected}
-            toggleReferralSelection={toggleWaitingListSelection}
-            clearSelection={clearWaitingListSelection}
-            selectAll={selectAllWaitingList}
-            handleRefresh={refreshWaitingList}
-            reorderReferrals={reorderReferrals}
-          />
-        </TabsContent>
-        
-        <TabsContent value="cohortBuilder" className="space-y-4">
-          <CohortBuilderTab
-            referrals={cohortReferrals}
-            isLoading={cohortLoading}
-            filters={filters}
-            setFilters={setFilters}
-            selectedReferrals={cohortSelected}
-            toggleReferralSelection={toggleCohortSelection}
-            clearSelection={clearCohortSelection}
-            selectAll={selectAllCohort}
-            handleRefresh={refreshCohort}
-          />
-        </TabsContent>
-        
-        <TabsContent value="tagged">
-          <TaggedPatientsTab
-            referrals={cohortReferrals}
-            isLoading={cohortLoading}
-            selectedReferrals={cohortSelected}
-            toggleReferralSelection={toggleCohortSelection}
-          />
-        </TabsContent>
-      </Tabs>
+        <Tabs defaultValue="waitingList" className="w-full">
+          <TabsList>
+            <TabsTrigger value="waitingList">Waiting List</TabsTrigger>
+            <TabsTrigger value="cohortBuilder">Waiting List Management</TabsTrigger>
+            <TabsTrigger value="tagged">Tagged Patients</TabsTrigger>
+          </TabsList>
+          
+          <TabsContent value="waitingList" className="space-y-6">
+            <WaitingListTab
+              referrals={waitingListReferrals}
+              isLoading={waitingListLoading}
+              filters={waitingListFilters}
+              updateFilters={updateWaitingListFilters}
+              clearFilters={clearWaitingListFilters}
+              sortField={sortField}
+              setSortField={setSortField}
+              sortDirection={sortDirection}
+              setSortDirection={setSortDirection}
+              selectedReferrals={waitingListSelected}
+              toggleReferralSelection={toggleWaitingListSelection}
+              clearSelection={clearWaitingListSelection}
+              selectAll={selectAllWaitingList}
+              handleRefresh={refreshWaitingList}
+              reorderReferrals={reorderReferrals}
+            />
+          </TabsContent>
+          
+          <TabsContent value="cohortBuilder" className="space-y-4">
+            <CohortBuilderTab
+              referrals={cohortReferrals}
+              isLoading={cohortLoading}
+              filters={filters}
+              setFilters={setFilters}
+              selectedReferrals={cohortSelected}
+              toggleReferralSelection={toggleCohortSelection}
+              clearSelection={clearCohortSelection}
+              selectAll={selectAllCohort}
+              handleRefresh={refreshCohort}
+            />
+          </TabsContent>
+          
+          <TabsContent value="tagged">
+            <TaggedPatientsTab
+              referrals={cohortReferrals}
+              isLoading={cohortLoading}
+              selectedReferrals={cohortSelected}
+              toggleReferralSelection={toggleCohortSelection}
+            />
+          </TabsContent>
+        </Tabs>
+      </div>
     </div>
   );
 };
