@@ -1,3 +1,4 @@
+
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
 import { FilePlus, RefreshCw, Users, Shield } from 'lucide-react';
@@ -5,6 +6,7 @@ import SearchBar from './dashboard/SearchBar';
 import FilterBar from './dashboard/FilterBar';
 import SortControls from './dashboard/SortControls';
 import ReferralGrid from './dashboard/ReferralGrid';
+import StatisticsBar from './dashboard/StatisticsBar';
 import Titlebar from './Titlebar';
 import { useDashboardData } from '@/hooks/useDashboardData';
 import { useState, useEffect } from 'react';
@@ -106,6 +108,8 @@ const Dashboard = () => {
             </Button>
           </div>
         </div>
+
+        <StatisticsBar onRefresh={handleRefresh} />
 
         <div className="flex flex-col md:flex-row gap-4 items-start">
           <div className="w-full md:flex-1">
