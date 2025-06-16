@@ -1,4 +1,3 @@
-
 import { Referral } from '@/types/referral';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
@@ -24,23 +23,8 @@ const getPriorityVariant = (priority: Referral['priority']) => {
   }
 };
 
-const getStatusBadgeVariant = (status: string) => {
-  switch (status) {
-    case 'new':
-      return 'default';
-    case 'accepted':
-      return 'secondary';
-    case 'rejected':
-      return 'destructive';
-    case 'pre-assessment':
-      return 'outline';
-    case 'assessed':
-      return 'secondary';
-    case 'waiting-list':
-      return 'outline';
-    default:
-      return 'outline';
-  }
+const getStatusClass = (status: Referral['status']) => {
+  return `status-${status}`;
 };
 
 const getStatusText = (referral: Referral) => {
@@ -158,9 +142,9 @@ const ReferralList = ({ referrals, isLoading, filter }: ReferralListProps) => {
                 </div>
               </TableCell>
               <TableCell>
-                <Badge variant={getStatusBadgeVariant(getStatusText(referral))}>
-                  {getStatusText(referral)}
-                </Badge>
+                <span className={getStatusClass(referral.status)}>
+                  {getStatusText(referral).toUpperCase()}
+                </span>
               </TableCell>
               <TableCell>
                 <Badge variant="outline">
