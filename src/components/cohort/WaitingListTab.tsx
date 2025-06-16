@@ -3,6 +3,7 @@ import SearchBar from '../dashboard/SearchBar';
 import FilterBar from '../dashboard/FilterBar';
 import AIAssistantActions from '../dashboard/AIAssistantActions';
 import WaitingListTable from './WaitingListTable';
+import WaitingListStatisticsBar from './WaitingListStatisticsBar';
 import TagManager from './TagManager';
 import SelectionControls from './SelectionControls';
 import { Referral } from '@/types/referral';
@@ -44,6 +45,9 @@ const WaitingListTab = ({
 }: WaitingListTabProps) => {
   return (
     <div className="space-y-6">
+      {/* Statistics bar */}
+      <WaitingListStatisticsBar referrals={referrals} />
+
       {/* Dashboard-style header with search, filters, and AI actions */}
       <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between">
         <div className="flex-1 max-w-md">
