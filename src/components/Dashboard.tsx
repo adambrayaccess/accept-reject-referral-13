@@ -1,4 +1,3 @@
-
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
 import { FilePlus, Users, Shield } from 'lucide-react';
@@ -113,7 +112,7 @@ const Dashboard = () => {
           </div>
         </div>
 
-        <div className="px-4">
+        <div className="container">
           <StatisticsBar onRefresh={handleRefresh} />
         </div>
 
