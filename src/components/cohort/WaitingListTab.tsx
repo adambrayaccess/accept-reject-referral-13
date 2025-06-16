@@ -1,29 +1,33 @@
 
-import SearchBar from '../dashboard/SearchBar';
-import FilterBar from '../dashboard/FilterBar';
-import AIAssistantActions from '../dashboard/AIAssistantActions';
-import WaitingListTable from './WaitingListTable';
-import WaitingListStatisticsBar from './WaitingListStatisticsBar';
-import TagManager from './TagManager';
-import SelectionControls from './SelectionControls';
+import { useState } from 'react';
+import { Button } from '@/components/ui/button';
+import { Users, RefreshCw } from 'lucide-react';
 import { Referral } from '@/types/referral';
+import WaitingListTable from './WaitingListTable';
+import WaitingListControls from './WaitingListControls';
+import WaitingListStatisticsBar from './WaitingListStatisticsBar';
+import CohortGrid from './CohortGrid';
+import AIAssistantActions from '@/components/dashboard/AIAssistantActions';
 
 interface WaitingListTabProps {
   referrals: Referral[];
   isLoading: boolean;
   filters: any;
-  updateFilters: (filters: any) => void;
+  updateFilters: (updates: any) => void;
   clearFilters: () => void;
   sortField: string;
   setSortField: (field: string) => void;
   sortDirection: 'asc' | 'desc';
   setSortDirection: (direction: 'asc' | 'desc') => void;
   selectedReferrals: Referral[];
+  selectedCount: number;
   toggleReferralSelection: (referral: Referral) => void;
   clearSelection: () => void;
-  selectAll: (referrals: Referral[]) => void;
+  selectAll: () => void;
+  isAllSelected: boolean;
+  isIndeterminate: boolean;
   handleRefresh: () => void;
-  reorderReferrals: (referrals: Referral[]) => void;
+  reorderReferrals: (reorderedReferrals: Referral[]) => void;
 }
 
 const WaitingListTab = ({
@@ -37,59 +41,96 @@ const WaitingListTab = ({
   sortDirection,
   setSortDirection,
   selectedReferrals,
+  selectedCount,
   toggleReferralSelection,
   clearSelection,
   selectAll,
+  isAllSelected,
+  isIndeterminate,
   handleRefresh,
   reorderReferrals
 }: WaitingListTabProps) => {
+  const [view, setView] = useState<'table' | 'grid'>('table');
+
   return (
     <div className="space-y-6">
-      {/* Statistics bar */}
       <WaitingListStatisticsBar referrals={referrals} />
+      
+      {selectedCount > 0 && (
+        <div className="flex items-center justify-between bg-blue-50 border border-blue-200 rounded-lg p-3">
+          <div className="flex items-center gap-2">
+            <Users className="h-4 w-4 text-blue-600" />
+            <span className="text-sm font-medium text-blue-800">
+              {selectedCount} referral{selectedCount > 1 ? 's' : ''} selected
+            </span>
+          </div>
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={clearSelection}
+            className="text-blue-600 hover:text-blue-800"
+          >
+            Clear selection
+          </Button>
+        </div>
+      )}
 
-      {/* Dashboard-style header with search, filters, and AI actions */}
-      <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between">
-        <div className="flex-1 max-w-md">
-          <SearchBar
-            searchTerm={filters.search || ''}
-            setSearchTerm={(value) => updateFilters({ search: value })}
+      <div className="flex flex-col lg:flex-row gap-4 items-start lg:items-center">
+        <div className="w-full lg:flex-1">
+          <WaitingListControls
+            filters={filters}
+            updateFilters={updateFilters}
+            clearFilters={clearFilters}
+            sortField={sortField}
+            setSortField={setSortField}
+            sortDirection={sortDirection}
+            setSortDirection={setSortDirection}
+            view={view}
+            onViewChange={setView}
           />
         </div>
-        <div className="flex items-center gap-3">
-          <FilterBar
-            statusFilter={filters.status || 'all'}
-            setStatusFilter={(status) => updateFilters({ status })}
-            priorityFilter={filters.priority || 'all'}
-            setPriorityFilter={(priority) => updateFilters({ priority })}
+        
+        <div className="w-full lg:w-auto lg:flex-shrink-0">
+          <AIAssistantActions 
+            selectedReferrals={selectedReferrals}
+            onClearSelection={clearSelection}
           />
-          <AIAssistantActions />
+        </div>
+        
+        <div className="flex gap-2 w-full lg:w-auto items-center lg:flex-shrink-0">
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={handleRefresh}
+            disabled={isLoading}
+            className="gap-2"
+          >
+            <RefreshCw className={`h-4 w-4 ${isLoading ? 'animate-spin' : ''}`} />
+            Refresh
+          </Button>
         </div>
       </div>
 
-      {/* Selection controls */}
-      <SelectionControls
-        totalCount={referrals.length}
-        selectedCount={selectedReferrals.length}
-        onRefresh={handleRefresh}
-        onClearSelection={clearSelection}
-        onSelectAll={selectAll}
-        referrals={referrals}
-      />
-
-      {/* Tag manager for selected referrals */}
-      {selectedReferrals.length > 0 && (
-        <TagManager selectedReferrals={selectedReferrals} onTagged={clearSelection} />
+      {view === 'table' ? (
+        <WaitingListTable
+          referrals={referrals}
+          isLoading={isLoading}
+          selectedReferrals={selectedReferrals}
+          onSelectReferral={toggleReferralSelection}
+          onReorderReferrals={reorderReferrals}
+          onSelectAll={selectAll}
+          onClearSelection={clearSelection}
+          isAllSelected={isAllSelected}
+          isIndeterminate={isIndeterminate}
+        />
+      ) : (
+        <CohortGrid
+          referrals={referrals}
+          isLoading={isLoading}
+          selectedReferrals={selectedReferrals}
+          onSelectReferral={toggleReferralSelection}
+        />
       )}
-      
-      {/* Waiting list table */}
-      <WaitingListTable 
-        referrals={referrals}
-        isLoading={isLoading}
-        selectedReferrals={selectedReferrals}
-        onSelectReferral={toggleReferralSelection}
-        onReorderReferrals={reorderReferrals}
-      />
     </div>
   );
 };

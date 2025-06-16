@@ -40,9 +40,12 @@ const CohortBuilder = () => {
     sortDirection,
     setSortDirection,
     selectedReferrals: waitingListSelected,
+    selectedCount,
     toggleReferralSelection: toggleWaitingListSelection,
     clearSelection: clearWaitingListSelection,
     selectAll: selectAllWaitingList,
+    isAllSelected,
+    isIndeterminate,
     handleRefresh: refreshWaitingList,
     reorderReferrals
   } = useWaitingListData(selectedSpecialties);
@@ -115,9 +118,12 @@ const CohortBuilder = () => {
               sortDirection={sortDirection}
               setSortDirection={setSortDirection}
               selectedReferrals={waitingListSelected}
+              selectedCount={selectedCount}
               toggleReferralSelection={toggleWaitingListSelection}
               clearSelection={clearWaitingListSelection}
               selectAll={selectAllWaitingList}
+              isAllSelected={isAllSelected}
+              isIndeterminate={isIndeterminate}
               handleRefresh={refreshWaitingList}
               reorderReferrals={reorderReferrals}
             />

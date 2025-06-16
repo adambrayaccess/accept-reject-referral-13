@@ -4,7 +4,7 @@ import { Referral } from '@/types/referral';
 import { useToast } from '@/hooks/use-toast';
 import { useWaitingListFilters } from './waitingList/useWaitingListFilters';
 import { useWaitingListSorting } from './waitingList/useWaitingListSorting';
-import { useWaitingListSelection } from './waitingList/useWaitingListSelection';
+import { useReferralSelection } from './useReferralSelection';
 import { loadWaitingListReferrals } from '../services/waitingList/waitingListDataService';
 
 export const useWaitingListData = (selectedSpecialties: string[] = []) => {
@@ -15,7 +15,17 @@ export const useWaitingListData = (selectedSpecialties: string[] = []) => {
   
   const { filters, updateFilters, clearFilters, applyFilters } = useWaitingListFilters();
   const { sortField, setSortField, sortDirection, setSortDirection, applySorting } = useWaitingListSorting();
-  const { selectedReferrals, toggleReferralSelection, clearSelection, selectAll } = useWaitingListSelection();
+  const {
+    selectedIds,
+    selectedCount,
+    toggleSelection,
+    selectAll,
+    clearSelection,
+    isSelected,
+    getSelectedReferrals,
+    isAllSelected,
+    isIndeterminate
+  } = useReferralSelection();
 
   const loadReferrals = async () => {
     setIsLoading(true);
@@ -73,6 +83,16 @@ export const useWaitingListData = (selectedSpecialties: string[] = []) => {
     });
   };
 
+  const toggleReferralSelection = (referral: Referral) => {
+    toggleSelection(referral.id);
+  };
+
+  const handleSelectAll = () => {
+    selectAll(filteredAndSortedReferrals);
+  };
+
+  const selectedReferrals = getSelectedReferrals(filteredAndSortedReferrals);
+
   return {
     referrals: filteredAndSortedReferrals,
     isLoading,
@@ -84,9 +104,12 @@ export const useWaitingListData = (selectedSpecialties: string[] = []) => {
     sortDirection,
     setSortDirection,
     selectedReferrals,
+    selectedCount,
     toggleReferralSelection,
     clearSelection,
-    selectAll,
+    selectAll: handleSelectAll,
+    isAllSelected: isAllSelected(filteredAndSortedReferrals),
+    isIndeterminate: isIndeterminate(filteredAndSortedReferrals),
     handleRefresh,
     reorderReferrals
   };

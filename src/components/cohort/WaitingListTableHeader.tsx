@@ -1,12 +1,35 @@
 
 import { TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { Checkbox } from '@/components/ui/checkbox';
+import { Referral } from '@/types/referral';
 
-const WaitingListTableHeader = () => {
+interface WaitingListTableHeaderProps {
+  referrals: Referral[];
+  isAllSelected: boolean;
+  isIndeterminate: boolean;
+  onSelectAll: () => void;
+}
+
+const WaitingListTableHeader = ({
+  referrals,
+  isAllSelected,
+  isIndeterminate,
+  onSelectAll
+}: WaitingListTableHeaderProps) => {
   return (
     <TableHeader>
       <TableRow>
         <TableHead className="w-10"></TableHead>
-        <TableHead className="w-10">Select</TableHead>
+        <TableHead className="w-10">
+          <Checkbox
+            checked={isAllSelected}
+            ref={(el) => {
+              if (el) el.indeterminate = isIndeterminate;
+            }}
+            onCheckedChange={onSelectAll}
+            aria-label={`Select all ${referrals.length} referrals`}
+          />
+        </TableHead>
         <TableHead className="min-w-[140px]">Patient Name</TableHead>
         <TableHead className="w-16">Age</TableHead>
         <TableHead className="w-20">Priority</TableHead>
