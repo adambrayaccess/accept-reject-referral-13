@@ -16,6 +16,10 @@ const StatisticsBar = ({ onRefresh }: StatisticsBarProps) => {
       value: '56',
       period: 'Last 7 days',
       pagination: '1/3'
+      icon: <Users className="h-5 w-5" />,
+      iconColor: 'text-teal-600',
+      iconBgColor: 'bg-teal-100',
+      valueColor: 'text-teal-600'
     },
     {
       title: 'Urgent referrals',
