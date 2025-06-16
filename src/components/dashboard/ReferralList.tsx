@@ -2,7 +2,6 @@
 import { useState } from 'react';
 import { Referral } from '@/types/referral';
 import { Table, TableBody } from '@/components/ui/table';
-import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area';
 import { useNavigate } from 'react-router-dom';
 import { DragDropContext, Droppable, DropResult } from 'react-beautiful-dnd';
 import ReferralDetailModal from '@/components/modals/ReferralDetailModal';
@@ -71,31 +70,28 @@ const ReferralList = ({ referrals, isLoading, filter, onReorder }: ReferralListP
 
   return (
     <>
-      <div className="border rounded-lg overflow-hidden">
-        <ScrollArea className="w-full">
-          <DragDropContext onDragEnd={handleDragEnd}>
-            <Table className="min-w-[1400px]">
-              <ReferralTableHeader />
-              <Droppable droppableId="referrals-list">
-                {(provided) => (
-                  <TableBody ref={provided.innerRef} {...provided.droppableProps}>
-                    {filteredReferrals.map((referral, index) => (
-                      <ReferralTableRow
-                        key={referral.id}
-                        referral={referral}
-                        index={index}
-                        onNameClick={handleNameClick}
-                        onRowClick={handleRowClick}
-                      />
-                    ))}
-                    {provided.placeholder}
-                  </TableBody>
-                )}
-              </Droppable>
-            </Table>
-          </DragDropContext>
-          <ScrollBar orientation="horizontal" />
-        </ScrollArea>
+      <div className="border rounded-lg">
+        <DragDropContext onDragEnd={handleDragEnd}>
+          <Table>
+            <ReferralTableHeader />
+            <Droppable droppableId="referrals-list">
+              {(provided) => (
+                <TableBody ref={provided.innerRef} {...provided.droppableProps}>
+                  {filteredReferrals.map((referral, index) => (
+                    <ReferralTableRow
+                      key={referral.id}
+                      referral={referral}
+                      index={index}
+                      onNameClick={handleNameClick}
+                      onRowClick={handleRowClick}
+                    />
+                  ))}
+                  {provided.placeholder}
+                </TableBody>
+              )}
+            </Droppable>
+          </Table>
+        </DragDropContext>
       </div>
       
       <ReferralDetailModal
