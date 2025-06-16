@@ -130,11 +130,20 @@ const Dashboard = () => {
 
         <div className="px-6 space-y-6">
           <div className="flex flex-col gap-4">
-            <div className="flex flex-col md:flex-row gap-4 items-start">
-              <div className="w-full md:flex-1">
+            {/* Three-column layout: SearchBar | AIAssistantActions | SortAndFilterControls + ViewToggle */}
+            <div className="flex flex-col lg:flex-row gap-4 items-start lg:items-center">
+              {/* Left column - SearchBar */}
+              <div className="w-full lg:flex-1">
                 <SearchBar searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
               </div>
-              <div className="flex gap-2 w-full md:w-auto items-center">
+              
+              {/* Middle column - AIAssistantActions */}
+              <div className="w-full lg:w-auto lg:flex-shrink-0">
+                <AIAssistantActions />
+              </div>
+              
+              {/* Right column - SortAndFilterControls + ViewToggle */}
+              <div className="flex gap-2 w-full lg:w-auto items-center lg:flex-shrink-0">
                 <SortAndFilterControls
                   sortField={sortField}
                   setSortField={setSortField}
@@ -147,11 +156,6 @@ const Dashboard = () => {
                 />
                 <ViewToggle view={view} onViewChange={setView} />
               </div>
-            </div>
-            
-            {/* AI Assistant Actions */}
-            <div className="w-full">
-              <AIAssistantActions />
             </div>
           </div>
 
