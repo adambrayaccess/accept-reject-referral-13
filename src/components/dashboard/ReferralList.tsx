@@ -147,9 +147,14 @@ const ReferralList = ({ referrals, isLoading, filter }: ReferralListProps) => {
                 </span>
               </TableCell>
               <TableCell>
-                <Badge variant="outline">
-                  {getSourceText(referral)}
-                </Badge>
+                <div className="space-y-1">
+                  <Badge variant="outline">
+                    {getSourceText(referral)}
+                  </Badge>
+                  <div className="text-sm text-muted-foreground">
+                    {referral.referrer.organization || 'N/A'}
+                  </div>
+                </div>
               </TableCell>
             </TableRow>
           ))}
