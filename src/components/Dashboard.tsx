@@ -89,7 +89,7 @@ const Dashboard = () => {
       <PageHeader searchValue={searchTerm} onSearchChange={setSearchTerm} />
       
       <div className="space-y-6">
-        <div className="container py-6">
+        <div className="px-6 py-6">
           <div className="flex flex-col sm:flex-row justify-between gap-4">
             <div>
               <h1 className="text-2xl font-bold">Referral Dashboard</h1>
@@ -125,11 +125,11 @@ const Dashboard = () => {
           </div>
         </div>
 
-        <div className="container">
+        <div className="px-6">
           <StatisticsBar onRefresh={handleRefresh} />
         </div>
 
-        <div className="container space-y-6">
+        <div className="px-6 space-y-6">
           <div className="flex flex-col gap-4">
             <div className="flex flex-col md:flex-row gap-4 items-start">
               <div className="w-full md:flex-1">
