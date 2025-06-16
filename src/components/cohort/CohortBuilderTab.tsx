@@ -35,8 +35,6 @@ const CohortBuilderTab = ({
 
   return (
     <div className="space-y-4">
-      <CohortFilters filters={filters} setFilters={setFilters} />
-      
       <SelectionControls
         totalCount={referrals.length}
         selectedCount={selectedReferrals.length}
@@ -44,6 +42,8 @@ const CohortBuilderTab = ({
         onClearSelection={clearSelection}
         onSelectAll={selectAll}
         referrals={referrals}
+        filters={filters}
+        setFilters={setFilters}
       />
       
       {selectedReferrals.length > 0 && (
