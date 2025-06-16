@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
@@ -7,7 +8,7 @@ import { Label } from '@/components/ui/label';
 import { useToast } from '@/hooks/use-toast';
 import { mockPractitioners } from '@/services/mock/practitioners';
 import { Referral, ReferralPriority } from '@/types/referral';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { EnhancedTabs, EnhancedTabsContent, EnhancedTabsList, EnhancedTabsTrigger } from '@/components/ui/enhanced-tabs';
 import PatientDetailsForm from './referral-form/PatientDetailsForm';
 import ClinicalDetailsForm from './referral-form/ClinicalDetailsForm';
 
@@ -156,12 +157,12 @@ const CreateReferralModal = ({ isOpen, onClose, onSubmit }: CreateReferralModalP
             </div>
           </div>
 
-          <Tabs defaultValue="patient" className="w-full">
-            <TabsList className="grid w-full grid-cols-2">
-              <TabsTrigger value="patient">Patient Details</TabsTrigger>
-              <TabsTrigger value="clinical">Clinical Information</TabsTrigger>
-            </TabsList>
-            <TabsContent value="patient" className="mt-4">
+          <EnhancedTabs defaultValue="patient" className="w-full">
+            <EnhancedTabsList variant="default" size="md" className="grid w-full grid-cols-2">
+              <EnhancedTabsTrigger value="patient" variant="default" size="md">Patient Details</EnhancedTabsTrigger>
+              <EnhancedTabsTrigger value="clinical" variant="default" size="md">Clinical Information</EnhancedTabsTrigger>
+            </EnhancedTabsList>
+            <EnhancedTabsContent value="patient" className="mt-4">
               <PatientDetailsForm
                 patientName={patientName}
                 setPatientName={setPatientName}
@@ -176,8 +177,8 @@ const CreateReferralModal = ({ isOpen, onClose, onSubmit }: CreateReferralModalP
                 phone={phone}
                 setPhone={setPhone}
               />
-            </TabsContent>
-            <TabsContent value="clinical" className="mt-4">
+            </EnhancedTabsContent>
+            <EnhancedTabsContent value="clinical" className="mt-4">
               <ClinicalDetailsForm
                 reason={reason}
                 setReason={setReason}
@@ -192,8 +193,8 @@ const CreateReferralModal = ({ isOpen, onClose, onSubmit }: CreateReferralModalP
                 notes={notes}
                 setNotes={setNotes}
               />
-            </TabsContent>
-          </Tabs>
+            </EnhancedTabsContent>
+          </EnhancedTabs>
 
           <DialogFooter>
             <Button type="button" variant="outline" onClick={onClose}>Cancel</Button>

@@ -22,6 +22,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import { EnhancedTabs, EnhancedTabsContent, EnhancedTabsList, EnhancedTabsTrigger } from '@/components/ui/enhanced-tabs';
 
 const Dashboard = () => {
   const [view, setView] = useState<'card' | 'list'>('card');
@@ -184,23 +185,23 @@ const Dashboard = () => {
             </div>
           </div>
 
-          <Tabs defaultValue="all" className="w-full">
-            <TabsList className="w-full grid grid-cols-3">
-              <TabsTrigger value="all">All Referrals</TabsTrigger>
-              <TabsTrigger value="new">Pending ({referrals.filter(r => r.status === 'new').length})</TabsTrigger>
-              <TabsTrigger value="processed">Processed ({referrals.filter(r => r.status !== 'new').length})</TabsTrigger>
-            </TabsList>
+          <EnhancedTabs defaultValue="all" className="w-full">
+            <EnhancedTabsList variant="default" size="md" className="w-full grid grid-cols-3">
+              <EnhancedTabsTrigger value="all" variant="default" size="md">All Referrals</EnhancedTabsTrigger>
+              <EnhancedTabsTrigger value="new" variant="default" size="md">Pending ({referrals.filter(r => r.status === 'new').length})</EnhancedTabsTrigger>
+              <EnhancedTabsTrigger value="processed" variant="default" size="md">Processed ({referrals.filter(r => r.status !== 'new').length})</EnhancedTabsTrigger>
+            </EnhancedTabsList>
 
-            <TabsContent value="all">
+            <EnhancedTabsContent value="all">
               <ReferralGrid 
                 referrals={filteredReferrals} 
                 isLoading={isLoading} 
                 view={view} 
                 onReorder={handleReorderReferrals}
               />
-            </TabsContent>
+            </EnhancedTabsContent>
 
-            <TabsContent value="new">
+            <EnhancedTabsContent value="new">
               <ReferralGrid 
                 referrals={filteredReferrals} 
                 isLoading={isLoading} 
@@ -208,9 +209,9 @@ const Dashboard = () => {
                 view={view}
                 onReorder={handleReorderReferrals}
               />
-            </TabsContent>
+            </EnhancedTabsContent>
 
-            <TabsContent value="processed">
+            <EnhancedTabsContent value="processed">
               <ReferralGrid 
                 referrals={filteredReferrals} 
                 isLoading={isLoading} 
@@ -218,8 +219,8 @@ const Dashboard = () => {
                 view={view}
                 onReorder={handleReorderReferrals}
               />
-            </TabsContent>
-          </Tabs>
+            </EnhancedTabsContent>
+          </EnhancedTabs>
         </div>
       </div>
     </div>

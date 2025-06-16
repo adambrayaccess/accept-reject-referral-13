@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
@@ -6,7 +5,7 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Label } from '@/components/ui/label';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { EnhancedTabs, EnhancedTabsContent, EnhancedTabsList, EnhancedTabsTrigger } from '@/components/ui/enhanced-tabs';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
@@ -174,13 +173,13 @@ const AutoReferralModal = ({ isOpen, onClose, onSubmit }: AutoReferralModalProps
           </DialogTitle>
         </DialogHeader>
         
-        <Tabs defaultValue="input" className="w-full">
-          <TabsList className="grid w-full grid-cols-2">
-            <TabsTrigger value="input">Input & Generate</TabsTrigger>
-            <TabsTrigger value="review" disabled={!generatedData}>Review & Submit</TabsTrigger>
-          </TabsList>
+        <EnhancedTabs defaultValue="input" className="w-full">
+          <EnhancedTabsList variant="default" size="md" className="grid w-full grid-cols-2">
+            <EnhancedTabsTrigger value="input" variant="default" size="md">Input & Generate</EnhancedTabsTrigger>
+            <EnhancedTabsTrigger value="review" variant="default" size="md" disabled={!generatedData}>Review & Submit</EnhancedTabsTrigger>
+          </EnhancedTabsList>
           
-          <TabsContent value="input" className="space-y-6">
+          <EnhancedTabsContent value="input" className="space-y-6">
             <div className="space-y-4">
               <div className="space-y-2">
                 <Label htmlFor="patientInfo">Patient Information</Label>
@@ -239,9 +238,9 @@ const AutoReferralModal = ({ isOpen, onClose, onSubmit }: AutoReferralModalProps
                 </Button>
               </div>
             </div>
-          </TabsContent>
+          </EnhancedTabsContent>
           
-          <TabsContent value="review" className="space-y-6">
+          <EnhancedTabsContent value="review" className="space-y-6">
             {generatedData && (
               <div className="space-y-4">
                 <div className="flex items-center justify-between">
@@ -302,8 +301,8 @@ const AutoReferralModal = ({ isOpen, onClose, onSubmit }: AutoReferralModalProps
                 </Card>
               </div>
             )}
-          </TabsContent>
-        </Tabs>
+          </EnhancedTabsContent>
+        </EnhancedTabs>
 
         <DialogFooter>
           <Button type="button" variant="outline" onClick={handleClose}>Cancel</Button>
