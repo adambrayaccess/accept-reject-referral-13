@@ -1,4 +1,3 @@
-
 import { useState, useEffect, useMemo } from 'react';
 import { Referral } from '@/types/referral';
 import { fetchReferrals } from '@/services/referralService';
@@ -42,7 +41,8 @@ export const useWaitingListData = (currentSpecialty: string | null = null) => {
       // Filter by specialty and waiting list status
       data = data.filter(ref => 
         ref.specialty === currentSpecialty && 
-        (ref.triageStatus === 'waiting-list' || ref.status === 'new')
+        ref.status === 'accepted' &&
+        ref.triageStatus === 'waiting-list'
       );
       
       // Add calculated properties
@@ -82,6 +82,17 @@ export const useWaitingListData = (currentSpecialty: string | null = null) => {
 
   useEffect(() => {
     loadReferrals();
+    
+    // Listen for referral updates to refresh data
+    const handleReferralUpdate = () => {
+      loadReferrals();
+    };
+    
+    window.addEventListener('referralUpdated', handleReferralUpdate);
+    
+    return () => {
+      window.removeEventListener('referralUpdated', handleReferralUpdate);
+    };
   }, [currentSpecialty]);
 
   // Filter and sort referrals

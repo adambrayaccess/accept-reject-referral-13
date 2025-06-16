@@ -14,7 +14,34 @@ export const updateReferralStatus = async (
     setTimeout(() => {
       const referralIndex = mockReferrals.findIndex(ref => ref.id === referralId);
       if (referralIndex !== -1) {
-        mockReferrals[referralIndex].status = status;
+        const referral = mockReferrals[referralIndex];
+        const oldStatus = referral.status;
+        const oldTriageStatus = referral.triageStatus;
+        
+        // Update status
+        referral.status = status;
+        
+        // Handle automatic triage status transitions
+        if (status === 'accepted' && oldStatus === 'new') {
+          // When accepting a new referral, set to assessed
+          referral.triageStatus = 'assessed';
+        } else if (status === 'rejected') {
+          // When rejecting, set appropriate triage status
+          referral.triageStatus = 'refer-to-another-specialty';
+        }
+        
+        // Add to audit log
+        if (!referral.auditLog) {
+          referral.auditLog = [];
+        }
+        
+        referral.auditLog.push({
+          timestamp: new Date().toISOString(),
+          user: 'Current User',
+          action: `Status updated from ${oldStatus} to ${status}${referral.triageStatus !== oldTriageStatus ? `, triage status updated to ${referral.triageStatus}` : ''}`,
+          notes: notes || undefined
+        });
+        
         console.log(`Referral ${referralId} status updated to ${status}. Notes: ${notes || 'None'}`);
         resolve(true);
       } else {
@@ -34,21 +61,40 @@ export const updateTriageStatus = async (
     setTimeout(() => {
       const referralIndex = mockReferrals.findIndex(ref => ref.id === referralId);
       if (referralIndex !== -1) {
-        mockReferrals[referralIndex].triageStatus = triageStatus;
+        const referral = mockReferrals[referralIndex];
+        const oldTriageStatus = referral.triageStatus;
         
-        // Add to audit log
-        if (!mockReferrals[referralIndex].auditLog) {
-          mockReferrals[referralIndex].auditLog = [];
+        // Update triage status
+        referral.triageStatus = triageStatus;
+        
+        // Handle automatic status transitions
+        if (triageStatus === 'waiting-list' && referral.status === 'new') {
+          // When moving to waiting list, ensure status is accepted
+          referral.status = 'accepted';
+        } else if (triageStatus === 'refer-to-another-specialty') {
+          // When referring elsewhere, set status to rejected
+          referral.status = 'rejected';
         }
         
-        mockReferrals[referralIndex].auditLog.push({
+        // Add to audit log
+        if (!referral.auditLog) {
+          referral.auditLog = [];
+        }
+        
+        referral.auditLog.push({
           timestamp: new Date().toISOString(),
           user: 'Current User',
-          action: `Triage status updated to ${triageStatus}`,
+          action: `Triage status updated from ${oldTriageStatus} to ${triageStatus}`,
           notes: notes || undefined
         });
         
         console.log(`Referral ${referralId} triage status updated to ${triageStatus}. Notes: ${notes || 'None'}`);
+        
+        // Trigger a custom event for real-time updates across components
+        window.dispatchEvent(new CustomEvent('referralUpdated', { 
+          detail: { referralId, triageStatus, status: referral.status } 
+        }));
+        
         resolve(true);
       } else {
         resolve(false);

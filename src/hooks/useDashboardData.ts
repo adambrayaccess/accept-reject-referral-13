@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { Referral } from '@/types/referral';
 import { fetchReferrals } from '@/services/referralService';
@@ -26,6 +25,16 @@ export const useDashboardData = (currentSpecialty: string | null = null) => {
       if (currentSpecialty) {
         data = data.filter(ref => ref.specialty === currentSpecialty);
       }
+      
+      // Filter for dashboard: exclude referrals that are only on waiting list
+      // Dashboard shows: new referrals, recently processed referrals, but NOT pure waiting list items
+      data = data.filter(ref => {
+        // Exclude referrals that are accepted AND on waiting-list (these belong to waiting list view)
+        if (ref.status === 'accepted' && ref.triageStatus === 'waiting-list') {
+          return false;
+        }
+        return true;
+      });
       
       // Sort by display order if it exists, otherwise by creation date
       data.sort((a, b) => {
@@ -56,6 +65,17 @@ export const useDashboardData = (currentSpecialty: string | null = null) => {
 
   useEffect(() => {
     loadReferrals();
+    
+    // Listen for referral updates to refresh data
+    const handleReferralUpdate = () => {
+      loadReferrals();
+    };
+    
+    window.addEventListener('referralUpdated', handleReferralUpdate);
+    
+    return () => {
+      window.removeEventListener('referralUpdated', handleReferralUpdate);
+    };
   }, [currentSpecialty]);
 
   useEffect(() => {

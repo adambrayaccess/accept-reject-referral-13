@@ -44,12 +44,27 @@ const additionalGastroenterologyReferrals: Referral[] = Array.from({ length: 49 
   const priorityOptions: Referral['priority'][] = ['routine', 'urgent', 'emergency'];
   const priority = priorityOptions[index % 3];
   
-  const triageStatuses: TriageStatus[] = ['pre-assessment', 'assessed', 'pre-admission-assessment', 'waiting-list', 'refer-to-another-specialty'];
-  const triageStatus = triageStatuses[index % triageStatuses.length];
+  // Better distribution: 30% for dashboard, 70% for waiting list
+  let status: Referral['status'];
+  let triageStatus: TriageStatus;
   
-  const status = triageStatus === 'refer-to-another-specialty' ? 'rejected' : 
-                index % 6 === 0 ? 'rejected' : 
-                index % 7 === 0 ? 'accepted' : 'new';
+  if (index <= 15) {
+    // Dashboard referrals
+    if (index % 3 === 0) {
+      status = 'new';
+      triageStatus = 'pre-assessment';
+    } else if (index % 3 === 1) {
+      status = 'accepted';
+      triageStatus = 'assessed';
+    } else {
+      status = 'rejected';
+      triageStatus = 'refer-to-another-specialty';
+    }
+  } else {
+    // Waiting list referrals
+    status = 'accepted';
+    triageStatus = 'waiting-list';
+  }
   
   const daysAgo = Math.floor(Math.random() * 365) + 1;
   const date = new Date();
