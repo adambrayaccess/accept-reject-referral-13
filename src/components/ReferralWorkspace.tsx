@@ -9,6 +9,7 @@ import AuditLog from './audit/AuditLog';
 import CreateSubReferralDialog from './sub-referrals/CreateSubReferralDialog';
 import SubReferralsList from './sub-referrals/SubReferralsList';
 import ParentReferralInfo from './sub-referrals/ParentReferralInfo';
+import PatientActivityTimeline from './PatientActivityTimeline';
 
 interface ReferralWorkspaceProps {
   referral: Referral;
@@ -60,6 +61,9 @@ const ReferralWorkspace = ({ referral, onStatusChange }: ReferralWorkspaceProps)
           </div>
         </CardContent>
       </Card>
+
+      {/* Patient Activity Timeline */}
+      <PatientActivityTimeline />
 
       {/* Show sub-referrals list if this is a parent referral with accepted status */}
       {referral.status === 'accepted' && !referral.isSubReferral && (

@@ -143,7 +143,6 @@ const ReferralView = () => {
             relatedReferrals={relatedReferrals}
           />
           <MedicalHistory patient={referral.patient} />
-          <PatientActivityTimeline />
           <AttachmentViewer attachments={referral.attachments} />
         </div>
         
