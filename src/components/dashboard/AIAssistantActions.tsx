@@ -45,11 +45,11 @@ const AIAssistantActions = () => {
       <CollapsibleTrigger asChild>
         <Button
           variant="outline"
-          className="bg-[#007A7A] hover:bg-[#007A7A]/90 text-white border-[#007A7A] flex items-center gap-2"
+          className="bg-gradient-to-r from-pink-200 to-purple-300 hover:from-pink-300 hover:to-purple-400 text-purple-800 border-none font-medium rounded-lg px-6 py-3 flex items-center gap-3 transition-all duration-200"
         >
-          <Bot className="h-4 w-4" />
-          AI Assistant
-          <ChevronDown className={`h-4 w-4 transition-transform ${isOpen ? 'rotate-180' : ''}`} />
+          <Bot className="h-5 w-5" />
+          Copilot Actions
+          <ChevronDown className={`h-4 w-4 transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`} />
         </Button>
       </CollapsibleTrigger>
       
