@@ -19,7 +19,7 @@ interface AISuggestionsPanelProps {
 const AISuggestionsPanel = ({ referral, onSuggestionApplied }: AISuggestionsPanelProps) => {
   const [suggestions, setSuggestions] = useState<AISuggestionsResponse | null>(null);
   const [isLoading, setIsLoading] = useState(false);
-  const [isExpanded, setIsExpanded] = useState(true);
+  const [isExpanded, setIsExpanded] = useState(false); // Changed default to collapsed
   const { toast } = useToast();
 
   const loadSuggestions = async () => {
@@ -48,18 +48,18 @@ const AISuggestionsPanel = ({ referral, onSuggestionApplied }: AISuggestionsPane
   };
 
   const getConfidenceColor = (confidence: number) => {
-    if (confidence >= 0.8) return 'bg-green-100 text-green-800';
-    if (confidence >= 0.6) return 'bg-yellow-100 text-yellow-800';
-    return 'bg-red-100 text-red-800';
+    if (confidence >= 0.8) return 'bg-green-100 text-green-800 border-green-200';
+    if (confidence >= 0.6) return 'bg-yellow-100 text-yellow-800 border-yellow-200';
+    return 'bg-red-100 text-red-800 border-red-200';
   };
 
   return (
-    <Card>
+    <Card className="bg-gradient-to-r from-pink-50 to-purple-100 border-purple-200">
       <CardHeader className="pb-3">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <Brain className="h-5 w-5 text-blue-600" />
-            <CardTitle className="text-lg">AI Triage Suggestions</CardTitle>
+            <Brain className="h-5 w-5 text-purple-700" />
+            <CardTitle className="text-lg text-purple-800">AI Copilot Suggestions</CardTitle>
             {suggestions && (
               <Badge 
                 variant="outline" 
@@ -75,6 +75,7 @@ const AISuggestionsPanel = ({ referral, onSuggestionApplied }: AISuggestionsPane
               size="sm"
               onClick={handleRefresh}
               disabled={isLoading}
+              className="text-purple-700 hover:text-purple-800 hover:bg-purple-200"
             >
               <RefreshCw className={`h-4 w-4 ${isLoading ? 'animate-spin' : ''}`} />
             </Button>
@@ -82,6 +83,7 @@ const AISuggestionsPanel = ({ referral, onSuggestionApplied }: AISuggestionsPane
               variant="ghost"
               size="sm"
               onClick={() => setIsExpanded(!isExpanded)}
+              className="text-purple-700 hover:text-purple-800 hover:bg-purple-200"
             >
               {isExpanded ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
             </Button>
@@ -93,7 +95,7 @@ const AISuggestionsPanel = ({ referral, onSuggestionApplied }: AISuggestionsPane
         <CardContent className="pt-0">
           {isLoading ? (
             <div className="flex items-center justify-center py-8">
-              <div className="flex items-center gap-2 text-muted-foreground">
+              <div className="flex items-center gap-2 text-purple-600">
                 <Brain className="h-5 w-5 animate-pulse" />
                 <span>Analyzing referral...</span>
               </div>
@@ -107,18 +109,18 @@ const AISuggestionsPanel = ({ referral, onSuggestionApplied }: AISuggestionsPane
                     referral={referral}
                     onApplied={onSuggestionApplied}
                   />
-                  {index < suggestions.suggestions.length - 1 && <Separator className="mt-3" />}
+                  {index < suggestions.suggestions.length - 1 && <Separator className="mt-3 bg-purple-200" />}
                 </div>
               ))}
               
-              <div className="pt-3 mt-3 border-t">
-                <div className="text-xs text-muted-foreground">
+              <div className="pt-3 mt-3 border-t border-purple-200">
+                <div className="text-xs text-purple-600">
                   Generated in {suggestions.processingTime}ms at {new Date(suggestions.generatedAt).toLocaleTimeString()}
                 </div>
               </div>
             </div>
           ) : (
-            <div className="text-center py-6 text-muted-foreground">
+            <div className="text-center py-6 text-purple-600">
               <Brain className="h-8 w-8 mx-auto mb-2 opacity-50" />
               <p>No AI suggestions available at this time</p>
             </div>
