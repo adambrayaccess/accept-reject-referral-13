@@ -138,13 +138,17 @@ const ReferralView = () => {
       </div>
       
       <div className="grid grid-cols-1 lg:grid-cols-[1fr,600px] gap-6">
-        <div className="space-y-6">
-          <ReferralDetail 
-            referral={referral} 
-            relatedReferrals={relatedReferrals}
-          />
-          <MedicalHistory patient={referral.patient} />
-          <AttachmentViewer attachments={referral.attachments} />
+        <div className="sticky top-6">
+          <ScrollArea className="h-[calc(100vh-12rem)]">
+            <div className="pr-4 space-y-6">
+              <ReferralDetail 
+                referral={referral} 
+                relatedReferrals={relatedReferrals}
+              />
+              <MedicalHistory patient={referral.patient} />
+              <AttachmentViewer attachments={referral.attachments} />
+            </div>
+          </ScrollArea>
         </div>
         
         <div className="sticky top-6">
