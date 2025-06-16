@@ -20,6 +20,12 @@ interface ReferralWorkspaceProps {
 const ReferralWorkspace = ({ referral, onStatusChange }: ReferralWorkspaceProps) => {
   const [refreshKey, setRefreshKey] = useState(0);
 
+  useEffect(() => {
+    console.log('ReferralWorkspace - Referral status:', referral.status);
+    console.log('ReferralWorkspace - Should show AI suggestions:', referral.status === 'accepted');
+    console.log('ReferralWorkspace - Full referral data:', referral);
+  }, [referral]);
+
   const handleSubReferralCreated = () => {
     setRefreshKey(prev => prev + 1);
     onStatusChange();
@@ -43,10 +49,13 @@ const ReferralWorkspace = ({ referral, onStatusChange }: ReferralWorkspaceProps)
 
       {/* AI Suggestions Panel - Show for accepted referrals */}
       {referral.status === 'accepted' && (
-        <AISuggestionsPanel 
-          referral={referral}
-          onSuggestionApplied={handleAISuggestionApplied}
-        />
+        <div>
+          <div className="text-xs text-blue-600 mb-2">DEBUG: AI Suggestions should appear here</div>
+          <AISuggestionsPanel 
+            referral={referral}
+            onSuggestionApplied={handleAISuggestionApplied}
+          />
+        </div>
       )}
 
       <Card>
