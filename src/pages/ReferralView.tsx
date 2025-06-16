@@ -3,7 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { fetchReferralById, fetchPatientReferrals } from '@/services/referralService';
 import { Referral } from '@/types/referral';
 import ReferralDetail from '@/components/ReferralDetail';
-import AttachmentViewer from '@/components/AttachmentViewer';
+import ReferralDocuments from '@/components/ReferralDocuments';
 import ReferralActions from '@/components/ReferralActions';
 import MedicalHistory from '@/components/MedicalHistory';
 import Titlebar from '@/components/Titlebar';
@@ -80,6 +80,10 @@ const ReferralView = () => {
 
   const handleStatusChange = () => {
     loadReferral();
+  };
+
+  const handleDocumentUploaded = () => {
+    loadReferral(); // Refresh to show new documents
   };
 
   const handleBack = () => {
@@ -160,7 +164,11 @@ const ReferralView = () => {
                   relatedReferrals={relatedReferrals}
                 />
                 <MedicalHistory patient={referral.patient} />
-                <AttachmentViewer attachments={referral.attachments} />
+                <ReferralDocuments 
+                  attachments={referral.attachments} 
+                  referralId={referral.id}
+                  onDocumentUploaded={handleDocumentUploaded}
+                />
               </div>
             </ScrollArea>
           </div>
