@@ -1,29 +1,14 @@
-
 import { Referral } from '@/types/referral';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Calendar, Clock, FileText } from 'lucide-react';
 import { format } from 'date-fns';
 import { Link } from 'react-router-dom';
+import ReferralPriorityBadge from '@/components/dashboard/ReferralPriorityBadge';
 
 interface ReferralCardProps {
   referral: Referral;
 }
-
-const getPriorityVariant = (priority: Referral['priority']) => {
-  switch (priority) {
-    case 'emergency':
-      return 'destructive';
-    case 'urgent':
-      return 'secondary';
-    default:
-      return 'outline';
-  }
-};
-
-const getPriorityLabel = (priority: Referral['priority']) => {
-  return priority.charAt(0).toUpperCase() + priority.slice(1);
-};
 
 const getStatusClass = (status: Referral['status']) => {
   return `status-${status}`;
@@ -68,12 +53,7 @@ const ReferralCard = ({ referral }: ReferralCardProps) => {
             </div>
             
             <div className="flex items-center gap-2 text-sm mt-1">
-              <Badge 
-                variant={getPriorityVariant(referral.priority)}
-                className={referral.priority === 'urgent' ? 'bg-[#973060] text-white hover:bg-[#973060]/80' : ''}
-              >
-                {getPriorityLabel(referral.priority)}
-              </Badge>
+              <ReferralPriorityBadge priority={referral.priority} size="sm" />
               
               {referral.attachments.length > 0 && (
                 <Badge variant="secondary" className="flex items-center gap-1">

@@ -4,6 +4,7 @@ import { EnhancedTabs, EnhancedTabsContent, EnhancedTabsList, EnhancedTabsTrigge
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import { format } from 'date-fns';
+import ReferralPriorityBadge from '@/components/dashboard/ReferralPriorityBadge';
 
 interface ReferralDetailProps {
   referral: Referral;
@@ -14,17 +15,6 @@ interface ReferralDetailProps {
   };
 }
 
-const getPriorityVariant = (priority: Referral['priority']) => {
-  switch (priority) {
-    case 'emergency':
-      return 'destructive';
-    case 'urgent':
-      return 'secondary';
-    default:
-      return 'outline';
-  }
-};
-
 const ReferralDetail = ({ referral, relatedReferrals }: ReferralDetailProps) => {
   return (
     <Card>
@@ -32,9 +22,7 @@ const ReferralDetail = ({ referral, relatedReferrals }: ReferralDetailProps) => 
         <div className="flex flex-col lg:flex-row lg:justify-between lg:items-center gap-2">
           <CardTitle className="text-lg">Referral Details</CardTitle>
           <div className="flex items-center gap-2 flex-wrap">
-            <Badge variant={getPriorityVariant(referral.priority)} className="text-xs">
-              {referral.priority.toUpperCase()}
-            </Badge>
+            <ReferralPriorityBadge priority={referral.priority} size="sm" />
             <Badge variant="outline" className="text-xs">
               {`Ref: ${referral.id}`}
             </Badge>

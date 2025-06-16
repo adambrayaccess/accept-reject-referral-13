@@ -1,5 +1,6 @@
 
 import { differenceInDays } from 'date-fns';
+import { getPriorityVariant } from '@/lib/priorityUtils';
 
 export const calculateReferralAgeDays = (created: string) => {
   return differenceInDays(new Date(), new Date(created));
@@ -15,11 +16,5 @@ export const getLocationFromAddress = (address?: string) => {
   return parts.pop()?.trim() || 'Unknown';
 };
 
-export const getPriorityVariant = (priority: string) => {
-  switch (priority) {
-    case 'emergency': return 'destructive';
-    case 'urgent': return 'secondary';
-    case 'routine': return 'outline';
-    default: return 'outline';
-  }
-};
+// Re-export the standardized priority variant function
+export { getPriorityVariant };

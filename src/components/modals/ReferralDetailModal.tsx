@@ -8,23 +8,13 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { format } from 'date-fns';
 import { useToast } from '@/components/ui/use-toast';
 import AppointmentStatus from '@/components/AppointmentStatus';
+import ReferralPriorityBadge from '@/components/dashboard/ReferralPriorityBadge';
 
 interface ReferralDetailModalProps {
   referralId: string | null;
   isOpen: boolean;
   onClose: () => void;
 }
-
-const getPriorityVariant = (priority: Referral['priority']) => {
-  switch (priority) {
-    case 'emergency':
-      return 'destructive';
-    case 'urgent':
-      return 'secondary';
-    default:
-      return 'outline';
-  }
-};
 
 const ReferralDetailModal = ({ referralId, isOpen, onClose }: ReferralDetailModalProps) => {
   const [referral, setReferral] = useState<Referral | null>(null);
@@ -99,9 +89,7 @@ const ReferralDetailModal = ({ referralId, isOpen, onClose }: ReferralDetailModa
           <div className="space-y-6">
             <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-2">
               <div className="flex items-center gap-2">
-                <Badge variant={getPriorityVariant(referral.priority)}>
-                  {referral.priority.toUpperCase()}
-                </Badge>
+                <ReferralPriorityBadge priority={referral.priority} />
                 <Badge variant="outline">
                   {`Ref: ${referral.id}`}
                 </Badge>
