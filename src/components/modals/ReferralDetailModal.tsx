@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { Referral } from '@/types/referral';
 import { fetchReferralById, fetchPatientReferrals } from '@/services/referralService';
@@ -8,6 +7,7 @@ import { Separator } from '@/components/ui/separator';
 import { Skeleton } from '@/components/ui/skeleton';
 import { format } from 'date-fns';
 import { useToast } from '@/components/ui/use-toast';
+import AppointmentStatus from '@/components/AppointmentStatus';
 
 interface ReferralDetailModalProps {
   referralId: string | null;
@@ -96,7 +96,7 @@ const ReferralDetailModal = ({ referralId, isOpen, onClose }: ReferralDetailModa
             <Skeleton className="w-full h-[150px]" />
           </div>
         ) : referral ? (
-          <div className="space-y-4">
+          <div className="space-y-6">
             <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-2">
               <div className="flex items-center gap-2">
                 <Badge variant={getPriorityVariant(referral.priority)}>
@@ -179,6 +179,10 @@ const ReferralDetailModal = ({ referralId, isOpen, onClose }: ReferralDetailModa
                 </div>
               </div>
             </div>
+            
+            {/* Appointment Status Section */}
+            <Separator />
+            <AppointmentStatus referralId={referral.id} />
           </div>
         ) : null}
       </DialogContent>
