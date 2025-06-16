@@ -186,11 +186,15 @@ const Dashboard = () => {
           </div>
 
           <EnhancedTabs defaultValue="all" className="w-full">
-            <EnhancedTabsList variant="grid" size="md">
-              <EnhancedTabsTrigger value="all" variant="grid" size="md">All Referrals</EnhancedTabsTrigger>
-              <EnhancedTabsTrigger value="new" variant="grid" size="md">Pending ({referrals.filter(r => r.status === 'new').length})</EnhancedTabsTrigger>
-              <EnhancedTabsTrigger value="processed" variant="grid" size="md">Processed ({referrals.filter(r => r.status !== 'new').length})</EnhancedTabsTrigger>
-            </EnhancedTabsList>
+            <div className="flex justify-center mb-3">
+              <div className="w-full max-w-2xl">
+                <EnhancedTabsList variant="grid" size="md">
+                  <EnhancedTabsTrigger value="all" variant="grid" size="md">All Referrals</EnhancedTabsTrigger>
+                  <EnhancedTabsTrigger value="new" variant="grid" size="md">Pending ({referrals.filter(r => r.status === 'new').length})</EnhancedTabsTrigger>
+                  <EnhancedTabsTrigger value="processed" variant="grid" size="md">Processed ({referrals.filter(r => r.status !== 'new').length})</EnhancedTabsTrigger>
+                </EnhancedTabsList>
+              </div>
+            </div>
 
             <EnhancedTabsContent value="all">
               <ReferralGrid 

@@ -111,19 +111,23 @@ const AdminPage = () => {
         />
 
         <EnhancedTabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <EnhancedTabsList variant="grid" size="md">
-            <EnhancedTabsTrigger value="overview" variant="grid" size="md">
-              Overview
-            </EnhancedTabsTrigger>
-            <EnhancedTabsTrigger 
-              value="allocation" 
-              variant="grid" 
-              size="md"
-              disabled={!currentSpecialty}
-            >
-              Allocation {currentSpecialty ? `(${currentSpecialty})` : '(Select Specialty)'}
-            </EnhancedTabsTrigger>
-          </EnhancedTabsList>
+          <div className="flex justify-center mb-3">
+            <div className="w-full max-w-2xl">
+              <EnhancedTabsList variant="grid" size="md">
+                <EnhancedTabsTrigger value="overview" variant="grid" size="md">
+                  Overview
+                </EnhancedTabsTrigger>
+                <EnhancedTabsTrigger 
+                  value="allocation" 
+                  variant="grid" 
+                  size="md"
+                  disabled={!currentSpecialty}
+                >
+                  Allocation {currentSpecialty ? `(${currentSpecialty})` : '(Select Specialty)'}
+                </EnhancedTabsTrigger>
+              </EnhancedTabsList>
+            </div>
+          </div>
 
           <EnhancedTabsContent value="overview" className="space-y-6">
             <OverallStatsCards stats={overallStats} />

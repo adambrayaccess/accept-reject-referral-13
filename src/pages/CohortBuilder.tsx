@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { EnhancedTabs, EnhancedTabsContent, EnhancedTabsList, EnhancedTabsTrigger } from '@/components/ui/enhanced-tabs';
@@ -73,17 +74,21 @@ const CohortBuilder = () => {
         />
 
         <EnhancedTabs defaultValue="waitingList" className="w-full">
-          <EnhancedTabsList variant="grid" size="md">
-            <EnhancedTabsTrigger value="waitingList" variant="grid" size="md">
-              Waiting List
-            </EnhancedTabsTrigger>
-            <EnhancedTabsTrigger value="stats" variant="grid" size="md">
-              Stats & Reports
-            </EnhancedTabsTrigger>
-            <EnhancedTabsTrigger value="tagged" variant="grid" size="md">
-              Tagged Patients
-            </EnhancedTabsTrigger>
-          </EnhancedTabsList>
+          <div className="flex justify-center mb-3">
+            <div className="w-full max-w-2xl">
+              <EnhancedTabsList variant="grid" size="md">
+                <EnhancedTabsTrigger value="waitingList" variant="grid" size="md">
+                  Waiting List
+                </EnhancedTabsTrigger>
+                <EnhancedTabsTrigger value="stats" variant="grid" size="md">
+                  Stats & Reports
+                </EnhancedTabsTrigger>
+                <EnhancedTabsTrigger value="tagged" variant="grid" size="md">
+                  Tagged Patients
+                </EnhancedTabsTrigger>
+              </EnhancedTabsList>
+            </div>
+          </div>
           
           <EnhancedTabsContent value="waitingList" className="space-y-6">
             <WaitingListTab
