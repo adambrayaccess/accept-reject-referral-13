@@ -1,9 +1,11 @@
+
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
 import { FilePlus, Users, Shield } from 'lucide-react';
 import SearchBar from './dashboard/SearchBar';
 import FilterBar from './dashboard/FilterBar';
 import SortControls from './dashboard/SortControls';
+import ViewToggle from './dashboard/ViewToggle';
 import ReferralGrid from './dashboard/ReferralGrid';
 import StatisticsBar from './dashboard/StatisticsBar';
 import Titlebar from './Titlebar';
@@ -17,6 +19,7 @@ import { useNavigate } from 'react-router-dom';
 
 const Dashboard = () => {
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+  const [view, setView] = useState<'card' | 'list'>('card');
   const { toast } = useToast();
   const navigate = useNavigate();
   const [currentSpecialty, setCurrentSpecialty] = useState<string | null>(null);
@@ -134,6 +137,7 @@ const Dashboard = () => {
                 sortDirection={sortDirection}
                 setSortDirection={setSortDirection}
               />
+              <ViewToggle view={view} onViewChange={setView} />
             </div>
           </div>
 
@@ -145,14 +149,15 @@ const Dashboard = () => {
             </TabsList>
 
             <TabsContent value="all">
-              <ReferralGrid referrals={filteredReferrals} isLoading={isLoading} />
+              <ReferralGrid referrals={filteredReferrals} isLoading={isLoading} view={view} />
             </TabsContent>
 
             <TabsContent value="new">
               <ReferralGrid 
                 referrals={filteredReferrals} 
                 isLoading={isLoading} 
-                filter={(r) => r.status === 'new'} 
+                filter={(r) => r.status === 'new'}
+                view={view}
               />
             </TabsContent>
 
@@ -160,7 +165,8 @@ const Dashboard = () => {
               <ReferralGrid 
                 referrals={filteredReferrals} 
                 isLoading={isLoading} 
-                filter={(r) => r.status !== 'new'} 
+                filter={(r) => r.status !== 'new'}
+                view={view}
               />
             </TabsContent>
           </Tabs>
