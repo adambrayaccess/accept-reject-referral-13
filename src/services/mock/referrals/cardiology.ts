@@ -192,13 +192,6 @@ const additionalDashboardReferrals: Referral[] = Array.from({ length: 7 }, (_, i
   const priorityOptions: Referral['priority'][] = ['routine', 'urgent', 'emergency'];
   const priority = priorityOptions[index % 3];
   
-  // Dashboard statuses and triage statuses (not waiting-list)
-  const statusOptions: Referral['status'][] = ['new', 'accepted', 'rejected'];
-  const triageStatusOptions: TriageStatus[] = ['pre-assessment', 'assessed', 'pre-admission-assessment', 'refer-to-another-specialty'];
-  
-  const status = statusOptions[i % 3];
-  const triageStatus = triageStatusOptions[i % 4];
-  
   const daysAgo = Math.floor(Math.random() * 30) + 1;
   const date = new Date();
   date.setDate(date.getDate() - daysAgo);
@@ -221,14 +214,14 @@ const additionalDashboardReferrals: Referral[] = Array.from({ length: 7 }, (_, i
     id: `CARD-DASH-${(index + 1).toString().padStart(3, '0')}`,
     ubrn: `CDASH${(3000000 + index).toString().padStart(8, '0')}`,
     created,
-    status,
+    status: 'accepted' as const,
     priority,
     patient: mockPatients[patientIndex],
     referrer: mockPractitioners[practitionerIndex],
     specialty: 'Cardiology',
     service: index % 3 === 0 ? 'Rapid Access Chest Pain Clinic' : 
              index % 3 === 1 ? 'Heart Failure Clinic' : 'Arrhythmia Service',
-    triageStatus,
+    triageStatus: 'waiting-list' as const,
     tags: tagOptions[i % tagOptions.length],
     appointmentDetails,
     ...subReferralData,
