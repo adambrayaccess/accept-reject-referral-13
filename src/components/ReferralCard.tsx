@@ -68,7 +68,10 @@ const ReferralCard = ({ referral }: ReferralCardProps) => {
             </div>
             
             <div className="flex items-center gap-2 text-sm mt-1">
-              <Badge variant={getPriorityVariant(referral.priority)}>
+              <Badge 
+                variant={getPriorityVariant(referral.priority)}
+                className={referral.priority === 'urgent' ? 'bg-[#973060] text-white hover:bg-[#973060]/80' : ''}
+              >
                 {getPriorityLabel(referral.priority)}
               </Badge>
               
