@@ -8,13 +8,13 @@ export const cardiologyReferrals: Referral[] = [
     id: 'REF-2023-001',
     ubrn: '123456789012',
     created: '2023-06-15T09:30:00Z',
-    status: 'accepted',
+    status: 'new',
     priority: 'urgent',
     patient: mockPatients[0],
     referrer: mockPractitioners[0],
     specialty: 'Cardiology',
     service: 'Rapid Access Chest Pain Clinic',
-    triageStatus: 'waiting-list',
+    triageStatus: 'assessed',
     tags: ['chest-pain', 'urgent-review', 'family-history'],
     clinicalInfo: {
       reason: 'Chest pain on exertion',
@@ -47,14 +47,14 @@ export const cardiologyReferrals: Referral[] = [
     id: 'AGE-2024-002',
     ubrn: 'AGE002',
     created: '2024-04-26T09:15:00Z',
-    status: 'accepted',
+    status: 'rejected',
     priority: 'urgent',
     patient: mockPatients[2],
     referrer: mockPractitioners[4],
     specialty: 'Cardiology',
     service: 'Rapid Access Chest Pain Clinic',
-    triageStatus: 'waiting-list',
-    tags: ['chest-pain', 'echo-required'],
+    triageStatus: 'refer-to-another-specialty',
+    tags: ['refer-elsewhere', 'non-cardiac'],
     clinicalInfo: {
       reason: 'Chest pain on exertion',
       history: 'Patient reports intermittent chest pain during moderate exercise.',
@@ -84,26 +84,29 @@ const additionalCardiologyReferrals: Referral[] = Array.from({ length: 48 }, (_,
   const priorityOptions: Referral['priority'][] = ['routine', 'urgent', 'emergency'];
   const priority = priorityOptions[index % 3];
   
-  // Ensure all referrals have waiting-list triage status for the waiting list screen
-  const triageStatus: TriageStatus = 'waiting-list';
-  const status = 'accepted';
+  const triageStatuses: TriageStatus[] = ['pre-assessment', 'assessed', 'pre-admission-assessment', 'waiting-list', 'refer-to-another-specialty'];
+  const triageStatus = triageStatuses[index % triageStatuses.length];
   
-  const daysAgo = Math.floor(Math.random() * 180) + 1; // Keep within 6 months for waiting list
+  const status = triageStatus === 'refer-to-another-specialty' ? 'rejected' : 
+                index % 6 === 0 ? 'rejected' : 
+                index % 7 === 0 ? 'accepted' : 'new';
+  
+  const daysAgo = Math.floor(Math.random() * 365) + 1;
   const date = new Date();
   date.setDate(date.getDate() - daysAgo);
   
-  // Enhanced tag options for cardiology - ensure every referral has at least 2 tags
+  // Enhanced tag options for cardiology
   const tagOptions = [
-    ['chest-pain', 'acs-ruled-out', 'ecg-abnormal'],
-    ['palpitations', 'ecg-abnormal', 'holter-required'],
-    ['heart-failure', 'echo-required', 'bnp-elevated'],
-    ['hypertension', 'medication-review', 'target-organ-damage'],
-    ['arrhythmia', 'holter-needed', 'anticoagulation'],
-    ['valve-disease', 'murmur', 'echo-required'],
-    ['syncope', 'tilt-test', 'arrhythmia-suspected'],
-    ['post-mi', 'rehabilitation', 'secondary-prevention'],
-    ['diabetes', 'cardiovascular-risk', 'statin-indicated'],
-    ['family-history', 'screening', 'risk-assessment']
+    ['chest-pain', 'acs-ruled-out'],
+    ['palpitations', 'ecg-abnormal'],
+    ['heart-failure', 'echo-required'],
+    ['hypertension', 'medication-review'],
+    ['arrhythmia', 'holter-needed'],
+    ['valve-disease', 'murmur'],
+    ['syncope', 'tilt-test'],
+    ['post-mi', 'rehabilitation'],
+    ['diabetes', 'cardiovascular-risk'],
+    ['family-history', 'screening']
   ];
   
   const attachmentOptions = [

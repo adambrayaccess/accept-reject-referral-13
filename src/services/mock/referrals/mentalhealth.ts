@@ -44,26 +44,29 @@ const additionalMentalHealthReferrals: Referral[] = Array.from({ length: 49 }, (
   const priorityOptions: Referral['priority'][] = ['routine', 'urgent', 'emergency'];
   const priority = priorityOptions[index % 3];
   
-  // Ensure all referrals have waiting-list triage status
-  const triageStatus: TriageStatus = 'waiting-list';
-  const status = 'accepted';
+  const triageStatuses: TriageStatus[] = ['pre-assessment', 'assessed', 'pre-admission-assessment', 'waiting-list', 'refer-to-another-specialty'];
+  const triageStatus = triageStatuses[index % triageStatuses.length];
   
-  const daysAgo = Math.floor(Math.random() * 180) + 1;
+  const status = triageStatus === 'refer-to-another-specialty' ? 'rejected' : 
+                index % 6 === 0 ? 'rejected' : 
+                index % 7 === 0 ? 'accepted' : 'new';
+  
+  const daysAgo = Math.floor(Math.random() * 365) + 1;
   const date = new Date();
   date.setDate(date.getDate() - daysAgo);
   
-  // Enhanced tag options for mental health - ensure every referral has at least 2 tags
+  // Enhanced tag options for mental health
   const tagOptions = [
-    ['depression', 'medication-review', 'therapy-indicated'],
-    ['anxiety', 'cbt-candidate', 'panic-disorder'],
-    ['bipolar', 'mood-stabilizer', 'lithium-monitoring'],
-    ['psychosis', 'antipsychotic', 'first-episode'],
-    ['ptsd', 'trauma-therapy', 'emdr-candidate'],
-    ['eating-disorder', 'specialist-unit', 'nutritional-support'],
-    ['substance-misuse', 'dual-diagnosis', 'detox-required'],
-    ['personality-disorder', 'dbt-candidate', 'borderline-traits'],
-    ['self-harm', 'safety-planning', 'crisis-intervention'],
-    ['suicidal-ideation', 'crisis-team', 'risk-assessment']
+    ['depression', 'medication-review'],
+    ['anxiety', 'cbt-candidate'],
+    ['bipolar', 'mood-stabilizer'],
+    ['psychosis', 'antipsychotic'],
+    ['ptsd', 'trauma-therapy'],
+    ['eating-disorder', 'specialist-unit'],
+    ['substance-misuse', 'dual-diagnosis'],
+    ['personality-disorder', 'dbt-candidate'],
+    ['self-harm', 'safety-planning'],
+    ['suicidal-ideation', 'crisis-team']
   ];
   
   const attachmentOptions = [

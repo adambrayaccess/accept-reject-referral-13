@@ -8,13 +8,13 @@ export const rheumatologyReferrals: Referral[] = [
     id: 'REF-2023-004',
     ubrn: '456789012345',
     created: '2023-06-12T15:45:00Z',
-    status: 'accepted',
+    status: 'new',
     priority: 'routine',
     patient: mockPatients[3],
     referrer: mockPractitioners[3],
     specialty: 'Rheumatology',
     service: 'General Rheumatology',
-    triageStatus: 'waiting-list',
+    triageStatus: 'assessed',
     tags: ['joint-pain', 'ra-suspected', 'family-history'],
     clinicalInfo: {
       reason: 'Joint pain and stiffness',
@@ -44,26 +44,29 @@ const additionalRheumatologyReferrals: Referral[] = Array.from({ length: 49 }, (
   const priorityOptions: Referral['priority'][] = ['routine', 'urgent', 'emergency'];
   const priority = priorityOptions[index % 3];
   
-  // Ensure all referrals have waiting-list triage status
-  const triageStatus: TriageStatus = 'waiting-list';
-  const status = 'accepted';
+  const triageStatuses: TriageStatus[] = ['pre-assessment', 'assessed', 'pre-admission-assessment', 'waiting-list', 'refer-to-another-specialty'];
+  const triageStatus = triageStatuses[index % triageStatuses.length];
   
-  const daysAgo = Math.floor(Math.random() * 180) + 1;
+  const status = triageStatus === 'refer-to-another-specialty' ? 'rejected' : 
+                index % 6 === 0 ? 'rejected' : 
+                index % 7 === 0 ? 'accepted' : 'new';
+  
+  const daysAgo = Math.floor(Math.random() * 365) + 1;
   const date = new Date();
   date.setDate(date.getDate() - daysAgo);
   
-  // Enhanced tag options for rheumatology - ensure every referral has at least 2 tags
+  // Enhanced tag options for rheumatology
   const tagOptions = [
-    ['rheumatoid-arthritis', 'dmard-candidate', 'early-disease'],
-    ['osteoarthritis', 'joint-replacement', 'conservative-management'],
-    ['lupus', 'autoimmune', 'ana-positive'],
-    ['gout', 'uric-acid-high', 'allopurinol-candidate'],
-    ['fibromyalgia', 'pain-management', 'exercise-therapy'],
-    ['psoriatic-arthritis', 'biologic-candidate', 'skin-involvement'],
-    ['ankylosing-spondylitis', 'hla-b27', 'spinal-involvement'],
-    ['vasculitis', 'steroid-candidate', 'organ-involvement'],
-    ['polymyalgia', 'temporal-arteritis', 'steroid-responsive'],
-    ['osteoporosis', 'fracture-risk', 'bisphosphonate-candidate']
+    ['rheumatoid-arthritis', 'dmard-candidate'],
+    ['osteoarthritis', 'joint-replacement'],
+    ['lupus', 'autoimmune'],
+    ['gout', 'uric-acid-high'],
+    ['fibromyalgia', 'pain-management'],
+    ['psoriatic-arthritis', 'biologic-candidate'],
+    ['ankylosing-spondylitis', 'hla-b27'],
+    ['vasculitis', 'steroid-candidate'],
+    ['polymyalgia', 'temporal-arteritis'],
+    ['osteoporosis', 'fracture-risk']
   ];
   
   const attachmentOptions = [
