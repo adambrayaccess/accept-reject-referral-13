@@ -1,4 +1,3 @@
-
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Clock } from 'lucide-react';
 import { format } from 'date-fns';
@@ -71,7 +70,7 @@ const PatientActivityTimeline = ({ events = [] }: PatientActivityTimelineProps) 
   return (
     <Card>
       <CardHeader className="pb-4">
-        <CardTitle className="flex items-center gap-2 text-lg">
+        <CardTitle className="flex items-center gap-2">
           <Clock className="h-5 w-5" />
           Activity Timeline
         </CardTitle>
