@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { EnhancedTabs, EnhancedTabsContent, EnhancedTabsList, EnhancedTabsTrigger } from '@/components/ui/enhanced-tabs';
@@ -110,13 +111,13 @@ const AdminPage = () => {
         />
 
         <EnhancedTabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <EnhancedTabsList variant="default" size="md" className="grid w-full grid-cols-2">
-            <EnhancedTabsTrigger value="overview" variant="default" size="md">
+          <EnhancedTabsList variant="grid" size="md">
+            <EnhancedTabsTrigger value="overview" variant="grid" size="md">
               Overview
             </EnhancedTabsTrigger>
             <EnhancedTabsTrigger 
               value="allocation" 
-              variant="default" 
+              variant="grid" 
               size="md"
               disabled={!currentSpecialty}
             >

@@ -1,4 +1,4 @@
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+
 import { Button } from '@/components/ui/button';
 import { Users, Shield, ChevronDown } from 'lucide-react';
 import SearchBar from './dashboard/SearchBar';
@@ -186,10 +186,10 @@ const Dashboard = () => {
           </div>
 
           <EnhancedTabs defaultValue="all" className="w-full">
-            <EnhancedTabsList variant="default" size="md" className="w-full grid grid-cols-3">
-              <EnhancedTabsTrigger value="all" variant="default" size="md">All Referrals</EnhancedTabsTrigger>
-              <EnhancedTabsTrigger value="new" variant="default" size="md">Pending ({referrals.filter(r => r.status === 'new').length})</EnhancedTabsTrigger>
-              <EnhancedTabsTrigger value="processed" variant="default" size="md">Processed ({referrals.filter(r => r.status !== 'new').length})</EnhancedTabsTrigger>
+            <EnhancedTabsList variant="grid" size="md">
+              <EnhancedTabsTrigger value="all" variant="grid" size="md">All Referrals</EnhancedTabsTrigger>
+              <EnhancedTabsTrigger value="new" variant="grid" size="md">Pending ({referrals.filter(r => r.status === 'new').length})</EnhancedTabsTrigger>
+              <EnhancedTabsTrigger value="processed" variant="grid" size="md">Processed ({referrals.filter(r => r.status !== 'new').length})</EnhancedTabsTrigger>
             </EnhancedTabsList>
 
             <EnhancedTabsContent value="all">

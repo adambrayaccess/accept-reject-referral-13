@@ -158,9 +158,9 @@ const CreateReferralModal = ({ isOpen, onClose, onSubmit }: CreateReferralModalP
           </div>
 
           <EnhancedTabs defaultValue="patient" className="w-full">
-            <EnhancedTabsList variant="default" size="md" className="grid w-full grid-cols-2">
-              <EnhancedTabsTrigger value="patient" variant="default" size="md">Patient Details</EnhancedTabsTrigger>
-              <EnhancedTabsTrigger value="clinical" variant="default" size="md">Clinical Information</EnhancedTabsTrigger>
+            <EnhancedTabsList variant="grid" size="md">
+              <EnhancedTabsTrigger value="patient" variant="grid" size="md">Patient Details</EnhancedTabsTrigger>
+              <EnhancedTabsTrigger value="clinical" variant="grid" size="md">Clinical Information</EnhancedTabsTrigger>
             </EnhancedTabsList>
             <EnhancedTabsContent value="patient" className="mt-4">
               <PatientDetailsForm

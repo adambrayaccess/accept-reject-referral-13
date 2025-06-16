@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
@@ -174,9 +175,9 @@ const AutoReferralModal = ({ isOpen, onClose, onSubmit }: AutoReferralModalProps
         </DialogHeader>
         
         <EnhancedTabs defaultValue="input" className="w-full">
-          <EnhancedTabsList variant="default" size="md" className="grid w-full grid-cols-2">
-            <EnhancedTabsTrigger value="input" variant="default" size="md">Input & Generate</EnhancedTabsTrigger>
-            <EnhancedTabsTrigger value="review" variant="default" size="md" disabled={!generatedData}>Review & Submit</EnhancedTabsTrigger>
+          <EnhancedTabsList variant="grid" size="md">
+            <EnhancedTabsTrigger value="input" variant="grid" size="md">Input & Generate</EnhancedTabsTrigger>
+            <EnhancedTabsTrigger value="review" variant="grid" size="md" disabled={!generatedData}>Review & Submit</EnhancedTabsTrigger>
           </EnhancedTabsList>
           
           <EnhancedTabsContent value="input" className="space-y-6">
