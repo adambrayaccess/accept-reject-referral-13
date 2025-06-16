@@ -3,7 +3,7 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { 
   Grid, 
-  Feed, 
+  Activity, 
   HelpCircle, 
   MessageCircle, 
   CircleDot, 
@@ -144,7 +144,7 @@ const AppSidebar = ({ onClose }: AppSidebarProps) => {
             <SidebarMenu>
               <SidebarMenuItem>
                 <SidebarMenuButton className="flex items-center px-4 py-3 text-sm text-gray-700 hover:bg-gray-50 hover:text-gray-900">
-                  <Feed className="h-5 w-5 mr-3 text-gray-600" />
+                  <Activity className="h-5 w-5 mr-3 text-gray-600" />
                   Activity Feed
                 </SidebarMenuButton>
               </SidebarMenuItem>
