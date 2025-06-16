@@ -15,6 +15,7 @@ interface CohortBuilderTabProps {
   clearSelection: () => void;
   selectAll: (referrals: Referral[]) => void;
   handleRefresh: () => void;
+  onReorderReferrals?: (reorderedReferrals: Referral[]) => void;
 }
 
 const CohortBuilderTab = ({
@@ -26,11 +27,16 @@ const CohortBuilderTab = ({
   toggleReferralSelection,
   clearSelection,
   selectAll,
-  handleRefresh
+  handleRefresh,
+  onReorderReferrals
 }: CohortBuilderTabProps) => {
   const handleReorderReferrals = (reorderedReferrals: Referral[]) => {
-    // For now, just log the reordering - in a real app this would update the backend
-    console.log('Reordered referrals:', reorderedReferrals.map(r => r.patient.name));
+    if (onReorderReferrals) {
+      onReorderReferrals(reorderedReferrals);
+    } else {
+      // Default behavior - just log the reordering
+      console.log('Reordered referrals:', reorderedReferrals.map(r => r.patient.name));
+    }
   };
 
   return (

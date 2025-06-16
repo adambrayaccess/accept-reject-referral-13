@@ -1,4 +1,3 @@
-
 import { Referral } from '@/types/referral';
 import ReferralCard from '@/components/ReferralCard';
 import ReferralList from './ReferralList';
@@ -8,11 +7,12 @@ interface ReferralGridProps {
   isLoading: boolean;
   filter?: (referral: Referral) => boolean;
   view?: 'card' | 'list';
+  onReorder?: (reorderedReferrals: Referral[]) => void;
 }
 
-const ReferralGrid = ({ referrals, isLoading, filter, view = 'card' }: ReferralGridProps) => {
+const ReferralGrid = ({ referrals, isLoading, filter, view = 'card', onReorder }: ReferralGridProps) => {
   if (view === 'list') {
-    return <ReferralList referrals={referrals} isLoading={isLoading} filter={filter} />;
+    return <ReferralList referrals={referrals} isLoading={isLoading} filter={filter} onReorder={onReorder} />;
   }
 
   const filteredReferrals = filter ? referrals.filter(filter) : referrals;

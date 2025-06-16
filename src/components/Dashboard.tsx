@@ -1,4 +1,3 @@
-
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
 import { FilePlus, Users, Shield } from 'lucide-react';
@@ -71,6 +70,15 @@ const Dashboard = () => {
 
   const navigateToAdmin = () => {
     navigate('/admin');
+  };
+
+  const handleReorderReferrals = (reorderedReferrals: Referral[]) => {
+    // For now, just show a toast - in a real app this would update the backend
+    toast({
+      title: "Order Updated",
+      description: "Referral list has been reordered",
+    });
+    console.log('Reordered referrals:', reorderedReferrals.map(r => `${r.patient.name} (${r.priority})`));
   };
 
   return (
@@ -149,7 +157,12 @@ const Dashboard = () => {
             </TabsList>
 
             <TabsContent value="all">
-              <ReferralGrid referrals={filteredReferrals} isLoading={isLoading} view={view} />
+              <ReferralGrid 
+                referrals={filteredReferrals} 
+                isLoading={isLoading} 
+                view={view} 
+                onReorder={handleReorderReferrals}
+              />
             </TabsContent>
 
             <TabsContent value="new">
@@ -158,6 +171,7 @@ const Dashboard = () => {
                 isLoading={isLoading} 
                 filter={(r) => r.status === 'new'}
                 view={view}
+                onReorder={handleReorderReferrals}
               />
             </TabsContent>
 
@@ -167,6 +181,7 @@ const Dashboard = () => {
                 isLoading={isLoading} 
                 filter={(r) => r.status !== 'new'}
                 view={view}
+                onReorder={handleReorderReferrals}
               />
             </TabsContent>
           </Tabs>
