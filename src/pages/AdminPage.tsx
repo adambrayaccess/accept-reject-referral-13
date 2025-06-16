@@ -60,7 +60,7 @@ const AdminPage = () => {
       <div className="min-h-screen bg-gray-50">
         <Titlebar />
         <PageHeader showSearch={false} />
-        <div className="container py-6">
+        <div className="px-6 py-6">
           <div className="space-y-6">
             <div className="h-8 bg-muted animate-pulse rounded" />
             <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
@@ -80,7 +80,7 @@ const AdminPage = () => {
       <Titlebar />
       <PageHeader showSearch={false} />
       
-      <div className="container py-6 space-y-6">
+      <div className="px-6 py-6 space-y-6">
         <div className="flex flex-col sm:flex-row justify-between items-start gap-4">
           <div>
             <h1 className="text-3xl font-bold">Super User Dashboard</h1>
