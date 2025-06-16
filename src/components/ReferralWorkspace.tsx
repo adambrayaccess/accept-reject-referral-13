@@ -3,7 +3,6 @@ import { useEffect, useState } from 'react';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Referral } from '@/types/referral';
 import ReferralActions from './ReferralActions';
-import TriageStatusUpdate from './triage/TriageStatusUpdate';
 import CollaborationNotes from './collaboration/CollaborationNotes';
 import AuditLog from './audit/AuditLog';
 import CreateSubReferralDialog from './sub-referrals/CreateSubReferralDialog';
@@ -38,23 +37,13 @@ const ReferralWorkspace = ({ referral, onStatusChange }: ReferralWorkspaceProps)
           <div className="space-y-3">
             <ReferralActions referral={referral} onStatusChange={onStatusChange} />
             
-            {referral.status === 'accepted' && (
-              <>
-                <TriageStatusUpdate 
-                  referralId={referral.id}
-                  currentStatus={referral.triageStatus}
-                  onStatusChange={onStatusChange}
+            {referral.status === 'accepted' && !referral.isSubReferral && (
+              <div className="pt-2 border-t">
+                <CreateSubReferralDialog 
+                  parentReferralId={referral.id}
+                  onSubReferralCreated={handleSubReferralCreated}
                 />
-                
-                {!referral.isSubReferral && (
-                  <div className="pt-2 border-t">
-                    <CreateSubReferralDialog 
-                      parentReferralId={referral.id}
-                      onSubReferralCreated={handleSubReferralCreated}
-                    />
-                  </div>
-                )}
-              </>
+              </div>
             )}
           </div>
         </CardContent>

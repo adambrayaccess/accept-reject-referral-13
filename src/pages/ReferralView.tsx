@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { fetchReferralById, fetchPatientReferrals } from '@/services/referralService';
@@ -16,6 +17,7 @@ import { useToast } from '@/components/ui/use-toast';
 import ReferralWorkspace from '@/components/ReferralWorkspace';
 import PatientActivityTimeline from '@/components/PatientActivityTimeline';
 import { Badge } from '@/components/ui/badge';
+import TriageStatusBadge from '@/components/triage/TriageStatusBadge';
 
 const ReferralView = () => {
   const { id } = useParams<{ id: string }>();
@@ -143,10 +145,13 @@ const ReferralView = () => {
         
         <div className="flex flex-col md:flex-row justify-between items-start gap-3 mb-4">
           <div>
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 flex-wrap">
               <h1 className="text-2xl font-bold">{referral.patient.name}</h1>
               {referral.isSubReferral && (
                 <Badge variant="outline" className="text-xs">Sub-referral</Badge>
+              )}
+              {referral.status === 'accepted' && (
+                <TriageStatusBadge status={referral.triageStatus} />
               )}
             </div>
             <p className="text-muted-foreground">
