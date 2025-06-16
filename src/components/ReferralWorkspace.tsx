@@ -10,6 +10,7 @@ import SubReferralsList from './sub-referrals/SubReferralsList';
 import ParentReferralInfo from './sub-referrals/ParentReferralInfo';
 import PatientActivityTimeline from './PatientActivityTimeline';
 import ReferralTagging from './referral-tagging/ReferralTagging';
+import AISuggestionsPanel from './ai-suggestions/AISuggestionsPanel';
 
 interface ReferralWorkspaceProps {
   referral: Referral;
@@ -29,10 +30,23 @@ const ReferralWorkspace = ({ referral, onStatusChange }: ReferralWorkspaceProps)
     onStatusChange();
   };
 
+  const handleAISuggestionApplied = () => {
+    // Refresh the entire view when AI suggestions are applied
+    onStatusChange();
+  };
+
   return (
     <div className="flex flex-col h-full gap-3">
       {referral.isSubReferral && referral.parentReferralId && (
         <ParentReferralInfo childReferralId={referral.id} />
+      )}
+
+      {/* AI Suggestions Panel - Show for accepted referrals */}
+      {referral.status === 'accepted' && (
+        <AISuggestionsPanel 
+          referral={referral}
+          onSuggestionApplied={handleAISuggestionApplied}
+        />
       )}
 
       <Card>

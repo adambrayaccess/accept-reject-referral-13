@@ -3,6 +3,7 @@ import { Referral } from '@/types/referral';
 import AcceptReferralDialog from './actions/AcceptReferralDialog';
 import RejectReferralDialog from './actions/RejectReferralDialog';
 import ReferralStatusIndicator from './actions/ReferralStatusIndicator';
+import TriageStatusUpdate from './triage/TriageStatusUpdate';
 
 interface ReferralActionsProps {
   referral: Referral;
@@ -10,16 +11,29 @@ interface ReferralActionsProps {
 }
 
 const ReferralActions = ({ referral, onStatusChange }: ReferralActionsProps) => {
-  if (referral.status !== 'new') {
-    return <ReferralStatusIndicator status={referral.status} />;
+  if (referral.status === 'new') {
+    return (
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <AcceptReferralDialog referral={referral} onStatusChange={onStatusChange} />
+        <RejectReferralDialog referral={referral} onStatusChange={onStatusChange} />
+      </div>
+    );
   }
 
-  return (
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-      <AcceptReferralDialog referral={referral} onStatusChange={onStatusChange} />
-      <RejectReferralDialog referral={referral} onStatusChange={onStatusChange} />
-    </div>
-  );
+  if (referral.status === 'accepted') {
+    return (
+      <div className="space-y-4">
+        <ReferralStatusIndicator status={referral.status} />
+        <TriageStatusUpdate 
+          referralId={referral.id}
+          currentStatus={referral.triageStatus}
+          onStatusChange={onStatusChange}
+        />
+      </div>
+    );
+  }
+
+  return <ReferralStatusIndicator status={referral.status} />;
 };
 
 export default ReferralActions;
