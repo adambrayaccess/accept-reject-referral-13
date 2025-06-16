@@ -1,4 +1,5 @@
 
+import { useEffect, useRef } from 'react';
 import { TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Referral } from '@/types/referral';
@@ -16,16 +17,25 @@ const WaitingListTableHeader = ({
   isIndeterminate,
   onSelectAll
 }: WaitingListTableHeaderProps) => {
+  const checkboxRef = useRef<HTMLButtonElement>(null);
+
+  useEffect(() => {
+    if (checkboxRef.current) {
+      const inputElement = checkboxRef.current.querySelector('input[type="checkbox"]') as HTMLInputElement;
+      if (inputElement) {
+        inputElement.indeterminate = isIndeterminate;
+      }
+    }
+  }, [isIndeterminate]);
+
   return (
     <TableHeader>
       <TableRow>
         <TableHead className="w-10"></TableHead>
         <TableHead className="w-10">
           <Checkbox
+            ref={checkboxRef}
             checked={isAllSelected}
-            ref={(el) => {
-              if (el) el.indeterminate = isIndeterminate;
-            }}
             onCheckedChange={onSelectAll}
             aria-label={`Select all ${referrals.length} referrals`}
           />

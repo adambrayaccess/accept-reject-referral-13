@@ -24,47 +24,42 @@ import {
   ArrowUpDown, 
   ArrowUp, 
   ArrowDown,
-  X
+  X,
+  Table,
+  Grid3X3
 } from 'lucide-react';
 
 interface WaitingListControlsProps {
-  searchTerm: string;
-  onSearchChange: (value: string) => void;
+  filters: any;
+  updateFilters: (updates: any) => void;
+  clearFilters: () => void;
   sortField: string;
-  onSortFieldChange: (field: string) => void;
+  setSortField: (field: string) => void;
   sortDirection: 'asc' | 'desc';
-  onSortDirectionChange: (direction: 'asc' | 'desc') => void;
-  priorityFilter: string;
-  onPriorityFilterChange: (priority: string) => void;
-  locationFilter: string;
-  onLocationFilterChange: (location: string) => void;
-  ageFilter: { min: number; max: number };
-  onAgeFilterChange: (ageFilter: { min: number; max: number }) => void;
-  onClearFilters: () => void;
+  setSortDirection: (direction: 'asc' | 'desc') => void;
+  view: 'table' | 'grid';
+  onViewChange: (view: 'table' | 'grid') => void;
 }
 
 const WaitingListControls = ({
-  searchTerm,
-  onSearchChange,
+  filters,
+  updateFilters,
+  clearFilters,
   sortField,
-  onSortFieldChange,
+  setSortField,
   sortDirection,
-  onSortDirectionChange,
-  priorityFilter,
-  onPriorityFilterChange,
-  locationFilter,
-  onLocationFilterChange,
-  ageFilter,
-  onAgeFilterChange,
-  onClearFilters
+  setSortDirection,
+  view,
+  onViewChange
 }: WaitingListControlsProps) => {
   const [showAdvancedFilters, setShowAdvancedFilters] = useState(false);
 
   const getActiveFiltersCount = () => {
     let count = 0;
-    if (priorityFilter !== 'all') count++;
-    if (locationFilter) count++;
-    if (ageFilter.min > 0 || ageFilter.max < 365) count++;
+    if (filters.priority !== 'all') count++;
+    if (filters.location) count++;
+    if (filters.search) count++;
+    if (filters.ageRange.min > 0 || filters.ageRange.max < 365) count++;
     return count;
   };
 
@@ -87,14 +82,14 @@ const WaitingListControls = ({
           <Search className="absolute left-2 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
           <Input
             placeholder="Search patient name, NHS number..."
-            value={searchTerm}
-            onChange={(e) => onSearchChange(e.target.value)}
+            value={filters.search || ''}
+            onChange={(e) => updateFilters({ search: e.target.value })}
             className="pl-8"
           />
         </div>
 
         <div className="flex gap-2 items-center">
-          <Select value={sortField} onValueChange={onSortFieldChange}>
+          <Select value={sortField} onValueChange={setSortField}>
             <SelectTrigger className="w-[180px]">
               <SelectValue placeholder="Sort by..." />
             </SelectTrigger>
@@ -110,7 +105,7 @@ const WaitingListControls = ({
           <Button
             variant="outline"
             size="icon"
-            onClick={() => onSortDirectionChange(sortDirection === 'asc' ? 'desc' : 'asc')}
+            onClick={() => setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc')}
           >
             {sortDirection === 'asc' ? (
               <ArrowUp className="h-4 w-4" />
@@ -118,6 +113,25 @@ const WaitingListControls = ({
               <ArrowDown className="h-4 w-4" />
             )}
           </Button>
+
+          <div className="flex gap-1 border rounded-md">
+            <Button
+              variant={view === 'table' ? 'default' : 'ghost'}
+              size="sm"
+              onClick={() => onViewChange('table')}
+              className="rounded-r-none"
+            >
+              <Table className="h-4 w-4" />
+            </Button>
+            <Button
+              variant={view === 'grid' ? 'default' : 'ghost'}
+              size="sm"
+              onClick={() => onViewChange('grid')}
+              className="rounded-l-none"
+            >
+              <Grid3X3 className="h-4 w-4" />
+            </Button>
+          </div>
 
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
@@ -138,7 +152,7 @@ const WaitingListControls = ({
                   <Button
                     variant="ghost"
                     size="sm"
-                    onClick={onClearFilters}
+                    onClick={clearFilters}
                     className="h-auto p-1"
                   >
                     <X className="h-3 w-3" />
@@ -151,7 +165,10 @@ const WaitingListControls = ({
               <div className="p-2 space-y-4">
                 <div>
                   <label className="text-xs font-medium mb-2 block">Priority</label>
-                  <Select value={priorityFilter} onValueChange={onPriorityFilterChange}>
+                  <Select 
+                    value={filters.priority || 'all'} 
+                    onValueChange={(value) => updateFilters({ priority: value })}
+                  >
                     <SelectTrigger className="h-8">
                       <SelectValue />
                     </SelectTrigger>
@@ -168,8 +185,8 @@ const WaitingListControls = ({
                   <label className="text-xs font-medium mb-2 block">Location</label>
                   <Input
                     placeholder="Filter by location..."
-                    value={locationFilter}
-                    onChange={(e) => onLocationFilterChange(e.target.value)}
+                    value={filters.location || ''}
+                    onChange={(e) => updateFilters({ location: e.target.value })}
                     className="h-8"
                   />
                 </div>
@@ -180,20 +197,24 @@ const WaitingListControls = ({
                     <Input
                       type="number"
                       placeholder="Min"
-                      value={ageFilter.min || ''}
-                      onChange={(e) => onAgeFilterChange({
-                        ...ageFilter,
-                        min: parseInt(e.target.value) || 0
+                      value={filters.ageRange?.min || ''}
+                      onChange={(e) => updateFilters({
+                        ageRange: {
+                          ...filters.ageRange,
+                          min: parseInt(e.target.value) || 0
+                        }
                       })}
                       className="h-8"
                     />
                     <Input
                       type="number"
                       placeholder="Max"
-                      value={ageFilter.max === 365 ? '' : ageFilter.max}
-                      onChange={(e) => onAgeFilterChange({
-                        ...ageFilter,
-                        max: parseInt(e.target.value) || 365
+                      value={filters.ageRange?.max === 365 ? '' : filters.ageRange?.max || ''}
+                      onChange={(e) => updateFilters({
+                        ageRange: {
+                          ...filters.ageRange,
+                          max: parseInt(e.target.value) || 365
+                        }
                       })}
                       className="h-8"
                     />
@@ -209,32 +230,32 @@ const WaitingListControls = ({
         <div className="flex flex-wrap gap-2 items-center">
           <span className="text-sm text-muted-foreground">Active filters:</span>
           
-          {priorityFilter !== 'all' && (
+          {filters.priority !== 'all' && (
             <Badge variant="secondary" className="flex items-center gap-1">
-              Priority: {priorityFilter}
+              Priority: {filters.priority}
               <X 
                 className="h-3 w-3 cursor-pointer" 
-                onClick={() => onPriorityFilterChange('all')}
+                onClick={() => updateFilters({ priority: 'all' })}
               />
             </Badge>
           )}
           
-          {locationFilter && (
+          {filters.location && (
             <Badge variant="secondary" className="flex items-center gap-1">
-              Location: {locationFilter}
+              Location: {filters.location}
               <X 
                 className="h-3 w-3 cursor-pointer" 
-                onClick={() => onLocationFilterChange('')}
+                onClick={() => updateFilters({ location: '' })}
               />
             </Badge>
           )}
           
-          {(ageFilter.min > 0 || ageFilter.max < 365) && (
+          {(filters.ageRange?.min > 0 || filters.ageRange?.max < 365) && (
             <Badge variant="secondary" className="flex items-center gap-1">
-              Days: {ageFilter.min}-{ageFilter.max}
+              Days: {filters.ageRange?.min || 0}-{filters.ageRange?.max || 365}
               <X 
                 className="h-3 w-3 cursor-pointer" 
-                onClick={() => onAgeFilterChange({ min: 0, max: 365 })}
+                onClick={() => updateFilters({ ageRange: { min: 0, max: 365 } })}
               />
             </Badge>
           )}
