@@ -11,14 +11,6 @@ import NotFound from "./pages/NotFound";
 import SpecialtySelection from "./pages/SpecialtySelection";
 import CohortBuilder from "./pages/CohortBuilder";
 import AdminPage from "./pages/AdminPage";
-import Patients from "./pages/Patients";
-import Appointments from "./pages/Appointments";
-import Schedule from "./pages/Schedule";
-import Reports from "./pages/Reports";
-import Messages from "./pages/Messages";
-import Documents from "./pages/Documents";
-import Settings from "./pages/Settings";
-import FloatingMenu from "./components/FloatingMenu";
 
 const queryClient = new QueryClient();
 
@@ -27,26 +19,14 @@ const App: React.FC = () => {
     <QueryClientProvider client={queryClient}>
       <BrowserRouter>
         <TooltipProvider>
-          <div className="min-h-screen flex">
-            <FloatingMenu />
-            <div className="flex-1 pl-20 lg:pl-4 transition-all duration-300">
-              <Routes>
-                <Route path="/" element={<Index />} />
-                <Route path="/referral/:id" element={<ReferralView />} />
-                <Route path="/select-specialty" element={<SpecialtySelection />} />
-                <Route path="/cohort-builder" element={<CohortBuilder />} />
-                <Route path="/admin" element={<AdminPage />} />
-                <Route path="/patients" element={<Patients />} />
-                <Route path="/appointments" element={<Appointments />} />
-                <Route path="/schedule" element={<Schedule />} />
-                <Route path="/reports" element={<Reports />} />
-                <Route path="/messages" element={<Messages />} />
-                <Route path="/documents" element={<Documents />} />
-                <Route path="/settings" element={<Settings />} />
-                <Route path="*" element={<NotFound />} />
-              </Routes>
-            </div>
-          </div>
+          <Routes>
+            <Route path="/" element={<Index />} />
+            <Route path="/referral/:id" element={<ReferralView />} />
+            <Route path="/select-specialty" element={<SpecialtySelection />} />
+            <Route path="/cohort-builder" element={<CohortBuilder />} />
+            <Route path="/admin" element={<AdminPage />} />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
           <Toaster />
           <Sonner />
         </TooltipProvider>
