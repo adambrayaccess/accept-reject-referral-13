@@ -10,17 +10,17 @@ interface SubReferralIndicatorProps {
 }
 
 const SubReferralIndicator = ({ referral, variant = 'default' }: SubReferralIndicatorProps) => {
-  // Mock sub-referral data based on referral status and age
   const getSubReferralInfo = () => {
-    const hasSubReferrals = referral.status === 'accepted' && Math.random() > 0.7;
-    const subReferralCount = hasSubReferrals ? Math.floor(Math.random() * 3) + 1 : 0;
-    const canCreateSubReferral = referral.status === 'accepted' && !referral.isSubReferral;
+    const hasSubReferrals = referral.childReferralIds && referral.childReferralIds.length > 0;
+    const subReferralCount = referral.childReferralIds?.length || 0;
+    const canCreateSubReferral = referral.status === 'accepted' && !referral.isSubReferral && !hasSubReferrals;
     
     return {
-      hasSubReferrals,
+      hasSubReferrals: !!hasSubReferrals,
       subReferralCount,
       canCreateSubReferral,
-      isSubReferral: referral.isSubReferral || false
+      isSubReferral: referral.isSubReferral || false,
+      parentReferralId: referral.parentReferralId
     };
   };
 
@@ -53,20 +53,32 @@ const SubReferralIndicator = ({ referral, variant = 'default' }: SubReferralIndi
   return (
     <div className="space-y-1">
       {subReferralInfo.isSubReferral && (
-        <Badge variant="outline" className="text-xs bg-blue-50 border-blue-200">
-          <GitBranch className="h-3 w-3 mr-1 text-blue-500" />
-          Sub-referral
-        </Badge>
+        <div className="space-y-1">
+          <Badge variant="outline" className="text-xs bg-blue-50 border-blue-200">
+            <GitBranch className="h-3 w-3 mr-1 text-blue-500" />
+            Sub-referral
+          </Badge>
+          {subReferralInfo.parentReferralId && (
+            <div className="text-xs text-muted-foreground">
+              Parent: {subReferralInfo.parentReferralId}
+            </div>
+          )}
+        </div>
       )}
       
       {subReferralInfo.hasSubReferrals && (
-        <Badge variant="outline" className="text-xs bg-green-50 border-green-200">
-          <Users className="h-3 w-3 mr-1 text-green-500" />
-          {subReferralInfo.subReferralCount} Sub-referral{subReferralInfo.subReferralCount > 1 ? 's' : ''}
-        </Badge>
+        <div className="space-y-1">
+          <Badge variant="outline" className="text-xs bg-green-50 border-green-200">
+            <Users className="h-3 w-3 mr-1 text-green-500" />
+            {subReferralInfo.subReferralCount} Sub-referral{subReferralInfo.subReferralCount > 1 ? 's' : ''}
+          </Badge>
+          <div className="text-xs text-muted-foreground">
+            IDs: {referral.childReferralIds?.join(', ')}
+          </div>
+        </div>
       )}
       
-      {subReferralInfo.canCreateSubReferral && !subReferralInfo.hasSubReferrals && (
+      {subReferralInfo.canCreateSubReferral && (
         <Button
           variant="ghost"
           size="sm"

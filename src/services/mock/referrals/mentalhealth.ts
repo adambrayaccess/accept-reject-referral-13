@@ -2,6 +2,7 @@
 import { Referral, TriageStatus } from '@/types/referral';
 import { mockPatients } from '../patients';
 import { mockPractitioners } from '../practitioners';
+import { generateMockAppointment, generateSubReferralData } from '../appointmentGenerator';
 
 export const mentalHealthReferrals: Referral[] = [
   {
@@ -69,6 +70,7 @@ const additionalMentalHealthReferrals: Referral[] = Array.from({ length: 49 }, (
   const daysAgo = Math.floor(Math.random() * 365) + 1;
   const date = new Date();
   date.setDate(date.getDate() - daysAgo);
+  const created = date.toISOString();
   
   // Enhanced tag options for mental health
   const tagOptions = [
@@ -91,11 +93,15 @@ const additionalMentalHealthReferrals: Referral[] = Array.from({ length: 49 }, (
     { title: 'Care Plan', contentType: 'application/pdf', url: '/mock-data/care-plan.pdf', size: 1789000 },
     { title: 'Medication Review', contentType: 'application/pdf', url: '/mock-data/med-review.pdf', size: 1456000 }
   ];
+
+  // Generate appointment and sub-referral data
+  const appointmentDetails = generateMockAppointment(`MH-2024-${(index + 1).toString().padStart(3, '0')}`, created, 'Mental Health');
+  const subReferralData = generateSubReferralData(`MH-2024-${(index + 1).toString().padStart(3, '0')}`);
   
   return {
     id: `MH-2024-${(index + 1).toString().padStart(3, '0')}`,
     ubrn: `MH${(1000000 + index).toString().padStart(8, '0')}`,
-    created: date.toISOString(),
+    created,
     status,
     priority,
     patient: mockPatients[patientIndex],
@@ -106,6 +112,8 @@ const additionalMentalHealthReferrals: Referral[] = Array.from({ length: 49 }, (
              index % 4 === 2 ? 'Eating Disorder Service' : 'IAPT',
     triageStatus,
     tags: tagOptions[index % tagOptions.length],
+    appointmentDetails,
+    ...subReferralData,
     clinicalInfo: {
       reason: index % 5 === 0 ? 'Depression and anxiety' : 
               index % 5 === 1 ? 'Suicidal ideation' : 

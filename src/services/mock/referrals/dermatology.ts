@@ -2,6 +2,7 @@
 import { Referral, TriageStatus } from '@/types/referral';
 import { mockPatients } from '../patients';
 import { mockPractitioners } from '../practitioners';
+import { generateMockAppointment, generateSubReferralData } from '../appointmentGenerator';
 
 export const dermatologyReferrals: Referral[] = [
   {
@@ -100,6 +101,7 @@ const additionalDermatologyReferrals: Referral[] = Array.from({ length: 48 }, (_
   const daysAgo = Math.floor(Math.random() * 365) + 1;
   const date = new Date();
   date.setDate(date.getDate() - daysAgo);
+  const created = date.toISOString();
   
   // Enhanced tag options for dermatology
   const tagOptions = [
@@ -122,11 +124,15 @@ const additionalDermatologyReferrals: Referral[] = Array.from({ length: 48 }, (_
     { title: 'Allergy Test Results', contentType: 'application/pdf', url: '/mock-data/allergy-tests.pdf', size: 2340000 },
     { title: 'Previous Treatment Records', contentType: 'application/pdf', url: '/mock-data/treatment-history.pdf', size: 1567000 }
   ];
+
+  // Generate appointment and sub-referral data
+  const appointmentDetails = generateMockAppointment(`DERM-2024-${index.toString().padStart(3, '0')}`, created, 'Dermatology');
+  const subReferralData = generateSubReferralData(`DERM-2024-${index.toString().padStart(3, '0')}`);
   
   return {
     id: `DERM-2024-${index.toString().padStart(3, '0')}`,
     ubrn: `D${(1000000 + index).toString().padStart(8, '0')}`,
-    created: date.toISOString(),
+    created,
     status,
     priority,
     patient: mockPatients[patientIndex],
@@ -136,6 +142,8 @@ const additionalDermatologyReferrals: Referral[] = Array.from({ length: 48 }, (_
              index % 3 === 1 ? 'Skin Cancer Service' : 'Pediatric Dermatology',
     triageStatus,
     tags: tagOptions[index % tagOptions.length],
+    appointmentDetails,
+    ...subReferralData,
     clinicalInfo: {
       reason: index % 4 === 0 ? 'Persistent rash' : 
               index % 4 === 1 ? 'Suspicious mole' : 

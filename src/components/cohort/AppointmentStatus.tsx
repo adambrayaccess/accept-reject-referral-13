@@ -1,9 +1,10 @@
 
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Calendar, Clock, CheckCircle, AlertCircle } from 'lucide-react';
+import { Calendar, Clock, CheckCircle, AlertCircle, XCircle } from 'lucide-react';
 import { Referral } from '@/types/referral';
 import { useToast } from '@/hooks/use-toast';
+import { format, parseISO, isPast, isToday, isTomorrow } from 'date-fns';
 
 interface AppointmentStatusProps {
   referral: Referral;
@@ -13,10 +14,64 @@ interface AppointmentStatusProps {
 const AppointmentStatus = ({ referral, variant = 'default' }: AppointmentStatusProps) => {
   const { toast } = useToast();
 
-  // Mock appointment status based on triage status and referral age
   const getAppointmentStatus = () => {
     const age = referral.calculatedReferralAge || 0;
     
+    // If there's actual appointment data, use it
+    if (referral.appointmentDetails) {
+      const appointment = referral.appointmentDetails;
+      const appointmentDate = parseISO(appointment.date);
+      const isPastAppointment = isPast(appointmentDate);
+      
+      switch (appointment.status) {
+        case 'scheduled':
+          return {
+            status: 'scheduled',
+            text: isToday(appointmentDate) ? 'Appointment Today' : 
+                  isTomorrow(appointmentDate) ? 'Appointment Tomorrow' :
+                  `Appointment ${format(appointmentDate, 'MMM dd')}`,
+            icon: Calendar,
+            variant: 'default' as const,
+            details: `${appointment.time} - ${appointment.location}`,
+            canBook: false,
+            appointmentInfo: appointment
+          };
+        case 'confirmed':
+          return {
+            status: 'confirmed',
+            text: isToday(appointmentDate) ? 'Confirmed Today' : 
+                  isTomorrow(appointmentDate) ? 'Confirmed Tomorrow' :
+                  `Confirmed ${format(appointmentDate, 'MMM dd')}`,
+            icon: CheckCircle,
+            variant: 'default' as const,
+            details: `${appointment.time} - ${appointment.location}`,
+            canBook: false,
+            appointmentInfo: appointment
+          };
+        case 'cancelled':
+          return {
+            status: 'cancelled',
+            text: 'Appointment Cancelled',
+            icon: XCircle,
+            variant: 'destructive' as const,
+            details: 'Needs rescheduling',
+            canBook: true,
+            appointmentInfo: appointment
+          };
+        case 'completed':
+          return {
+            status: 'completed',
+            text: 'Appointment Completed',
+            icon: CheckCircle,
+            variant: 'default' as const,
+            details: `${format(appointmentDate, 'MMM dd')} - ${appointment.location}`,
+            canBook: false,
+            appointmentInfo: appointment
+          };
+      }
+    }
+    
+    // Fallback to original logic for referrals without appointment data
     if (referral.triageStatus === 'waiting-list') {
       if (age > 60) {
         return {
@@ -108,6 +163,14 @@ const AppointmentStatus = ({ referral, variant = 'default' }: AppointmentStatusP
         <span className="text-xs text-muted-foreground">
           {appointmentStatus.details}
         </span>
+        {appointmentStatus.appointmentInfo && (
+          <div className="text-xs text-muted-foreground">
+            <div>Type: {appointmentStatus.appointmentInfo.type}</div>
+            {appointmentStatus.appointmentInfo.consultant && (
+              <div>With: {appointmentStatus.appointmentInfo.consultant}</div>
+            )}
+          </div>
+        )}
       </div>
       
       {appointmentStatus.canBook && (
@@ -118,7 +181,7 @@ const AppointmentStatus = ({ referral, variant = 'default' }: AppointmentStatusP
           style={{ backgroundColor: '#007A7A' }}
         >
           <Calendar className="h-4 w-4 mr-1" />
-          Book Appointment
+          {appointmentStatus.status === 'cancelled' ? 'Reschedule' : 'Book Appointment'}
         </Button>
       )}
     </div>

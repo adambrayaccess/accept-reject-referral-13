@@ -35,6 +35,17 @@ export interface ClinicalInfo {
   notes?: string;
 }
 
+export interface AppointmentDetails {
+  id: string;
+  date: string;
+  time: string;
+  type: 'consultation' | 'pre-admission' | 'follow-up' | 'procedure';
+  location: string;
+  consultant?: string;
+  status: 'scheduled' | 'confirmed' | 'cancelled' | 'completed';
+  notes?: string;
+}
+
 export type ReferralStatus = 'new' | 'accepted' | 'rejected';
 export type ReferralPriority = 'routine' | 'urgent' | 'emergency';
 export type TriageStatus = 'pre-assessment' | 'assessed' | 'pre-admission-assessment' | 'waiting-list' | 'refer-to-another-specialty';
@@ -79,6 +90,8 @@ export interface Referral {
   // AI-generated referral indicator
   aiGenerated?: boolean;
   confidence?: number;
+  // Appointment details
+  appointmentDetails?: AppointmentDetails;
 }
 
 export interface ApiResponse<T> {

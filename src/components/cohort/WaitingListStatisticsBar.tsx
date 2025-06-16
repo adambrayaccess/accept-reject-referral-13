@@ -14,11 +14,20 @@ const WaitingListStatisticsBar = ({ referrals }: WaitingListStatisticsBarProps) 
   const referralAges = referrals.map(ref => ref.calculatedReferralAge || 0);
   const highestDaysWaiting = referralAges.length > 0 ? Math.max(...referralAges) : 0;
   
-  const awaitingAppointment = referrals.filter(ref => 
-    ref.triageStatus === 'waiting-list' || ref.status === 'new'
+  // Count referrals with scheduled/confirmed appointments
+  const appointmentsScheduled = referrals.filter(ref => 
+    ref.appointmentDetails && 
+    ['scheduled', 'confirmed'].includes(ref.appointmentDetails.status)
   ).length;
   
-  const longestWaitTime = highestDaysWaiting; // Same as highest days waiting for this context
+  // Count referrals awaiting appointment (no appointment data or cancelled)
+  const awaitingAppointment = referrals.filter(ref => 
+    !ref.appointmentDetails || 
+    ref.appointmentDetails.status === 'cancelled' ||
+    ref.triageStatus === 'waiting-list'
+  ).length;
+  
+  const longestWaitTime = highestDaysWaiting;
 
   const statistics = [
     {
@@ -31,22 +40,22 @@ const WaitingListStatisticsBar = ({ referrals }: WaitingListStatisticsBarProps) 
       valueColor: 'text-blue-600'
     },
     {
-      title: 'Highest Days Waiting',
-      value: highestDaysWaiting.toString(),
-      period: 'Maximum wait time',
-      icon: Clock,
-      iconColor: 'text-orange-600',
-      iconBg: 'bg-orange-100',
-      valueColor: 'text-orange-600'
-    },
-    {
-      title: 'Total Awaiting Appointment',
-      value: awaitingAppointment.toString(),  
-      period: 'Ready for scheduling',
+      title: 'Appointments Scheduled',
+      value: appointmentsScheduled.toString(),
+      period: 'Confirmed or scheduled',
       icon: Calendar,
       iconColor: 'text-green-600',
       iconBg: 'bg-green-100',
       valueColor: 'text-green-600'
+    },
+    {
+      title: 'Awaiting Appointment',
+      value: awaitingAppointment.toString(),  
+      period: 'Ready for scheduling',
+      icon: Clock,
+      iconColor: 'text-orange-600',
+      iconBg: 'bg-orange-100',
+      valueColor: 'text-orange-600'
     },
     {
       title: 'Longest Wait Time',

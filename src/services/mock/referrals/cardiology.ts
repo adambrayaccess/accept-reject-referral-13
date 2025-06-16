@@ -2,6 +2,7 @@
 import { Referral, TriageStatus } from '@/types/referral';
 import { mockPatients } from '../patients';
 import { mockPractitioners } from '../practitioners';
+import { generateMockAppointment, generateSubReferralData } from '../appointmentGenerator';
 
 export const cardiologyReferrals: Referral[] = [
   {
@@ -109,6 +110,7 @@ const additionalCardiologyReferrals: Referral[] = Array.from({ length: 48 }, (_,
   const daysAgo = Math.floor(Math.random() * 365) + 1;
   const date = new Date();
   date.setDate(date.getDate() - daysAgo);
+  const created = date.toISOString();
   
   // Enhanced tag options for cardiology
   const tagOptions = [
@@ -131,11 +133,15 @@ const additionalCardiologyReferrals: Referral[] = Array.from({ length: 48 }, (_,
     { title: 'Blood Tests', contentType: 'application/pdf', url: '/mock-data/blood-tests.pdf', size: 1245000 },
     { title: 'Exercise Stress Test', contentType: 'application/pdf', url: '/mock-data/stress-test.pdf', size: 3240000 }
   ];
+
+  // Generate appointment and sub-referral data
+  const appointmentDetails = generateMockAppointment(`CARD-2024-${index.toString().padStart(3, '0')}`, created, 'Cardiology');
+  const subReferralData = generateSubReferralData(`CARD-2024-${index.toString().padStart(3, '0')}`);
   
   return {
     id: `CARD-2024-${index.toString().padStart(3, '0')}`,
     ubrn: `C${(1000000 + index).toString().padStart(8, '0')}`,
-    created: date.toISOString(),
+    created,
     status,
     priority,
     patient: mockPatients[patientIndex],
@@ -145,6 +151,8 @@ const additionalCardiologyReferrals: Referral[] = Array.from({ length: 48 }, (_,
              index % 3 === 1 ? 'Heart Failure Clinic' : 'Arrhythmia Service',
     triageStatus,
     tags: tagOptions[index % tagOptions.length],
+    appointmentDetails,
+    ...subReferralData,
     clinicalInfo: {
       reason: index % 4 === 0 ? 'Chest pain on exertion' : 
               index % 4 === 1 ? 'Palpitations' : 
