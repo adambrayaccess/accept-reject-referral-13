@@ -8,14 +8,15 @@ const EnhancedTabs = TabsPrimitive.Root
 const EnhancedTabsList = React.forwardRef<
   React.ElementRef<typeof TabsPrimitive.List>,
   React.ComponentPropsWithoutRef<typeof TabsPrimitive.List> & {
-    variant?: "default" | "compact" | "pills"
+    variant?: "default" | "compact" | "pills" | "grid"
     size?: "sm" | "md" | "lg"
   }
 >(({ className, variant = "default", size = "md", ...props }, ref) => {
   const variants = {
     default: "inline-flex items-center justify-start rounded-lg bg-muted/30 p-1 text-muted-foreground border",
     compact: "inline-flex items-center justify-start rounded-md bg-muted/20 p-0.5 text-muted-foreground",
-    pills: "inline-flex items-center justify-start gap-1 text-muted-foreground"
+    pills: "inline-flex items-center justify-start gap-1 text-muted-foreground",
+    grid: "grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-1 p-1 bg-muted/20 rounded-lg text-muted-foreground"
   }
   
   const sizes = {
@@ -30,7 +31,7 @@ const EnhancedTabsList = React.forwardRef<
       className={cn(
         "w-full overflow-x-auto scrollbar-hide",
         variants[variant],
-        sizes[size],
+        variant !== "grid" && sizes[size],
         className
       )}
       {...props}
@@ -42,7 +43,7 @@ EnhancedTabsList.displayName = TabsPrimitive.List.displayName
 const EnhancedTabsTrigger = React.forwardRef<
   React.ElementRef<typeof TabsPrimitive.Trigger>,
   React.ComponentPropsWithoutRef<typeof TabsPrimitive.Trigger> & {
-    variant?: "default" | "compact" | "pills"
+    variant?: "default" | "compact" | "pills" | "grid"
     size?: "sm" | "md" | "lg"
   }
 >(({ className, variant = "default", size = "md", ...props }, ref) => {
@@ -70,6 +71,15 @@ const EnhancedTabsTrigger = React.forwardRef<
       "disabled:pointer-events-none disabled:opacity-50",
       "data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:border-primary",
       "hover:bg-muted/60 data-[state=active]:hover:bg-primary/90"
+    ),
+    grid: cn(
+      "flex items-center justify-center whitespace-nowrap rounded-md font-medium",
+      "ring-offset-background transition-all duration-200",
+      "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
+      "disabled:pointer-events-none disabled:opacity-50",
+      "data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-sm",
+      "hover:bg-muted/60 data-[state=active]:hover:bg-primary/90",
+      "min-h-[2.5rem] text-center"
     )
   }
   
@@ -79,12 +89,18 @@ const EnhancedTabsTrigger = React.forwardRef<
     lg: "px-4 py-2 text-base min-w-[100px]"
   }
 
+  const gridSizes = {
+    sm: "px-2 py-1.5 text-xs",
+    md: "px-3 py-2 text-sm",
+    lg: "px-4 py-2.5 text-base"
+  }
+
   return (
     <TabsPrimitive.Trigger
       ref={ref}
       className={cn(
         variants[variant],
-        sizes[size],
+        variant === "grid" ? gridSizes[size] : sizes[size],
         className
       )}
       {...props}

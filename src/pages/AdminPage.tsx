@@ -1,7 +1,7 @@
 
 import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { EnhancedTabs, EnhancedTabsContent, EnhancedTabsList, EnhancedTabsTrigger } from '@/components/ui/enhanced-tabs';
 import { RefreshCw, ArrowLeft } from 'lucide-react';
 import { useDashboardData } from '@/hooks/useDashboardData';
 import { useNavigate } from 'react-router-dom';
@@ -110,23 +110,30 @@ const AdminPage = () => {
           onShowAll={handleShowAll}
         />
 
-        <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="grid w-full grid-cols-2">
-            <TabsTrigger value="overview">Overview</TabsTrigger>
-            <TabsTrigger value="allocation" disabled={!currentSpecialty}>
+        <EnhancedTabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+          <EnhancedTabsList variant="default" size="md" className="grid w-full grid-cols-2">
+            <EnhancedTabsTrigger value="overview" variant="default" size="md">
+              Overview
+            </EnhancedTabsTrigger>
+            <EnhancedTabsTrigger 
+              value="allocation" 
+              variant="default" 
+              size="md"
+              disabled={!currentSpecialty}
+            >
               Allocation {currentSpecialty ? `(${currentSpecialty})` : '(Select Specialty)'}
-            </TabsTrigger>
-          </TabsList>
+            </EnhancedTabsTrigger>
+          </EnhancedTabsList>
 
-          <TabsContent value="overview" className="space-y-6">
+          <EnhancedTabsContent value="overview" className="space-y-6">
             <OverallStatsCards stats={overallStats} />
             <SpecialtyBreakdown 
               specialtyStats={specialtyStats} 
               currentSpecialty={currentSpecialty} 
             />
-          </TabsContent>
+          </EnhancedTabsContent>
 
-          <TabsContent value="allocation">
+          <EnhancedTabsContent value="allocation">
             {currentSpecialty ? (
               <AllocationView 
                 specialty={currentSpecialty} 
@@ -137,8 +144,8 @@ const AdminPage = () => {
                 <p className="text-muted-foreground">Please select a specialty to view allocation details.</p>
               </div>
             )}
-          </TabsContent>
-        </Tabs>
+          </EnhancedTabsContent>
+        </EnhancedTabs>
       </div>
     </div>
   );

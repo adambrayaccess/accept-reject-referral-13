@@ -1,7 +1,7 @@
 
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { EnhancedTabs, EnhancedTabsContent, EnhancedTabsList, EnhancedTabsTrigger } from '@/components/ui/enhanced-tabs';
 import CohortBuilderHeader from '@/components/cohort/CohortBuilderHeader';
 import WaitingListTab from '@/components/cohort/WaitingListTab';
 import WaitingListStatsTab from '@/components/cohort/WaitingListStatsTab';
@@ -73,14 +73,20 @@ const CohortBuilder = () => {
           onBack={handleBack}
         />
 
-        <Tabs defaultValue="waitingList" className="w-full">
-          <TabsList>
-            <TabsTrigger value="waitingList">Waiting List</TabsTrigger>
-            <TabsTrigger value="stats">Stats & Reports</TabsTrigger>
-            <TabsTrigger value="tagged">Tagged Patients</TabsTrigger>
-          </TabsList>
+        <EnhancedTabs defaultValue="waitingList" className="w-full">
+          <EnhancedTabsList variant="grid" size="md">
+            <EnhancedTabsTrigger value="waitingList" variant="grid" size="md">
+              Waiting List
+            </EnhancedTabsTrigger>
+            <EnhancedTabsTrigger value="stats" variant="grid" size="md">
+              Stats & Reports
+            </EnhancedTabsTrigger>
+            <EnhancedTabsTrigger value="tagged" variant="grid" size="md">
+              Tagged Patients
+            </EnhancedTabsTrigger>
+          </EnhancedTabsList>
           
-          <TabsContent value="waitingList" className="space-y-6">
+          <EnhancedTabsContent value="waitingList" className="space-y-6">
             <WaitingListTab
               referrals={waitingListReferrals}
               isLoading={waitingListLoading}
@@ -98,24 +104,24 @@ const CohortBuilder = () => {
               handleRefresh={refreshWaitingList}
               reorderReferrals={reorderReferrals}
             />
-          </TabsContent>
+          </EnhancedTabsContent>
           
-          <TabsContent value="stats" className="space-y-6">
+          <EnhancedTabsContent value="stats" className="space-y-6">
             <WaitingListStatsTab
               referrals={waitingListReferrals}
               isLoading={waitingListLoading}
             />
-          </TabsContent>
+          </EnhancedTabsContent>
           
-          <TabsContent value="tagged">
+          <EnhancedTabsContent value="tagged">
             <TaggedPatientsTab
               referrals={cohortReferrals}
               isLoading={cohortLoading}
               selectedReferrals={cohortSelected}
               toggleReferralSelection={toggleCohortSelection}
             />
-          </TabsContent>
-        </Tabs>
+          </EnhancedTabsContent>
+        </EnhancedTabs>
       </div>
     </div>
   );
