@@ -45,12 +45,8 @@ const InlineSpecialtySelector = ({
   const getDisplayText = () => {
     if (selectedSpecialties.length === 0) {
       return 'No specialties selected';
-    } else if (selectedSpecialties.length === 1) {
-      return selectedSpecialties[0];
-    } else if (isAllSelected) {
-      return 'All Specialties';
     } else {
-      return `${selectedSpecialties.length} specialties`;
+      return selectedSpecialties.join(', ');
     }
   };
 
