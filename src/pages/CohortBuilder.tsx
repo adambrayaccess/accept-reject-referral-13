@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import CohortBuilderHeader from '@/components/cohort/CohortBuilderHeader';
 import WaitingListTab from '@/components/cohort/WaitingListTab';
-import CohortBuilderTab from '@/components/cohort/CohortBuilderTab';
+import WaitingListStatsTab from '@/components/cohort/WaitingListStatsTab';
 import TaggedPatientsTab from '@/components/cohort/TaggedPatientsTab';
 import { useCohortData } from '@/hooks/useCohortData';
 import { useWaitingListData } from '@/hooks/useWaitingListData';
@@ -15,7 +15,7 @@ const CohortBuilder = () => {
   const [currentSpecialty, setCurrentSpecialty] = useState<string | null>(null);
   const navigate = useNavigate();
   
-  // Cohort builder data (for cohort builder and tagged tabs)
+  // Cohort builder data (for tagged tab)
   const {
     cohortReferrals,
     isLoading: cohortLoading,
@@ -28,7 +28,7 @@ const CohortBuilder = () => {
     selectAll: selectAllCohort,
   } = useCohortData(currentSpecialty);
 
-  // Waiting list data (for waiting list tab)
+  // Waiting list data (for waiting list and stats tabs)
   const {
     referrals: waitingListReferrals,
     isLoading: waitingListLoading,
@@ -76,7 +76,7 @@ const CohortBuilder = () => {
         <Tabs defaultValue="waitingList" className="w-full">
           <TabsList>
             <TabsTrigger value="waitingList">Waiting List</TabsTrigger>
-            <TabsTrigger value="cohortBuilder">Waiting List Management</TabsTrigger>
+            <TabsTrigger value="stats">Stats & Reports</TabsTrigger>
             <TabsTrigger value="tagged">Tagged Patients</TabsTrigger>
           </TabsList>
           
@@ -100,17 +100,10 @@ const CohortBuilder = () => {
             />
           </TabsContent>
           
-          <TabsContent value="cohortBuilder" className="space-y-4">
-            <CohortBuilderTab
-              referrals={cohortReferrals}
-              isLoading={cohortLoading}
-              filters={filters}
-              setFilters={setFilters}
-              selectedReferrals={cohortSelected}
-              toggleReferralSelection={toggleCohortSelection}
-              clearSelection={clearCohortSelection}
-              selectAll={selectAllCohort}
-              handleRefresh={refreshCohort}
+          <TabsContent value="stats" className="space-y-6">
+            <WaitingListStatsTab
+              referrals={waitingListReferrals}
+              isLoading={waitingListLoading}
             />
           </TabsContent>
           

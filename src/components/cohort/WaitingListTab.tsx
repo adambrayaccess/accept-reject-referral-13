@@ -1,7 +1,7 @@
-import WaitingListDashboard from './WaitingListDashboard';
-import ReferralTrendsChart from './ReferralTrendsChart';
-import WaitingListCharts from './WaitingListCharts';
-import WaitingListControls from './WaitingListControls';
+
+import SearchBar from '../dashboard/SearchBar';
+import FilterBar from '../dashboard/FilterBar';
+import AIAssistantActions from '../dashboard/AIAssistantActions';
 import WaitingListTable from './WaitingListTable';
 import TagManager from './TagManager';
 import SelectionControls from './SelectionControls';
@@ -44,15 +44,26 @@ const WaitingListTab = ({
 }: WaitingListTabProps) => {
   return (
     <div className="space-y-6">
-      {/* Business Intelligence Dashboard */}
-      <WaitingListDashboard referrals={referrals} />
-      
-      {/* Referral Trends Chart */}
-      <ReferralTrendsChart referrals={referrals} />
-      
-      {/* Existing Charts */}
-      <WaitingListCharts referrals={referrals} />
-      
+      {/* Dashboard-style header with search, filters, and AI actions */}
+      <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between">
+        <div className="flex-1 max-w-md">
+          <SearchBar
+            searchTerm={filters.search || ''}
+            setSearchTerm={(value) => updateFilters({ search: value })}
+          />
+        </div>
+        <div className="flex items-center gap-3">
+          <FilterBar
+            statusFilter={filters.status || 'all'}
+            setStatusFilter={(status) => updateFilters({ status })}
+            priorityFilter={filters.priority || 'all'}
+            setPriorityFilter={(priority) => updateFilters({ priority })}
+          />
+          <AIAssistantActions />
+        </div>
+      </div>
+
+      {/* Selection controls */}
       <SelectionControls
         totalCount={referrals.length}
         selectedCount={selectedReferrals.length}
@@ -62,26 +73,12 @@ const WaitingListTab = ({
         referrals={referrals}
       />
 
-      <WaitingListControls
-        searchTerm={filters.search}
-        onSearchChange={(value) => updateFilters({ search: value })}
-        sortField={sortField}
-        onSortFieldChange={setSortField}
-        sortDirection={sortDirection}
-        onSortDirectionChange={setSortDirection}
-        priorityFilter={filters.priority}
-        onPriorityFilterChange={(priority) => updateFilters({ priority })}
-        locationFilter={filters.location}
-        onLocationFilterChange={(location) => updateFilters({ location })}
-        ageFilter={filters.ageRange}
-        onAgeFilterChange={(ageRange) => updateFilters({ ageRange })}
-        onClearFilters={clearFilters}
-      />
-      
+      {/* Tag manager for selected referrals */}
       {selectedReferrals.length > 0 && (
         <TagManager selectedReferrals={selectedReferrals} onTagged={clearSelection} />
       )}
       
+      {/* Waiting list table */}
       <WaitingListTable 
         referrals={referrals}
         isLoading={isLoading}

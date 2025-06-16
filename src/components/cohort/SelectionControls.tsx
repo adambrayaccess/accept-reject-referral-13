@@ -1,9 +1,8 @@
 
 import { Button } from '@/components/ui/button';
+import { RefreshCw, X, Check } from 'lucide-react';
+import { Badge } from '@/components/ui/badge';
 import { Referral } from '@/types/referral';
-import CohortFilters from './CohortFilters';
-import SearchTablist from './SearchTablist';
-import WaitingListAIActions from './WaitingListAIActions';
 
 interface SelectionControlsProps {
   totalCount: number;
@@ -12,65 +11,54 @@ interface SelectionControlsProps {
   onClearSelection: () => void;
   onSelectAll: (referrals: Referral[]) => void;
   referrals: Referral[];
-  filters?: any;
-  setFilters?: (filters: any) => void;
 }
 
-const SelectionControls = ({ 
-  totalCount, 
-  selectedCount, 
-  onRefresh, 
-  onClearSelection, 
-  onSelectAll, 
-  referrals,
-  filters,
-  setFilters
+const SelectionControls = ({
+  totalCount,
+  selectedCount,
+  onRefresh,
+  onClearSelection,
+  onSelectAll,
+  referrals
 }: SelectionControlsProps) => {
+  const handleSelectAll = () => {
+    onSelectAll(referrals);
+  };
+
   return (
-    <div className="space-y-4">
-      {/* Search and AI Actions Layout */}
-      <div className="flex flex-col lg:flex-row gap-4 items-start lg:items-center">
-        {/* Left column - SearchTablist */}
-        <div className="w-full lg:flex-1">
-          <SearchTablist />
-        </div>
-        
-        {/* Right column - WaitingListAIActions */}
-        <div className="w-full lg:w-auto lg:flex-shrink-0">
-          <WaitingListAIActions />
+    <div className="flex items-center justify-between bg-white p-4 rounded-lg border">
+      <div className="flex items-center gap-4">
+        <div className="flex items-center gap-2">
+          <span className="text-sm text-muted-foreground">
+            {totalCount} total referrals
+          </span>
+          {selectedCount > 0 && (
+            <Badge variant="secondary" className="ml-2">
+              {selectedCount} selected
+            </Badge>
+          )}
         </div>
       </div>
       
-      {/* Statistics and Controls */}
-      <div className="flex justify-between items-center">
-        <div>
-          <span className="text-sm font-medium">{totalCount} patients</span>
-          {selectedCount > 0 && (
-            <span className="ml-2 text-sm text-muted-foreground">
-              ({selectedCount} selected)
-            </span>
-          )}
-        </div>
-        
-        <div className="flex items-center space-x-2">
-          <Button variant="outline" onClick={onRefresh}>
-            Refresh List
+      <div className="flex items-center gap-2">
+        {selectedCount > 0 && (
+          <Button variant="outline" size="sm" onClick={onClearSelection}>
+            <X className="h-4 w-4 mr-1" />
+            Clear Selection
           </Button>
-          
-          {filters && setFilters && (
-            <CohortFilters filters={filters} setFilters={setFilters} />
-          )}
-          
-          {selectedCount > 0 ? (
-            <Button variant="outline" size="sm" onClick={onClearSelection}>
-              Clear Selection
-            </Button>
-          ) : (
-            <Button variant="outline" size="sm" onClick={() => onSelectAll(referrals)}>
-              Select All
-            </Button>
-          )}
-        </div>
+        )}
+        
+        {selectedCount === 0 && referrals.length > 0 && (
+          <Button variant="outline" size="sm" onClick={handleSelectAll}>
+            <Check className="h-4 w-4 mr-1" />
+            Select All
+          </Button>
+        )}
+        
+        <Button variant="outline" size="sm" onClick={onRefresh}>
+          <RefreshCw className="h-4 w-4 mr-1" />
+          Refresh
+        </Button>
       </div>
     </div>
   );

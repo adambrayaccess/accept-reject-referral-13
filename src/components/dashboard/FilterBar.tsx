@@ -27,9 +27,8 @@ interface FilterBarProps {
 interface ExtendedFilters {
   status: string[];
   priority: string[];
-  hcpReferredTo: string;
-  reasonForReferral: string;
-  source: string;
+  location: string;
+  ageRange: { min: number; max: number };
 }
 
 const FilterBar = ({
@@ -42,9 +41,8 @@ const FilterBar = ({
   const [localFilters, setLocalFilters] = useState<ExtendedFilters>({
     status: statusFilter !== 'all' ? [statusFilter] : [],
     priority: priorityFilter !== 'all' ? [priorityFilter] : [],
-    hcpReferredTo: '',
-    reasonForReferral: '',
-    source: ''
+    location: '',
+    ageRange: { min: 0, max: 365 }
   });
 
   const availableStatuses = [
@@ -60,22 +58,12 @@ const FilterBar = ({
 
   const availablePriorities = ['routine', 'urgent', 'emergency'];
 
-  const availableSources = [
-    'GP Referral',
-    'Hospital Transfer',
-    'A&E Referral',
-    'Self Referral',
-    'Consultant to Consultant',
-    'Other'
-  ];
-
   const handleReset = () => {
     const resetFilters: ExtendedFilters = {
       status: [],
       priority: [],
-      hcpReferredTo: '',
-      reasonForReferral: '',
-      source: ''
+      location: '',
+      ageRange: { min: 0, max: 365 }
     };
     setLocalFilters(resetFilters);
   };
@@ -111,9 +99,8 @@ const FilterBar = ({
     let count = 0;
     if (localFilters.status.length > 0) count++;
     if (localFilters.priority.length > 0) count++;
-    if (localFilters.hcpReferredTo) count++;
-    if (localFilters.reasonForReferral) count++;
-    if (localFilters.source) count++;
+    if (localFilters.location) count++;
+    if (localFilters.ageRange.min > 0 || localFilters.ageRange.max < 365) count++;
     return count;
   };
 
@@ -135,7 +122,7 @@ const FilterBar = ({
       <PopoverContent className="w-96 p-4" align="start">
         <div className="space-y-4">
           <div className="flex items-center justify-between">
-            <h3 className="font-medium">Referral Filters</h3>
+            <h3 className="font-medium">Waiting List Filters</h3>
             <Button variant="ghost" size="sm" onClick={handleReset}>Reset</Button>
           </div>
 
@@ -188,61 +175,48 @@ const FilterBar = ({
               </AccordionContent>
             </AccordionItem>
 
-            <AccordionItem value="hcp">
+            <AccordionItem value="location">
               <AccordionTrigger className="py-2">
-                <span>HCP Referred to</span>
+                <span>Location</span>
               </AccordionTrigger>
               <AccordionContent>
                 <Input
-                  placeholder="Enter HCP name or organization..."
-                  value={localFilters.hcpReferredTo}
+                  placeholder="Enter location..."
+                  value={localFilters.location}
                   onChange={(e) => setLocalFilters(prev => ({
                     ...prev,
-                    hcpReferredTo: e.target.value
+                    location: e.target.value
                   }))}
                 />
               </AccordionContent>
             </AccordionItem>
 
-            <AccordionItem value="reason">
+            <AccordionItem value="age">
               <AccordionTrigger className="py-2">
-                <span>Reason for Referral</span>
-              </AccordionTrigger>
-              <AccordionContent>
-                <Input
-                  placeholder="Enter reason for referral..."
-                  value={localFilters.reasonForReferral}
-                  onChange={(e) => setLocalFilters(prev => ({
-                    ...prev,
-                    reasonForReferral: e.target.value
-                  }))}
-                />
-              </AccordionContent>
-            </AccordionItem>
-
-            <AccordionItem value="source">
-              <AccordionTrigger className="py-2">
-                <span>Source</span>
+                <span>Waiting Time (Days)</span>
               </AccordionTrigger>
               <AccordionContent>
                 <div className="space-y-2">
-                  {availableSources.map(source => (
-                    <Button 
-                      key={source} 
-                      variant={localFilters.source === source ? "secondary" : "outline"}
-                      size="sm"
-                      onClick={() => setLocalFilters(prev => ({
+                  <div className="flex gap-2">
+                    <Input
+                      type="number"
+                      placeholder="Min"
+                      value={localFilters.ageRange.min}
+                      onChange={(e) => setLocalFilters(prev => ({
                         ...prev,
-                        source: prev.source === source ? '' : source
+                        ageRange: { ...prev.ageRange, min: parseInt(e.target.value) || 0 }
                       }))}
-                      className="w-full justify-start"
-                    >
-                      {localFilters.source === source && (
-                        <Check className="mr-2 h-3 w-3" />
-                      )}
-                      {source}
-                    </Button>
-                  ))}
+                    />
+                    <Input
+                      type="number"
+                      placeholder="Max"
+                      value={localFilters.ageRange.max}
+                      onChange={(e) => setLocalFilters(prev => ({
+                        ...prev,
+                        ageRange: { ...prev.ageRange, max: parseInt(e.target.value) || 365 }
+                      }))}
+                    />
+                  </div>
                 </div>
               </AccordionContent>
             </AccordionItem>
