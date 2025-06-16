@@ -8,14 +8,14 @@ export const gastroenterologyReferrals: Referral[] = [
     id: 'REF-2023-005',
     ubrn: '567890123456',
     created: '2023-06-11T09:15:00Z',
-    status: 'rejected',
+    status: 'accepted',
     priority: 'urgent',
     patient: mockPatients[4],
     referrer: mockPractitioners[4],
     specialty: 'Gastroenterology',
     service: 'Rapid Access',
-    triageStatus: 'refer-to-another-specialty',
-    tags: ['colorectal-cancer', 'two-week-wait', 'refer-surgery'],
+    triageStatus: 'waiting-list',
+    tags: ['colorectal-cancer', 'two-week-wait', 'urgent-colonoscopy'],
     clinicalInfo: {
       reason: 'Weight loss and change in bowel habits',
       history: 'Unintentional weight loss of 5kg over 2 months. Change in bowel habits with occasional blood in stool.',
@@ -44,29 +44,26 @@ const additionalGastroenterologyReferrals: Referral[] = Array.from({ length: 49 
   const priorityOptions: Referral['priority'][] = ['routine', 'urgent', 'emergency'];
   const priority = priorityOptions[index % 3];
   
-  const triageStatuses: TriageStatus[] = ['pre-assessment', 'assessed', 'pre-admission-assessment', 'waiting-list', 'refer-to-another-specialty'];
-  const triageStatus = triageStatuses[index % triageStatuses.length];
+  // Ensure all referrals have waiting-list triage status
+  const triageStatus: TriageStatus = 'waiting-list';
+  const status = 'accepted';
   
-  const status = triageStatus === 'refer-to-another-specialty' ? 'rejected' : 
-                index % 6 === 0 ? 'rejected' : 
-                index % 7 === 0 ? 'accepted' : 'new';
-  
-  const daysAgo = Math.floor(Math.random() * 365) + 1;
+  const daysAgo = Math.floor(Math.random() * 180) + 1;
   const date = new Date();
   date.setDate(date.getDate() - daysAgo);
   
-  // Enhanced tag options for gastroenterology
+  // Enhanced tag options for gastroenterology - ensure every referral has at least 2 tags
   const tagOptions = [
-    ['ibd', 'crohns-suspected'],
-    ['colorectal-cancer', 'screening'],
-    ['peptic-ulcer', 'h-pylori'],
-    ['liver-disease', 'abnormal-lfts'],
-    ['gerd', 'endoscopy-required'],
-    ['gallstones', 'surgery-candidate'],
-    ['pancreatitis', 'alcohol-related'],
-    ['celiac-disease', 'gluten-sensitivity'],
-    ['ibs', 'functional-disorder'],
-    ['hepatitis', 'viral-screening']
+    ['ibd', 'crohns-suspected', 'biologics-candidate'],
+    ['colorectal-cancer', 'screening', 'colonoscopy-required'],
+    ['peptic-ulcer', 'h-pylori', 'triple-therapy'],
+    ['liver-disease', 'abnormal-lfts', 'hepatology-referral'],
+    ['gerd', 'endoscopy-required', 'ppi-trial'],
+    ['gallstones', 'surgery-candidate', 'cholecystectomy'],
+    ['pancreatitis', 'alcohol-related', 'enzyme-replacement'],
+    ['celiac-disease', 'gluten-sensitivity', 'biopsy-required'],
+    ['ibs', 'functional-disorder', 'dietary-modification'],
+    ['hepatitis', 'viral-screening', 'antiviral-therapy']
   ];
   
   const attachmentOptions = [

@@ -14,7 +14,7 @@ export const neurologyReferrals: Referral[] = [
     referrer: mockPractitioners[2],
     specialty: 'Neurology',
     service: 'Stroke Clinic',
-    triageStatus: 'pre-admission-assessment',
+    triageStatus: 'waiting-list',
     tags: ['tia', 'stroke-risk', 'urgent-imaging'],
     clinicalInfo: {
       reason: 'Transient loss of speech and right-sided weakness',
@@ -52,29 +52,26 @@ const additionalNeurologyReferrals: Referral[] = Array.from({ length: 49 }, (_, 
   const priorityOptions: Referral['priority'][] = ['routine', 'urgent', 'emergency'];
   const priority = priorityOptions[index % 3];
   
-  const triageStatuses: TriageStatus[] = ['pre-assessment', 'assessed', 'pre-admission-assessment', 'waiting-list', 'refer-to-another-specialty'];
-  const triageStatus = triageStatuses[index % triageStatuses.length];
+  // Ensure all referrals have waiting-list triage status
+  const triageStatus: TriageStatus = 'waiting-list';
+  const status = 'accepted';
   
-  const status = triageStatus === 'refer-to-another-specialty' ? 'rejected' : 
-                index % 6 === 0 ? 'rejected' : 
-                index % 7 === 0 ? 'accepted' : 'new';
-  
-  const daysAgo = Math.floor(Math.random() * 365) + 1;
+  const daysAgo = Math.floor(Math.random() * 180) + 1;
   const date = new Date();
   date.setDate(date.getDate() - daysAgo);
   
-  // Enhanced tag options for neurology
+  // Enhanced tag options for neurology - ensure every referral has at least 2 tags
   const tagOptions = [
-    ['seizure', 'epilepsy-workup'],
+    ['seizure', 'epilepsy-workup', 'eeg-required'],
     ['headache', 'migraine', 'preventative-therapy'],
-    ['tia', 'stroke-prevention'],
-    ['tremor', 'parkinsons-query'],
-    ['ms-suspected', 'mri-required'],
-    ['neuropathy', 'diabetes-related'],
-    ['memory-loss', 'dementia-screening'],
-    ['vertigo', 'balance-issues'],
-    ['nerve-pain', 'neuropathic'],
-    ['weakness', 'motor-symptoms']
+    ['tia', 'stroke-prevention', 'antiplatelet-therapy'],
+    ['tremor', 'parkinsons-query', 'datscan-required'],
+    ['ms-suspected', 'mri-required', 'oligoclonal-bands'],
+    ['neuropathy', 'diabetes-related', 'nerve-conduction'],
+    ['memory-loss', 'dementia-screening', 'cognitive-assessment'],
+    ['vertigo', 'balance-issues', 'vestibular-testing'],
+    ['nerve-pain', 'neuropathic', 'gabapentin-trial'],
+    ['weakness', 'motor-symptoms', 'emg-required']
   ];
   
   const attachmentOptions = [

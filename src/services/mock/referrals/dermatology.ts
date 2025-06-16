@@ -8,13 +8,13 @@ export const dermatologyReferrals: Referral[] = [
     id: 'AGE-2024-001',
     ubrn: 'AGE001',
     created: '2024-04-27T14:20:00Z',
-    status: 'new',
+    status: 'accepted',
     priority: 'routine',
     patient: mockPatients[1],
     referrer: mockPractitioners[3],
     specialty: 'Dermatology',
     service: 'General Dermatology',
-    triageStatus: 'pre-assessment',
+    triageStatus: 'waiting-list',
     tags: ['eczema', 'chronic-condition', 'steroid-trial'],
     clinicalInfo: {
       reason: 'Persistent rash on trunk and limbs',
@@ -75,29 +75,26 @@ const additionalDermatologyReferrals: Referral[] = Array.from({ length: 48 }, (_
   const priorityOptions: Referral['priority'][] = ['routine', 'urgent', 'emergency'];
   const priority = priorityOptions[index % 3];
   
-  const triageStatuses: TriageStatus[] = ['pre-assessment', 'assessed', 'pre-admission-assessment', 'waiting-list', 'refer-to-another-specialty'];
-  const triageStatus = triageStatuses[index % triageStatuses.length];
+  // Ensure all referrals have waiting-list triage status
+  const triageStatus: TriageStatus = 'waiting-list';
+  const status = 'accepted';
   
-  const status = triageStatus === 'refer-to-another-specialty' ? 'rejected' : 
-                index % 6 === 0 ? 'rejected' : 
-                index % 7 === 0 ? 'accepted' : 'new';
-  
-  const daysAgo = Math.floor(Math.random() * 365) + 1;
+  const daysAgo = Math.floor(Math.random() * 180) + 1;
   const date = new Date();
   date.setDate(date.getDate() - daysAgo);
   
-  // Enhanced tag options for dermatology
+  // Enhanced tag options for dermatology - ensure every referral has at least 2 tags
   const tagOptions = [
-    ['suspicious-lesion', 'two-week-wait'],
+    ['suspicious-lesion', 'two-week-wait', 'dermoscopy-required'],
     ['acne', 'scarring', 'isotretinoin-candidate'],
-    ['psoriasis', 'biologic-candidate'],
-    ['eczema', 'atopic-dermatitis'],
-    ['melanoma-concern', 'dermoscopy-required'],
-    ['rosacea', 'laser-candidate'],
-    ['hidradenitis', 'surgery-required'],
-    ['hair-loss', 'alopecia'],
-    ['skin-cancer', 'excision-required'],
-    ['birthmark', 'cosmetic-concern']
+    ['psoriasis', 'biologic-candidate', 'severe-disease'],
+    ['eczema', 'atopic-dermatitis', 'allergy-testing'],
+    ['melanoma-concern', 'dermoscopy-required', 'urgent-review'],
+    ['rosacea', 'laser-candidate', 'topical-therapy'],
+    ['hidradenitis', 'surgery-required', 'antibiotic-therapy'],
+    ['hair-loss', 'alopecia', 'autoimmune-suspected'],
+    ['skin-cancer', 'excision-required', 'histology-pending'],
+    ['birthmark', 'cosmetic-concern', 'laser-therapy']
   ];
   
   const attachmentOptions = [
