@@ -54,7 +54,10 @@ const ReferralTableRow = ({
           <TableCell className="p-2" onClick={handleCheckboxChange}>
             <Checkbox
               checked={isSelected}
-              onCheckedChange={() => onToggleSelection?.(referral.id)}
+              onCheckedChange={(checked) => {
+                console.log('Checkbox changed:', checked, 'for referral:', referral.id);
+                onToggleSelection?.(referral.id);
+              }}
               aria-label={`Select referral for ${referral.patient.name}`}
             />
           </TableCell>
