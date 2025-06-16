@@ -8,6 +8,7 @@ import SortControls from './dashboard/SortControls';
 import ReferralGrid from './dashboard/ReferralGrid';
 import StatisticsBar from './dashboard/StatisticsBar';
 import Titlebar from './Titlebar';
+import PageHeader from './PageHeader';
 import { useDashboardData } from '@/hooks/useDashboardData';
 import { useState, useEffect } from 'react';
 import CreateReferralModal from './CreateReferralModal';
@@ -73,6 +74,7 @@ const Dashboard = () => {
   return (
     <div className="min-h-screen bg-gray-50">
       <Titlebar />
+      <PageHeader searchValue={searchTerm} onSearchChange={setSearchTerm} />
       
       <div className="space-y-6">
         <div className="container py-6">

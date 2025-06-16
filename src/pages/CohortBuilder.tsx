@@ -9,6 +9,7 @@ import TaggedPatientsTab from '@/components/cohort/TaggedPatientsTab';
 import { useCohortData } from '@/hooks/useCohortData';
 import { useWaitingListData } from '@/hooks/useWaitingListData';
 import Titlebar from '@/components/Titlebar';
+import PageHeader from '@/components/PageHeader';
 
 const CohortBuilder = () => {
   const [currentSpecialty, setCurrentSpecialty] = useState<string | null>(null);
@@ -64,6 +65,7 @@ const CohortBuilder = () => {
   return (
     <div className="min-h-screen bg-gray-50">
       <Titlebar />
+      <PageHeader showSearch={false} />
       
       <div className="container py-6 space-y-6">
         <CohortBuilderHeader 

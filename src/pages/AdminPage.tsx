@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -10,6 +11,7 @@ import SpecialtyBreakdown from '@/components/admin/SpecialtyBreakdown';
 import AdminSpecialtySelector from '@/components/admin/AdminSpecialtySelector';
 import AllocationView from '@/components/allocation/AllocationView';
 import Titlebar from '@/components/Titlebar';
+import PageHeader from '@/components/PageHeader';
 
 const AdminPage = () => {
   const [currentSpecialty, setCurrentSpecialty] = useState<string | null>(null);
@@ -57,6 +59,7 @@ const AdminPage = () => {
     return (
       <div className="min-h-screen bg-gray-50">
         <Titlebar />
+        <PageHeader showSearch={false} />
         <div className="container py-6">
           <div className="space-y-6">
             <div className="h-8 bg-muted animate-pulse rounded" />
@@ -75,6 +78,7 @@ const AdminPage = () => {
   return (
     <div className="min-h-screen bg-gray-50">
       <Titlebar />
+      <PageHeader showSearch={false} />
       
       <div className="container py-6 space-y-6">
         <div className="flex flex-col sm:flex-row justify-between items-start gap-4">
