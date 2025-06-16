@@ -1,5 +1,5 @@
 
-import { Referral } from '@/types/referral';
+import { Referral, TriageStatus } from '@/types/referral';
 import { mockPatients } from '../patients';
 import { mockPractitioners } from '../practitioners';
 
@@ -74,7 +74,7 @@ const additionalCardiologyReferrals: Referral[] = Array.from({ length: 48 }, (_,
   const priority = priorityOptions[index % 3];
   
   // Distribute triage statuses across referrals
-  const triageStatuses = ['pre-assessment', 'assessed', 'pre-admission-assessment', 'waiting-list', 'refer-to-another-specialty'];
+  const triageStatuses: TriageStatus[] = ['pre-assessment', 'assessed', 'pre-admission-assessment', 'waiting-list', 'refer-to-another-specialty'];
   const triageStatus = triageStatuses[index % triageStatuses.length];
   
   // Set status based on triage status
