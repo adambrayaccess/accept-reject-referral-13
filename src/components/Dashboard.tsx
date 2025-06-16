@@ -1,10 +1,8 @@
-
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
 import { FilePlus, Users, Shield } from 'lucide-react';
 import SearchBar from './dashboard/SearchBar';
-import FilterBar from './dashboard/FilterBar';
-import SortControls from './dashboard/SortControls';
+import SortAndFilterControls from './dashboard/SortAndFilterControls';
 import ViewToggle from './dashboard/ViewToggle';
 import ReferralGrid from './dashboard/ReferralGrid';
 import StatisticsBar from './dashboard/StatisticsBar';
@@ -135,18 +133,16 @@ const Dashboard = () => {
               <div className="w-full md:flex-1">
                 <SearchBar searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
               </div>
-              <div className="flex gap-2 w-full md:w-auto">
-                <FilterBar
-                  statusFilter={statusFilter}
-                  setStatusFilter={setStatusFilter}
-                  priorityFilter={priorityFilter}
-                  setPriorityFilter={setPriorityFilter}
-                />
-                <SortControls
+              <div className="flex gap-2 w-full md:w-auto items-center">
+                <SortAndFilterControls
                   sortField={sortField}
                   setSortField={setSortField}
                   sortDirection={sortDirection}
                   setSortDirection={setSortDirection}
+                  statusFilter={statusFilter}
+                  setStatusFilter={setStatusFilter}
+                  priorityFilter={priorityFilter}
+                  setPriorityFilter={setPriorityFilter}
                 />
                 <ViewToggle view={view} onViewChange={setView} />
               </div>
