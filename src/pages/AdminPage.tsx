@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { EnhancedTabs, EnhancedTabsContent, EnhancedTabsList, EnhancedTabsTrigger } from '@/components/ui/enhanced-tabs';
@@ -16,7 +15,7 @@ import PageHeader from '@/components/PageHeader';
 const AdminPage = () => {
   const [currentSpecialty, setCurrentSpecialty] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState('overview');
-  const { referrals, isLoading, handleRefresh } = useDashboardData(currentSpecialty);
+  const { referrals, isLoading, handleRefresh } = useDashboardData(currentSpecialty ? [currentSpecialty] : []);
   const navigate = useNavigate();
   const { specialtyStats, overallStats } = useAdminStatistics(referrals);
 

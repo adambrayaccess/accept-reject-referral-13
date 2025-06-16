@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { Referral } from '@/types/referral';
 import { fetchReferrals } from '@/services/referralService';
@@ -172,7 +171,7 @@ export const useDashboardData = (selectedSpecialties: string[] = []) => {
         sourceIndex,
         destinationIndex,
         {
-          specialties: selectedSpecialties.length > 0 ? selectedSpecialties : undefined,
+          specialty: selectedSpecialties.length === 1 ? selectedSpecialties[0] : undefined,
           filter: statusFilter !== 'all' ? statusFilter : undefined,
           sortField
         }
