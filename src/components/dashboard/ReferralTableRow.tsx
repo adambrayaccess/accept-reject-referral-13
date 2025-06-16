@@ -45,7 +45,7 @@ const ReferralTableRow = ({ referral, index, onNameClick, onRowClick }: Referral
           <TableCell>
             <Button
               variant="link"
-              className="font-medium hover:underline p-0 h-auto"
+              className="font-bold underline p-0 h-auto"
               style={{ color: '#007373' }}
               onClick={(e) => onNameClick(e, referral.id)}
             >
