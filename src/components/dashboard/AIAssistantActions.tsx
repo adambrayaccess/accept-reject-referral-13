@@ -36,7 +36,7 @@ const AIAssistantActions = () => {
       title: "AI Assistant",
       description: "Auto-adding patient to waiting list...",
     });
-    // TODO: Implement AI-assisted waiting list addition
+    // TODO: Implement AI-assistant waiting list addition
     console.log('Auto add to waiting list triggered');
   };
 
@@ -58,7 +58,7 @@ const AIAssistantActions = () => {
           <Button
             variant="outline"
             onClick={handleAutoAddReferral}
-            className="bg-[#007A7A] hover:bg-[#007A7A]/90 text-white border-[#007A7A] flex items-center gap-2"
+            className="bg-gradient-to-r from-orange-100 to-purple-200 hover:from-orange-200 hover:to-purple-300 text-purple-800 border border-purple-200 font-medium rounded-full px-6 py-2 flex items-center gap-2 transition-all duration-200"
           >
             <Bot className="h-4 w-4" />
             Auto add a new referral
@@ -67,7 +67,7 @@ const AIAssistantActions = () => {
           <Button
             variant="outline"
             onClick={handleAutoAddToCaseload}
-            className="bg-[#007A7A] hover:bg-[#007A7A]/90 text-white border-[#007A7A] flex items-center gap-2"
+            className="bg-gradient-to-r from-orange-100 to-purple-200 hover:from-orange-200 hover:to-purple-300 text-purple-800 border border-purple-200 font-medium rounded-full px-6 py-2 flex items-center gap-2 transition-all duration-200"
           >
             <Bot className="h-4 w-4" />
             Auto add a patient to a caseload
@@ -76,7 +76,7 @@ const AIAssistantActions = () => {
           <Button
             variant="outline"
             onClick={handleAutoAddToWaitingList}
-            className="bg-[#007A7A] hover:bg-[#007A7A]/90 text-white border-[#007A7A] flex items-center gap-2"
+            className="bg-gradient-to-r from-orange-100 to-purple-200 hover:from-orange-200 hover:to-purple-300 text-purple-800 border border-purple-200 font-medium rounded-full px-6 py-2 flex items-center gap-2 transition-all duration-200"
           >
             <Bot className="h-4 w-4" />
             Auto add a patient to a waiting list
