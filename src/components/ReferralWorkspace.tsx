@@ -62,9 +62,6 @@ const ReferralWorkspace = ({ referral, onStatusChange }: ReferralWorkspaceProps)
         </CardContent>
       </Card>
 
-      {/* Patient Activity Timeline */}
-      <PatientActivityTimeline />
-
       {/* Show sub-referrals list if this is a parent referral with accepted status */}
       {referral.status === 'accepted' && !referral.isSubReferral && (
         <SubReferralsList 
@@ -82,6 +79,9 @@ const ReferralWorkspace = ({ referral, onStatusChange }: ReferralWorkspaceProps)
           <CollaborationNotes notes={referral.collaborationNotes} />
         </CardContent>
       </Card>
+
+      {/* Patient Activity Timeline - moved below Triage Workspace */}
+      <PatientActivityTimeline />
     </div>
   );
 };
