@@ -14,24 +14,40 @@ interface ReferralTableRowProps {
   index: number;
   onNameClick: (e: React.MouseEvent, referralId: string) => void;
   onRowClick: (referralId: string) => void;
+  isDragDisabled?: boolean;
 }
 
-const ReferralTableRow = ({ referral, index, onNameClick, onRowClick }: ReferralTableRowProps) => {
+const ReferralTableRow = ({ 
+  referral, 
+  index, 
+  onNameClick, 
+  onRowClick, 
+  isDragDisabled = false 
+}: ReferralTableRowProps) => {
   return (
-    <Draggable key={referral.id} draggableId={referral.id} index={index}>
+    <Draggable 
+      key={referral.id} 
+      draggableId={referral.id} 
+      index={index} 
+      isDragDisabled={isDragDisabled}
+    >
       {(provided, snapshot) => (
         <TableRow 
           ref={provided.innerRef}
           {...provided.draggableProps}
           className={`hover:bg-muted/50 cursor-pointer ${
             snapshot.isDragging ? 'bg-muted shadow-lg' : ''
-          }`}
-          onClick={() => onRowClick(referral.id)}
+          } ${isDragDisabled ? 'opacity-50' : ''}`}
+          onClick={() => !isDragDisabled && onRowClick(referral.id)}
         >
           <TableCell className="p-2">
             <div 
               {...provided.dragHandleProps}
-              className="cursor-grab active:cursor-grabbing p-1 hover:bg-muted rounded"
+              className={`p-1 hover:bg-muted rounded ${
+                isDragDisabled 
+                  ? 'cursor-not-allowed opacity-50' 
+                  : 'cursor-grab active:cursor-grabbing'
+              }`}
               onClick={(e) => e.stopPropagation()}
             >
               <GripVertical className="h-3 w-3 text-muted-foreground" />
@@ -48,7 +64,8 @@ const ReferralTableRow = ({ referral, index, onNameClick, onRowClick }: Referral
               variant="link"
               className="font-bold underline p-0 h-auto text-xs"
               style={{ color: '#007373' }}
-              onClick={(e) => onNameClick(e, referral.id)}
+              onClick={(e) => !isDragDisabled && onNameClick(e, referral.id)}
+              disabled={isDragDisabled}
             >
               {referral.patient.name}
             </Button>

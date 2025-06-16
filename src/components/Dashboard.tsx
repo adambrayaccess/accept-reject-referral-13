@@ -1,3 +1,4 @@
+
 import { Button } from '@/components/ui/button';
 import { Users, Shield, ChevronDown } from 'lucide-react';
 import SearchBar from './dashboard/SearchBar';
@@ -33,6 +34,7 @@ const Dashboard = () => {
   const {
     filteredReferrals,
     isLoading,
+    isReordering,
     searchTerm,
     setSearchTerm,
     statusFilter,
@@ -40,6 +42,7 @@ const Dashboard = () => {
     priorityFilter,
     setPriorityFilter,
     handleRefresh,
+    handleReorderReferrals,
     referrals,
     sortField,
     setSortField,
@@ -77,15 +80,6 @@ const Dashboard = () => {
         description: `Now triaging for ${specialty.name}`,
       });
     }
-  };
-
-  const handleReorderReferrals = (reorderedReferrals: Referral[]) => {
-    // For now, just show a toast - in a real app this would update the backend
-    toast({
-      title: "Order Updated",
-      description: "Referral list has been reordered",
-    });
-    console.log('Reordered referrals:', reorderedReferrals.map(r => `${r.patient.name} (${r.priority})`));
   };
 
   return (
@@ -183,6 +177,7 @@ const Dashboard = () => {
               <ReferralGrid 
                 referrals={filteredReferrals} 
                 isLoading={isLoading} 
+                isReordering={isReordering}
                 view={view} 
                 onReorder={handleReorderReferrals}
               />
@@ -192,6 +187,7 @@ const Dashboard = () => {
               <ReferralGrid 
                 referrals={filteredReferrals} 
                 isLoading={isLoading} 
+                isReordering={isReordering}
                 filter={(r) => r.status === 'new'}
                 view={view}
                 onReorder={handleReorderReferrals}
@@ -202,6 +198,7 @@ const Dashboard = () => {
               <ReferralGrid 
                 referrals={filteredReferrals} 
                 isLoading={isLoading} 
+                isReordering={isReordering}
                 filter={(r) => r.status !== 'new'}
                 view={view}
                 onReorder={handleReorderReferrals}

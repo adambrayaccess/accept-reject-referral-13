@@ -11,26 +11,34 @@ import ReferralTableRow from './ReferralTableRow';
 interface ReferralListProps {
   referrals: Referral[];
   isLoading: boolean;
+  isReordering?: boolean;
   filter?: (referral: Referral) => boolean;
-  onReorder?: (reorderedReferrals: Referral[]) => void;
+  onReorder?: (sourceIndex: number, destinationIndex: number) => void;
 }
 
-const ReferralList = ({ referrals, isLoading, filter, onReorder }: ReferralListProps) => {
+const ReferralList = ({ 
+  referrals, 
+  isLoading, 
+  isReordering = false,
+  filter, 
+  onReorder 
+}: ReferralListProps) => {
   const [modalReferralId, setModalReferralId] = useState<string | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const navigate = useNavigate();
   const filteredReferrals = filter ? referrals.filter(filter) : referrals;
 
   const handleDragEnd = (result: DropResult) => {
-    if (!result.destination || !onReorder) {
+    if (!result.destination || !onReorder || isReordering) {
       return;
     }
 
-    const items = Array.from(filteredReferrals);
-    const [reorderedItem] = items.splice(result.source.index, 1);
-    items.splice(result.destination.index, 0, reorderedItem);
+    const sourceIndex = result.source.index;
+    const destinationIndex = result.destination.index;
 
-    onReorder(items);
+    if (sourceIndex !== destinationIndex) {
+      onReorder(sourceIndex, destinationIndex);
+    }
   };
 
   const handleNameClick = (e: React.MouseEvent, referralId: string) => {
@@ -74,9 +82,13 @@ const ReferralList = ({ referrals, isLoading, filter, onReorder }: ReferralListP
         <DragDropContext onDragEnd={handleDragEnd}>
           <Table>
             <ReferralTableHeader />
-            <Droppable droppableId="referrals-list">
-              {(provided) => (
-                <TableBody ref={provided.innerRef} {...provided.droppableProps}>
+            <Droppable droppableId="referrals-list" isDropDisabled={isReordering}>
+              {(provided, snapshot) => (
+                <TableBody 
+                  ref={provided.innerRef} 
+                  {...provided.droppableProps}
+                  className={isReordering ? 'opacity-70' : ''}
+                >
                   {filteredReferrals.map((referral, index) => (
                     <ReferralTableRow
                       key={referral.id}
@@ -84,6 +96,7 @@ const ReferralList = ({ referrals, isLoading, filter, onReorder }: ReferralListP
                       index={index}
                       onNameClick={handleNameClick}
                       onRowClick={handleRowClick}
+                      isDragDisabled={isReordering}
                     />
                   ))}
                   {provided.placeholder}
@@ -93,6 +106,12 @@ const ReferralList = ({ referrals, isLoading, filter, onReorder }: ReferralListP
           </Table>
         </DragDropContext>
       </div>
+      
+      {isReordering && (
+        <div className="text-center py-2">
+          <div className="text-sm text-muted-foreground">Updating order...</div>
+        </div>
+      )}
       
       <ReferralDetailModal
         referralId={modalReferralId}
