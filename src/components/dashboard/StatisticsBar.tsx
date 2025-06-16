@@ -1,5 +1,5 @@
 
-import { RefreshCw, Info } from 'lucide-react';
+import { RefreshCw, Info, Users, AlertTriangle, Clock, CheckCircle, Calendar } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
