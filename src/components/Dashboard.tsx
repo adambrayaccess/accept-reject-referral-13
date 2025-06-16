@@ -1,3 +1,4 @@
+
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
 import { FilePlus, Users, Shield } from 'lucide-react';
@@ -9,6 +10,7 @@ import ReferralGrid from './dashboard/ReferralGrid';
 import StatisticsBar from './dashboard/StatisticsBar';
 import Titlebar from './Titlebar';
 import PageHeader from './PageHeader';
+import AIAssistantActions from './dashboard/AIAssistantActions';
 import { useDashboardData } from '@/hooks/useDashboardData';
 import { useState, useEffect } from 'react';
 import CreateReferralModal from './CreateReferralModal';
@@ -128,24 +130,31 @@ const Dashboard = () => {
         </div>
 
         <div className="container space-y-6">
-          <div className="flex flex-col md:flex-row gap-4 items-start">
-            <div className="w-full md:flex-1">
-              <SearchBar searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
+          <div className="flex flex-col gap-4">
+            <div className="flex flex-col md:flex-row gap-4 items-start">
+              <div className="w-full md:flex-1">
+                <SearchBar searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
+              </div>
+              <div className="flex gap-2 w-full md:w-auto">
+                <FilterBar
+                  statusFilter={statusFilter}
+                  setStatusFilter={setStatusFilter}
+                  priorityFilter={priorityFilter}
+                  setPriorityFilter={setPriorityFilter}
+                />
+                <SortControls
+                  sortField={sortField}
+                  setSortField={setSortField}
+                  sortDirection={sortDirection}
+                  setSortDirection={setSortDirection}
+                />
+                <ViewToggle view={view} onViewChange={setView} />
+              </div>
             </div>
-            <div className="flex gap-2 w-full md:w-auto">
-              <FilterBar
-                statusFilter={statusFilter}
-                setStatusFilter={setStatusFilter}
-                priorityFilter={priorityFilter}
-                setPriorityFilter={setPriorityFilter}
-              />
-              <SortControls
-                sortField={sortField}
-                setSortField={setSortField}
-                sortDirection={sortDirection}
-                setSortDirection={setSortDirection}
-              />
-              <ViewToggle view={view} onViewChange={setView} />
+            
+            {/* AI Assistant Actions */}
+            <div className="w-full">
+              <AIAssistantActions />
             </div>
           </div>
 
