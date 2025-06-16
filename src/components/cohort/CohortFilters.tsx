@@ -47,13 +47,31 @@ const CohortFilters = ({ filters, setFilters }: CohortFiltersProps) => {
 
   const availablePriorities: ReferralPriority[] = ['routine', 'urgent', 'emergency'];
 
+  // Enhanced available tags with clinical categories
   const availableTags = [
+    // Status tags
     'Follow-up needed', 
-    'Requires test results', 
-    'Incomplete information', 
-    'Second opinion', 
-    'Special case', 
-    'Priority review'
+    'Awaiting test results', 
+    'Incomplete referral', 
+    'Requires additional info',
+    'Ready for assessment',
+    // Priority tags
+    'Urgent review',
+    'Priority case', 
+    'Routine follow-up',
+    'Non-urgent',
+    // Clinical tags
+    'Complex case',
+    'Multi-specialty',
+    'Second opinion required', 
+    'Specialist equipment needed',
+    'Pre-operative assessment',
+    // Administrative tags
+    'Insurance verification needed',
+    'Consent required',
+    'Transport arranged',
+    'Interpreter required',
+    'Special accommodation'
   ];
 
   const handleReset = () => {
@@ -259,12 +277,12 @@ const CohortFilters = ({ filters, setFilters }: CohortFiltersProps) => {
               <AccordionTrigger className="py-2">
                 <div className="flex items-center">
                   <Tags className="h-4 w-4 mr-2" />
-                  <span>Tags</span>
+                  <span>Clinical Tags</span>
                 </div>
               </AccordionTrigger>
               <AccordionContent>
                 <Card>
-                  <CardContent className="p-4">
+                  <CardContent className="p-4 max-h-60 overflow-y-auto">
                     <div className="flex flex-wrap gap-2">
                       {availableTags.map(tag => (
                         <Button 
@@ -272,9 +290,10 @@ const CohortFilters = ({ filters, setFilters }: CohortFiltersProps) => {
                           variant={localFilters.tags.includes(tag) ? "secondary" : "outline"}
                           size="sm"
                           onClick={() => toggleTag(tag)}
+                          className="text-xs"
                         >
                           {localFilters.tags.includes(tag) && (
-                            <Check className="mr-2 h-3 w-3" />
+                            <Check className="mr-1 h-3 w-3" />
                           )}
                           {tag}
                         </Button>

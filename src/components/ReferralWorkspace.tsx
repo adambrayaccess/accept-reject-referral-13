@@ -9,6 +9,7 @@ import CreateSubReferralDialog from './sub-referrals/CreateSubReferralDialog';
 import SubReferralsList from './sub-referrals/SubReferralsList';
 import ParentReferralInfo from './sub-referrals/ParentReferralInfo';
 import PatientActivityTimeline from './PatientActivityTimeline';
+import ReferralTagging from './referral-tagging/ReferralTagging';
 
 interface ReferralWorkspaceProps {
   referral: Referral;
@@ -20,6 +21,11 @@ const ReferralWorkspace = ({ referral, onStatusChange }: ReferralWorkspaceProps)
 
   const handleSubReferralCreated = () => {
     setRefreshKey(prev => prev + 1);
+    onStatusChange();
+  };
+
+  const handleTagsUpdated = () => {
+    // Refresh parent component to show updated tags
     onStatusChange();
   };
 
@@ -55,6 +61,11 @@ const ReferralWorkspace = ({ referral, onStatusChange }: ReferralWorkspaceProps)
           onRefresh={refreshKey}
         />
       )}
+
+      <ReferralTagging 
+        referral={referral}
+        onTagsUpdated={handleTagsUpdated}
+      />
 
       <Card className="flex-1">
         <CardHeader className="pb-3">

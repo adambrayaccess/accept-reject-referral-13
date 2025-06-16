@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { fetchReferralById, fetchPatientReferrals } from '@/services/referralService';
@@ -18,6 +17,7 @@ import ReferralWorkspace from '@/components/ReferralWorkspace';
 import PatientActivityTimeline from '@/components/PatientActivityTimeline';
 import { Badge } from '@/components/ui/badge';
 import TriageStatusBadge from '@/components/triage/TriageStatusBadge';
+import ReferralTagsDisplay from '@/components/referral-tagging/ReferralTagsDisplay';
 
 const ReferralView = () => {
   const { id } = useParams<{ id: string }>();
@@ -144,7 +144,7 @@ const ReferralView = () => {
         </Button>
         
         <div className="flex flex-col md:flex-row justify-between items-start gap-3 mb-4">
-          <div>
+          <div className="space-y-2">
             <div className="flex items-center gap-2 flex-wrap">
               <h1 className="text-2xl font-bold">{referral.patient.name}</h1>
               {referral.isSubReferral && (
@@ -157,6 +157,9 @@ const ReferralView = () => {
             <p className="text-muted-foreground">
               NHS: <span className="font-mono">{referral.patient.nhsNumber}</span>
             </p>
+            {referral.tags && referral.tags.length > 0 && (
+              <ReferralTagsDisplay tags={referral.tags} maxVisible={5} />
+            )}
           </div>
         </div>
         

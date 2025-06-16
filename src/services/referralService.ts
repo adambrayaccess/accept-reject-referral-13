@@ -1,4 +1,3 @@
-
 import { Referral, ReferralStatus, TriageStatus } from '@/types/referral';
 import { mockReferrals } from './mockData';
 
@@ -184,6 +183,37 @@ export const updateTriageStatus = async (
         });
         
         console.log(`Referral ${referralId} triage status updated to ${triageStatus}. Notes: ${notes || 'None'}`);
+        resolve(true);
+      } else {
+        resolve(false);
+      }
+    }, MOCK_DELAY);
+  });
+};
+
+// Update referral tags
+export const updateReferralTags = async (
+  referralId: string,
+  tags: string[]
+): Promise<boolean> => {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      const referralIndex = mockReferrals.findIndex(ref => ref.id === referralId);
+      if (referralIndex !== -1) {
+        mockReferrals[referralIndex].tags = tags;
+        
+        // Add to audit log
+        if (!mockReferrals[referralIndex].auditLog) {
+          mockReferrals[referralIndex].auditLog = [];
+        }
+        
+        mockReferrals[referralIndex].auditLog.push({
+          timestamp: new Date().toISOString(),
+          user: 'Current User',
+          action: `Tags updated: ${tags.join(', ')}`,
+        });
+        
+        console.log(`Referral ${referralId} tags updated:`, tags);
         resolve(true);
       } else {
         resolve(false);
