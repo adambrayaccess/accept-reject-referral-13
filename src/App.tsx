@@ -1,4 +1,5 @@
 
+import React from 'react';
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -14,25 +15,27 @@ import AdminPage from "./pages/AdminPage";
 
 const queryClient = new QueryClient();
 
-const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <BrowserRouter>
-      <TooltipProvider>
-        <Layout>
-          <Routes>
-            <Route path="/" element={<Index />} />
-            <Route path="/referral/:id" element={<ReferralView />} />
-            <Route path="/select-specialty" element={<SpecialtySelection />} />
-            <Route path="/cohort-builder" element={<CohortBuilder />} />
-            <Route path="/admin" element={<AdminPage />} />
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </Layout>
-        <Toaster />
-        <Sonner />
-      </TooltipProvider>
-    </BrowserRouter>
-  </QueryClientProvider>
-);
+function App() {
+  return (
+    <QueryClientProvider client={queryClient}>
+      <BrowserRouter>
+        <TooltipProvider>
+          <Layout>
+            <Routes>
+              <Route path="/" element={<Index />} />
+              <Route path="/referral/:id" element={<ReferralView />} />
+              <Route path="/select-specialty" element={<SpecialtySelection />} />
+              <Route path="/cohort-builder" element={<CohortBuilder />} />
+              <Route path="/admin" element={<AdminPage />} />
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </Layout>
+          <Toaster />
+          <Sonner />
+        </TooltipProvider>
+      </BrowserRouter>
+    </QueryClientProvider>
+  );
+}
 
 export default App;
