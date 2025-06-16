@@ -1,4 +1,3 @@
-
 import { Button } from '@/components/ui/button';
 import { Users, Shield, ChevronDown } from 'lucide-react';
 import SearchBar from './dashboard/SearchBar';
@@ -80,14 +79,6 @@ const Dashboard = () => {
     }
   };
 
-  const navigateToCohortBuilder = () => {
-    navigate('/cohort-builder');
-  };
-
-  const navigateToAdmin = () => {
-    navigate('/admin');
-  };
-
   const handleReorderReferrals = (reorderedReferrals: Referral[]) => {
     // For now, just show a toast - in a real app this would update the backend
     toast({
@@ -137,14 +128,6 @@ const Dashboard = () => {
               )}
             </div>
             <div className="flex gap-2 w-full sm:w-auto">
-              <Button variant="outline" onClick={navigateToAdmin} className="flex-1 sm:flex-initial">
-                <Shield className="mr-2 h-4 w-4" />
-                Super User
-              </Button>
-              <Button variant="outline" onClick={navigateToCohortBuilder} className="flex-1 sm:flex-initial">
-                <Users className="mr-2 h-4 w-4" />
-                Waiting List Management
-              </Button>
               <CreateReferralDropdown onReferralCreated={handleCreateReferral} />
             </div>
           </div>
