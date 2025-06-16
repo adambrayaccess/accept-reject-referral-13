@@ -27,22 +27,26 @@ const App: React.FC = () => {
     <QueryClientProvider client={queryClient}>
       <BrowserRouter>
         <TooltipProvider>
-          <FloatingMenu />
-          <Routes>
-            <Route path="/" element={<Index />} />
-            <Route path="/referral/:id" element={<ReferralView />} />
-            <Route path="/select-specialty" element={<SpecialtySelection />} />
-            <Route path="/cohort-builder" element={<CohortBuilder />} />
-            <Route path="/admin" element={<AdminPage />} />
-            <Route path="/patients" element={<Patients />} />
-            <Route path="/appointments" element={<Appointments />} />
-            <Route path="/schedule" element={<Schedule />} />
-            <Route path="/reports" element={<Reports />} />
-            <Route path="/messages" element={<Messages />} />
-            <Route path="/documents" element={<Documents />} />
-            <Route path="/settings" element={<Settings />} />
-            <Route path="*" element={<NotFound />} />
-          </Routes>
+          <div className="min-h-screen flex">
+            <FloatingMenu />
+            <div className="flex-1 pl-20 lg:pl-4 transition-all duration-300">
+              <Routes>
+                <Route path="/" element={<Index />} />
+                <Route path="/referral/:id" element={<ReferralView />} />
+                <Route path="/select-specialty" element={<SpecialtySelection />} />
+                <Route path="/cohort-builder" element={<CohortBuilder />} />
+                <Route path="/admin" element={<AdminPage />} />
+                <Route path="/patients" element={<Patients />} />
+                <Route path="/appointments" element={<Appointments />} />
+                <Route path="/schedule" element={<Schedule />} />
+                <Route path="/reports" element={<Reports />} />
+                <Route path="/messages" element={<Messages />} />
+                <Route path="/documents" element={<Documents />} />
+                <Route path="/settings" element={<Settings />} />
+                <Route path="*" element={<NotFound />} />
+              </Routes>
+            </div>
+          </div>
           <Toaster />
           <Sonner />
         </TooltipProvider>

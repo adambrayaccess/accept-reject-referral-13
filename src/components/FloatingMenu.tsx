@@ -1,5 +1,5 @@
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
@@ -27,12 +27,25 @@ const menuItems = [
 
 const FloatingMenu = () => {
   const [isExpanded, setIsExpanded] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
 
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 1024);
+    };
+
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
   const handleItemClick = (path: string) => {
     navigate(path);
-    setIsExpanded(false); // Collapse menu after navigation
+    if (isMobile) {
+      setIsExpanded(false);
+    }
   };
 
   const isActive = (path: string) => {
@@ -40,15 +53,31 @@ const FloatingMenu = () => {
   };
 
   return (
-    <div className="fixed left-4 top-1/2 transform -translate-y-1/2 z-50">
+    <div className={cn(
+      "fixed left-4 top-1/2 transform -translate-y-1/2 z-50",
+      "lg:relative lg:left-0 lg:top-0 lg:transform-none lg:h-screen lg:pt-4"
+    )}>
       <div
         className={cn(
           "bg-white shadow-2xl rounded-2xl border border-gray-200 transition-all duration-300 ease-in-out",
+          "lg:h-full lg:flex lg:flex-col lg:justify-start",
           isExpanded ? "w-64 p-4" : "w-16 p-3"
         )}
-        onMouseEnter={() => setIsExpanded(true)}
-        onMouseLeave={() => setIsExpanded(false)}
+        onMouseEnter={() => !isMobile && setIsExpanded(true)}
+        onMouseLeave={() => !isMobile && setIsExpanded(false)}
       >
+        {/* Mobile toggle button */}
+        {isMobile && (
+          <Button
+            variant="ghost"
+            size="icon"
+            className="absolute -right-2 -top-2 w-8 h-8 bg-white border border-gray-200 rounded-full shadow-lg lg:hidden"
+            onClick={() => setIsExpanded(!isExpanded)}
+          >
+            <LayoutDashboard className="h-4 w-4" />
+          </Button>
+        )}
+
         {/* Header with logo/brand */}
         <div className={cn(
           "flex items-center mb-4",
@@ -65,7 +94,7 @@ const FloatingMenu = () => {
         </div>
 
         {/* Menu Items */}
-        <nav className="space-y-2">
+        <nav className="space-y-2 flex-1">
           {menuItems.map((item) => {
             const Icon = item.icon;
             const active = isActive(item.path);
@@ -82,6 +111,7 @@ const FloatingMenu = () => {
                     : "text-gray-600 hover:text-gray-900 hover:bg-gray-50"
                 )}
                 onClick={() => handleItemClick(item.path)}
+                aria-label={item.label}
               >
                 <Icon className={cn(
                   "h-5 w-5 flex-shrink-0",
@@ -98,7 +128,7 @@ const FloatingMenu = () => {
         </nav>
 
         {/* Footer indicator */}
-        {isExpanded && (
+        {isExpanded && !isMobile && (
           <div className="mt-4 pt-4 border-t border-gray-200">
             <div className="text-xs text-gray-400 text-center">
               Hover to collapse

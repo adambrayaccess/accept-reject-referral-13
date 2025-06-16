@@ -4,7 +4,7 @@ import PageHeader from '@/components/PageHeader';
 
 const Patients = () => {
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="bg-gray-50 min-h-screen">
       <Titlebar />
       <PageHeader showSearch={false} />
       
