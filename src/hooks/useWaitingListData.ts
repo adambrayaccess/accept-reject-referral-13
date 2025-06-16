@@ -9,6 +9,8 @@ interface WaitingListFilters {
   search: string;
   priority: string;
   location: string;
+  tags: string[];
+  appointmentStatus: string;
   ageRange: { min: number; max: number };
 }
 
@@ -22,6 +24,8 @@ export const useWaitingListData = (currentSpecialty: string | null = null) => {
     search: '',
     priority: 'all',
     location: '',
+    tags: [],
+    appointmentStatus: 'all',
     ageRange: { min: 0, max: 365 }
   });
   
@@ -106,6 +110,34 @@ export const useWaitingListData = (currentSpecialty: string | null = null) => {
       );
     }
 
+    // Apply tag filter
+    if (filters.tags.length > 0) {
+      filtered = filtered.filter(ref =>
+        filters.tags.some(tag => ref.tags?.includes(tag))
+      );
+    }
+
+    // Apply appointment status filter
+    if (filters.appointmentStatus !== 'all') {
+      filtered = filtered.filter(ref => {
+        const age = ref.calculatedReferralAge || 0;
+        switch (filters.appointmentStatus) {
+          case 'overdue':
+            return ref.triageStatus === 'waiting-list' && age > 60;
+          case 'due':
+            return ref.triageStatus === 'waiting-list' && age > 30 && age <= 60;
+          case 'scheduled':
+            return ref.triageStatus === 'waiting-list' && age <= 30;
+          case 'booked':
+            return ref.triageStatus === 'pre-admission-assessment';
+          case 'completed':
+            return ref.triageStatus === 'assessed';
+          default:
+            return true;
+        }
+      });
+    }
+
     // Apply age range filter
     filtered = filtered.filter(ref =>
       ref.calculatedReferralAge >= filters.ageRange.min &&
@@ -183,6 +215,8 @@ export const useWaitingListData = (currentSpecialty: string | null = null) => {
       search: '',
       priority: 'all',
       location: '',
+      tags: [],
+      appointmentStatus: 'all',
       ageRange: { min: 0, max: 365 }
     });
   };

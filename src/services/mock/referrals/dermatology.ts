@@ -15,6 +15,7 @@ export const dermatologyReferrals: Referral[] = [
     specialty: 'Dermatology',
     service: 'General Dermatology',
     triageStatus: 'pre-assessment',
+    tags: ['eczema', 'chronic-condition', 'steroid-trial'],
     clinicalInfo: {
       reason: 'Persistent rash on trunk and limbs',
       history: 'Patient presents with pruritic rash present for 3 months. Not responding to OTC treatments.',
@@ -45,6 +46,7 @@ export const dermatologyReferrals: Referral[] = [
     specialty: 'Dermatology',
     service: 'General Dermatology',
     triageStatus: 'waiting-list',
+    tags: ['eczema', 'photos-attached', 'gp-managed'],
     clinicalInfo: {
       reason: 'Persistent rash on trunk and limbs',
       history: 'Patient presents with pruritic rash present for 3 months. Not responding to OTC treatments.',
@@ -66,29 +68,38 @@ export const dermatologyReferrals: Referral[] = [
   }
 ];
 
-// Generate 48 more mock referrals with varied triage statuses
 const additionalDermatologyReferrals: Referral[] = Array.from({ length: 48 }, (_, i) => {
-  const index = i + 2; // Start from 2 since we already have 2 referrals
+  const index = i + 2;
   const patientIndex = index % mockPatients.length;
   const practitionerIndex = index % mockPractitioners.length;
   const priorityOptions: Referral['priority'][] = ['routine', 'urgent', 'emergency'];
   const priority = priorityOptions[index % 3];
   
-  // Distribute triage statuses across referrals
   const triageStatuses: TriageStatus[] = ['pre-assessment', 'assessed', 'pre-admission-assessment', 'waiting-list', 'refer-to-another-specialty'];
   const triageStatus = triageStatuses[index % triageStatuses.length];
   
-  // Set status based on triage status
   const status = triageStatus === 'refer-to-another-specialty' ? 'rejected' : 
                 index % 6 === 0 ? 'rejected' : 
                 index % 7 === 0 ? 'accepted' : 'new';
   
-  // Generate a date between 1 and 365 days ago
   const daysAgo = Math.floor(Math.random() * 365) + 1;
   const date = new Date();
   date.setDate(date.getDate() - daysAgo);
   
-  // Define attachment options for dermatology
+  // Enhanced tag options for dermatology
+  const tagOptions = [
+    ['suspicious-lesion', 'two-week-wait'],
+    ['acne', 'scarring', 'isotretinoin-candidate'],
+    ['psoriasis', 'biologic-candidate'],
+    ['eczema', 'atopic-dermatitis'],
+    ['melanoma-concern', 'dermoscopy-required'],
+    ['rosacea', 'laser-candidate'],
+    ['hidradenitis', 'surgery-required'],
+    ['hair-loss', 'alopecia'],
+    ['skin-cancer', 'excision-required'],
+    ['birthmark', 'cosmetic-concern']
+  ];
+  
   const attachmentOptions = [
     { title: 'Clinical Photographs', contentType: 'image/jpeg', url: '/mock-data/rash-photos.jpg', size: 3568000 },
     { title: 'Dermoscopy Images', contentType: 'image/jpeg', url: '/mock-data/dermoscopy.jpg', size: 4120000 },
@@ -109,6 +120,7 @@ const additionalDermatologyReferrals: Referral[] = Array.from({ length: 48 }, (_
     service: index % 3 === 0 ? 'General Dermatology' : 
              index % 3 === 1 ? 'Skin Cancer Service' : 'Pediatric Dermatology',
     triageStatus,
+    tags: tagOptions[index % tagOptions.length],
     clinicalInfo: {
       reason: index % 4 === 0 ? 'Persistent rash' : 
               index % 4 === 1 ? 'Suspicious mole' : 
@@ -124,11 +136,10 @@ const additionalDermatologyReferrals: Referral[] = Array.from({ length: 48 }, (_
       {
         id: `DERM-ATT-${index}-1`,
         ...attachmentOptions[index % attachmentOptions.length],
-        date: new Date(date.getTime() - 86400000).toISOString(), // 1 day before referral
+        date: new Date(date.getTime() - 86400000).toISOString(),
       }
     ] : []
   };
 });
 
-// Combine the original referrals with the additional ones
 export const allDermatologyReferrals = [...dermatologyReferrals, ...additionalDermatologyReferrals];

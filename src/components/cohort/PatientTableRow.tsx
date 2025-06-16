@@ -8,6 +8,9 @@ import { GripVertical, Calendar, MapPin } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Referral } from '@/types/referral';
 import ReferralPriorityBadge from '@/components/dashboard/ReferralPriorityBadge';
+import AppointmentStatus from './AppointmentStatus';
+import WaitingListAIActions from './WaitingListAIActions';
+import SubReferralIndicator from './SubReferralIndicator';
 import {
   calculateReferralAgeDays,
   calculatePatientAge,
@@ -132,6 +135,15 @@ const PatientTableRow = ({
             </Badge>
           )}
         </div>
+      </TableCell>
+      <TableCell>
+        <AppointmentStatus referral={referral} variant="compact" />
+      </TableCell>
+      <TableCell>
+        <WaitingListAIActions referral={referral} variant="compact" />
+      </TableCell>
+      <TableCell>
+        <SubReferralIndicator referral={referral} variant="compact" />
       </TableCell>
     </TableRow>
   );

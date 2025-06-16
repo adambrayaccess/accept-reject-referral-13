@@ -15,6 +15,7 @@ export const neurologyReferrals: Referral[] = [
     specialty: 'Neurology',
     service: 'Stroke Clinic',
     triageStatus: 'pre-admission-assessment',
+    tags: ['tia', 'stroke-risk', 'urgent-imaging'],
     clinicalInfo: {
       reason: 'Transient loss of speech and right-sided weakness',
       history: 'Patient experienced sudden onset speech difficulty and weakness in right arm lasting approximately 30 minutes yesterday evening.',
@@ -44,29 +45,38 @@ export const neurologyReferrals: Referral[] = [
   }
 ];
 
-// Generate 49 more mock referrals with varied triage statuses
 const additionalNeurologyReferrals: Referral[] = Array.from({ length: 49 }, (_, i) => {
-  const index = i + 1; // Start from 1 since we already have 1 referral
+  const index = i + 1;
   const patientIndex = index % mockPatients.length;
   const practitionerIndex = index % mockPractitioners.length;
   const priorityOptions: Referral['priority'][] = ['routine', 'urgent', 'emergency'];
   const priority = priorityOptions[index % 3];
   
-  // Distribute triage statuses across referrals
   const triageStatuses: TriageStatus[] = ['pre-assessment', 'assessed', 'pre-admission-assessment', 'waiting-list', 'refer-to-another-specialty'];
   const triageStatus = triageStatuses[index % triageStatuses.length];
   
-  // Set status based on triage status
   const status = triageStatus === 'refer-to-another-specialty' ? 'rejected' : 
                 index % 6 === 0 ? 'rejected' : 
                 index % 7 === 0 ? 'accepted' : 'new';
   
-  // Generate a date between 1 and 365 days ago
   const daysAgo = Math.floor(Math.random() * 365) + 1;
   const date = new Date();
   date.setDate(date.getDate() - daysAgo);
   
-  // Define attachment options for neurology
+  // Enhanced tag options for neurology
+  const tagOptions = [
+    ['seizure', 'epilepsy-workup'],
+    ['headache', 'migraine', 'preventative-therapy'],
+    ['tia', 'stroke-prevention'],
+    ['tremor', 'parkinsons-query'],
+    ['ms-suspected', 'mri-required'],
+    ['neuropathy', 'diabetes-related'],
+    ['memory-loss', 'dementia-screening'],
+    ['vertigo', 'balance-issues'],
+    ['nerve-pain', 'neuropathic'],
+    ['weakness', 'motor-symptoms']
+  ];
+  
   const attachmentOptions = [
     { title: 'MRI Brain Report', contentType: 'application/pdf', url: '/mock-data/mri-report.pdf', size: 4567000 },
     { title: 'CT Head Report', contentType: 'application/pdf', url: '/mock-data/ct-report.pdf', size: 5678000 },
@@ -88,6 +98,7 @@ const additionalNeurologyReferrals: Referral[] = Array.from({ length: 49 }, (_, 
              index % 4 === 1 ? 'Epilepsy Service' : 
              index % 4 === 2 ? 'Headache Clinic' : 'Multiple Sclerosis Service',
     triageStatus,
+    tags: tagOptions[index % tagOptions.length],
     clinicalInfo: {
       reason: index % 5 === 0 ? 'TIA symptoms' : 
               index % 5 === 1 ? 'Seizures' : 
@@ -105,7 +116,7 @@ const additionalNeurologyReferrals: Referral[] = Array.from({ length: 49 }, (_, 
       {
         id: `NEUR-ATT-${index}-1`,
         ...attachmentOptions[index % attachmentOptions.length],
-        date: new Date(date.getTime() - 86400000).toISOString(), // 1 day before referral
+        date: new Date(date.getTime() - 86400000).toISOString(),
       }
     ] : index % 4 === 0 ? [
       {
@@ -116,11 +127,10 @@ const additionalNeurologyReferrals: Referral[] = Array.from({ length: 49 }, (_, 
       {
         id: `NEUR-ATT-${index}-2`,
         ...attachmentOptions[(index + 1) % attachmentOptions.length],
-        date: new Date(date.getTime() - 172800000).toISOString(), // 2 days before referral
+        date: new Date(date.getTime() - 172800000).toISOString(),
       }
     ] : []
   };
 });
 
-// Combine the original referrals with the additional ones
 export const allNeurologyReferrals = [...neurologyReferrals, ...additionalNeurologyReferrals];

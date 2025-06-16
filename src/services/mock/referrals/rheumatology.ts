@@ -15,6 +15,7 @@ export const rheumatologyReferrals: Referral[] = [
     specialty: 'Rheumatology',
     service: 'General Rheumatology',
     triageStatus: 'assessed',
+    tags: ['joint-pain', 'ra-suspected', 'family-history'],
     clinicalInfo: {
       reason: 'Joint pain and stiffness',
       history: 'Patient reports morning stiffness and joint pain in hands and knees for past 3 months.',
@@ -36,29 +37,38 @@ export const rheumatologyReferrals: Referral[] = [
   }
 ];
 
-// Generate 49 more mock referrals with varied triage statuses
 const additionalRheumatologyReferrals: Referral[] = Array.from({ length: 49 }, (_, i) => {
-  const index = i + 1; // Start from 1 since we already have 1 referral
+  const index = i + 1;
   const patientIndex = index % mockPatients.length;
   const practitionerIndex = index % mockPractitioners.length;
   const priorityOptions: Referral['priority'][] = ['routine', 'urgent', 'emergency'];
   const priority = priorityOptions[index % 3];
   
-  // Distribute triage statuses across referrals
   const triageStatuses: TriageStatus[] = ['pre-assessment', 'assessed', 'pre-admission-assessment', 'waiting-list', 'refer-to-another-specialty'];
   const triageStatus = triageStatuses[index % triageStatuses.length];
   
-  // Set status based on triage status
   const status = triageStatus === 'refer-to-another-specialty' ? 'rejected' : 
                 index % 6 === 0 ? 'rejected' : 
                 index % 7 === 0 ? 'accepted' : 'new';
   
-  // Generate a date between 1 and 365 days ago
   const daysAgo = Math.floor(Math.random() * 365) + 1;
   const date = new Date();
   date.setDate(date.getDate() - daysAgo);
   
-  // Define attachment options for rheumatology
+  // Enhanced tag options for rheumatology
+  const tagOptions = [
+    ['rheumatoid-arthritis', 'dmard-candidate'],
+    ['osteoarthritis', 'joint-replacement'],
+    ['lupus', 'autoimmune'],
+    ['gout', 'uric-acid-high'],
+    ['fibromyalgia', 'pain-management'],
+    ['psoriatic-arthritis', 'biologic-candidate'],
+    ['ankylosing-spondylitis', 'hla-b27'],
+    ['vasculitis', 'steroid-candidate'],
+    ['polymyalgia', 'temporal-arteritis'],
+    ['osteoporosis', 'fracture-risk']
+  ];
+  
   const attachmentOptions = [
     { title: 'Blood Test Results', contentType: 'application/pdf', url: '/mock-data/bloods.pdf', size: 1567000 },
     { title: 'Joint X-Rays', contentType: 'image/jpeg', url: '/mock-data/joint-xrays.jpg', size: 4230000 },
@@ -79,6 +89,7 @@ const additionalRheumatologyReferrals: Referral[] = Array.from({ length: 49 }, (
     service: index % 3 === 0 ? 'General Rheumatology' : 
              index % 3 === 1 ? 'Early Inflammatory Arthritis' : 'Connective Tissue Disease',
     triageStatus,
+    tags: tagOptions[index % tagOptions.length],
     clinicalInfo: {
       reason: index % 4 === 0 ? 'Joint pain and stiffness' : 
               index % 4 === 1 ? 'Back pain' : 
@@ -95,11 +106,10 @@ const additionalRheumatologyReferrals: Referral[] = Array.from({ length: 49 }, (
       {
         id: `RHEU-ATT-${index}-1`,
         ...attachmentOptions[index % attachmentOptions.length],
-        date: new Date(date.getTime() - 86400000).toISOString(), // 1 day before referral
+        date: new Date(date.getTime() - 86400000).toISOString(),
       }
     ] : []
   };
 });
 
-// Combine the original referrals with the additional ones
 export const allRheumatologyReferrals = [...rheumatologyReferrals, ...additionalRheumatologyReferrals];

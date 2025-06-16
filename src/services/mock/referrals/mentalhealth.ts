@@ -15,6 +15,7 @@ export const mentalHealthReferrals: Referral[] = [
     specialty: 'Mental Health',
     service: 'Community Mental Health Team',
     triageStatus: 'waiting-list',
+    tags: ['depression', 'anxiety', 'self-harm-risk'],
     clinicalInfo: {
       reason: 'Severe depression and anxiety',
       history: 'Patient reports worsening symptoms over the past 3 months. Unable to work or perform daily activities.',
@@ -36,29 +37,38 @@ export const mentalHealthReferrals: Referral[] = [
   }
 ];
 
-// Generate 49 more mock referrals with varied triage statuses
 const additionalMentalHealthReferrals: Referral[] = Array.from({ length: 49 }, (_, i) => {
-  const index = i + 1; // Start from 1 since we already have 1 referral
+  const index = i + 1;
   const patientIndex = index % mockPatients.length;
   const practitionerIndex = index % mockPractitioners.length;
   const priorityOptions: Referral['priority'][] = ['routine', 'urgent', 'emergency'];
   const priority = priorityOptions[index % 3];
   
-  // Distribute triage statuses across referrals
   const triageStatuses: TriageStatus[] = ['pre-assessment', 'assessed', 'pre-admission-assessment', 'waiting-list', 'refer-to-another-specialty'];
   const triageStatus = triageStatuses[index % triageStatuses.length];
   
-  // Set status based on triage status
   const status = triageStatus === 'refer-to-another-specialty' ? 'rejected' : 
                 index % 6 === 0 ? 'rejected' : 
                 index % 7 === 0 ? 'accepted' : 'new';
   
-  // Generate a date between 1 and 365 days ago
   const daysAgo = Math.floor(Math.random() * 365) + 1;
   const date = new Date();
   date.setDate(date.getDate() - daysAgo);
   
-  // Define attachment options for mental health
+  // Enhanced tag options for mental health
+  const tagOptions = [
+    ['depression', 'medication-review'],
+    ['anxiety', 'cbt-candidate'],
+    ['bipolar', 'mood-stabilizer'],
+    ['psychosis', 'antipsychotic'],
+    ['ptsd', 'trauma-therapy'],
+    ['eating-disorder', 'specialist-unit'],
+    ['substance-misuse', 'dual-diagnosis'],
+    ['personality-disorder', 'dbt-candidate'],
+    ['self-harm', 'safety-planning'],
+    ['suicidal-ideation', 'crisis-team']
+  ];
+  
   const attachmentOptions = [
     { title: 'Risk Assessment', contentType: 'application/pdf', url: '/mock-data/risk-assessment.pdf', size: 1856000 },
     { title: 'PHQ-9 Questionnaire', contentType: 'application/pdf', url: '/mock-data/phq9.pdf', size: 1234000 },
@@ -80,6 +90,7 @@ const additionalMentalHealthReferrals: Referral[] = Array.from({ length: 49 }, (
              index % 4 === 1 ? 'Crisis Team' : 
              index % 4 === 2 ? 'Eating Disorder Service' : 'IAPT',
     triageStatus,
+    tags: tagOptions[index % tagOptions.length],
     clinicalInfo: {
       reason: index % 5 === 0 ? 'Depression and anxiety' : 
               index % 5 === 1 ? 'Suicidal ideation' : 
@@ -97,7 +108,7 @@ const additionalMentalHealthReferrals: Referral[] = Array.from({ length: 49 }, (
       {
         id: `MH-ATT-${index}-1`,
         ...attachmentOptions[index % attachmentOptions.length],
-        date: new Date(date.getTime() - 86400000).toISOString(), // 1 day before referral
+        date: new Date(date.getTime() - 86400000).toISOString(),
       }
     ] : index % 5 === 0 ? [
       {
@@ -108,11 +119,10 @@ const additionalMentalHealthReferrals: Referral[] = Array.from({ length: 49 }, (
       {
         id: `MH-ATT-${index}-2`,
         ...attachmentOptions[(index + 1) % attachmentOptions.length],
-        date: new Date(date.getTime() - 172800000).toISOString(), // 2 days before referral
+        date: new Date(date.getTime() - 172800000).toISOString(),
       }
     ] : []
   };
 });
 
-// Combine the original referrals with the additional ones
 export const allMentalHealthReferrals = [...mentalHealthReferrals, ...additionalMentalHealthReferrals];

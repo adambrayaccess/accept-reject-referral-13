@@ -15,6 +15,7 @@ export const gastroenterologyReferrals: Referral[] = [
     specialty: 'Gastroenterology',
     service: 'Rapid Access',
     triageStatus: 'refer-to-another-specialty',
+    tags: ['colorectal-cancer', 'two-week-wait', 'refer-surgery'],
     clinicalInfo: {
       reason: 'Weight loss and change in bowel habits',
       history: 'Unintentional weight loss of 5kg over 2 months. Change in bowel habits with occasional blood in stool.',
@@ -36,29 +37,38 @@ export const gastroenterologyReferrals: Referral[] = [
   }
 ];
 
-// Generate 49 more mock referrals with varied triage statuses
 const additionalGastroenterologyReferrals: Referral[] = Array.from({ length: 49 }, (_, i) => {
-  const index = i + 1; // Start from 1 since we already have 1 referral
+  const index = i + 1;
   const patientIndex = index % mockPatients.length;
   const practitionerIndex = index % mockPractitioners.length;
   const priorityOptions: Referral['priority'][] = ['routine', 'urgent', 'emergency'];
   const priority = priorityOptions[index % 3];
   
-  // Distribute triage statuses across referrals
   const triageStatuses: TriageStatus[] = ['pre-assessment', 'assessed', 'pre-admission-assessment', 'waiting-list', 'refer-to-another-specialty'];
   const triageStatus = triageStatuses[index % triageStatuses.length];
   
-  // Set status based on triage status
   const status = triageStatus === 'refer-to-another-specialty' ? 'rejected' : 
                 index % 6 === 0 ? 'rejected' : 
                 index % 7 === 0 ? 'accepted' : 'new';
   
-  // Generate a date between 1 and 365 days ago
   const daysAgo = Math.floor(Math.random() * 365) + 1;
   const date = new Date();
   date.setDate(date.getDate() - daysAgo);
   
-  // Define attachment options for gastroenterology
+  // Enhanced tag options for gastroenterology
+  const tagOptions = [
+    ['ibd', 'crohns-suspected'],
+    ['colorectal-cancer', 'screening'],
+    ['peptic-ulcer', 'h-pylori'],
+    ['liver-disease', 'abnormal-lfts'],
+    ['gerd', 'endoscopy-required'],
+    ['gallstones', 'surgery-candidate'],
+    ['pancreatitis', 'alcohol-related'],
+    ['celiac-disease', 'gluten-sensitivity'],
+    ['ibs', 'functional-disorder'],
+    ['hepatitis', 'viral-screening']
+  ];
+  
   const attachmentOptions = [
     { title: 'FIT Test Result', contentType: 'application/pdf', url: '/mock-data/fit-test.pdf', size: 985000 },
     { title: 'Endoscopy Report', contentType: 'application/pdf', url: '/mock-data/endoscopy.pdf', size: 2340000 },
@@ -79,6 +89,7 @@ const additionalGastroenterologyReferrals: Referral[] = Array.from({ length: 49 
     service: index % 3 === 0 ? 'Rapid Access' : 
              index % 3 === 1 ? 'IBD Service' : 'Hepatology',
     triageStatus,
+    tags: tagOptions[index % tagOptions.length],
     clinicalInfo: {
       reason: index % 5 === 0 ? 'Weight loss and change in bowel habits' : 
               index % 5 === 1 ? 'Abdominal pain' : 
@@ -96,11 +107,10 @@ const additionalGastroenterologyReferrals: Referral[] = Array.from({ length: 49 
       {
         id: `GAST-ATT-${index}-1`,
         ...attachmentOptions[index % attachmentOptions.length],
-        date: new Date(date.getTime() - 86400000).toISOString(), // 1 day before referral
+        date: new Date(date.getTime() - 86400000).toISOString(),
       }
     ] : []
   };
 });
 
-// Combine the original referrals with the additional ones
 export const allGastroenterologyReferrals = [...gastroenterologyReferrals, ...additionalGastroenterologyReferrals];

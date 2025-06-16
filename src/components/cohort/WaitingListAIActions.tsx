@@ -1,70 +1,116 @@
 
 import { Button } from '@/components/ui/button';
-import { Bot, ChevronDown } from 'lucide-react';
-import { useToast } from '@/hooks/use-toast';
-import { 
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
+import { Badge } from '@/components/ui/badge';
+import { Sparkles, Brain, TrendingUp } from 'lucide-react';
+import { Referral } from '@/types/referral';
 
-const WaitingListAIActions = () => {
-  const { toast } = useToast();
+interface WaitingListAIActionsProps {
+  referral: Referral;
+  variant?: 'default' | 'compact';
+}
 
-  const handleAutoBookAppointments = () => {
-    toast({
-      title: "AI Assistant",
-      description: "Auto-booking appointments...",
-    });
-    // TODO: Implement AI-assisted appointment booking
-    console.log('Auto book appointments triggered');
+const WaitingListAIActions = ({ referral, variant = 'default' }: WaitingListAIActionsProps) => {
+  // Mock AI suggestions based on referral data
+  const getAISuggestions = () => {
+    const age = referral.calculatedReferralAge || 0;
+    const priority = referral.priority;
+    const tags = referral.tags || [];
+    
+    const suggestions = [];
+    
+    // Priority-based suggestions
+    if (priority === 'urgent' && age > 14) {
+      suggestions.push({
+        type: 'escalation',
+        text: 'Escalate Priority',
+        confidence: 95,
+        reason: 'Urgent referral waiting >14 days'
+      });
+    }
+    
+    // Age-based suggestions
+    if (age > 60) {
+      suggestions.push({
+        type: 'appointment',
+        text: 'Book Emergency Slot',
+        confidence: 88,
+        reason: 'Long wait time detected'
+      });
+    }
+    
+    // Tag-based suggestions
+    if (tags.includes('two-week-wait') || tags.includes('cancer-suspected')) {
+      suggestions.push({
+        type: 'fast-track',
+        text: 'Fast Track',
+        confidence: 92,
+        reason: 'Cancer pathway detected'
+      });
+    }
+    
+    // Generic optimization
+    if (suggestions.length === 0 && age > 30) {
+      suggestions.push({
+        type: 'optimize',
+        text: 'Optimize Slot',
+        confidence: 75,
+        reason: 'Standard optimization'
+      });
+    }
+    
+    return suggestions.slice(0, 2); // Return max 2 suggestions
   };
 
-  const handleAutoAddToWaitingList = () => {
-    toast({
-      title: "AI Assistant",
-      description: "Auto-adding patient to waiting list...",
-    });
-    // TODO: Implement AI-assistant waiting list addition
-    console.log('Auto add to waiting list triggered');
-  };
+  const suggestions = getAISuggestions();
+
+  if (variant === 'compact') {
+    return (
+      <div className="flex items-center gap-1">
+        {suggestions.length > 0 && (
+          <>
+            <Sparkles className="h-3 w-3 text-purple-500" />
+            <span className="text-xs text-purple-600 font-medium">
+              {suggestions.length} AI suggestion{suggestions.length > 1 ? 's' : ''}
+            </span>
+          </>
+        )}
+      </div>
+    );
+  }
+
+  if (suggestions.length === 0) {
+    return (
+      <div className="text-xs text-muted-foreground flex items-center gap-1">
+        <Brain className="h-3 w-3" />
+        <span>No AI suggestions</span>
+      </div>
+    );
+  }
 
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button
-          variant="outline"
-          className="bg-gradient-to-r from-pink-200 to-purple-300 hover:from-pink-300 hover:to-purple-400 text-purple-800 border-none font-medium rounded-lg px-6 py-3 flex items-center gap-3 transition-all duration-200"
-        >
-          <Bot className="h-5 w-5" />
-          Copilot Actions
-          <ChevronDown className="h-4 w-4" />
-        </Button>
-      </DropdownMenuTrigger>
-      
-      <DropdownMenuContent 
-        className="w-80 bg-white border border-purple-200 shadow-lg rounded-lg p-2" 
-        align="start"
-        sideOffset={5}
-      >
-        <DropdownMenuItem
-          onClick={handleAutoBookAppointments}
-          className="bg-gradient-to-r from-orange-100 to-purple-200 hover:from-orange-200 hover:to-purple-300 text-purple-800 border border-purple-200 font-medium rounded-full px-6 py-3 mb-2 flex items-center gap-2 transition-all duration-200 cursor-pointer"
-        >
-          <Bot className="h-4 w-4" />
-          Auto-book appointments
-        </DropdownMenuItem>
-        
-        <DropdownMenuItem
-          onClick={handleAutoAddToWaitingList}
-          className="bg-gradient-to-r from-orange-100 to-purple-200 hover:from-orange-200 hover:to-purple-300 text-purple-800 border border-purple-200 font-medium rounded-full px-6 py-3 flex items-center gap-2 transition-all duration-200 cursor-pointer"
-        >
-          <Bot className="h-4 w-4" />
-          Auto add a patient to a waiting list
-        </DropdownMenuItem>
-      </DropdownMenuContent>
-    </DropdownMenu>
+    <div className="space-y-2">
+      {suggestions.map((suggestion, index) => (
+        <div key={index} className="flex items-start gap-2">
+          <Button
+            variant="outline"
+            size="sm"
+            className="h-7 text-xs bg-purple-50 border-purple-200 hover:bg-purple-100"
+          >
+            <Sparkles className="h-3 w-3 mr-1 text-purple-500" />
+            {suggestion.text}
+          </Button>
+          <div className="flex flex-col">
+            <Badge variant="secondary" className="text-xs w-fit">
+              <TrendingUp className="h-3 w-3 mr-1" />
+              {suggestion.confidence}%
+            </Badge>
+            <span className="text-xs text-muted-foreground mt-1">
+              {suggestion.reason}
+            </span>
+          </div>
+        </div>
+      ))}
+    </div>
   );
 };
 

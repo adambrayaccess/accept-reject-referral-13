@@ -15,6 +15,7 @@ export const cardiologyReferrals: Referral[] = [
     specialty: 'Cardiology',
     service: 'Rapid Access Chest Pain Clinic',
     triageStatus: 'assessed',
+    tags: ['chest-pain', 'urgent-review', 'family-history'],
     clinicalInfo: {
       reason: 'Chest pain on exertion',
       history: 'Patient reports chest pain during moderate exercise lasting 5-10 minutes over the past two weeks.',
@@ -53,6 +54,7 @@ export const cardiologyReferrals: Referral[] = [
     specialty: 'Cardiology',
     service: 'Rapid Access Chest Pain Clinic',
     triageStatus: 'refer-to-another-specialty',
+    tags: ['refer-elsewhere', 'non-cardiac'],
     clinicalInfo: {
       reason: 'Chest pain on exertion',
       history: 'Patient reports intermittent chest pain during moderate exercise.',
@@ -74,29 +76,39 @@ export const cardiologyReferrals: Referral[] = [
   }
 ];
 
-// Generate 48 more mock referrals with varied triage statuses
+// Generate 48 more mock referrals with varied triage statuses and tags
 const additionalCardiologyReferrals: Referral[] = Array.from({ length: 48 }, (_, i) => {
-  const index = i + 2; // Start from 2 since we already have 2 referrals
+  const index = i + 2;
   const patientIndex = index % mockPatients.length;
   const practitionerIndex = index % mockPractitioners.length;
   const priorityOptions: Referral['priority'][] = ['routine', 'urgent', 'emergency'];
   const priority = priorityOptions[index % 3];
   
-  // Distribute triage statuses across referrals
   const triageStatuses: TriageStatus[] = ['pre-assessment', 'assessed', 'pre-admission-assessment', 'waiting-list', 'refer-to-another-specialty'];
   const triageStatus = triageStatuses[index % triageStatuses.length];
   
-  // Set status based on triage status
   const status = triageStatus === 'refer-to-another-specialty' ? 'rejected' : 
                 index % 6 === 0 ? 'rejected' : 
                 index % 7 === 0 ? 'accepted' : 'new';
   
-  // Generate a date between 1 and 365 days ago
   const daysAgo = Math.floor(Math.random() * 365) + 1;
   const date = new Date();
   date.setDate(date.getDate() - daysAgo);
   
-  // Define attachment options for variety
+  // Enhanced tag options for cardiology
+  const tagOptions = [
+    ['chest-pain', 'acs-ruled-out'],
+    ['palpitations', 'ecg-abnormal'],
+    ['heart-failure', 'echo-required'],
+    ['hypertension', 'medication-review'],
+    ['arrhythmia', 'holter-needed'],
+    ['valve-disease', 'murmur'],
+    ['syncope', 'tilt-test'],
+    ['post-mi', 'rehabilitation'],
+    ['diabetes', 'cardiovascular-risk'],
+    ['family-history', 'screening']
+  ];
+  
   const attachmentOptions = [
     { title: 'ECG Report', contentType: 'application/pdf', url: '/mock-data/ecg-report.pdf', size: 2456000 },
     { title: 'Chest X-Ray', contentType: 'image/jpeg', url: '/mock-data/chest-xray.jpg', size: 4567000 },
@@ -117,6 +129,7 @@ const additionalCardiologyReferrals: Referral[] = Array.from({ length: 48 }, (_,
     service: index % 3 === 0 ? 'Rapid Access Chest Pain Clinic' : 
              index % 3 === 1 ? 'Heart Failure Clinic' : 'Arrhythmia Service',
     triageStatus,
+    tags: tagOptions[index % tagOptions.length],
     clinicalInfo: {
       reason: index % 4 === 0 ? 'Chest pain on exertion' : 
               index % 4 === 1 ? 'Palpitations' : 
@@ -132,7 +145,7 @@ const additionalCardiologyReferrals: Referral[] = Array.from({ length: 48 }, (_,
       {
         id: `CARD-ATT-${index}-1`,
         ...attachmentOptions[index % attachmentOptions.length],
-        date: new Date(date.getTime() - 86400000).toISOString(), // 1 day before referral
+        date: new Date(date.getTime() - 86400000).toISOString(),
       }
     ] : index % 3 === 0 ? [
       {
@@ -143,11 +156,10 @@ const additionalCardiologyReferrals: Referral[] = Array.from({ length: 48 }, (_,
       {
         id: `CARD-ATT-${index}-2`,
         ...attachmentOptions[(index + 1) % attachmentOptions.length],
-        date: new Date(date.getTime() - 172800000).toISOString(), // 2 days before referral
+        date: new Date(date.getTime() - 172800000).toISOString(),
       }
     ] : []
   };
 });
 
-// Combine the original referrals with the additional ones
 export const allCardiologyReferrals = [...cardiologyReferrals, ...additionalCardiologyReferrals];
