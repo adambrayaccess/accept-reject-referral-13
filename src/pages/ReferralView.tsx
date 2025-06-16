@@ -11,6 +11,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { ArrowLeft } from 'lucide-react';
 import { useToast } from '@/components/ui/use-toast';
 import ReferralWorkspace from '@/components/ReferralWorkspace';
+import PatientActivityTimeline from '@/components/PatientActivityTimeline';
 
 const ReferralView = () => {
   const { id } = useParams<{ id: string }>();
@@ -136,6 +137,7 @@ const ReferralView = () => {
             relatedReferrals={relatedReferrals}
           />
           <MedicalHistory patient={referral.patient} />
+          <PatientActivityTimeline />
           <AttachmentViewer attachments={referral.attachments} />
         </div>
         
