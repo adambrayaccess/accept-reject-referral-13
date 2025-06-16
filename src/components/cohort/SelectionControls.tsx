@@ -3,6 +3,7 @@ import { Button } from '@/components/ui/button';
 import { Referral } from '@/types/referral';
 import CohortFilters from './CohortFilters';
 import SearchTablist from './SearchTablist';
+import WaitingListAIActions from './WaitingListAIActions';
 
 interface SelectionControlsProps {
   totalCount: number;
@@ -27,8 +28,18 @@ const SelectionControls = ({
 }: SelectionControlsProps) => {
   return (
     <div className="space-y-4">
-      {/* Search and Action Buttons */}
-      <SearchTablist />
+      {/* Search and AI Actions Layout */}
+      <div className="flex flex-col lg:flex-row gap-4 items-start lg:items-center">
+        {/* Left column - SearchTablist */}
+        <div className="w-full lg:flex-1">
+          <SearchTablist />
+        </div>
+        
+        {/* Right column - WaitingListAIActions */}
+        <div className="w-full lg:w-auto lg:flex-shrink-0">
+          <WaitingListAIActions />
+        </div>
+      </div>
       
       {/* Statistics and Controls */}
       <div className="flex justify-between items-center">
