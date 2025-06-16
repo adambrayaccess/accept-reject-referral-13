@@ -1,10 +1,11 @@
+
 import { useState, useEffect } from 'react';
 import { Referral } from '@/types/referral';
 import { fetchReferrals } from '@/services/referralService';
 import { reorderReferrals } from '@/services/referral/referralReorderService';
 import { useToast } from '@/components/ui/use-toast';
 
-export const useDashboardData = (currentSpecialty: string | null = null) => {
+export const useDashboardData = (selectedSpecialties: string[] = []) => {
   const [referrals, setReferrals] = useState<Referral[]>([]);
   const [filteredReferrals, setFilteredReferrals] = useState<Referral[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -21,9 +22,9 @@ export const useDashboardData = (currentSpecialty: string | null = null) => {
     try {
       let data = await fetchReferrals();
       
-      // Filter referrals by specialty if one is selected
-      if (currentSpecialty) {
-        data = data.filter(ref => ref.specialty === currentSpecialty);
+      // Filter referrals by selected specialties if any are selected
+      if (selectedSpecialties.length > 0) {
+        data = data.filter(ref => selectedSpecialties.includes(ref.specialty));
       }
       
       // Filter for dashboard: exclude referrals that are only on waiting list
@@ -76,7 +77,7 @@ export const useDashboardData = (currentSpecialty: string | null = null) => {
     return () => {
       window.removeEventListener('referralUpdated', handleReferralUpdate);
     };
-  }, [currentSpecialty]);
+  }, [selectedSpecialties]);
 
   useEffect(() => {
     filterAndSortReferrals();
@@ -171,7 +172,7 @@ export const useDashboardData = (currentSpecialty: string | null = null) => {
         sourceIndex,
         destinationIndex,
         {
-          specialty: currentSpecialty || undefined,
+          specialties: selectedSpecialties.length > 0 ? selectedSpecialties : undefined,
           filter: statusFilter !== 'all' ? statusFilter : undefined,
           sortField
         }

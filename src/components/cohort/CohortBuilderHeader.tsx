@@ -3,11 +3,21 @@ import { Button } from '@/components/ui/button';
 import { ArrowLeft } from 'lucide-react';
 
 interface CohortBuilderHeaderProps {
-  currentSpecialty: string | null;
+  selectedSpecialties: string[];
   onBack: () => void;
 }
 
-const CohortBuilderHeader = ({ currentSpecialty, onBack }: CohortBuilderHeaderProps) => {
+const CohortBuilderHeader = ({ selectedSpecialties, onBack }: CohortBuilderHeaderProps) => {
+  const getDisplayText = () => {
+    if (selectedSpecialties.length === 0) {
+      return 'No specialties selected';
+    } else if (selectedSpecialties.length === 1) {
+      return selectedSpecialties[0];
+    } else {
+      return `${selectedSpecialties.length} specialties: ${selectedSpecialties.join(', ')}`;
+    }
+  };
+
   return (
     <>
       <div className="flex justify-between items-center">
@@ -19,11 +29,9 @@ const CohortBuilderHeader = ({ currentSpecialty, onBack }: CohortBuilderHeaderPr
 
       <div>
         <h1 className="text-2xl font-bold">Waiting List Manager</h1>
-        {currentSpecialty && (
-          <p className="text-muted-foreground">
-            Managing waiting list for: <span className="font-medium text-foreground">{currentSpecialty}</span>
-          </p>
-        )}
+        <p className="text-muted-foreground">
+          Managing waiting list for: <span className="font-medium text-foreground">{getDisplayText()}</span>
+        </p>
       </div>
     </>
   );

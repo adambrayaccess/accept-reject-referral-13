@@ -12,7 +12,7 @@ import Titlebar from '@/components/Titlebar';
 import PageHeader from '@/components/PageHeader';
 
 const CohortBuilder = () => {
-  const [currentSpecialty, setCurrentSpecialty] = useState<string | null>(null);
+  const [selectedSpecialties, setSelectedSpecialties] = useState<string[]>([]);
   const navigate = useNavigate();
   
   // Cohort builder data (for tagged tab)
@@ -26,7 +26,7 @@ const CohortBuilder = () => {
     toggleReferralSelection: toggleCohortSelection,
     clearSelection: clearCohortSelection,
     selectAll: selectAllCohort,
-  } = useCohortData(currentSpecialty);
+  } = useCohortData(selectedSpecialties.length === 1 ? selectedSpecialties[0] : null);
 
   // Waiting list data (for waiting list and stats tabs)
   const {
@@ -45,13 +45,22 @@ const CohortBuilder = () => {
     selectAll: selectAllWaitingList,
     handleRefresh: refreshWaitingList,
     reorderReferrals
-  } = useWaitingListData(currentSpecialty);
+  } = useWaitingListData(selectedSpecialties);
 
   useEffect(() => {
-    // Check if specialty is selected
-    const storedSpecialty = localStorage.getItem('selectedSpecialty');
-    if (storedSpecialty) {
-      setCurrentSpecialty(storedSpecialty);
+    // Check if specialties are selected
+    const storedSpecialties = localStorage.getItem('selectedSpecialties');
+    if (storedSpecialties) {
+      try {
+        const parsed = JSON.parse(storedSpecialties);
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          setSelectedSpecialties(parsed);
+        } else {
+          navigate('/select-specialty');
+        }
+      } catch {
+        navigate('/select-specialty');
+      }
     } else {
       // Redirect to specialty selection if none selected
       navigate('/select-specialty');
@@ -69,7 +78,7 @@ const CohortBuilder = () => {
       
       <div className="px-6 py-6 space-y-6">
         <CohortBuilderHeader 
-          currentSpecialty={currentSpecialty}
+          selectedSpecialties={selectedSpecialties}
           onBack={handleBack}
         />
 

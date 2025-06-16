@@ -1,8 +1,8 @@
 
 import { useState } from 'react';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Button } from '@/components/ui/button';
 import { useNavigate } from 'react-router-dom';
+import SpecialtyMultiSelector from './SpecialtyMultiSelector';
 
 interface SpecialtySelectorProps {
   onSpecialtySelect?: (specialty: string) => void;
@@ -15,21 +15,22 @@ const SpecialtySelector = ({
   specialties,
   isStandalone = false 
 }: SpecialtySelectorProps) => {
-  const [selectedSpecialty, setSelectedSpecialty] = useState<string>('');
+  const [selectedSpecialties, setSelectedSpecialties] = useState<string[]>([]);
   const navigate = useNavigate();
 
-  const handleSpecialtyChange = (value: string) => {
-    setSelectedSpecialty(value);
+  const handleSpecialtyChange = (specialtiesArray: string[]) => {
+    setSelectedSpecialties(specialtiesArray);
     
-    if (onSpecialtySelect) {
-      onSpecialtySelect(value);
+    if (onSpecialtySelect && specialtiesArray.length > 0) {
+      // For backward compatibility, call with first selected specialty
+      onSpecialtySelect(specialtiesArray[0]);
     }
   };
 
   const handleContinue = () => {
-    // Store the selected specialty in local storage for persistence
-    if (selectedSpecialty) {
-      localStorage.setItem('selectedSpecialty', selectedSpecialty);
+    // Store the selected specialties in local storage for persistence
+    if (selectedSpecialties.length > 0) {
+      localStorage.setItem('selectedSpecialties', JSON.stringify(selectedSpecialties));
       navigate('/');
     }
   };
@@ -39,34 +40,29 @@ const SpecialtySelector = ({
   return (
     <div className={`space-y-4 ${isStandalone ? 'p-6 max-w-md mx-auto mt-20 rounded-lg border shadow-md' : ''}`}>
       {isStandalone && (
-        <h2 className="text-2xl font-bold text-center mb-6">Select Your Specialty</h2>
+        <h2 className="text-2xl font-bold text-center mb-6">Select Your Specialties</h2>
       )}
       
       <div className="space-y-2">
         <label htmlFor="specialty-select" className="block text-sm font-medium">
-          Specialty for Triage
+          Specialties for Triage
         </label>
-        <Select value={selectedSpecialty} onValueChange={handleSpecialtyChange}>
-          <SelectTrigger id="specialty-select" className="w-full">
-            <SelectValue placeholder="Select specialty" />
-          </SelectTrigger>
-          <SelectContent>
-            {filteredSpecialties.map((specialty) => (
-              <SelectItem key={specialty} value={specialty}>
-                {specialty}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
+        <SpecialtyMultiSelector
+          specialties={filteredSpecialties}
+          selectedSpecialties={selectedSpecialties}
+          onSelectionChange={handleSpecialtyChange}
+          placeholder="Select one or more specialties"
+          className="w-full"
+        />
         <p className="text-xs text-muted-foreground">
-          You will be shown referrals for this specialty only.
+          You will be shown referrals for the selected specialties only.
         </p>
       </div>
 
       {isStandalone && (
         <Button 
           onClick={handleContinue}
-          disabled={!selectedSpecialty}
+          disabled={selectedSpecialties.length === 0}
           className="w-full mt-4"
         >
           Continue

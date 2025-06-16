@@ -1,3 +1,4 @@
+
 import { useState, useEffect, useMemo } from 'react';
 import { Referral } from '@/types/referral';
 import { fetchReferrals } from '@/services/referralService';
@@ -13,7 +14,7 @@ interface WaitingListFilters {
   ageRange: { min: number; max: number };
 }
 
-export const useWaitingListData = (currentSpecialty: string | null = null) => {
+export const useWaitingListData = (selectedSpecialties: string[] = []) => {
   const [allReferrals, setAllReferrals] = useState<Referral[]>([]);
   const [orderedReferrals, setOrderedReferrals] = useState<Referral[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -38,9 +39,9 @@ export const useWaitingListData = (currentSpecialty: string | null = null) => {
     try {
       let data = await fetchReferrals();
       
-      // Filter by specialty and waiting list status
+      // Filter by selected specialties and waiting list status
       data = data.filter(ref => 
-        ref.specialty === currentSpecialty && 
+        (selectedSpecialties.length === 0 || selectedSpecialties.includes(ref.specialty)) && 
         ref.status === 'accepted' &&
         ref.triageStatus === 'waiting-list'
       );
@@ -93,7 +94,7 @@ export const useWaitingListData = (currentSpecialty: string | null = null) => {
     return () => {
       window.removeEventListener('referralUpdated', handleReferralUpdate);
     };
-  }, [currentSpecialty]);
+  }, [selectedSpecialties]);
 
   // Filter and sort referrals
   const filteredAndSortedReferrals = useMemo(() => {

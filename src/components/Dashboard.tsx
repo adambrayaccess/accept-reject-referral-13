@@ -1,3 +1,4 @@
+
 import { Button } from '@/components/ui/button';
 import { Users, Shield, ChevronDown } from 'lucide-react';
 import SearchBar from './dashboard/SearchBar';
@@ -9,6 +10,7 @@ import Titlebar from './Titlebar';
 import PageHeader from './PageHeader';
 import AIAssistantActions from './dashboard/AIAssistantActions';
 import CreateReferralDropdown from './dashboard/CreateReferralDropdown';
+import SpecialtyMultiSelector from './SpecialtyMultiSelector';
 import { useDashboardData } from '@/hooks/useDashboardData';
 import { useReferralSelection } from '@/hooks/useReferralSelection';
 import { useState, useEffect } from 'react';
@@ -16,19 +18,13 @@ import { useToast } from '@/hooks/use-toast';
 import { Referral } from '@/types/referral';
 import { useNavigate } from 'react-router-dom';
 import { specialties } from '@/data/specialtyOptions';
-import { 
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
 import { EnhancedTabs, EnhancedTabsContent, EnhancedTabsList, EnhancedTabsTrigger } from '@/components/ui/enhanced-tabs';
 
 const Dashboard = () => {
   const [view, setView] = useState<'card' | 'list'>('card');
   const { toast } = useToast();
   const navigate = useNavigate();
-  const [currentSpecialty, setCurrentSpecialty] = useState<string | null>(null);
+  const [selectedSpecialties, setSelectedSpecialties] = useState<string[]>([]);
   
   const {
     filteredReferrals,
@@ -47,7 +43,7 @@ const Dashboard = () => {
     setSortField,
     sortDirection,
     setSortDirection
-  } = useDashboardData(currentSpecialty);
+  } = useDashboardData(selectedSpecialties);
 
   const {
     selectedIds,
@@ -62,13 +58,22 @@ const Dashboard = () => {
   } = useReferralSelection();
 
   useEffect(() => {
-    const storedSpecialty = localStorage.getItem('selectedSpecialty');
-    if (storedSpecialty) {
-      setCurrentSpecialty(storedSpecialty);
+    const storedSpecialties = localStorage.getItem('selectedSpecialties');
+    if (storedSpecialties) {
+      try {
+        const parsed = JSON.parse(storedSpecialties);
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          setSelectedSpecialties(parsed);
+        } else {
+          navigate('/select-specialty');
+        }
+      } catch {
+        navigate('/select-specialty');
+      }
     } else {
       navigate('/select-specialty');
     }
-  }, []);
+  }, [navigate]);
 
   const handleCreateReferral = (newReferral: Partial<Referral>) => {
     const referralType = newReferral.aiGenerated ? 'Auto' : 'Manual';
@@ -79,15 +84,16 @@ const Dashboard = () => {
     handleRefresh();
   };
 
-  const handleSpecialtyChange = (specialtyId: string) => {
-    const specialty = specialties.find(s => s.id === specialtyId);
-    if (specialty) {
-      setCurrentSpecialty(specialty.name);
-      localStorage.setItem('selectedSpecialty', specialty.name);
+  const handleSpecialtySelectionChange = (newSelection: string[]) => {
+    setSelectedSpecialties(newSelection);
+    if (newSelection.length > 0) {
+      localStorage.setItem('selectedSpecialties', JSON.stringify(newSelection));
       toast({
-        title: "Specialty Changed",
-        description: `Now triaging for ${specialty.name}`,
+        title: "Specialties Updated",
+        description: `Now triaging for ${newSelection.length === 1 ? newSelection[0] : `${newSelection.length} specialties`}`,
       });
+    } else {
+      localStorage.removeItem('selectedSpecialties');
     }
   };
 
@@ -100,6 +106,19 @@ const Dashboard = () => {
   };
 
   const selectedReferrals = getSelectedReferrals(filteredReferrals);
+  const specialtyNames = specialties.map(s => s.name);
+
+  const getDisplayText = () => {
+    if (selectedSpecialties.length === 0) {
+      return 'No specialties selected';
+    } else if (selectedSpecialties.length === 1) {
+      return selectedSpecialties[0];
+    } else if (selectedSpecialties.length === specialtyNames.filter(s => s !== 'all').length) {
+      return 'All Specialties';
+    } else {
+      return `${selectedSpecialties.length} specialties`;
+    }
+  };
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -111,39 +130,25 @@ const Dashboard = () => {
           <div className="flex flex-col sm:flex-row justify-between gap-4">
             <div>
               <h1 className="text-2xl font-bold">Referral Dashboard</h1>
-              {currentSpecialty && (
-                <div className="flex items-center mt-1">
-                  <span className="text-sm text-muted-foreground mr-2">Triaging for:</span>
-                  <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                      <Button 
-                        variant="ghost" 
-                        size="sm" 
-                        className="h-auto p-0 font-medium text-foreground hover:text-foreground/80 flex items-center gap-1"
-                      >
-                        {currentSpecialty}
-                        <ChevronDown className="h-3 w-3" />
-                      </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent align="start" className="w-48">
-                      {specialties.map((specialty) => (
-                        <DropdownMenuItem
-                          key={specialty.id}
-                          onClick={() => handleSpecialtyChange(specialty.id)}
-                          className={currentSpecialty === specialty.name ? "bg-accent" : ""}
-                        >
-                          {specialty.name}
-                        </DropdownMenuItem>
-                      ))}
-                    </DropdownMenuContent>
-                  </DropdownMenu>
-                </div>
-              )}
+              <div className="flex items-center mt-1">
+                <span className="text-sm text-muted-foreground mr-2">Triaging for:</span>
+                <span className="font-medium text-foreground">{getDisplayText()}</span>
+              </div>
             </div>
             <div className="flex gap-2 w-full sm:w-auto">
               <CreateReferralDropdown onReferralCreated={handleCreateReferral} />
             </div>
           </div>
+        </div>
+
+        <div className="px-6">
+          <SpecialtyMultiSelector
+            specialties={specialtyNames}
+            selectedSpecialties={selectedSpecialties}
+            onSelectionChange={handleSpecialtySelectionChange}
+            placeholder="Select specialties to triage"
+            className="mb-4"
+          />
         </div>
 
         <div className="px-6">
