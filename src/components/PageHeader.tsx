@@ -2,6 +2,7 @@
 import React from 'react';
 import { Search } from 'lucide-react';
 import { Input } from '@/components/ui/input';
+import Menu from './Menu';
 
 interface PageHeaderProps {
   searchValue?: string;
@@ -14,6 +15,7 @@ const PageHeader = ({ searchValue = '', onSearchChange, showSearch = true }: Pag
     <div className="bg-white border-b border-gray-200 px-4 py-3">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
+          <Menu />
           <img 
             src="/lovable-uploads/0f45d382-0710-437a-a400-96e464c8e502.png" 
             alt="Logo" 
