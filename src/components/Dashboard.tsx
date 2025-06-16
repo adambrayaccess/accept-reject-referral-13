@@ -1,3 +1,4 @@
+
 import { Button } from '@/components/ui/button';
 import { Users, Shield, ChevronDown } from 'lucide-react';
 import SearchBar from './dashboard/SearchBar';
@@ -83,6 +84,7 @@ const Dashboard = () => {
 
   return (
     <div className="min-h-screen bg-gray-50">
+      <Titlebar />
       <PageHeader searchValue={searchTerm} onSearchChange={setSearchTerm} />
       
       <div className="space-y-6">

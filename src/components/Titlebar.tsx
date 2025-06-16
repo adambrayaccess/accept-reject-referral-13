@@ -10,26 +10,16 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 
-interface TitlebarProps {
-  onLogoClick?: () => void;
-}
-
-const Titlebar = ({ onLogoClick }: TitlebarProps) => {
+const Titlebar = () => {
   return (
     <div className="flex items-center justify-between px-4 py-2 bg-white border-b border-gray-200 h-12">
       {/* Left side - Access logo/brand */}
       <div className="flex items-center gap-2">
-        <button
-          onClick={onLogoClick}
-          className="hover:opacity-80 transition-opacity"
-          aria-label="Open navigation menu"
-        >
-          <img 
-            src="/lovable-uploads/897bfd6c-1a53-4aeb-a0a0-2d75a3693b6f.png" 
-            alt="Access Logo" 
-            className="h-8 object-contain"
-          />
-        </button>
+        <img 
+          src="/lovable-uploads/897bfd6c-1a53-4aeb-a0a0-2d75a3693b6f.png" 
+          alt="Access Logo" 
+          className="h-8 object-contain"
+        />
       </div>
 
       {/* Right side - Navigation icons and user profile */}
