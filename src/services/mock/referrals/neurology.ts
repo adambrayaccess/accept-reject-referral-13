@@ -1,4 +1,3 @@
-
 import { Referral, TriageStatus } from '@/types/referral';
 import { mockPatients } from '../patients';
 import { mockPractitioners } from '../practitioners';
@@ -148,6 +147,76 @@ const additionalNeurologyReferrals: Referral[] = Array.from({ length: 49 }, (_, 
   };
 });
 
+// Add 7 additional test records for Dashboard
+const additionalDashboardReferrals: Referral[] = Array.from({ length: 7 }, (_, i) => {
+  const index = i + 200;
+  const patientIndex = index % mockPatients.length;
+  const practitionerIndex = index % mockPractitioners.length;
+  const priorityOptions: Referral['priority'][] = ['routine', 'urgent', 'emergency'];
+  const priority = priorityOptions[index % 3];
+  
+  // Dashboard statuses and triage statuses (not waiting-list)
+  const statusOptions: Referral['status'][] = ['new', 'accepted', 'rejected'];
+  const triageStatusOptions: TriageStatus[] = ['pre-assessment', 'assessed', 'pre-admission-assessment', 'refer-to-another-specialty'];
+  
+  const status = statusOptions[i % 3];
+  const triageStatus = triageStatusOptions[i % 4];
+  
+  const daysAgo = Math.floor(Math.random() * 30) + 1;
+  const date = new Date();
+  date.setDate(date.getDate() - daysAgo);
+  const created = date.toISOString();
+  
+  const tagOptions = [
+    ['headache', 'dashboard-test'],
+    ['seizure', 'dashboard-test'],
+    ['tia', 'dashboard-test'],
+    ['tremor', 'dashboard-test'],
+    ['ms-suspected', 'dashboard-test'],
+    ['neuropathy', 'dashboard-test'],
+    ['memory-loss', 'dashboard-test']
+  ];
+  
+  return {
+    id: `NEUR-DASH-${(index + 1).toString().padStart(3, '0')}`,
+    ubrn: `NDASH${(3000000 + index).toString().padStart(8, '0')}`,
+    created,
+    status,
+    priority,
+    patient: mockPatients[patientIndex],
+    referrer: mockPractitioners[practitionerIndex],
+    specialty: 'Neurology',
+    service: index % 4 === 0 ? 'Stroke Clinic' : 
+             index % 4 === 1 ? 'Epilepsy Service' : 
+             index % 4 === 2 ? 'Headache Clinic' : 'Multiple Sclerosis Service',
+    triageStatus,
+    tags: tagOptions[i % tagOptions.length],
+    clinicalInfo: {
+      reason: index % 5 === 0 ? 'TIA symptoms' : 
+              index % 5 === 1 ? 'Seizures' : 
+              index % 5 === 2 ? 'Migraine' : 
+              index % 5 === 3 ? 'Tremor' : 'Memory concerns',
+      history: `Dashboard test patient with neurological symptoms for past ${Math.floor(Math.random() * 6) + 1} months.`,
+      diagnosis: index % 4 === 0 ? 'Suspected TIA' : 
+                index % 4 === 1 ? 'Suspected epilepsy' : 
+                index % 4 === 2 ? 'Suspected migraine' : 'Suspected MS',
+      medications: ['Propranolol 40mg BD', 'Amitriptyline 10mg ON'],
+      allergies: index % 7 === 0 ? ['Latex'] : [],
+      notes: `Dashboard test referral for neurology assessment.`
+    },
+    attachments: index % 2 === 0 ? [
+      {
+        id: `NEUR-DASH-ATT-${index}-1`,
+        title: 'MRI Brain Report',
+        contentType: 'application/pdf',
+        url: '/mock-data/mri-report.pdf',
+        date: new Date(date.getTime() - 86400000).toISOString(),
+        size: 4567000
+      }
+    ] : []
+  };
+});
+
 // Add 7 additional waiting list test records
 const additionalWaitingListReferrals: Referral[] = Array.from({ length: 7 }, (_, i) => {
   const index = i + 100;
@@ -209,4 +278,4 @@ const additionalWaitingListReferrals: Referral[] = Array.from({ length: 7 }, (_,
   };
 });
 
-export const allNeurologyReferrals = [...neurologyReferrals, ...additionalNeurologyReferrals, ...additionalWaitingListReferrals];
+export const allNeurologyReferrals = [...neurologyReferrals, ...additionalNeurologyReferrals, ...additionalWaitingListReferrals, ...additionalDashboardReferrals];

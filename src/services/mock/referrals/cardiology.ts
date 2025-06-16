@@ -1,4 +1,3 @@
-
 import { Referral, TriageStatus } from '@/types/referral';
 import { mockPatients } from '../patients';
 import { mockPractitioners } from '../practitioners';
@@ -185,6 +184,78 @@ const additionalCardiologyReferrals: Referral[] = Array.from({ length: 48 }, (_,
   };
 });
 
+// Add 7 additional test records for Dashboard
+const additionalDashboardReferrals: Referral[] = Array.from({ length: 7 }, (_, i) => {
+  const index = i + 200;
+  const patientIndex = index % mockPatients.length;
+  const practitionerIndex = index % mockPractitioners.length;
+  const priorityOptions: Referral['priority'][] = ['routine', 'urgent', 'emergency'];
+  const priority = priorityOptions[index % 3];
+  
+  // Dashboard statuses and triage statuses (not waiting-list)
+  const statusOptions: Referral['status'][] = ['new', 'accepted', 'rejected'];
+  const triageStatusOptions: TriageStatus[] = ['pre-assessment', 'assessed', 'pre-admission-assessment', 'refer-to-another-specialty'];
+  
+  const status = statusOptions[i % 3];
+  const triageStatus = triageStatusOptions[i % 4];
+  
+  const daysAgo = Math.floor(Math.random() * 30) + 1;
+  const date = new Date();
+  date.setDate(date.getDate() - daysAgo);
+  const created = date.toISOString();
+  
+  const tagOptions = [
+    ['chest-pain', 'dashboard-test'],
+    ['palpitations', 'dashboard-test'],
+    ['heart-failure', 'dashboard-test'],
+    ['hypertension', 'dashboard-test'],
+    ['arrhythmia', 'dashboard-test'],
+    ['valve-disease', 'dashboard-test'],
+    ['syncope', 'dashboard-test']
+  ];
+
+  const appointmentDetails = generateMockAppointment(`CARD-DASH-${(index + 1).toString().padStart(3, '0')}`, created, 'Cardiology');
+  const subReferralData = generateSubReferralData(`CARD-DASH-${(index + 1).toString().padStart(3, '0')}`);
+  
+  return {
+    id: `CARD-DASH-${(index + 1).toString().padStart(3, '0')}`,
+    ubrn: `CDASH${(3000000 + index).toString().padStart(8, '0')}`,
+    created,
+    status,
+    priority,
+    patient: mockPatients[patientIndex],
+    referrer: mockPractitioners[practitionerIndex],
+    specialty: 'Cardiology',
+    service: index % 3 === 0 ? 'Rapid Access Chest Pain Clinic' : 
+             index % 3 === 1 ? 'Heart Failure Clinic' : 'Arrhythmia Service',
+    triageStatus,
+    tags: tagOptions[i % tagOptions.length],
+    appointmentDetails,
+    ...subReferralData,
+    clinicalInfo: {
+      reason: index % 4 === 0 ? 'Chest pain on exertion' : 
+              index % 4 === 1 ? 'Palpitations' : 
+              index % 4 === 2 ? 'Shortness of breath' : 'Follow-up care',
+      history: `Dashboard test patient with symptoms for past ${Math.floor(Math.random() * 6) + 1} months.`,
+      diagnosis: index % 3 === 0 ? 'Suspected angina' : 
+                index % 3 === 1 ? 'Suspected arrhythmia' : 'Suspected heart failure',
+      medications: ['Aspirin 75mg OD', 'Bisoprolol 2.5mg OD'],
+      allergies: index % 7 === 0 ? ['Penicillin'] : [],
+      notes: `Dashboard test referral for cardiology assessment.`
+    },
+    attachments: index % 2 === 0 ? [
+      {
+        id: `CARD-DASH-ATT-${index}-1`,
+        title: 'ECG Report',
+        contentType: 'application/pdf',
+        url: '/mock-data/ecg-report.pdf',
+        date: new Date(date.getTime() - 86400000).toISOString(),
+        size: 2456000
+      }
+    ] : []
+  };
+});
+
 // Add 7 additional waiting list test records
 const additionalWaitingListReferrals: Referral[] = Array.from({ length: 7 }, (_, i) => {
   const index = i + 100; // Start from 100 to avoid ID conflicts
@@ -250,4 +321,4 @@ const additionalWaitingListReferrals: Referral[] = Array.from({ length: 7 }, (_,
   };
 });
 
-export const allCardiologyReferrals = [...cardiologyReferrals, ...additionalCardiologyReferrals, ...additionalWaitingListReferrals];
+export const allCardiologyReferrals = [...cardiologyReferrals, ...additionalCardiologyReferrals, ...additionalWaitingListReferrals, ...additionalDashboardReferrals];

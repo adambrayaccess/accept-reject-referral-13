@@ -1,4 +1,3 @@
-
 import { Referral, TriageStatus } from '@/types/referral';
 import { mockPatients } from '../patients';
 import { mockPractitioners } from '../practitioners';
@@ -230,4 +229,76 @@ const additionalWaitingListReferrals: Referral[] = Array.from({ length: 7 }, (_,
   };
 });
 
-export const allDermatologyReferrals = [...dermatologyReferrals, ...additionalDermatologyReferrals, ...additionalWaitingListReferrals];
+// Add 7 additional test records for Dashboard
+const additionalDashboardReferrals: Referral[] = Array.from({ length: 7 }, (_, i) => {
+  const index = i + 200;
+  const patientIndex = index % mockPatients.length;
+  const practitionerIndex = index % mockPractitioners.length;
+  const priorityOptions: Referral['priority'][] = ['routine', 'urgent', 'emergency'];
+  const priority = priorityOptions[index % 3];
+  
+  // Dashboard statuses and triage statuses (not waiting-list)
+  const statusOptions: Referral['status'][] = ['new', 'accepted', 'rejected'];
+  const triageStatusOptions: TriageStatus[] = ['pre-assessment', 'assessed', 'pre-admission-assessment', 'refer-to-another-specialty'];
+  
+  const status = statusOptions[i % 3];
+  const triageStatus = triageStatusOptions[i % 4];
+  
+  const daysAgo = Math.floor(Math.random() * 30) + 1;
+  const date = new Date();
+  date.setDate(date.getDate() - daysAgo);
+  const created = date.toISOString();
+  
+  const tagOptions = [
+    ['rash', 'dashboard-test'],
+    ['suspicious-lesion', 'dashboard-test'],
+    ['acne', 'dashboard-test'],
+    ['psoriasis', 'dashboard-test'],
+    ['eczema', 'dashboard-test'],
+    ['skin-cancer', 'dashboard-test'],
+    ['birthmark', 'dashboard-test']
+  ];
+
+  const appointmentDetails = generateMockAppointment(`DERM-DASH-${(index + 1).toString().padStart(3, '0')}`, created, 'Dermatology');
+  const subReferralData = generateSubReferralData(`DERM-DASH-${(index + 1).toString().padStart(3, '0')}`);
+  
+  return {
+    id: `DERM-DASH-${(index + 1).toString().padStart(3, '0')}`,
+    ubrn: `DDASH${(3000000 + index).toString().padStart(8, '0')}`,
+    created,
+    status,
+    priority,
+    patient: mockPatients[patientIndex],
+    referrer: mockPractitioners[practitionerIndex],
+    specialty: 'Dermatology',
+    service: index % 3 === 0 ? 'General Dermatology' : 
+             index % 3 === 1 ? 'Skin Cancer Service' : 'Pediatric Dermatology',
+    triageStatus,
+    tags: tagOptions[i % tagOptions.length],
+    appointmentDetails,
+    ...subReferralData,
+    clinicalInfo: {
+      reason: index % 4 === 0 ? 'Persistent rash' : 
+              index % 4 === 1 ? 'Suspicious mole' : 
+              index % 4 === 2 ? 'Severe acne' : 'Skin lesion review',
+      history: `Dashboard test patient with skin condition for past ${Math.floor(Math.random() * 6) + 1} months.`,
+      diagnosis: index % 3 === 0 ? 'Suspected eczema' : 
+                index % 3 === 1 ? 'Suspected melanoma' : 'Suspected psoriasis',
+      medications: ['Cetirizine 10mg OD', 'Hydrocortisone 1% cream BD'],
+      allergies: index % 7 === 0 ? ['Latex'] : [],
+      notes: `Dashboard test referral for dermatology assessment.`
+    },
+    attachments: index % 2 === 0 ? [
+      {
+        id: `DERM-DASH-ATT-${index}-1`,
+        title: 'Clinical Photographs',
+        contentType: 'image/jpeg',
+        url: '/mock-data/rash-photos.jpg',
+        date: new Date(date.getTime() - 86400000).toISOString(),
+        size: 3568000
+      }
+    ] : []
+  };
+});
+
+export const allDermatologyReferrals = [...dermatologyReferrals, ...additionalDermatologyReferrals, ...additionalWaitingListReferrals, ...additionalDashboardReferrals];

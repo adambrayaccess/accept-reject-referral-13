@@ -1,4 +1,3 @@
-
 import { Referral, TriageStatus } from '@/types/referral';
 import { mockPatients } from '../patients';
 import { mockPractitioners } from '../practitioners';
@@ -187,4 +186,72 @@ const additionalWaitingListReferrals: Referral[] = Array.from({ length: 7 }, (_,
   };
 });
 
-export const allRheumatologyReferrals = [...rheumatologyReferrals, ...additionalRheumatologyReferrals, ...additionalWaitingListReferrals];
+// Add 7 additional test records for Dashboard
+const additionalDashboardReferrals: Referral[] = Array.from({ length: 7 }, (_, i) => {
+  const index = i + 200;
+  const patientIndex = index % mockPatients.length;
+  const practitionerIndex = index % mockPractitioners.length;
+  const priorityOptions: Referral['priority'][] = ['routine', 'urgent', 'emergency'];
+  const priority = priorityOptions[index % 3];
+  
+  // Dashboard statuses and triage statuses (not waiting-list)
+  const statusOptions: Referral['status'][] = ['new', 'accepted', 'rejected'];
+  const triageStatusOptions: TriageStatus[] = ['pre-assessment', 'assessed', 'pre-admission-assessment', 'refer-to-another-specialty'];
+  
+  const status = statusOptions[i % 3];
+  const triageStatus = triageStatusOptions[i % 4];
+  
+  const daysAgo = Math.floor(Math.random() * 30) + 1;
+  const date = new Date();
+  date.setDate(date.getDate() - daysAgo);
+  const created = date.toISOString();
+  
+  const tagOptions = [
+    ['joint-pain', 'dashboard-test'],
+    ['rheumatoid-arthritis', 'dashboard-test'],
+    ['osteoarthritis', 'dashboard-test'],
+    ['lupus', 'dashboard-test'],
+    ['gout', 'dashboard-test'],
+    ['fibromyalgia', 'dashboard-test'],
+    ['vasculitis', 'dashboard-test']
+  ];
+  
+  return {
+    id: `RHEU-DASH-${(index + 1).toString().padStart(3, '0')}`,
+    ubrn: `RDASH${(3000000 + index).toString().padStart(8, '0')}`,
+    created,
+    status,
+    priority,
+    patient: mockPatients[patientIndex],
+    referrer: mockPractitioners[practitionerIndex],
+    specialty: 'Rheumatology',
+    service: index % 3 === 0 ? 'General Rheumatology' : 
+             index % 3 === 1 ? 'Early Inflammatory Arthritis' : 'Connective Tissue Disease',
+    triageStatus,
+    tags: tagOptions[i % tagOptions.length],
+    clinicalInfo: {
+      reason: index % 4 === 0 ? 'Joint pain and stiffness' : 
+              index % 4 === 1 ? 'Back pain' : 
+              index % 4 === 2 ? 'Systemic symptoms with joint pain' : 'Gout',
+      history: `Dashboard test patient with rheumatological symptoms for past ${Math.floor(Math.random() * 6) + 1} months.`,
+      diagnosis: index % 4 === 0 ? 'Suspected rheumatoid arthritis' : 
+                index % 4 === 1 ? 'Suspected ankylosing spondylitis' : 
+                index % 4 === 2 ? 'Suspected lupus' : 'Suspected gout',
+      medications: ['Paracetamol PRN', 'Ibuprofen 400mg TDS'],
+      allergies: index % 7 === 0 ? ['Sulfa drugs'] : [],
+      notes: `Dashboard test referral for rheumatology assessment.`
+    },
+    attachments: index % 2 === 0 ? [
+      {
+        id: `RHEU-DASH-ATT-${index}-1`,
+        title: 'Blood Test Results',
+        contentType: 'application/pdf',
+        url: '/mock-data/bloods.pdf',
+        date: new Date(date.getTime() - 86400000).toISOString(),
+        size: 1567000
+      }
+    ] : []
+  };
+});
+
+export const allRheumatologyReferrals = [...rheumatologyReferrals, ...additionalRheumatologyReferrals, ...additionalWaitingListReferrals, ...additionalDashboardReferrals];

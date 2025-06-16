@@ -1,4 +1,3 @@
-
 import { Referral, TriageStatus } from '@/types/referral';
 import { mockPatients } from '../patients';
 import { mockPractitioners } from '../practitioners';
@@ -214,4 +213,79 @@ const additionalWaitingListReferrals: Referral[] = Array.from({ length: 7 }, (_,
   };
 });
 
-export const allMentalHealthReferrals = [...mentalHealthReferrals, ...additionalMentalHealthReferrals, ...additionalWaitingListReferrals];
+// Add 7 additional test records for Dashboard
+const additionalDashboardReferrals: Referral[] = Array.from({ length: 7 }, (_, i) => {
+  const index = i + 200;
+  const patientIndex = index % mockPatients.length;
+  const practitionerIndex = index % mockPractitioners.length;
+  const priorityOptions: Referral['priority'][] = ['routine', 'urgent', 'emergency'];
+  const priority = priorityOptions[index % 3];
+  
+  // Dashboard statuses and triage statuses (not waiting-list)
+  const statusOptions: Referral['status'][] = ['new', 'accepted', 'rejected'];
+  const triageStatusOptions: TriageStatus[] = ['pre-assessment', 'assessed', 'pre-admission-assessment', 'refer-to-another-specialty'];
+  
+  const status = statusOptions[i % 3];
+  const triageStatus = triageStatusOptions[i % 4];
+  
+  const daysAgo = Math.floor(Math.random() * 30) + 1;
+  const date = new Date();
+  date.setDate(date.getDate() - daysAgo);
+  const created = date.toISOString();
+  
+  const tagOptions = [
+    ['depression', 'dashboard-test'],
+    ['anxiety', 'dashboard-test'],
+    ['bipolar', 'dashboard-test'],
+    ['psychosis', 'dashboard-test'],
+    ['ptsd', 'dashboard-test'],
+    ['eating-disorder', 'dashboard-test'],
+    ['substance-misuse', 'dashboard-test']
+  ];
+
+  const appointmentDetails = generateMockAppointment(`MH-DASH-${(index + 1).toString().padStart(3, '0')}`, created, 'Mental Health');
+  const subReferralData = generateSubReferralData(`MH-DASH-${(index + 1).toString().padStart(3, '0')}`);
+  
+  return {
+    id: `MH-DASH-${(index + 1).toString().padStart(3, '0')}`,
+    ubrn: `MHDASH${(3000000 + index).toString().padStart(8, '0')}`,
+    created,
+    status,
+    priority,
+    patient: mockPatients[patientIndex],
+    referrer: mockPractitioners[practitionerIndex],
+    specialty: 'Mental Health',
+    service: index % 4 === 0 ? 'Community Mental Health Team' : 
+             index % 4 === 1 ? 'Crisis Team' : 
+             index % 4 === 2 ? 'Eating Disorder Service' : 'IAPT',
+    triageStatus,
+    tags: tagOptions[i % tagOptions.length],
+    appointmentDetails,
+    ...subReferralData,
+    clinicalInfo: {
+      reason: index % 5 === 0 ? 'Depression and anxiety' : 
+              index % 5 === 1 ? 'Suicidal ideation' : 
+              index % 5 === 2 ? 'Psychosis' : 
+              index % 5 === 3 ? 'Eating disorder' : 'Substance misuse',
+      history: `Dashboard test patient with mental health symptoms for past ${Math.floor(Math.random() * 6) + 1} months.`,
+      diagnosis: index % 4 === 0 ? 'Major depressive disorder' : 
+                index % 4 === 1 ? 'Bipolar affective disorder' : 
+                index % 4 === 2 ? 'Schizophrenia' : 'Personality disorder',
+      medications: ['Sertraline 50mg OD', 'Olanzapine 5mg ON'],
+      allergies: index % 7 === 0 ? ['Sulfa drugs'] : [],
+      notes: `Dashboard test referral for mental health assessment.`
+    },
+    attachments: index % 2 === 0 ? [
+      {
+        id: `MH-DASH-ATT-${index}-1`,
+        title: 'Risk Assessment',
+        contentType: 'application/pdf',
+        url: '/mock-data/risk-assessment.pdf',
+        date: new Date(date.getTime() - 86400000).toISOString(),
+        size: 1856000
+      }
+    ] : []
+  };
+});
+
+export const allMentalHealthReferrals = [...mentalHealthReferrals, ...additionalMentalHealthReferrals, ...additionalWaitingListReferrals, ...additionalDashboardReferrals];
