@@ -1,3 +1,4 @@
+
 import { Referral } from '@/types/referral';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { EnhancedTabs, EnhancedTabsContent, EnhancedTabsList, EnhancedTabsTrigger } from '@/components/ui/enhanced-tabs';
@@ -34,15 +35,15 @@ const ReferralDetail = ({ referral, relatedReferrals }: ReferralDetailProps) => 
       </CardHeader>
       <CardContent className="pt-0">
         <EnhancedTabs defaultValue="patient">
-          <div className="overflow-x-auto mb-3">
-            <EnhancedTabsList variant="default" size="sm" className="w-full min-w-max">
-              <EnhancedTabsTrigger value="patient" variant="default" size="sm">
+          <div className="mb-3">
+            <EnhancedTabsList variant="grid" size="md">
+              <EnhancedTabsTrigger value="patient" variant="grid" size="md">
                 Patient
               </EnhancedTabsTrigger>
-              <EnhancedTabsTrigger value="clinical" variant="default" size="sm">
+              <EnhancedTabsTrigger value="clinical" variant="grid" size="md">
                 Clinical
               </EnhancedTabsTrigger>
-              <EnhancedTabsTrigger value="referrer" variant="default" size="sm">
+              <EnhancedTabsTrigger value="referrer" variant="grid" size="md">
                 Referrer
               </EnhancedTabsTrigger>
             </EnhancedTabsList>
