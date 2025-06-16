@@ -80,7 +80,7 @@ const ReferralCard = ({ referral }: ReferralCardProps) => {
             </div>
           </div>
         </CardContent>
-        <CardFooter className="pt-0 text-xs font-bold text-muted-foreground border-t" style={{ verticalAlign: 'middle' }}>
+        <CardFooter className="pt-0 text-xs font-bold text-muted-foreground border-t" style={{ verticalAlign: 'bottom' }}>
           <div className="flex items-center gap-4">
             <div className="flex items-center gap-1">
               <Calendar className="h-3 w-3" />
