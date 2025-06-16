@@ -8,6 +8,7 @@ import ReferralActions from '@/components/ReferralActions';
 import MedicalHistory from '@/components/MedicalHistory';
 import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
+import { ScrollArea } from '@/components/ui/scroll-area';
 import { ArrowLeft } from 'lucide-react';
 import { useToast } from '@/components/ui/use-toast';
 import ReferralWorkspace from '@/components/ReferralWorkspace';
@@ -146,11 +147,15 @@ const ReferralView = () => {
           <AttachmentViewer attachments={referral.attachments} />
         </div>
         
-        <div className="h-[calc(100vh-12rem)] sticky top-6">
-          <ReferralWorkspace 
-            referral={referral}
-            onStatusChange={handleStatusChange}
-          />
+        <div className="sticky top-6">
+          <ScrollArea className="h-[calc(100vh-12rem)]">
+            <div className="pr-4">
+              <ReferralWorkspace 
+                referral={referral}
+                onStatusChange={handleStatusChange}
+              />
+            </div>
+          </ScrollArea>
         </div>
       </div>
     </div>
