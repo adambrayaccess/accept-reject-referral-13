@@ -1,7 +1,7 @@
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
-import { FilePlus, RefreshCw, Users, Shield } from 'lucide-react';
+import { FilePlus, Users, Shield } from 'lucide-react';
 import SearchBar from './dashboard/SearchBar';
 import FilterBar from './dashboard/FilterBar';
 import SortControls from './dashboard/SortControls';
@@ -101,13 +101,13 @@ const Dashboard = () => {
                 <Users className="mr-2 h-4 w-4" />
                 Waiting List Management
               </Button>
-              <Button variant="outline" onClick={() => setIsCreateModalOpen(true)} className="flex-1 sm:flex-initial">
+              <Button 
+                onClick={() => setIsCreateModalOpen(true)} 
+                className="flex-1 sm:flex-initial text-white hover:bg-[#007A7A]/90"
+                style={{ backgroundColor: '#007A7A' }}
+              >
                 <FilePlus className="mr-2 h-4 w-4" />
                 Create Referral
-              </Button>
-              <Button variant="outline" onClick={handleRefresh} className="flex-1 sm:flex-initial">
-                <RefreshCw className="mr-2 h-4 w-4" />
-                Refresh
               </Button>
             </div>
           </div>
