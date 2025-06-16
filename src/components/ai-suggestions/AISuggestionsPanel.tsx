@@ -23,11 +23,9 @@ const AISuggestionsPanel = ({ referral, onSuggestionApplied }: AISuggestionsPane
   const { toast } = useToast();
 
   const loadSuggestions = async () => {
-    console.log('AISuggestionsPanel - Loading suggestions for referral:', referral.id);
     setIsLoading(true);
     try {
       const aiSuggestions = await generateAISuggestions(referral);
-      console.log('AISuggestionsPanel - Generated suggestions:', aiSuggestions);
       setSuggestions(aiSuggestions);
     } catch (error) {
       console.error('Error loading AI suggestions:', error);
@@ -42,7 +40,6 @@ const AISuggestionsPanel = ({ referral, onSuggestionApplied }: AISuggestionsPane
   };
 
   useEffect(() => {
-    console.log('AISuggestionsPanel - Component mounted, referral ID:', referral.id);
     loadSuggestions();
   }, [referral.id]);
 
@@ -55,12 +52,6 @@ const AISuggestionsPanel = ({ referral, onSuggestionApplied }: AISuggestionsPane
     if (confidence >= 0.6) return 'bg-yellow-100 text-yellow-800';
     return 'bg-red-100 text-red-800';
   };
-
-  console.log('AISuggestionsPanel - Rendering with:', {
-    isLoading,
-    suggestions: suggestions ? `${suggestions.suggestions.length} suggestions` : 'null',
-    isExpanded
-  });
 
   return (
     <Card>
