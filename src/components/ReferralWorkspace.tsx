@@ -11,6 +11,7 @@ import ParentReferralInfo from './sub-referrals/ParentReferralInfo';
 import PatientActivityTimeline from './PatientActivityTimeline';
 import ReferralTagging from './referral-tagging/ReferralTagging';
 import AISuggestionsPanel from './ai-suggestions/AISuggestionsPanel';
+import AppointmentStatus from './cohort/AppointmentStatus';
 
 interface ReferralWorkspaceProps {
   referral: Referral;
@@ -48,6 +49,16 @@ const ReferralWorkspace = ({ referral, onStatusChange }: ReferralWorkspaceProps)
           onSuggestionApplied={handleAISuggestionApplied}
         />
       )}
+
+      {/* Appointment Status Card */}
+      <Card>
+        <CardHeader className="pb-3">
+          <CardTitle className="text-lg">Appointment Status</CardTitle>
+        </CardHeader>
+        <CardContent className="pt-0">
+          <AppointmentStatus referral={referral} />
+        </CardContent>
+      </Card>
 
       <Card>
         <CardHeader className="pb-3">
