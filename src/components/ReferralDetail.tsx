@@ -1,7 +1,6 @@
-
 import { Referral } from '@/types/referral';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { EnhancedTabs, EnhancedTabsContent, EnhancedTabsList, EnhancedTabsTrigger } from '@/components/ui/enhanced-tabs';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import { format } from 'date-fns';
@@ -46,14 +45,22 @@ const ReferralDetail = ({ referral, relatedReferrals }: ReferralDetailProps) => 
         </div>
       </CardHeader>
       <CardContent className="pt-0">
-        <Tabs defaultValue="patient">
-          <TabsList className="grid grid-cols-3 mb-3 h-8">
-            <TabsTrigger value="patient" className="text-xs">Patient</TabsTrigger>
-            <TabsTrigger value="clinical" className="text-xs">Clinical</TabsTrigger>
-            <TabsTrigger value="referrer" className="text-xs">Referrer</TabsTrigger>
-          </TabsList>
+        <EnhancedTabs defaultValue="patient">
+          <div className="overflow-x-auto mb-3">
+            <EnhancedTabsList variant="default" size="sm" className="w-full min-w-max">
+              <EnhancedTabsTrigger value="patient" variant="default" size="sm">
+                Patient
+              </EnhancedTabsTrigger>
+              <EnhancedTabsTrigger value="clinical" variant="default" size="sm">
+                Clinical
+              </EnhancedTabsTrigger>
+              <EnhancedTabsTrigger value="referrer" variant="default" size="sm">
+                Referrer
+              </EnhancedTabsTrigger>
+            </EnhancedTabsList>
+          </div>
           
-          <TabsContent value="patient" className="space-y-3 mt-0">
+          <EnhancedTabsContent value="patient" className="space-y-3">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-x-6 gap-y-3 text-sm">
               <div>
                 <div className="text-xs font-medium text-muted-foreground">Full Name</div>
@@ -122,9 +129,9 @@ const ReferralDetail = ({ referral, relatedReferrals }: ReferralDetailProps) => 
                 </div>
               </div>
             </div>
-          </TabsContent>
+          </EnhancedTabsContent>
           
-          <TabsContent value="clinical" className="space-y-3 mt-0">
+          <EnhancedTabsContent value="clinical" className="space-y-3">
             <div className="text-sm space-y-3">
               <div>
                 <div className="text-xs font-medium text-muted-foreground">Specialty</div>
@@ -188,9 +195,9 @@ const ReferralDetail = ({ referral, relatedReferrals }: ReferralDetailProps) => 
                 </div>
               )}
             </div>
-          </TabsContent>
+          </EnhancedTabsContent>
           
-          <TabsContent value="referrer" className="space-y-3 mt-0">
+          <EnhancedTabsContent value="referrer" className="space-y-3">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-x-6 gap-y-3 text-sm">
               <div>
                 <div className="text-xs font-medium text-muted-foreground">Referrer Name</div>
@@ -223,8 +230,8 @@ const ReferralDetail = ({ referral, relatedReferrals }: ReferralDetailProps) => 
                 <div className="font-medium">{format(new Date(referral.created), 'dd MMM yyyy, HH:mm')}</div>
               </div>
             </div>
-          </TabsContent>
-        </Tabs>
+          </EnhancedTabsContent>
+        </EnhancedTabs>
       </CardContent>
     </Card>
   );

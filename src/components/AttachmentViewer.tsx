@@ -2,7 +2,7 @@
 import { useState } from 'react';
 import { Attachment } from '@/types/referral';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { EnhancedTabs, EnhancedTabsContent, EnhancedTabsList, EnhancedTabsTrigger } from '@/components/ui/enhanced-tabs';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { FileText, Download, Eye, FileImage } from 'lucide-react';
@@ -53,19 +53,28 @@ const AttachmentViewer = ({ attachments }: AttachmentViewerProps) => {
         <CardTitle className="text-lg">Attachments</CardTitle>
       </CardHeader>
       <CardContent className="pt-0">
-        <Tabs value={activeTab} onValueChange={setActiveTab}>
+        <EnhancedTabs value={activeTab} onValueChange={setActiveTab}>
           <div className="overflow-x-auto pb-2 mb-3">
-            <TabsList className="inline-flex h-8 min-w-full">
+            <EnhancedTabsList variant="compact" size="sm" className="w-full min-w-max">
               {attachments.map((attachment) => (
-                <TabsTrigger key={attachment.id} value={attachment.id} className="text-xs whitespace-nowrap">
-                  {attachment.title}
-                </TabsTrigger>
+                <EnhancedTabsTrigger 
+                  key={attachment.id} 
+                  value={attachment.id} 
+                  variant="compact" 
+                  size="sm"
+                  className="whitespace-nowrap"
+                >
+                  <span className="flex items-center gap-1">
+                    {getFileIcon(attachment.contentType)}
+                    <span className="truncate max-w-[120px]">{attachment.title}</span>
+                  </span>
+                </EnhancedTabsTrigger>
               ))}
-            </TabsList>
+            </EnhancedTabsList>
           </div>
           
           {attachments.map((attachment) => (
-            <TabsContent key={attachment.id} value={attachment.id} className="mt-0">
+            <EnhancedTabsContent key={attachment.id} value={attachment.id}>
               <div className="space-y-3">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
@@ -117,9 +126,9 @@ const AttachmentViewer = ({ attachments }: AttachmentViewerProps) => {
                   </p>
                 </div>
               </div>
-            </TabsContent>
+            </EnhancedTabsContent>
           ))}
-        </Tabs>
+        </EnhancedTabs>
       </CardContent>
     </Card>
   );

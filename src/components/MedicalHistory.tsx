@@ -1,6 +1,6 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { EnhancedTabs, EnhancedTabsContent, EnhancedTabsList, EnhancedTabsTrigger } from '@/components/ui/enhanced-tabs';
 import { Patient } from '@/types/referral';
 import VitalSignsTab from './medical-history/VitalSignsTab';
 import CardiogramView from './medical-history/CardiogramView';
@@ -29,20 +29,26 @@ const MedicalHistory = ({ patient }: MedicalHistoryProps) => {
         <CardTitle className="text-lg">Medical History</CardTitle>
       </CardHeader>
       <CardContent className="pt-0 overflow-hidden">
-        <Tabs defaultValue="vitals" className="space-y-3">
-          <TabsList className="h-8">
-            <TabsTrigger value="vitals" className="text-xs">Vital Signs</TabsTrigger>
-            <TabsTrigger value="cardiogram" className="text-xs">Cardiogram Data</TabsTrigger>
-          </TabsList>
+        <EnhancedTabs defaultValue="vitals" className="space-y-3">
+          <div className="overflow-x-auto">
+            <EnhancedTabsList variant="default" size="sm" className="w-full min-w-max">
+              <EnhancedTabsTrigger value="vitals" variant="default" size="sm">
+                Vital Signs
+              </EnhancedTabsTrigger>
+              <EnhancedTabsTrigger value="cardiogram" variant="default" size="sm">
+                Cardiogram Data
+              </EnhancedTabsTrigger>
+            </EnhancedTabsList>
+          </div>
 
-          <TabsContent value="vitals" className="mt-0">
+          <EnhancedTabsContent value="vitals">
             <VitalSignsTab vitalSigns={patient.medicalHistory.vitalSigns} />
-          </TabsContent>
+          </EnhancedTabsContent>
 
-          <TabsContent value="cardiogram" className="mt-0">
+          <EnhancedTabsContent value="cardiogram">
             <CardiogramView cardiograms={patient.medicalHistory.cardiograms || []} />
-          </TabsContent>
-        </Tabs>
+          </EnhancedTabsContent>
+        </EnhancedTabs>
       </CardContent>
     </Card>
   );

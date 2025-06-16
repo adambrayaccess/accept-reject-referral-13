@@ -1,6 +1,6 @@
 
 import { useState } from 'react';
-import { TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { EnhancedTabsList, EnhancedTabsTrigger } from '@/components/ui/enhanced-tabs';
 
 export type VitalSignType = 'news2' | 'temperature' | 'heartRate' | 'respiration';
 
@@ -12,36 +12,44 @@ interface VitalSignSelectorProps {
 const VitalSignSelector = ({ selectedType, onSelectType }: VitalSignSelectorProps) => {
   return (
     <div className="flex gap-4 mb-4 overflow-x-auto pb-2">
-      <TabsList className="bg-muted/50">
-        <TabsTrigger 
+      <EnhancedTabsList variant="pills" size="sm" className="min-w-max">
+        <EnhancedTabsTrigger 
           value="news2" 
           onClick={() => onSelectType('news2')}
-          className={selectedType === 'news2' ? 'bg-background' : ''}
+          variant="pills"
+          size="sm"
+          className={selectedType === 'news2' ? 'bg-primary text-primary-foreground' : ''}
         >
           NEWS2 Score
-        </TabsTrigger>
-        <TabsTrigger 
+        </EnhancedTabsTrigger>
+        <EnhancedTabsTrigger 
           value="temperature" 
           onClick={() => onSelectType('temperature')}
-          className={selectedType === 'temperature' ? 'bg-background' : ''}
+          variant="pills"
+          size="sm"
+          className={selectedType === 'temperature' ? 'bg-primary text-primary-foreground' : ''}
         >
           Temperature
-        </TabsTrigger>
-        <TabsTrigger 
+        </EnhancedTabsTrigger>
+        <EnhancedTabsTrigger 
           value="heartRate" 
           onClick={() => onSelectType('heartRate')}
-          className={selectedType === 'heartRate' ? 'bg-background' : ''}
+          variant="pills"
+          size="sm"
+          className={selectedType === 'heartRate' ? 'bg-primary text-primary-foreground' : ''}
         >
           Heart Rate
-        </TabsTrigger>
-        <TabsTrigger 
+        </EnhancedTabsTrigger>
+        <EnhancedTabsTrigger 
           value="respiration" 
           onClick={() => onSelectType('respiration')}
-          className={selectedType === 'respiration' ? 'bg-background' : ''}
+          variant="pills"
+          size="sm"
+          className={selectedType === 'respiration' ? 'bg-primary text-primary-foreground' : ''}
         >
           Respiration
-        </TabsTrigger>
-      </TabsList>
+        </EnhancedTabsTrigger>
+      </EnhancedTabsList>
     </div>
   );
 };
