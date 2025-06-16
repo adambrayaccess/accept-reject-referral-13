@@ -1,4 +1,3 @@
-
 export interface Patient {
   id: string;
   name: string;
@@ -77,6 +76,9 @@ export interface Referral {
   calculatedReferralAge?: number;
   calculatedPatientAge?: number;
   calculatedLocation?: string;
+  // AI-generated referral indicator
+  aiGenerated?: boolean;
+  confidence?: number;
 }
 
 export interface ApiResponse<T> {
