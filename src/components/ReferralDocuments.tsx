@@ -62,15 +62,7 @@ const ReferralDocuments = ({ attachments, referralId, onDocumentUploaded }: Refe
         {attachments.length === 0 ? (
           <div className="text-center py-8">
             <FileText className="h-12 w-12 text-muted-foreground mx-auto mb-3" />
-            <p className="text-muted-foreground text-sm mb-4">No documents available for this referral.</p>
-            <Button 
-              variant="outline" 
-              onClick={() => setIsUploadModalOpen(true)}
-              className="flex items-center gap-2"
-            >
-              <Plus className="h-4 w-4" />
-              Upload First Document
-            </Button>
+            <p className="text-muted-foreground text-sm">No documents available for this referral.</p>
           </div>
         ) : (
           <EnhancedTabs value={activeTab} onValueChange={setActiveTab}>

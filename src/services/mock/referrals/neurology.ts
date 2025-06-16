@@ -66,6 +66,15 @@ const additionalNeurologyReferrals: Referral[] = Array.from({ length: 49 }, (_, 
   const date = new Date();
   date.setDate(date.getDate() - daysAgo);
   
+  // Define attachment options for neurology
+  const attachmentOptions = [
+    { title: 'MRI Brain Report', contentType: 'application/pdf', url: '/mock-data/mri-report.pdf', size: 4567000 },
+    { title: 'CT Head Report', contentType: 'application/pdf', url: '/mock-data/ct-report.pdf', size: 5678000 },
+    { title: 'EEG Results', contentType: 'application/pdf', url: '/mock-data/eeg-report.pdf', size: 3456000 },
+    { title: 'Carotid Doppler Results', contentType: 'application/pdf', url: '/mock-data/doppler-results.pdf', size: 2345000 },
+    { title: 'Neuropsychology Assessment', contentType: 'application/pdf', url: '/mock-data/neuropsych.pdf', size: 2890000 }
+  ];
+  
   return {
     id: `NEUR-2024-${index.toString().padStart(3, '0')}`,
     ubrn: `N${(1000000 + index).toString().padStart(8, '0')}`,
@@ -92,14 +101,22 @@ const additionalNeurologyReferrals: Referral[] = Array.from({ length: 49 }, (_, 
       allergies: index % 5 === 0 ? ['Latex'] : [],
       notes: `Patient has ${index % 2 === 0 ? 'no significant' : 'family'} history of neurological conditions.`
     },
-    attachments: index % 3 === 0 ? [
+    attachments: index % 2 === 0 ? [
       {
         id: `NEUR-ATT-${index}-1`,
-        title: 'MRI Brain Report',
-        contentType: 'application/pdf',
-        url: '/mock-data/mri-report.pdf',
+        ...attachmentOptions[index % attachmentOptions.length],
         date: new Date(date.getTime() - 86400000).toISOString(), // 1 day before referral
-        size: 4567000
+      }
+    ] : index % 4 === 0 ? [
+      {
+        id: `NEUR-ATT-${index}-1`,
+        ...attachmentOptions[index % attachmentOptions.length],
+        date: new Date(date.getTime() - 86400000).toISOString(),
+      },
+      {
+        id: `NEUR-ATT-${index}-2`,
+        ...attachmentOptions[(index + 1) % attachmentOptions.length],
+        date: new Date(date.getTime() - 172800000).toISOString(), // 2 days before referral
       }
     ] : []
   };

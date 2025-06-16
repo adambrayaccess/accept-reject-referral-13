@@ -58,6 +58,15 @@ const additionalRheumatologyReferrals: Referral[] = Array.from({ length: 49 }, (
   const date = new Date();
   date.setDate(date.getDate() - daysAgo);
   
+  // Define attachment options for rheumatology
+  const attachmentOptions = [
+    { title: 'Blood Test Results', contentType: 'application/pdf', url: '/mock-data/bloods.pdf', size: 1567000 },
+    { title: 'Joint X-Rays', contentType: 'image/jpeg', url: '/mock-data/joint-xrays.jpg', size: 4230000 },
+    { title: 'Rheumatology Assessment', contentType: 'application/pdf', url: '/mock-data/rheum-assessment.pdf', size: 2340000 },
+    { title: 'Ultrasound Scan Report', contentType: 'application/pdf', url: '/mock-data/ultrasound.pdf', size: 3450000 },
+    { title: 'Inflammatory Markers', contentType: 'application/pdf', url: '/mock-data/inflammatory-markers.pdf', size: 1890000 }
+  ];
+  
   return {
     id: `RHEU-2024-${index.toString().padStart(3, '0')}`,
     ubrn: `R${(1000000 + index).toString().padStart(8, '0')}`,
@@ -82,14 +91,11 @@ const additionalRheumatologyReferrals: Referral[] = Array.from({ length: 49 }, (
       allergies: index % 5 === 0 ? ['Sulfa drugs'] : [],
       notes: `Patient has ${index % 2 === 0 ? 'no significant' : 'family'} history of rheumatological conditions.`
     },
-    attachments: index % 3 === 0 ? [
+    attachments: index % 2 === 0 ? [
       {
         id: `RHEU-ATT-${index}-1`,
-        title: 'Blood Test Results',
-        contentType: 'application/pdf',
-        url: '/mock-data/bloods.pdf',
+        ...attachmentOptions[index % attachmentOptions.length],
         date: new Date(date.getTime() - 86400000).toISOString(), // 1 day before referral
-        size: 1567000
       }
     ] : []
   };

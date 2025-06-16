@@ -61,7 +61,16 @@ export const cardiologyReferrals: Referral[] = [
       allergies: [],
       notes: 'Referral from Access Group Elemental GP'
     },
-    attachments: []
+    attachments: [
+      {
+        id: 'AGE-ATT-002-1',
+        title: 'Exercise Stress Test',
+        contentType: 'application/pdf',
+        url: '/mock-data/stress-test.pdf',
+        date: '2024-04-25T14:20:00Z',
+        size: 3240000
+      }
+    ]
   }
 ];
 
@@ -87,6 +96,15 @@ const additionalCardiologyReferrals: Referral[] = Array.from({ length: 48 }, (_,
   const date = new Date();
   date.setDate(date.getDate() - daysAgo);
   
+  // Define attachment options for variety
+  const attachmentOptions = [
+    { title: 'ECG Report', contentType: 'application/pdf', url: '/mock-data/ecg-report.pdf', size: 2456000 },
+    { title: 'Chest X-Ray', contentType: 'image/jpeg', url: '/mock-data/chest-xray.jpg', size: 4567000 },
+    { title: 'Echocardiogram', contentType: 'application/pdf', url: '/mock-data/echo-report.pdf', size: 3456000 },
+    { title: 'Blood Tests', contentType: 'application/pdf', url: '/mock-data/blood-tests.pdf', size: 1245000 },
+    { title: 'Exercise Stress Test', contentType: 'application/pdf', url: '/mock-data/stress-test.pdf', size: 3240000 }
+  ];
+  
   return {
     id: `CARD-2024-${index.toString().padStart(3, '0')}`,
     ubrn: `C${(1000000 + index).toString().padStart(8, '0')}`,
@@ -110,14 +128,22 @@ const additionalCardiologyReferrals: Referral[] = Array.from({ length: 48 }, (_,
       allergies: index % 5 === 0 ? ['Penicillin'] : [],
       notes: `Patient has ${index % 2 === 0 ? 'no significant' : 'family'} history of heart disease.`
     },
-    attachments: index % 3 === 0 ? [
+    attachments: index % 2 === 0 ? [
       {
         id: `CARD-ATT-${index}-1`,
-        title: 'ECG Report',
-        contentType: 'application/pdf',
-        url: '/mock-data/ecg-report.pdf',
+        ...attachmentOptions[index % attachmentOptions.length],
         date: new Date(date.getTime() - 86400000).toISOString(), // 1 day before referral
-        size: 2456000
+      }
+    ] : index % 3 === 0 ? [
+      {
+        id: `CARD-ATT-${index}-1`,
+        ...attachmentOptions[index % attachmentOptions.length],
+        date: new Date(date.getTime() - 86400000).toISOString(),
+      },
+      {
+        id: `CARD-ATT-${index}-2`,
+        ...attachmentOptions[(index + 1) % attachmentOptions.length],
+        date: new Date(date.getTime() - 172800000).toISOString(), // 2 days before referral
       }
     ] : []
   };

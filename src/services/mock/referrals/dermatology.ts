@@ -23,7 +23,16 @@ export const dermatologyReferrals: Referral[] = [
       allergies: [],
       notes: 'Referral from Access Group Elemental GP'
     },
-    attachments: []
+    attachments: [
+      {
+        id: 'AGE-ATT-001-1',
+        title: 'Clinical Photos - Torso',
+        contentType: 'image/jpeg',
+        url: '/mock-data/rash-photos-torso.jpg',
+        date: '2024-04-26T15:30:00Z',
+        size: 2845000
+      }
+    ]
   },
   {
     id: 'REF-2023-002',
@@ -79,6 +88,15 @@ const additionalDermatologyReferrals: Referral[] = Array.from({ length: 48 }, (_
   const date = new Date();
   date.setDate(date.getDate() - daysAgo);
   
+  // Define attachment options for dermatology
+  const attachmentOptions = [
+    { title: 'Clinical Photographs', contentType: 'image/jpeg', url: '/mock-data/rash-photos.jpg', size: 3568000 },
+    { title: 'Dermoscopy Images', contentType: 'image/jpeg', url: '/mock-data/dermoscopy.jpg', size: 4120000 },
+    { title: 'Biopsy Report', contentType: 'application/pdf', url: '/mock-data/biopsy-report.pdf', size: 1890000 },
+    { title: 'Allergy Test Results', contentType: 'application/pdf', url: '/mock-data/allergy-tests.pdf', size: 2340000 },
+    { title: 'Previous Treatment Records', contentType: 'application/pdf', url: '/mock-data/treatment-history.pdf', size: 1567000 }
+  ];
+  
   return {
     id: `DERM-2024-${index.toString().padStart(3, '0')}`,
     ubrn: `D${(1000000 + index).toString().padStart(8, '0')}`,
@@ -102,14 +120,11 @@ const additionalDermatologyReferrals: Referral[] = Array.from({ length: 48 }, (_
       allergies: index % 5 === 0 ? ['Latex'] : [],
       notes: `Patient has ${index % 2 === 0 ? 'no significant' : 'family'} history of skin conditions.`
     },
-    attachments: index % 3 === 0 ? [
+    attachments: index % 3 !== 2 ? [
       {
         id: `DERM-ATT-${index}-1`,
-        title: 'Clinical Photographs',
-        contentType: 'image/jpeg',
-        url: '/mock-data/rash-photos.jpg',
+        ...attachmentOptions[index % attachmentOptions.length],
         date: new Date(date.getTime() - 86400000).toISOString(), // 1 day before referral
-        size: 3568000
       }
     ] : []
   };

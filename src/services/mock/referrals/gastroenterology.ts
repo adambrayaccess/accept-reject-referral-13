@@ -58,6 +58,15 @@ const additionalGastroenterologyReferrals: Referral[] = Array.from({ length: 49 
   const date = new Date();
   date.setDate(date.getDate() - daysAgo);
   
+  // Define attachment options for gastroenterology
+  const attachmentOptions = [
+    { title: 'FIT Test Result', contentType: 'application/pdf', url: '/mock-data/fit-test.pdf', size: 985000 },
+    { title: 'Endoscopy Report', contentType: 'application/pdf', url: '/mock-data/endoscopy.pdf', size: 2340000 },
+    { title: 'CT Abdomen Report', contentType: 'application/pdf', url: '/mock-data/ct-abdomen.pdf', size: 4567000 },
+    { title: 'Liver Function Tests', contentType: 'application/pdf', url: '/mock-data/lfts.pdf', size: 1234000 },
+    { title: 'Stool Sample Results', contentType: 'application/pdf', url: '/mock-data/stool-culture.pdf', size: 1567000 }
+  ];
+  
   return {
     id: `GAST-2024-${index.toString().padStart(3, '0')}`,
     ubrn: `G${(1000000 + index).toString().padStart(8, '0')}`,
@@ -83,14 +92,11 @@ const additionalGastroenterologyReferrals: Referral[] = Array.from({ length: 49 
       allergies: index % 5 === 0 ? ['Penicillin'] : [],
       notes: `Patient has ${index % 2 === 0 ? 'no significant' : 'family'} history of GI conditions.`
     },
-    attachments: index % 3 === 0 ? [
+    attachments: index % 3 !== 2 ? [
       {
         id: `GAST-ATT-${index}-1`,
-        title: 'FIT Test Result',
-        contentType: 'application/pdf',
-        url: '/mock-data/fit-test.pdf',
+        ...attachmentOptions[index % attachmentOptions.length],
         date: new Date(date.getTime() - 86400000).toISOString(), // 1 day before referral
-        size: 985000
       }
     ] : []
   };

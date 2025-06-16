@@ -58,6 +58,15 @@ const additionalMentalHealthReferrals: Referral[] = Array.from({ length: 49 }, (
   const date = new Date();
   date.setDate(date.getDate() - daysAgo);
   
+  // Define attachment options for mental health
+  const attachmentOptions = [
+    { title: 'Risk Assessment', contentType: 'application/pdf', url: '/mock-data/risk-assessment.pdf', size: 1856000 },
+    { title: 'PHQ-9 Questionnaire', contentType: 'application/pdf', url: '/mock-data/phq9.pdf', size: 1234000 },
+    { title: 'Previous Discharge Summary', contentType: 'application/pdf', url: '/mock-data/discharge-summary.pdf', size: 2340000 },
+    { title: 'Care Plan', contentType: 'application/pdf', url: '/mock-data/care-plan.pdf', size: 1789000 },
+    { title: 'Medication Review', contentType: 'application/pdf', url: '/mock-data/med-review.pdf', size: 1456000 }
+  ];
+  
   return {
     id: `MH-2024-${(index + 1).toString().padStart(3, '0')}`,
     ubrn: `MH${(1000000 + index).toString().padStart(8, '0')}`,
@@ -84,14 +93,22 @@ const additionalMentalHealthReferrals: Referral[] = Array.from({ length: 49 }, (
       allergies: index % 10 === 0 ? ['Sulfa drugs'] : [],
       notes: `Patient has ${index % 2 === 0 ? 'no significant' : 'family'} history of mental health conditions.`
     },
-    attachments: index % 3 === 0 ? [
+    attachments: index % 2 === 0 ? [
       {
         id: `MH-ATT-${index}-1`,
-        title: 'Risk Assessment',
-        contentType: 'application/pdf',
-        url: '/mock-data/risk-assessment.pdf',
+        ...attachmentOptions[index % attachmentOptions.length],
         date: new Date(date.getTime() - 86400000).toISOString(), // 1 day before referral
-        size: 1856000
+      }
+    ] : index % 5 === 0 ? [
+      {
+        id: `MH-ATT-${index}-1`,
+        ...attachmentOptions[index % attachmentOptions.length],
+        date: new Date(date.getTime() - 86400000).toISOString(),
+      },
+      {
+        id: `MH-ATT-${index}-2`,
+        ...attachmentOptions[(index + 1) % attachmentOptions.length],
+        date: new Date(date.getTime() - 172800000).toISOString(), // 2 days before referral
       }
     ] : []
   };
