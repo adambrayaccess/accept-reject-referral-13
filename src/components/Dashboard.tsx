@@ -1,7 +1,6 @@
-
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
-import { FilePlus, Users, Shield } from 'lucide-react';
+import { FilePlus, Users, Shield, ChevronDown } from 'lucide-react';
 import SearchBar from './dashboard/SearchBar';
 import SortAndFilterControls from './dashboard/SortAndFilterControls';
 import ViewToggle from './dashboard/ViewToggle';
@@ -16,6 +15,13 @@ import CreateReferralModal from './CreateReferralModal';
 import { useToast } from '@/hooks/use-toast';
 import { Referral } from '@/types/referral';
 import { useNavigate } from 'react-router-dom';
+import { specialties } from '@/data/specialtyOptions';
+import { 
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
 
 const Dashboard = () => {
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
@@ -61,8 +67,16 @@ const Dashboard = () => {
     handleRefresh();
   };
 
-  const handleChangeSpecialty = () => {
-    navigate('/select-specialty');
+  const handleSpecialtyChange = (specialtyId: string) => {
+    const specialty = specialties.find(s => s.id === specialtyId);
+    if (specialty) {
+      setCurrentSpecialty(specialty.name);
+      localStorage.setItem('selectedSpecialty', specialty.name);
+      toast({
+        title: "Specialty Changed",
+        description: `Now triaging for ${specialty.name}`,
+      });
+    }
   };
 
   const navigateToCohortBuilder = () => {
@@ -94,12 +108,30 @@ const Dashboard = () => {
               <h1 className="text-2xl font-bold">Referral Dashboard</h1>
               {currentSpecialty && (
                 <div className="flex items-center mt-1">
-                  <span className="text-sm text-muted-foreground mr-2">
-                    Triaging for: <span className="font-medium text-foreground">{currentSpecialty}</span>
-                  </span>
-                  <Button variant="link" size="sm" className="p-0 h-auto" onClick={handleChangeSpecialty}>
-                    Change
-                  </Button>
+                  <span className="text-sm text-muted-foreground mr-2">Triaging for:</span>
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Button 
+                        variant="ghost" 
+                        size="sm" 
+                        className="h-auto p-0 font-medium text-foreground hover:text-foreground/80 flex items-center gap-1"
+                      >
+                        {currentSpecialty}
+                        <ChevronDown className="h-3 w-3" />
+                      </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="start" className="w-48">
+                      {specialties.map((specialty) => (
+                        <DropdownMenuItem
+                          key={specialty.id}
+                          onClick={() => handleSpecialtyChange(specialty.id)}
+                          className={currentSpecialty === specialty.name ? "bg-accent" : ""}
+                        >
+                          {specialty.name}
+                        </DropdownMenuItem>
+                      ))}
+                    </DropdownMenuContent>
+                  </DropdownMenu>
                 </div>
               )}
             </div>
