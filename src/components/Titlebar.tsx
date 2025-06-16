@@ -15,11 +15,11 @@ const Titlebar = () => {
     <div className="flex items-center justify-between px-4 py-2 bg-white border-b border-gray-200 h-12">
       {/* Left side - Access logo/brand */}
       <div className="flex items-center gap-2">
-        <div className="w-6 h-6 bg-red-500 rounded-full flex items-center justify-center">
-          <div className="w-3 h-3 bg-white rounded-full"></div>
-        </div>
-        <span className="text-gray-700 font-medium text-sm">access</span>
-        <ChevronDown className="w-4 h-4 text-gray-500" />
+        <img 
+          src="/lovable-uploads/897bfd6c-1a53-4aeb-a0a0-2d75a3693b6f.png" 
+          alt="Access Logo" 
+          className="h-8 object-contain"
+        />
       </div>
 
       {/* Right side - Navigation icons and user profile */}
