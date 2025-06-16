@@ -14,9 +14,11 @@ const PageHeader = ({ searchValue = '', onSearchChange, showSearch = true }: Pag
     <div className="bg-white border-b border-gray-200 px-4 py-3">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <div className="w-8 h-8 bg-red-500 rounded-full flex items-center justify-center">
-            <div className="w-5 h-5 bg-white rounded-full"></div>
-          </div>
+          <img 
+            src="/lovable-uploads/0f45d382-0710-437a-a400-96e464c8e502.png" 
+            alt="Logo" 
+            className="w-8 h-8 rounded-full object-cover"
+          />
           <h1 className="text-xl font-semibold text-gray-900">Access Referral Triage Management</h1>
         </div>
         
@@ -28,7 +30,7 @@ const PageHeader = ({ searchValue = '', onSearchChange, showSearch = true }: Pag
                 placeholder="Search Patients"
                 value={searchValue}
                 onChange={(e) => onSearchChange?.(e.target.value)}
-                className="pl-10 w-64 bg-teal-600 text-white placeholder-teal-200 border-teal-600 focus:border-teal-500"
+                className="pl-10 w-64 bg-white text-gray-900 placeholder-gray-500 border-gray-300 focus:border-teal-500"
               />
             </div>
           </div>
