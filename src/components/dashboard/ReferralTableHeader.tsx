@@ -1,4 +1,3 @@
-
 import { TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Referral } from '@/types/referral';
@@ -16,14 +15,16 @@ const ReferralTableHeader = ({
   isIndeterminate = false, 
   onSelectAll 
 }: ReferralTableHeaderProps) => {
+  // Handle checkbox state - if indeterminate, show as unchecked but visually different
+  const checkboxChecked = isIndeterminate ? false : isAllSelected;
+
   return (
     <TableHeader>
       <TableRow>
         <TableHead className="w-10">
           {referrals.length > 0 && (
             <Checkbox
-              checked={isAllSelected}
-              indeterminate={isIndeterminate}
+              checked={checkboxChecked}
               onCheckedChange={onSelectAll}
               aria-label="Select all referrals"
             />
