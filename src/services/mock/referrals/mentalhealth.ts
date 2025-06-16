@@ -221,13 +221,6 @@ const additionalDashboardReferrals: Referral[] = Array.from({ length: 7 }, (_, i
   const priorityOptions: Referral['priority'][] = ['routine', 'urgent', 'emergency'];
   const priority = priorityOptions[index % 3];
   
-  // Dashboard statuses and triage statuses (not waiting-list)
-  const statusOptions: Referral['status'][] = ['new', 'accepted', 'rejected'];
-  const triageStatusOptions: TriageStatus[] = ['pre-assessment', 'assessed', 'pre-admission-assessment', 'refer-to-another-specialty'];
-  
-  const status = statusOptions[i % 3];
-  const triageStatus = triageStatusOptions[i % 4];
-  
   const daysAgo = Math.floor(Math.random() * 30) + 1;
   const date = new Date();
   date.setDate(date.getDate() - daysAgo);
@@ -250,7 +243,7 @@ const additionalDashboardReferrals: Referral[] = Array.from({ length: 7 }, (_, i
     id: `MH-DASH-${(index + 1).toString().padStart(3, '0')}`,
     ubrn: `MHDASH${(3000000 + index).toString().padStart(8, '0')}`,
     created,
-    status,
+    status: 'accepted' as const,
     priority,
     patient: mockPatients[patientIndex],
     referrer: mockPractitioners[practitionerIndex],
@@ -258,7 +251,7 @@ const additionalDashboardReferrals: Referral[] = Array.from({ length: 7 }, (_, i
     service: index % 4 === 0 ? 'Community Mental Health Team' : 
              index % 4 === 1 ? 'Crisis Team' : 
              index % 4 === 2 ? 'Eating Disorder Service' : 'IAPT',
-    triageStatus,
+    triageStatus: 'waiting-list' as const,
     tags: tagOptions[i % tagOptions.length],
     appointmentDetails,
     ...subReferralData,
