@@ -1,10 +1,34 @@
 
 import { TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { Checkbox } from '@/components/ui/checkbox';
+import { Referral } from '@/types/referral';
 
-const ReferralTableHeader = () => {
+interface ReferralTableHeaderProps {
+  referrals?: Referral[];
+  isAllSelected?: boolean;
+  isIndeterminate?: boolean;
+  onSelectAll?: () => void;
+}
+
+const ReferralTableHeader = ({ 
+  referrals = [], 
+  isAllSelected = false, 
+  isIndeterminate = false, 
+  onSelectAll 
+}: ReferralTableHeaderProps) => {
   return (
     <TableHeader>
       <TableRow>
+        <TableHead className="w-10">
+          {referrals.length > 0 && (
+            <Checkbox
+              checked={isAllSelected}
+              indeterminate={isIndeterminate}
+              onCheckedChange={onSelectAll}
+              aria-label="Select all referrals"
+            />
+          )}
+        </TableHead>
         <TableHead className="w-10"></TableHead>
         <TableHead className="w-16">Priority</TableHead>
         <TableHead className="min-w-[120px]">Name</TableHead>

@@ -1,4 +1,3 @@
-
 import { Button } from '@/components/ui/button';
 import { Users, Shield, ChevronDown } from 'lucide-react';
 import SearchBar from './dashboard/SearchBar';
@@ -11,6 +10,7 @@ import PageHeader from './PageHeader';
 import AIAssistantActions from './dashboard/AIAssistantActions';
 import CreateReferralDropdown from './dashboard/CreateReferralDropdown';
 import { useDashboardData } from '@/hooks/useDashboardData';
+import { useReferralSelection } from '@/hooks/useReferralSelection';
 import { useState, useEffect } from 'react';
 import { useToast } from '@/hooks/use-toast';
 import { Referral } from '@/types/referral';
@@ -30,7 +30,6 @@ const Dashboard = () => {
   const navigate = useNavigate();
   const [currentSpecialty, setCurrentSpecialty] = useState<string | null>(null);
   
-  // Pass the currentSpecialty to the useDashboardData hook
   const {
     filteredReferrals,
     isLoading,
@@ -50,13 +49,23 @@ const Dashboard = () => {
     setSortDirection
   } = useDashboardData(currentSpecialty);
 
+  const {
+    selectedIds,
+    selectedCount,
+    toggleSelection,
+    selectAll,
+    clearSelection,
+    isSelected,
+    getSelectedReferrals,
+    isAllSelected,
+    isIndeterminate
+  } = useReferralSelection();
+
   useEffect(() => {
-    // Check if specialty is selected
     const storedSpecialty = localStorage.getItem('selectedSpecialty');
     if (storedSpecialty) {
       setCurrentSpecialty(storedSpecialty);
     } else {
-      // Redirect to specialty selection if none selected
       navigate('/select-specialty');
     }
   }, []);
@@ -81,6 +90,16 @@ const Dashboard = () => {
       });
     }
   };
+
+  const handleSelectAll = () => {
+    if (isAllSelected(filteredReferrals)) {
+      clearSelection();
+    } else {
+      selectAll(filteredReferrals);
+    }
+  };
+
+  const selectedReferrals = getSelectedReferrals(filteredReferrals);
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -132,20 +151,38 @@ const Dashboard = () => {
         </div>
 
         <div className="px-6 space-y-6">
+          {selectedCount > 0 && (
+            <div className="flex items-center justify-between bg-blue-50 border border-blue-200 rounded-lg p-3">
+              <div className="flex items-center gap-2">
+                <Users className="h-4 w-4 text-blue-600" />
+                <span className="text-sm font-medium text-blue-800">
+                  {selectedCount} referral{selectedCount > 1 ? 's' : ''} selected
+                </span>
+              </div>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={clearSelection}
+                className="text-blue-600 hover:text-blue-800"
+              >
+                Clear selection
+              </Button>
+            </div>
+          )}
+
           <div className="flex flex-col gap-4">
-            {/* Three-column layout: SearchBar | AIAssistantActions | SortAndFilterControls + ViewToggle */}
             <div className="flex flex-col lg:flex-row gap-4 items-start lg:items-center">
-              {/* Left column - SearchBar */}
               <div className="w-full lg:flex-1">
                 <SearchBar searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
               </div>
               
-              {/* Middle column - AIAssistantActions */}
               <div className="w-full lg:w-auto lg:flex-shrink-0">
-                <AIAssistantActions />
+                <AIAssistantActions 
+                  selectedReferrals={selectedReferrals}
+                  onClearSelection={clearSelection}
+                />
               </div>
               
-              {/* Right column - SortAndFilterControls + ViewToggle */}
               <div className="flex gap-2 w-full lg:w-auto items-center lg:flex-shrink-0">
                 <SortAndFilterControls
                   sortField={sortField}
@@ -180,6 +217,12 @@ const Dashboard = () => {
                 isReordering={isReordering}
                 view={view} 
                 onReorder={handleReorderReferrals}
+                selectedIds={selectedIds}
+                onToggleSelection={toggleSelection}
+                onSelectAll={handleSelectAll}
+                onClearSelection={clearSelection}
+                isAllSelected={isAllSelected(filteredReferrals)}
+                isIndeterminate={isIndeterminate(filteredReferrals)}
               />
             </EnhancedTabsContent>
 
@@ -191,6 +234,12 @@ const Dashboard = () => {
                 filter={(r) => r.status === 'new'}
                 view={view}
                 onReorder={handleReorderReferrals}
+                selectedIds={selectedIds}
+                onToggleSelection={toggleSelection}
+                onSelectAll={handleSelectAll}
+                onClearSelection={clearSelection}
+                isAllSelected={isAllSelected(filteredReferrals.filter(r => r.status === 'new'))}
+                isIndeterminate={isIndeterminate(filteredReferrals.filter(r => r.status === 'new'))}
               />
             </EnhancedTabsContent>
 
@@ -202,6 +251,12 @@ const Dashboard = () => {
                 filter={(r) => r.status !== 'new'}
                 view={view}
                 onReorder={handleReorderReferrals}
+                selectedIds={selectedIds}
+                onToggleSelection={toggleSelection}
+                onSelectAll={handleSelectAll}
+                onClearSelection={clearSelection}
+                isAllSelected={isAllSelected(filteredReferrals.filter(r => r.status !== 'new'))}
+                isIndeterminate={isIndeterminate(filteredReferrals.filter(r => r.status !== 'new'))}
               />
             </EnhancedTabsContent>
           </EnhancedTabs>

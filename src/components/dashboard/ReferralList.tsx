@@ -14,6 +14,12 @@ interface ReferralListProps {
   isReordering?: boolean;
   filter?: (referral: Referral) => boolean;
   onReorder?: (sourceIndex: number, destinationIndex: number) => void;
+  selectedIds?: Set<string>;
+  onToggleSelection?: (referralId: string) => void;
+  onSelectAll?: () => void;
+  onClearSelection?: () => void;
+  isAllSelected?: boolean;
+  isIndeterminate?: boolean;
 }
 
 const ReferralList = ({ 
@@ -21,7 +27,12 @@ const ReferralList = ({
   isLoading, 
   isReordering = false,
   filter, 
-  onReorder 
+  onReorder,
+  selectedIds = new Set(),
+  onToggleSelection,
+  onSelectAll,
+  isAllSelected = false,
+  isIndeterminate = false
 }: ReferralListProps) => {
   const [modalReferralId, setModalReferralId] = useState<string | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -81,7 +92,12 @@ const ReferralList = ({
       <div className="border rounded-lg">
         <DragDropContext onDragEnd={handleDragEnd}>
           <Table>
-            <ReferralTableHeader />
+            <ReferralTableHeader 
+              referrals={filteredReferrals}
+              isAllSelected={isAllSelected}
+              isIndeterminate={isIndeterminate}
+              onSelectAll={onSelectAll}
+            />
             <Droppable droppableId="referrals-list" isDropDisabled={isReordering}>
               {(provided, snapshot) => (
                 <TableBody 
@@ -97,6 +113,8 @@ const ReferralList = ({
                       onNameClick={handleNameClick}
                       onRowClick={handleRowClick}
                       isDragDisabled={isReordering}
+                      isSelected={selectedIds.has(referral.id)}
+                      onToggleSelection={onToggleSelection}
                     />
                   ))}
                   {provided.placeholder}

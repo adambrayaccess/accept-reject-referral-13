@@ -10,6 +10,12 @@ interface ReferralGridProps {
   filter?: (referral: Referral) => boolean;
   view?: 'card' | 'list';
   onReorder?: (sourceIndex: number, destinationIndex: number) => void;
+  selectedIds?: Set<string>;
+  onToggleSelection?: (referralId: string) => void;
+  onSelectAll?: () => void;
+  onClearSelection?: () => void;
+  isAllSelected?: boolean;
+  isIndeterminate?: boolean;
 }
 
 const ReferralGrid = ({ 
@@ -18,7 +24,13 @@ const ReferralGrid = ({
   isReordering = false,
   filter, 
   view = 'card', 
-  onReorder 
+  onReorder,
+  selectedIds,
+  onToggleSelection,
+  onSelectAll,
+  onClearSelection,
+  isAllSelected,
+  isIndeterminate
 }: ReferralGridProps) => {
   if (view === 'list') {
     return (
@@ -27,7 +39,13 @@ const ReferralGrid = ({
         isLoading={isLoading} 
         isReordering={isReordering}
         filter={filter} 
-        onReorder={onReorder} 
+        onReorder={onReorder}
+        selectedIds={selectedIds}
+        onToggleSelection={onToggleSelection}
+        onSelectAll={onSelectAll}
+        onClearSelection={onClearSelection}
+        isAllSelected={isAllSelected}
+        isIndeterminate={isIndeterminate}
       />
     );
   }

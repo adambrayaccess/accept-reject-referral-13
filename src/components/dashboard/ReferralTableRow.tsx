@@ -1,6 +1,6 @@
-
 import { TableCell, TableRow } from '@/components/ui/table';
 import { Button } from '@/components/ui/button';
+import { Checkbox } from '@/components/ui/checkbox';
 import { ChevronDown, ChevronRight, GripVertical } from 'lucide-react';
 import { format } from 'date-fns';
 import { Referral } from '@/types/referral';
@@ -15,6 +15,8 @@ interface ReferralTableRowProps {
   onNameClick: (e: React.MouseEvent, referralId: string) => void;
   onRowClick: (referralId: string) => void;
   isDragDisabled?: boolean;
+  isSelected?: boolean;
+  onToggleSelection?: (referralId: string) => void;
 }
 
 const ReferralTableRow = ({ 
@@ -22,8 +24,15 @@ const ReferralTableRow = ({
   index, 
   onNameClick, 
   onRowClick, 
-  isDragDisabled = false 
+  isDragDisabled = false,
+  isSelected = false,
+  onToggleSelection
 }: ReferralTableRowProps) => {
+  const handleCheckboxChange = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    onToggleSelection?.(referral.id);
+  };
+
   return (
     <Draggable 
       key={referral.id} 
@@ -37,9 +46,18 @@ const ReferralTableRow = ({
           {...provided.draggableProps}
           className={`hover:bg-muted/50 cursor-pointer ${
             snapshot.isDragging ? 'bg-muted shadow-lg' : ''
-          } ${isDragDisabled ? 'opacity-50' : ''}`}
+          } ${isDragDisabled ? 'opacity-50' : ''} ${
+            isSelected ? 'bg-blue-50' : ''
+          }`}
           onClick={() => !isDragDisabled && onRowClick(referral.id)}
         >
+          <TableCell className="p-2" onClick={handleCheckboxChange}>
+            <Checkbox
+              checked={isSelected}
+              onCheckedChange={() => onToggleSelection?.(referral.id)}
+              aria-label={`Select referral for ${referral.patient.name}`}
+            />
+          </TableCell>
           <TableCell className="p-2">
             <div 
               {...provided.dragHandleProps}
