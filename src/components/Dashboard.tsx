@@ -1,6 +1,6 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
-import { FilePlus, Users, Shield, ChevronDown } from 'lucide-react';
+import { Users, Shield, ChevronDown } from 'lucide-react';
 import SearchBar from './dashboard/SearchBar';
 import SortAndFilterControls from './dashboard/SortAndFilterControls';
 import ViewToggle from './dashboard/ViewToggle';
@@ -9,9 +9,9 @@ import StatisticsBar from './dashboard/StatisticsBar';
 import Titlebar from './Titlebar';
 import PageHeader from './PageHeader';
 import AIAssistantActions from './dashboard/AIAssistantActions';
+import CreateReferralDropdown from './dashboard/CreateReferralDropdown';
 import { useDashboardData } from '@/hooks/useDashboardData';
 import { useState, useEffect } from 'react';
-import CreateReferralModal from './CreateReferralModal';
 import { useToast } from '@/hooks/use-toast';
 import { Referral } from '@/types/referral';
 import { useNavigate } from 'react-router-dom';
@@ -24,7 +24,6 @@ import {
 } from '@/components/ui/dropdown-menu';
 
 const Dashboard = () => {
-  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [view, setView] = useState<'card' | 'list'>('card');
   const { toast } = useToast();
   const navigate = useNavigate();
@@ -60,9 +59,10 @@ const Dashboard = () => {
   }, []);
 
   const handleCreateReferral = (newReferral: Partial<Referral>) => {
+    const referralType = newReferral.aiGenerated ? 'Auto' : 'Manual';
     toast({
       title: "Referral Created",
-      description: `Manual referral ${newReferral.id} has been created`,
+      description: `${referralType} referral ${newReferral.id} has been created`,
     });
     handleRefresh();
   };
@@ -144,14 +144,7 @@ const Dashboard = () => {
                 <Users className="mr-2 h-4 w-4" />
                 Waiting List Management
               </Button>
-              <Button 
-                onClick={() => setIsCreateModalOpen(true)} 
-                className="flex-1 sm:flex-initial text-white hover:bg-[#007A7A]/90"
-                style={{ backgroundColor: '#007A7A' }}
-              >
-                <FilePlus className="mr-2 h-4 w-4" />
-                Create Referral
-              </Button>
+              <CreateReferralDropdown onReferralCreated={handleCreateReferral} />
             </div>
           </div>
         </div>
@@ -227,12 +220,6 @@ const Dashboard = () => {
               />
             </TabsContent>
           </Tabs>
-
-          <CreateReferralModal
-            isOpen={isCreateModalOpen}
-            onClose={() => setIsCreateModalOpen(false)}
-            onSubmit={handleCreateReferral}
-          />
         </div>
       </div>
     </div>
