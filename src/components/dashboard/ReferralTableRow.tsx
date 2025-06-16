@@ -1,4 +1,3 @@
-
 import { TableCell, TableRow } from '@/components/ui/table';
 import { Button } from '@/components/ui/button';
 import { ChevronDown, ChevronRight, GripVertical } from 'lucide-react';
@@ -47,7 +46,7 @@ const ReferralTableRow = ({ referral, index, onNameClick, onRowClick }: Referral
             <Button
               variant="link"
               className="font-medium hover:underline p-0 h-auto"
-              style={{ color: '#006262' }}
+              style={{ color: '#007373' }}
               onClick={(e) => onNameClick(e, referral.id)}
             >
               {referral.patient.name}
