@@ -1,3 +1,4 @@
+
 import { TableCell, TableRow } from '@/components/ui/table';
 import { Button } from '@/components/ui/button';
 import { ChevronDown, ChevronRight, GripVertical } from 'lucide-react';
@@ -27,7 +28,7 @@ const ReferralTableRow = ({ referral, index, onNameClick, onRowClick }: Referral
           }`}
           onClick={() => onRowClick(referral.id)}
         >
-          <TableCell>
+          <TableCell className="p-2 w-8">
             <div 
               {...provided.dragHandleProps}
               className="cursor-grab active:cursor-grabbing p-1 hover:bg-muted rounded"
@@ -36,46 +37,46 @@ const ReferralTableRow = ({ referral, index, onNameClick, onRowClick }: Referral
               <GripVertical className="h-4 w-4 text-muted-foreground" />
             </div>
           </TableCell>
-          <TableCell>
+          <TableCell className="p-2 w-20">
             <div className="flex items-center gap-2">
               <ReferralPriorityBadge priority={referral.priority} />
               <ChevronDown className="h-4 w-4 text-muted-foreground" />
             </div>
           </TableCell>
-          <TableCell>
+          <TableCell className="p-2 min-w-[200px]">
             <Button
               variant="link"
-              className="font-bold underline p-0 h-auto"
+              className="font-bold underline p-0 h-auto text-left whitespace-normal"
               style={{ color: '#007373' }}
               onClick={(e) => onNameClick(e, referral.id)}
             >
               {referral.patient.name}
             </Button>
           </TableCell>
-          <TableCell>{referral.patient.gender}</TableCell>
-          <TableCell className="font-mono text-sm">{referral.patient.nhsNumber}</TableCell>
-          <TableCell className="font-mono text-sm">{referral.ubrn}</TableCell>
-          <TableCell className="text-sm">
-            <div>{format(new Date(referral.created), 'dd MMM yyyy')}</div>
-            <div>{format(new Date(referral.created), 'HH:mm')}</div>
+          <TableCell className="p-2 w-16 text-sm">{referral.patient.gender}</TableCell>
+          <TableCell className="p-2 w-32 font-mono text-sm">{referral.patient.nhsNumber}</TableCell>
+          <TableCell className="p-2 w-32 font-mono text-sm">{referral.ubrn}</TableCell>
+          <TableCell className="p-2 w-32 text-sm">
+            <div className="whitespace-nowrap">{format(new Date(referral.created), 'dd MMM yyyy')}</div>
+            <div className="whitespace-nowrap text-xs text-muted-foreground">{format(new Date(referral.created), 'HH:mm')}</div>
           </TableCell>
-          <TableCell className="font-mono text-sm">{referral.patient.phone || 'N/A'}</TableCell>
-          <TableCell>
-            <div>{referral.specialty}</div>
-            <div className="text-sm text-muted-foreground">{referral.referrer.name}</div>
+          <TableCell className="p-2 w-32 font-mono text-sm">{referral.patient.phone || 'N/A'}</TableCell>
+          <TableCell className="p-2 min-w-[180px]">
+            <div className="text-sm font-medium">{referral.specialty}</div>
+            <div className="text-xs text-muted-foreground truncate">{referral.referrer.name}</div>
           </TableCell>
-          <TableCell className="max-w-48">
+          <TableCell className="p-2 min-w-[200px] max-w-[300px]">
             <div className="text-sm truncate" title={referral.clinicalInfo.reason}>
               {referral.clinicalInfo.reason}
             </div>
           </TableCell>
-          <TableCell>
+          <TableCell className="p-2 w-24">
             <ReferralStatusBadge referral={referral} />
           </TableCell>
-          <TableCell>
+          <TableCell className="p-2 w-20">
             <ReferralSourceBadge referral={referral} />
           </TableCell>
-          <TableCell>
+          <TableCell className="p-2 w-8">
             <ChevronRight className="h-4 w-4 text-muted-foreground" />
           </TableCell>
         </TableRow>
