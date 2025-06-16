@@ -26,9 +26,9 @@ const formatBytes = (bytes: number, decimals = 2) => {
 
 const getFileIcon = (contentType: string) => {
   if (contentType.startsWith('image/')) {
-    return <FileImage className="h-5 w-5" />;
+    return <FileImage className="h-4 w-4" />;
   }
-  return <FileText className="h-5 w-5" />;
+  return <FileText className="h-4 w-4" />;
 };
 
 const AttachmentViewer = ({ attachments }: AttachmentViewerProps) => {
@@ -37,11 +37,11 @@ const AttachmentViewer = ({ attachments }: AttachmentViewerProps) => {
   if (attachments.length === 0) {
     return (
       <Card>
-        <CardHeader>
-          <CardTitle>Attachments</CardTitle>
+        <CardHeader className="pb-3">
+          <CardTitle className="text-lg">Attachments</CardTitle>
         </CardHeader>
-        <CardContent>
-          <p className="text-muted-foreground">No attachments available for this referral.</p>
+        <CardContent className="pt-0">
+          <p className="text-muted-foreground text-sm">No attachments available for this referral.</p>
         </CardContent>
       </Card>
     );
@@ -49,60 +49,62 @@ const AttachmentViewer = ({ attachments }: AttachmentViewerProps) => {
   
   return (
     <Card>
-      <CardHeader>
-        <CardTitle>Attachments</CardTitle>
+      <CardHeader className="pb-3">
+        <CardTitle className="text-lg">Attachments</CardTitle>
       </CardHeader>
-      <CardContent>
+      <CardContent className="pt-0">
         <Tabs value={activeTab} onValueChange={setActiveTab}>
-          <TabsList className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 mb-4">
-            {attachments.map((attachment) => (
-              <TabsTrigger key={attachment.id} value={attachment.id} className="text-xs">
-                {attachment.title}
-              </TabsTrigger>
-            ))}
-          </TabsList>
+          <div className="overflow-x-auto pb-2 mb-3">
+            <TabsList className="inline-flex h-8 min-w-full">
+              {attachments.map((attachment) => (
+                <TabsTrigger key={attachment.id} value={attachment.id} className="text-xs whitespace-nowrap">
+                  {attachment.title}
+                </TabsTrigger>
+              ))}
+            </TabsList>
+          </div>
           
           {attachments.map((attachment) => (
-            <TabsContent key={attachment.id} value={attachment.id}>
-              <div className="space-y-4">
+            <TabsContent key={attachment.id} value={attachment.id} className="mt-0">
+              <div className="space-y-3">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
                     {getFileIcon(attachment.contentType)}
-                    <span className="font-medium">{attachment.title}</span>
+                    <span className="font-medium text-sm">{attachment.title}</span>
                   </div>
                   <div className="flex items-center gap-2">
-                    <Button variant="outline" size="sm" className="flex items-center gap-1">
-                      <Eye className="h-4 w-4" />
-                      <span className="hidden md:inline">View</span>
+                    <Button variant="outline" size="sm" className="flex items-center gap-1 h-7">
+                      <Eye className="h-3 w-3" />
+                      <span className="hidden sm:inline text-xs">View</span>
                     </Button>
-                    <Button variant="outline" size="sm" className="flex items-center gap-1">
-                      <Download className="h-4 w-4" />
-                      <span className="hidden md:inline">Download</span>
+                    <Button variant="outline" size="sm" className="flex items-center gap-1 h-7">
+                      <Download className="h-3 w-3" />
+                      <span className="hidden sm:inline text-xs">Download</span>
                     </Button>
                   </div>
                 </div>
                 
                 <Separator />
                 
-                <div className="grid grid-cols-2 gap-4 text-sm">
+                <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 text-xs">
                   <div>
-                    <div className="info-label">Date Added</div>
-                    <div className="info-value">
+                    <div className="text-muted-foreground font-medium">Date Added</div>
+                    <div className="font-medium">
                       {format(new Date(attachment.date), 'dd MMM yyyy, HH:mm')}
                     </div>
                   </div>
                   
                   <div>
-                    <div className="info-label">File Type</div>
-                    <div className="info-value">
+                    <div className="text-muted-foreground font-medium">File Type</div>
+                    <div className="font-medium">
                       {attachment.contentType.split('/')[1].toUpperCase()}
                     </div>
                   </div>
                   
                   {attachment.size && (
                     <div>
-                      <div className="info-label">Size</div>
-                      <div className="info-value">{formatBytes(attachment.size)}</div>
+                      <div className="text-muted-foreground font-medium">Size</div>
+                      <div className="font-medium">{formatBytes(attachment.size)}</div>
                     </div>
                   )}
                 </div>
@@ -110,7 +112,7 @@ const AttachmentViewer = ({ attachments }: AttachmentViewerProps) => {
                 <Separator />
                 
                 <div className="aspect-video bg-muted flex items-center justify-center rounded-md">
-                  <p className="text-muted-foreground">
+                  <p className="text-muted-foreground text-sm text-center px-4">
                     Preview not available. Please click View to open the document.
                   </p>
                 </div>

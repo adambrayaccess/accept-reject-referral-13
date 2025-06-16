@@ -13,33 +13,33 @@ const MedicalHistory = ({ patient }: MedicalHistoryProps) => {
   if (!patient.medicalHistory) {
     return (
       <Card>
-        <CardHeader>
-          <CardTitle>Medical History</CardTitle>
+        <CardHeader className="pb-3">
+          <CardTitle className="text-lg">Medical History</CardTitle>
         </CardHeader>
-        <CardContent>
-          <p className="text-muted-foreground">No medical history available for this patient.</p>
+        <CardContent className="pt-0">
+          <p className="text-muted-foreground text-sm">No medical history available for this patient.</p>
         </CardContent>
       </Card>
     );
   }
 
   return (
-    <Card className="mb-6">
-      <CardHeader className="pb-2">
-        <CardTitle>Medical History</CardTitle>
+    <Card>
+      <CardHeader className="pb-3">
+        <CardTitle className="text-lg">Medical History</CardTitle>
       </CardHeader>
-      <CardContent className="p-4 overflow-hidden">
-        <Tabs defaultValue="vitals" className="space-y-2">
-          <TabsList>
-            <TabsTrigger value="vitals">Vital Signs</TabsTrigger>
-            <TabsTrigger value="cardiogram">Cardiogram Data</TabsTrigger>
+      <CardContent className="pt-0 overflow-hidden">
+        <Tabs defaultValue="vitals" className="space-y-3">
+          <TabsList className="h-8">
+            <TabsTrigger value="vitals" className="text-xs">Vital Signs</TabsTrigger>
+            <TabsTrigger value="cardiogram" className="text-xs">Cardiogram Data</TabsTrigger>
           </TabsList>
 
-          <TabsContent value="vitals" className="mt-2">
+          <TabsContent value="vitals" className="mt-0">
             <VitalSignsTab vitalSigns={patient.medicalHistory.vitalSigns} />
           </TabsContent>
 
-          <TabsContent value="cardiogram" className="mt-2">
+          <TabsContent value="cardiogram" className="mt-0">
             <CardiogramView cardiograms={patient.medicalHistory.cardiograms || []} />
           </TabsContent>
         </Tabs>

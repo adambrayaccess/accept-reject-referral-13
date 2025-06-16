@@ -21,22 +21,21 @@ const ReferralWorkspace = ({ referral, onStatusChange }: ReferralWorkspaceProps)
 
   const handleSubReferralCreated = () => {
     setRefreshKey(prev => prev + 1);
-    onStatusChange(); // Also refresh the main referral data
+    onStatusChange();
   };
 
   return (
-    <div className="flex flex-col h-full gap-4">
-      {/* Show parent referral info if this is a sub-referral */}
+    <div className="flex flex-col h-full gap-3">
       {referral.isSubReferral && referral.parentReferralId && (
         <ParentReferralInfo childReferralId={referral.id} />
       )}
 
       <Card>
-        <CardHeader>
-          <CardTitle>Triage Actions</CardTitle>
+        <CardHeader className="pb-3">
+          <CardTitle className="text-lg">Triage Actions</CardTitle>
         </CardHeader>
-        <CardContent>
-          <div className="space-y-4">
+        <CardContent className="pt-0">
+          <div className="space-y-3">
             <ReferralActions referral={referral} onStatusChange={onStatusChange} />
             
             {referral.status === 'accepted' && (
@@ -47,7 +46,6 @@ const ReferralWorkspace = ({ referral, onStatusChange }: ReferralWorkspaceProps)
                   onStatusChange={onStatusChange}
                 />
                 
-                {/* Only show sub-referral creation for non-sub-referrals */}
                 {!referral.isSubReferral && (
                   <div className="pt-2 border-t">
                     <CreateSubReferralDialog 
@@ -62,7 +60,6 @@ const ReferralWorkspace = ({ referral, onStatusChange }: ReferralWorkspaceProps)
         </CardContent>
       </Card>
 
-      {/* Show sub-referrals list if this is a parent referral with accepted status */}
       {referral.status === 'accepted' && !referral.isSubReferral && (
         <SubReferralsList 
           parentReferralId={referral.id}
@@ -71,16 +68,15 @@ const ReferralWorkspace = ({ referral, onStatusChange }: ReferralWorkspaceProps)
       )}
 
       <Card className="flex-1">
-        <CardHeader>
-          <CardTitle>Triage Workspace</CardTitle>
+        <CardHeader className="pb-3">
+          <CardTitle className="text-lg">Triage Workspace</CardTitle>
         </CardHeader>
-        <CardContent className="space-y-4">
+        <CardContent className="pt-0 space-y-3">
           <AuditLog entries={referral.auditLog} />
           <CollaborationNotes notes={referral.collaborationNotes} />
         </CardContent>
       </Card>
 
-      {/* Patient Activity Timeline - moved below Triage Workspace */}
       <PatientActivityTimeline />
     </div>
   );

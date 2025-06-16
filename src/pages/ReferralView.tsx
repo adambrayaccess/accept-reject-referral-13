@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { fetchReferralById, fetchPatientReferrals } from '@/services/referralService';
@@ -92,8 +91,8 @@ const ReferralView = () => {
       <div className="min-h-screen bg-gray-50">
         <Titlebar />
         <PageHeader showSearch={false} />
-        <div className="container py-6 space-y-6">
-          <Button variant="ghost" onClick={handleBack} className="mb-4">
+        <div className="container py-3 space-y-4">
+          <Button variant="ghost" onClick={handleBack} className="mb-2">
             <ArrowLeft className="mr-2 h-4 w-4" />
             Back to Dashboard
           </Button>
@@ -111,8 +110,8 @@ const ReferralView = () => {
       <div className="min-h-screen bg-gray-50">
         <Titlebar />
         <PageHeader showSearch={false} />
-        <div className="container py-6">
-          <Button variant="ghost" onClick={handleBack} className="mb-4">
+        <div className="container py-3">
+          <Button variant="ghost" onClick={handleBack} className="mb-2">
             <ArrowLeft className="mr-2 h-4 w-4" />
             Back to Dashboard
           </Button>
@@ -132,13 +131,13 @@ const ReferralView = () => {
       <Titlebar />
       <PageHeader showSearch={false} />
       
-      <div className="container py-6">
-        <Button variant="ghost" onClick={handleBack} className="mb-4">
+      <div className="container py-3 max-w-none">
+        <Button variant="ghost" onClick={handleBack} className="mb-3">
           <ArrowLeft className="mr-2 h-4 w-4" />
           Back to Dashboard
         </Button>
         
-        <div className="flex flex-col md:flex-row justify-between items-start gap-4 mb-6">
+        <div className="flex flex-col md:flex-row justify-between items-start gap-3 mb-4">
           <div>
             <div className="flex items-center gap-2">
               <h1 className="text-2xl font-bold">{referral.patient.name}</h1>
@@ -152,10 +151,10 @@ const ReferralView = () => {
           </div>
         </div>
         
-        <div className="grid grid-cols-1 lg:grid-cols-[1fr,600px] gap-6">
-          <div className="sticky top-6">
-            <ScrollArea className="h-[calc(100vh-12rem)]">
-              <div className="pr-4 space-y-6">
+        <div className="grid grid-cols-1 xl:grid-cols-[1fr,500px] gap-4 h-[calc(100vh-200px)]">
+          <div className="overflow-hidden">
+            <ScrollArea className="h-full">
+              <div className="pr-3 space-y-4">
                 <ReferralDetail 
                   referral={referral} 
                   relatedReferrals={relatedReferrals}
@@ -166,9 +165,9 @@ const ReferralView = () => {
             </ScrollArea>
           </div>
           
-          <div className="sticky top-6">
-            <ScrollArea className="h-[calc(100vh-12rem)]">
-              <div className="pr-4">
+          <div className="overflow-hidden">
+            <ScrollArea className="h-full">
+              <div className="pr-3">
                 <ReferralWorkspace 
                   referral={referral}
                   onStatusChange={handleStatusChange}
