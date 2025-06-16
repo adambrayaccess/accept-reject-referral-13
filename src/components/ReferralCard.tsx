@@ -1,4 +1,3 @@
-
 import { Referral } from '@/types/referral';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -81,7 +80,7 @@ const ReferralCard = ({ referral }: ReferralCardProps) => {
             </div>
           </div>
         </CardContent>
-        <CardFooter className="pt-0 text-xs font-bold text-muted-foreground border-t justify-center">
+        <CardFooter className="pt-0 text-xs font-bold text-muted-foreground border-t" style={{ verticalAlign: 'middle' }}>
           <div className="flex items-center gap-4">
             <div className="flex items-center gap-1">
               <Calendar className="h-3 w-3" />
