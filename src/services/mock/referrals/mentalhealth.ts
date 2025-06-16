@@ -8,12 +8,13 @@ export const mentalHealthReferrals: Referral[] = [
     id: 'MH-2024-001',
     ubrn: 'MH12345678',
     created: '2024-05-18T10:45:00Z',
-    status: 'new',
+    status: 'accepted',
     priority: 'urgent',
     patient: mockPatients[3],
     referrer: mockPractitioners[2],
     specialty: 'Mental Health',
     service: 'Community Mental Health Team',
+    triageStatus: 'waiting-list',
     clinicalInfo: {
       reason: 'Severe depression and anxiety',
       history: 'Patient reports worsening symptoms over the past 3 months. Unable to work or perform daily activities.',
@@ -35,13 +36,22 @@ export const mentalHealthReferrals: Referral[] = [
   }
 ];
 
-// Generate 49 more mock referrals
+// Generate 49 more mock referrals with varied triage statuses
 const additionalMentalHealthReferrals: Referral[] = Array.from({ length: 49 }, (_, i) => {
   const index = i + 1; // Start from 1 since we already have 1 referral
   const patientIndex = index % mockPatients.length;
   const practitionerIndex = index % mockPractitioners.length;
   const priorityOptions: Referral['priority'][] = ['routine', 'urgent', 'emergency'];
   const priority = priorityOptions[index % 3];
+  
+  // Distribute triage statuses across referrals
+  const triageStatuses = ['pre-assessment', 'assessed', 'pre-admission-assessment', 'waiting-list', 'refer-to-another-specialty'];
+  const triageStatus = triageStatuses[index % triageStatuses.length];
+  
+  // Set status based on triage status
+  const status = triageStatus === 'refer-to-another-specialty' ? 'rejected' : 
+                index % 6 === 0 ? 'rejected' : 
+                index % 7 === 0 ? 'accepted' : 'new';
   
   // Generate a date between 1 and 365 days ago
   const daysAgo = Math.floor(Math.random() * 365) + 1;
@@ -52,7 +62,7 @@ const additionalMentalHealthReferrals: Referral[] = Array.from({ length: 49 }, (
     id: `MH-2024-${(index + 1).toString().padStart(3, '0')}`,
     ubrn: `MH${(1000000 + index).toString().padStart(8, '0')}`,
     created: date.toISOString(),
-    status: 'new',
+    status,
     priority,
     patient: mockPatients[patientIndex],
     referrer: mockPractitioners[practitionerIndex],
@@ -60,6 +70,7 @@ const additionalMentalHealthReferrals: Referral[] = Array.from({ length: 49 }, (
     service: index % 4 === 0 ? 'Community Mental Health Team' : 
              index % 4 === 1 ? 'Crisis Team' : 
              index % 4 === 2 ? 'Eating Disorder Service' : 'IAPT',
+    triageStatus,
     clinicalInfo: {
       reason: index % 5 === 0 ? 'Depression and anxiety' : 
               index % 5 === 1 ? 'Suicidal ideation' : 

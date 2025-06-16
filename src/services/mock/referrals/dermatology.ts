@@ -14,6 +14,7 @@ export const dermatologyReferrals: Referral[] = [
     referrer: mockPractitioners[3],
     specialty: 'Dermatology',
     service: 'General Dermatology',
+    triageStatus: 'pre-assessment',
     clinicalInfo: {
       reason: 'Persistent rash on trunk and limbs',
       history: 'Patient presents with pruritic rash present for 3 months. Not responding to OTC treatments.',
@@ -28,12 +29,13 @@ export const dermatologyReferrals: Referral[] = [
     id: 'REF-2023-002',
     ubrn: '234567890123',
     created: '2023-06-14T14:20:00Z',
-    status: 'new',
+    status: 'accepted',
     priority: 'routine',
     patient: mockPatients[1],
     referrer: mockPractitioners[1],
     specialty: 'Dermatology',
     service: 'General Dermatology',
+    triageStatus: 'waiting-list',
     clinicalInfo: {
       reason: 'Persistent rash on trunk and limbs',
       history: 'Patient presents with pruritic rash present for 3 months. Not responding to OTC treatments.',
@@ -55,13 +57,22 @@ export const dermatologyReferrals: Referral[] = [
   }
 ];
 
-// Generate 48 more mock referrals
+// Generate 48 more mock referrals with varied triage statuses
 const additionalDermatologyReferrals: Referral[] = Array.from({ length: 48 }, (_, i) => {
   const index = i + 2; // Start from 2 since we already have 2 referrals
   const patientIndex = index % mockPatients.length;
   const practitionerIndex = index % mockPractitioners.length;
   const priorityOptions: Referral['priority'][] = ['routine', 'urgent', 'emergency'];
   const priority = priorityOptions[index % 3];
+  
+  // Distribute triage statuses across referrals
+  const triageStatuses = ['pre-assessment', 'assessed', 'pre-admission-assessment', 'waiting-list', 'refer-to-another-specialty'];
+  const triageStatus = triageStatuses[index % triageStatuses.length];
+  
+  // Set status based on triage status
+  const status = triageStatus === 'refer-to-another-specialty' ? 'rejected' : 
+                index % 6 === 0 ? 'rejected' : 
+                index % 7 === 0 ? 'accepted' : 'new';
   
   // Generate a date between 1 and 365 days ago
   const daysAgo = Math.floor(Math.random() * 365) + 1;
@@ -72,13 +83,14 @@ const additionalDermatologyReferrals: Referral[] = Array.from({ length: 48 }, (_
     id: `DERM-2024-${index.toString().padStart(3, '0')}`,
     ubrn: `D${(1000000 + index).toString().padStart(8, '0')}`,
     created: date.toISOString(),
-    status: 'new',
+    status,
     priority,
     patient: mockPatients[patientIndex],
     referrer: mockPractitioners[practitionerIndex],
     specialty: 'Dermatology',
     service: index % 3 === 0 ? 'General Dermatology' : 
              index % 3 === 1 ? 'Skin Cancer Service' : 'Pediatric Dermatology',
+    triageStatus,
     clinicalInfo: {
       reason: index % 4 === 0 ? 'Persistent rash' : 
               index % 4 === 1 ? 'Suspicious mole' : 

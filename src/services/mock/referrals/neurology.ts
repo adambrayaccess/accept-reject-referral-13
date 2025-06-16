@@ -8,12 +8,13 @@ export const neurologyReferrals: Referral[] = [
     id: 'REF-2023-003',
     ubrn: '345678901234',
     created: '2023-06-13T11:05:00Z',
-    status: 'new',
+    status: 'accepted',
     priority: 'emergency',
     patient: mockPatients[2],
     referrer: mockPractitioners[2],
     specialty: 'Neurology',
     service: 'Stroke Clinic',
+    triageStatus: 'pre-admission-assessment',
     clinicalInfo: {
       reason: 'Transient loss of speech and right-sided weakness',
       history: 'Patient experienced sudden onset speech difficulty and weakness in right arm lasting approximately 30 minutes yesterday evening.',
@@ -43,13 +44,22 @@ export const neurologyReferrals: Referral[] = [
   }
 ];
 
-// Generate 49 more mock referrals
+// Generate 49 more mock referrals with varied triage statuses
 const additionalNeurologyReferrals: Referral[] = Array.from({ length: 49 }, (_, i) => {
   const index = i + 1; // Start from 1 since we already have 1 referral
   const patientIndex = index % mockPatients.length;
   const practitionerIndex = index % mockPractitioners.length;
   const priorityOptions: Referral['priority'][] = ['routine', 'urgent', 'emergency'];
   const priority = priorityOptions[index % 3];
+  
+  // Distribute triage statuses across referrals
+  const triageStatuses = ['pre-assessment', 'assessed', 'pre-admission-assessment', 'waiting-list', 'refer-to-another-specialty'];
+  const triageStatus = triageStatuses[index % triageStatuses.length];
+  
+  // Set status based on triage status
+  const status = triageStatus === 'refer-to-another-specialty' ? 'rejected' : 
+                index % 6 === 0 ? 'rejected' : 
+                index % 7 === 0 ? 'accepted' : 'new';
   
   // Generate a date between 1 and 365 days ago
   const daysAgo = Math.floor(Math.random() * 365) + 1;
@@ -60,7 +70,7 @@ const additionalNeurologyReferrals: Referral[] = Array.from({ length: 49 }, (_, 
     id: `NEUR-2024-${index.toString().padStart(3, '0')}`,
     ubrn: `N${(1000000 + index).toString().padStart(8, '0')}`,
     created: date.toISOString(),
-    status: 'new',
+    status,
     priority,
     patient: mockPatients[patientIndex],
     referrer: mockPractitioners[practitionerIndex],
@@ -68,6 +78,7 @@ const additionalNeurologyReferrals: Referral[] = Array.from({ length: 49 }, (_, 
     service: index % 4 === 0 ? 'Stroke Clinic' : 
              index % 4 === 1 ? 'Epilepsy Service' : 
              index % 4 === 2 ? 'Headache Clinic' : 'Multiple Sclerosis Service',
+    triageStatus,
     clinicalInfo: {
       reason: index % 5 === 0 ? 'TIA symptoms' : 
               index % 5 === 1 ? 'Seizures' : 

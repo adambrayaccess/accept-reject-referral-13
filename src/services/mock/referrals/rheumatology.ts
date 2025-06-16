@@ -14,6 +14,7 @@ export const rheumatologyReferrals: Referral[] = [
     referrer: mockPractitioners[3],
     specialty: 'Rheumatology',
     service: 'General Rheumatology',
+    triageStatus: 'assessed',
     clinicalInfo: {
       reason: 'Joint pain and stiffness',
       history: 'Patient reports morning stiffness and joint pain in hands and knees for past 3 months.',
@@ -35,13 +36,22 @@ export const rheumatologyReferrals: Referral[] = [
   }
 ];
 
-// Generate 49 more mock referrals
+// Generate 49 more mock referrals with varied triage statuses
 const additionalRheumatologyReferrals: Referral[] = Array.from({ length: 49 }, (_, i) => {
   const index = i + 1; // Start from 1 since we already have 1 referral
   const patientIndex = index % mockPatients.length;
   const practitionerIndex = index % mockPractitioners.length;
   const priorityOptions: Referral['priority'][] = ['routine', 'urgent', 'emergency'];
   const priority = priorityOptions[index % 3];
+  
+  // Distribute triage statuses across referrals
+  const triageStatuses = ['pre-assessment', 'assessed', 'pre-admission-assessment', 'waiting-list', 'refer-to-another-specialty'];
+  const triageStatus = triageStatuses[index % triageStatuses.length];
+  
+  // Set status based on triage status
+  const status = triageStatus === 'refer-to-another-specialty' ? 'rejected' : 
+                index % 6 === 0 ? 'rejected' : 
+                index % 7 === 0 ? 'accepted' : 'new';
   
   // Generate a date between 1 and 365 days ago
   const daysAgo = Math.floor(Math.random() * 365) + 1;
@@ -52,13 +62,14 @@ const additionalRheumatologyReferrals: Referral[] = Array.from({ length: 49 }, (
     id: `RHEU-2024-${index.toString().padStart(3, '0')}`,
     ubrn: `R${(1000000 + index).toString().padStart(8, '0')}`,
     created: date.toISOString(),
-    status: 'new',
+    status,
     priority,
     patient: mockPatients[patientIndex],
     referrer: mockPractitioners[practitionerIndex],
     specialty: 'Rheumatology',
     service: index % 3 === 0 ? 'General Rheumatology' : 
              index % 3 === 1 ? 'Early Inflammatory Arthritis' : 'Connective Tissue Disease',
+    triageStatus,
     clinicalInfo: {
       reason: index % 4 === 0 ? 'Joint pain and stiffness' : 
               index % 4 === 1 ? 'Back pain' : 

@@ -14,6 +14,7 @@ export const cardiologyReferrals: Referral[] = [
     referrer: mockPractitioners[0],
     specialty: 'Cardiology',
     service: 'Rapid Access Chest Pain Clinic',
+    triageStatus: 'assessed',
     clinicalInfo: {
       reason: 'Chest pain on exertion',
       history: 'Patient reports chest pain during moderate exercise lasting 5-10 minutes over the past two weeks.',
@@ -45,12 +46,13 @@ export const cardiologyReferrals: Referral[] = [
     id: 'AGE-2024-002',
     ubrn: 'AGE002',
     created: '2024-04-26T09:15:00Z',
-    status: 'new',
+    status: 'rejected',
     priority: 'urgent',
     patient: mockPatients[2],
     referrer: mockPractitioners[4],
     specialty: 'Cardiology',
     service: 'Rapid Access Chest Pain Clinic',
+    triageStatus: 'refer-to-another-specialty',
     clinicalInfo: {
       reason: 'Chest pain on exertion',
       history: 'Patient reports intermittent chest pain during moderate exercise.',
@@ -63,13 +65,22 @@ export const cardiologyReferrals: Referral[] = [
   }
 ];
 
-// Generate 48 more mock referrals
+// Generate 48 more mock referrals with varied triage statuses
 const additionalCardiologyReferrals: Referral[] = Array.from({ length: 48 }, (_, i) => {
   const index = i + 2; // Start from 2 since we already have 2 referrals
   const patientIndex = index % mockPatients.length;
   const practitionerIndex = index % mockPractitioners.length;
   const priorityOptions: Referral['priority'][] = ['routine', 'urgent', 'emergency'];
   const priority = priorityOptions[index % 3];
+  
+  // Distribute triage statuses across referrals
+  const triageStatuses = ['pre-assessment', 'assessed', 'pre-admission-assessment', 'waiting-list', 'refer-to-another-specialty'];
+  const triageStatus = triageStatuses[index % triageStatuses.length];
+  
+  // Set status based on triage status
+  const status = triageStatus === 'refer-to-another-specialty' ? 'rejected' : 
+                index % 6 === 0 ? 'rejected' : 
+                index % 7 === 0 ? 'accepted' : 'new';
   
   // Generate a date between 1 and 365 days ago
   const daysAgo = Math.floor(Math.random() * 365) + 1;
@@ -80,13 +91,14 @@ const additionalCardiologyReferrals: Referral[] = Array.from({ length: 48 }, (_,
     id: `CARD-2024-${index.toString().padStart(3, '0')}`,
     ubrn: `C${(1000000 + index).toString().padStart(8, '0')}`,
     created: date.toISOString(),
-    status: 'new',
+    status,
     priority,
     patient: mockPatients[patientIndex],
     referrer: mockPractitioners[practitionerIndex],
     specialty: 'Cardiology',
     service: index % 3 === 0 ? 'Rapid Access Chest Pain Clinic' : 
              index % 3 === 1 ? 'Heart Failure Clinic' : 'Arrhythmia Service',
+    triageStatus,
     clinicalInfo: {
       reason: index % 4 === 0 ? 'Chest pain on exertion' : 
               index % 4 === 1 ? 'Palpitations' : 
