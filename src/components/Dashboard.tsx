@@ -1,4 +1,3 @@
-
 import { Button } from '@/components/ui/button';
 import { Users, Shield, ChevronDown } from 'lucide-react';
 import SearchBar from './dashboard/SearchBar';
@@ -10,7 +9,7 @@ import Titlebar from './Titlebar';
 import PageHeader from './PageHeader';
 import AIAssistantActions from './dashboard/AIAssistantActions';
 import CreateReferralDropdown from './dashboard/CreateReferralDropdown';
-import SpecialtyMultiSelector from './SpecialtyMultiSelector';
+import InlineSpecialtySelector from './InlineSpecialtySelector';
 import { useDashboardData } from '@/hooks/useDashboardData';
 import { useReferralSelection } from '@/hooks/useReferralSelection';
 import { useState, useEffect } from 'react';
@@ -108,18 +107,6 @@ const Dashboard = () => {
   const selectedReferrals = getSelectedReferrals(filteredReferrals);
   const specialtyNames = specialties.map(s => s.name);
 
-  const getDisplayText = () => {
-    if (selectedSpecialties.length === 0) {
-      return 'No specialties selected';
-    } else if (selectedSpecialties.length === 1) {
-      return selectedSpecialties[0];
-    } else if (selectedSpecialties.length === specialtyNames.filter(s => s !== 'all').length) {
-      return 'All Specialties';
-    } else {
-      return `${selectedSpecialties.length} specialties`;
-    }
-  };
-
   return (
     <div className="min-h-screen bg-gray-50">
       <Titlebar />
@@ -132,23 +119,17 @@ const Dashboard = () => {
               <h1 className="text-2xl font-bold">Referral Dashboard</h1>
               <div className="flex items-center mt-1">
                 <span className="text-sm text-muted-foreground mr-2">Triaging for:</span>
-                <span className="font-medium text-foreground">{getDisplayText()}</span>
+                <InlineSpecialtySelector
+                  specialties={specialtyNames}
+                  selectedSpecialties={selectedSpecialties}
+                  onSelectionChange={handleSpecialtySelectionChange}
+                />
               </div>
             </div>
             <div className="flex gap-2 w-full sm:w-auto">
               <CreateReferralDropdown onReferralCreated={handleCreateReferral} />
             </div>
           </div>
-        </div>
-
-        <div className="px-6">
-          <SpecialtyMultiSelector
-            specialties={specialtyNames}
-            selectedSpecialties={selectedSpecialties}
-            onSelectionChange={handleSpecialtySelectionChange}
-            placeholder="Select specialties to triage"
-            className="mb-4"
-          />
         </div>
 
         <div className="px-6">

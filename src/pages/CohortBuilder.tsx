@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { EnhancedTabs, EnhancedTabsContent, EnhancedTabsList, EnhancedTabsTrigger } from '@/components/ui/enhanced-tabs';
@@ -66,6 +67,10 @@ const CohortBuilder = () => {
     }
   }, [navigate]);
 
+  const handleSpecialtyChange = (newSpecialties: string[]) => {
+    setSelectedSpecialties(newSpecialties);
+  };
+
   const handleBack = () => {
     navigate('/');
   };
@@ -78,6 +83,7 @@ const CohortBuilder = () => {
       <div className="px-6 py-6 space-y-6">
         <CohortBuilderHeader 
           selectedSpecialties={selectedSpecialties}
+          onSpecialtyChange={handleSpecialtyChange}
         />
 
         <EnhancedTabs defaultValue="waitingList" className="w-full">

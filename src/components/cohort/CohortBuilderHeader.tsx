@@ -1,25 +1,44 @@
 
+import InlineSpecialtySelector from '../InlineSpecialtySelector';
+import { specialties } from '@/data/specialtyOptions';
+import { useToast } from '@/hooks/use-toast';
+
 interface CohortBuilderHeaderProps {
   selectedSpecialties: string[];
+  onSpecialtyChange?: (specialties: string[]) => void;
 }
 
-const CohortBuilderHeader = ({ selectedSpecialties }: CohortBuilderHeaderProps) => {
-  const getDisplayText = () => {
-    if (selectedSpecialties.length === 0) {
-      return 'No specialties selected';
-    } else if (selectedSpecialties.length === 1) {
-      return selectedSpecialties[0];
+const CohortBuilderHeader = ({ selectedSpecialties, onSpecialtyChange }: CohortBuilderHeaderProps) => {
+  const { toast } = useToast();
+  const specialtyNames = specialties.map(s => s.name);
+
+  const handleSpecialtySelectionChange = (newSelection: string[]) => {
+    if (onSpecialtyChange) {
+      onSpecialtyChange(newSelection);
+    }
+    
+    if (newSelection.length > 0) {
+      localStorage.setItem('selectedSpecialties', JSON.stringify(newSelection));
+      toast({
+        title: "Specialties Updated",
+        description: `Now managing waiting list for ${newSelection.length === 1 ? newSelection[0] : `${newSelection.length} specialties`}`,
+      });
     } else {
-      return `${selectedSpecialties.length} specialties: ${selectedSpecialties.join(', ')}`;
+      localStorage.removeItem('selectedSpecialties');
     }
   };
 
   return (
     <div>
       <h1 className="text-2xl font-bold">Waiting List Manager</h1>
-      <p className="text-muted-foreground">
-        Managing waiting list for: <span className="font-medium text-foreground">{getDisplayText()}</span>
-      </p>
+      <div className="flex items-center mt-1">
+        <span className="text-sm text-muted-foreground mr-2">Managing waiting list for:</span>
+        <InlineSpecialtySelector
+          specialties={specialtyNames}
+          selectedSpecialties={selectedSpecialties}
+          onSelectionChange={handleSpecialtySelectionChange}
+        />
+      </div>
     </div>
   );
 };
