@@ -185,4 +185,69 @@ const additionalCardiologyReferrals: Referral[] = Array.from({ length: 48 }, (_,
   };
 });
 
-export const allCardiologyReferrals = [...cardiologyReferrals, ...additionalCardiologyReferrals];
+// Add 7 additional waiting list test records
+const additionalWaitingListReferrals: Referral[] = Array.from({ length: 7 }, (_, i) => {
+  const index = i + 100; // Start from 100 to avoid ID conflicts
+  const patientIndex = index % mockPatients.length;
+  const practitionerIndex = index % mockPractitioners.length;
+  const priorityOptions: Referral['priority'][] = ['routine', 'urgent'];
+  const priority = priorityOptions[index % 2];
+  
+  const daysAgo = Math.floor(Math.random() * 180) + 30; // 30-210 days ago
+  const date = new Date();
+  date.setDate(date.getDate() - daysAgo);
+  const created = date.toISOString();
+  
+  const tagOptions = [
+    ['chest-pain', 'stable-angina'],
+    ['heart-failure', 'medication-optimisation'],
+    ['arrhythmia', 'rate-control'],
+    ['hypertension', 'resistant'],
+    ['valve-disease', 'monitoring'],
+    ['post-mi', 'secondary-prevention'],
+    ['syncope', 'investigation']
+  ];
+
+  const appointmentDetails = generateMockAppointment(`CARD-WL-${(index + 1).toString().padStart(3, '0')}`, created, 'Cardiology');
+  const subReferralData = generateSubReferralData(`CARD-WL-${(index + 1).toString().padStart(3, '0')}`);
+  
+  return {
+    id: `CARD-WL-${(index + 1).toString().padStart(3, '0')}`,
+    ubrn: `CWL${(2000000 + index).toString().padStart(8, '0')}`,
+    created,
+    status: 'accepted' as const,
+    priority,
+    patient: mockPatients[patientIndex],
+    referrer: mockPractitioners[practitionerIndex],
+    specialty: 'Cardiology',
+    service: index % 3 === 0 ? 'General Cardiology' : 
+             index % 3 === 1 ? 'Heart Failure Clinic' : 'Arrhythmia Service',
+    triageStatus: 'waiting-list' as const,
+    tags: tagOptions[i % tagOptions.length],
+    appointmentDetails,
+    ...subReferralData,
+    clinicalInfo: {
+      reason: index % 4 === 0 ? 'Chest pain on exertion' : 
+              index % 4 === 1 ? 'Palpitations' : 
+              index % 4 === 2 ? 'Shortness of breath' : 'Follow-up care',
+      history: `Patient with stable symptoms for past ${Math.floor(Math.random() * 6) + 3} months.`,
+      diagnosis: index % 3 === 0 ? 'Stable angina' : 
+                index % 3 === 1 ? 'Atrial fibrillation' : 'Heart failure',
+      medications: ['Aspirin 75mg OD', 'Bisoprolol 2.5mg OD', 'Atorvastatin 40mg ON'],
+      allergies: index % 7 === 0 ? ['Penicillin'] : [],
+      notes: `Waiting list patient for routine cardiology assessment.`
+    },
+    attachments: index % 2 === 0 ? [
+      {
+        id: `CARD-WL-ATT-${index}-1`,
+        title: 'ECG Report',
+        contentType: 'application/pdf',
+        url: '/mock-data/ecg-report.pdf',
+        date: new Date(date.getTime() - 86400000).toISOString(),
+        size: 2456000
+      }
+    ] : []
+  };
+});
+
+export const allCardiologyReferrals = [...cardiologyReferrals, ...additionalCardiologyReferrals, ...additionalWaitingListReferrals];

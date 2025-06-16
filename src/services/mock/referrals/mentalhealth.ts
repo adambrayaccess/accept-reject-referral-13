@@ -148,4 +148,70 @@ const additionalMentalHealthReferrals: Referral[] = Array.from({ length: 49 }, (
   };
 });
 
-export const allMentalHealthReferrals = [...mentalHealthReferrals, ...additionalMentalHealthReferrals];
+// Add 7 additional waiting list test records
+const additionalWaitingListReferrals: Referral[] = Array.from({ length: 7 }, (_, i) => {
+  const index = i + 100;
+  const patientIndex = index % mockPatients.length;
+  const practitionerIndex = index % mockPractitioners.length;
+  const priorityOptions: Referral['priority'][] = ['routine', 'urgent'];
+  const priority = priorityOptions[index % 2];
+  
+  const daysAgo = Math.floor(Math.random() * 180) + 30;
+  const date = new Date();
+  date.setDate(date.getDate() - daysAgo);
+  const created = date.toISOString();
+  
+  const tagOptions = [
+    ['depression', 'stable-medication'],
+    ['anxiety', 'cbt-completed'],
+    ['bipolar', 'lithium-monitoring'],
+    ['adhd', 'titration'],
+    ['ptsd', 'emdr-candidate'],
+    ['ocd', 'exposure-therapy'],
+    ['eating-disorder', 'recovery-phase']
+  ];
+
+  const appointmentDetails = generateMockAppointment(`MH-WL-${(index + 1).toString().padStart(3, '0')}`, created, 'Mental Health');
+  const subReferralData = generateSubReferralData(`MH-WL-${(index + 1).toString().padStart(3, '0')}`);
+  
+  return {
+    id: `MH-WL-${(index + 1).toString().padStart(3, '0')}`,
+    ubrn: `MHWL${(2000000 + index).toString().padStart(8, '0')}`,
+    created,
+    status: 'accepted' as const,
+    priority,
+    patient: mockPatients[patientIndex],
+    referrer: mockPractitioners[practitionerIndex],
+    specialty: 'Mental Health',
+    service: index % 4 === 0 ? 'Community Mental Health Team' : 
+             index % 4 === 1 ? 'IAPT' : 
+             index % 4 === 2 ? 'Eating Disorder Service' : 'ADHD Service',
+    triageStatus: 'waiting-list' as const,
+    tags: tagOptions[i % tagOptions.length],
+    appointmentDetails,
+    ...subReferralData,
+    clinicalInfo: {
+      reason: index % 4 === 0 ? 'Depression follow-up' : 
+              index % 4 === 1 ? 'Anxiety management' : 
+              index % 4 === 2 ? 'Bipolar monitoring' : 'ADHD assessment',
+      history: `Patient with stable mental health condition requiring ongoing specialist support.`,
+      diagnosis: index % 3 === 0 ? 'Major depressive disorder' : 
+                index % 3 === 1 ? 'Generalized anxiety disorder' : 'Bipolar affective disorder',
+      medications: ['Sertraline 100mg OD', 'Quetiapine 25mg ON'],
+      allergies: index % 7 === 0 ? ['Sulfa drugs'] : [],
+      notes: `Waiting list patient for routine mental health follow-up.`
+    },
+    attachments: index % 2 === 0 ? [
+      {
+        id: `MH-WL-ATT-${index}-1`,
+        title: 'PHQ-9 Questionnaire',
+        contentType: 'application/pdf',
+        url: '/mock-data/phq9.pdf',
+        date: new Date(date.getTime() - 86400000).toISOString(),
+        size: 1234000
+      }
+    ] : []
+  };
+});
+
+export const allMentalHealthReferrals = [...mentalHealthReferrals, ...additionalMentalHealthReferrals, ...additionalWaitingListReferrals];

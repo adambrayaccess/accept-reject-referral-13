@@ -148,4 +148,65 @@ const additionalNeurologyReferrals: Referral[] = Array.from({ length: 49 }, (_, 
   };
 });
 
-export const allNeurologyReferrals = [...neurologyReferrals, ...additionalNeurologyReferrals];
+// Add 7 additional waiting list test records
+const additionalWaitingListReferrals: Referral[] = Array.from({ length: 7 }, (_, i) => {
+  const index = i + 100;
+  const patientIndex = index % mockPatients.length;
+  const practitionerIndex = index % mockPractitioners.length;
+  const priorityOptions: Referral['priority'][] = ['routine', 'urgent'];
+  const priority = priorityOptions[index % 2];
+  
+  const daysAgo = Math.floor(Math.random() * 180) + 30;
+  const date = new Date();
+  date.setDate(date.getDate() - daysAgo);
+  const created = date.toISOString();
+  
+  const tagOptions = [
+    ['headache', 'chronic-migraine'],
+    ['epilepsy', 'medication-review'],
+    ['movement-disorder', 'assessment'],
+    ['neuropathy', 'nerve-conduction'],
+    ['memory-clinic', 'cognitive-assessment'],
+    ['ms-monitoring', 'annual-review'],
+    ['tremor', 'essential-tremor']
+  ];
+  
+  return {
+    id: `NEUR-WL-${(index + 1).toString().padStart(3, '0')}`,
+    ubrn: `NWL${(2000000 + index).toString().padStart(8, '0')}`,
+    created,
+    status: 'accepted' as const,
+    priority,
+    patient: mockPatients[patientIndex],
+    referrer: mockPractitioners[practitionerIndex],
+    specialty: 'Neurology',
+    service: index % 4 === 0 ? 'General Neurology' : 
+             index % 4 === 1 ? 'Epilepsy Service' : 
+             index % 4 === 2 ? 'Headache Clinic' : 'Memory Clinic',
+    triageStatus: 'waiting-list' as const,
+    tags: tagOptions[i % tagOptions.length],
+    clinicalInfo: {
+      reason: index % 4 === 0 ? 'Chronic headaches' : 
+              index % 4 === 1 ? 'Seizure management' : 
+              index % 4 === 2 ? 'Tremor assessment' : 'Memory concerns',
+      history: `Patient with stable neurological symptoms requiring specialist review.`,
+      diagnosis: index % 3 === 0 ? 'Chronic migraine' : 
+                index % 3 === 1 ? 'Epilepsy' : 'Essential tremor',
+      medications: ['Propranolol 40mg BD', 'Amitriptyline 10mg ON'],
+      allergies: index % 7 === 0 ? ['Latex'] : [],
+      notes: `Waiting list patient for routine neurology assessment.`
+    },
+    attachments: index % 2 === 0 ? [
+      {
+        id: `NEUR-WL-ATT-${index}-1`,
+        title: 'MRI Brain Report',
+        contentType: 'application/pdf',
+        url: '/mock-data/mri-report.pdf',
+        date: new Date(date.getTime() - 86400000).toISOString(),
+        size: 4567000
+      }
+    ] : []
+  };
+});
+
+export const allNeurologyReferrals = [...neurologyReferrals, ...additionalNeurologyReferrals, ...additionalWaitingListReferrals];

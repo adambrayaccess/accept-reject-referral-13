@@ -128,4 +128,64 @@ const additionalGastroenterologyReferrals: Referral[] = Array.from({ length: 49 
   };
 });
 
-export const allGastroenterologyReferrals = [...gastroenterologyReferrals, ...additionalGastroenterologyReferrals];
+// Add 7 additional waiting list test records
+const additionalWaitingListReferrals: Referral[] = Array.from({ length: 7 }, (_, i) => {
+  const index = i + 100;
+  const patientIndex = index % mockPatients.length;
+  const practitionerIndex = index % mockPractitioners.length;
+  const priorityOptions: Referral['priority'][] = ['routine', 'urgent'];
+  const priority = priorityOptions[index % 2];
+  
+  const daysAgo = Math.floor(Math.random() * 180) + 30;
+  const date = new Date();
+  date.setDate(date.getDate() - daysAgo);
+  const created = date.toISOString();
+  
+  const tagOptions = [
+    ['ibd', 'monitoring'],
+    ['endoscopy', 'surveillance'],
+    ['liver-disease', 'follow-up'],
+    ['gerd', 'medication-review'],
+    ['ibs', 'dietary-advice'],
+    ['coeliac', 'annual-review'],
+    ['hepatitis', 'treatment-monitoring']
+  ];
+  
+  return {
+    id: `GAST-WL-${(index + 1).toString().padStart(3, '0')}`,
+    ubrn: `GWL${(2000000 + index).toString().padStart(8, '0')}`,
+    created,
+    status: 'accepted' as const,
+    priority,
+    patient: mockPatients[patientIndex],
+    referrer: mockPractitioners[practitionerIndex],
+    specialty: 'Gastroenterology',
+    service: index % 3 === 0 ? 'General Gastroenterology' : 
+             index % 3 === 1 ? 'IBD Service' : 'Hepatology',
+    triageStatus: 'waiting-list' as const,
+    tags: tagOptions[i % tagOptions.length],
+    clinicalInfo: {
+      reason: index % 4 === 0 ? 'IBD monitoring' : 
+              index % 4 === 1 ? 'Endoscopy surveillance' : 
+              index % 4 === 2 ? 'Liver function review' : 'GERD management',
+      history: `Patient with established GI condition requiring ongoing specialist care.`,
+      diagnosis: index % 3 === 0 ? 'Crohns disease' : 
+                index % 3 === 1 ? 'Chronic hepatitis' : 'GERD',
+      medications: ['Omeprazole 20mg OD', 'Azathioprine 100mg OD'],
+      allergies: index % 7 === 0 ? ['Penicillin'] : [],
+      notes: `Waiting list patient for routine gastroenterology follow-up.`
+    },
+    attachments: index % 2 === 0 ? [
+      {
+        id: `GAST-WL-ATT-${index}-1`,
+        title: 'Endoscopy Report',
+        contentType: 'application/pdf',
+        url: '/mock-data/endoscopy.pdf',
+        date: new Date(date.getTime() - 86400000).toISOString(),
+        size: 2340000
+      }
+    ] : []
+  };
+});
+
+export const allGastroenterologyReferrals = [...gastroenterologyReferrals, ...additionalGastroenterologyReferrals, ...additionalWaitingListReferrals];

@@ -165,4 +165,69 @@ const additionalDermatologyReferrals: Referral[] = Array.from({ length: 48 }, (_
   };
 });
 
-export const allDermatologyReferrals = [...dermatologyReferrals, ...additionalDermatologyReferrals];
+// Add 7 additional waiting list test records
+const additionalWaitingListReferrals: Referral[] = Array.from({ length: 7 }, (_, i) => {
+  const index = i + 100;
+  const patientIndex = index % mockPatients.length;
+  const practitionerIndex = index % mockPractitioners.length;
+  const priorityOptions: Referral['priority'][] = ['routine', 'urgent'];
+  const priority = priorityOptions[index % 2];
+  
+  const daysAgo = Math.floor(Math.random() * 180) + 30;
+  const date = new Date();
+  date.setDate(date.getDate() - daysAgo);
+  const created = date.toISOString();
+  
+  const tagOptions = [
+    ['eczema', 'chronic-management'],
+    ['psoriasis', 'biologic-assessment'],
+    ['acne', 'isotretinoin-review'],
+    ['mole-check', 'routine-screening'],
+    ['rosacea', 'laser-consultation'],
+    ['skin-cancer', 'follow-up'],
+    ['dermatitis', 'patch-testing']
+  ];
+
+  const appointmentDetails = generateMockAppointment(`DERM-WL-${(index + 1).toString().padStart(3, '0')}`, created, 'Dermatology');
+  const subReferralData = generateSubReferralData(`DERM-WL-${(index + 1).toString().padStart(3, '0')}`);
+  
+  return {
+    id: `DERM-WL-${(index + 1).toString().padStart(3, '0')}`,
+    ubrn: `DWL${(2000000 + index).toString().padStart(8, '0')}`,
+    created,
+    status: 'accepted' as const,
+    priority,
+    patient: mockPatients[patientIndex],
+    referrer: mockPractitioners[practitionerIndex],
+    specialty: 'Dermatology',
+    service: index % 3 === 0 ? 'General Dermatology' : 
+             index % 3 === 1 ? 'Skin Cancer Service' : 'Pediatric Dermatology',
+    triageStatus: 'waiting-list' as const,
+    tags: tagOptions[i % tagOptions.length],
+    appointmentDetails,
+    ...subReferralData,
+    clinicalInfo: {
+      reason: index % 4 === 0 ? 'Chronic eczema management' : 
+              index % 4 === 1 ? 'Mole surveillance' : 
+              index % 4 === 2 ? 'Acne treatment' : 'Skin lesion review',
+      history: `Patient with stable skin condition requiring specialist review.`,
+      diagnosis: index % 3 === 0 ? 'Atopic eczema' : 
+                index % 3 === 1 ? 'Dysplastic nevus' : 'Chronic plaque psoriasis',
+      medications: ['Cetirizine 10mg OD', 'Emollients BD'],
+      allergies: index % 7 === 0 ? ['Latex'] : [],
+      notes: `Waiting list patient for routine dermatology assessment.`
+    },
+    attachments: index % 2 === 0 ? [
+      {
+        id: `DERM-WL-ATT-${index}-1`,
+        title: 'Clinical Photographs',
+        contentType: 'image/jpeg',
+        url: '/mock-data/rash-photos.jpg',
+        date: new Date(date.getTime() - 86400000).toISOString(),
+        size: 3568000
+      }
+    ] : []
+  };
+});
+
+export const allDermatologyReferrals = [...dermatologyReferrals, ...additionalDermatologyReferrals, ...additionalWaitingListReferrals];

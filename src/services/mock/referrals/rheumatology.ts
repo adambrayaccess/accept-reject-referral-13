@@ -127,4 +127,64 @@ const additionalRheumatologyReferrals: Referral[] = Array.from({ length: 49 }, (
   };
 });
 
-export const allRheumatologyReferrals = [...rheumatologyReferrals, ...additionalRheumatologyReferrals];
+// Add 7 additional waiting list test records
+const additionalWaitingListReferrals: Referral[] = Array.from({ length: 7 }, (_, i) => {
+  const index = i + 100;
+  const patientIndex = index % mockPatients.length;
+  const practitionerIndex = index % mockPractitioners.length;
+  const priorityOptions: Referral['priority'][] = ['routine', 'urgent'];
+  const priority = priorityOptions[index % 2];
+  
+  const daysAgo = Math.floor(Math.random() * 180) + 30;
+  const date = new Date();
+  date.setDate(date.getDate() - daysAgo);
+  const created = date.toISOString();
+  
+  const tagOptions = [
+    ['rheumatoid-arthritis', 'stable-dmards'],
+    ['osteoarthritis', 'conservative-management'],
+    ['fibromyalgia', 'multidisciplinary'],
+    ['lupus', 'monitoring'],
+    ['gout', 'prophylaxis'],
+    ['psoriatic-arthritis', 'biologic-review'],
+    ['osteoporosis', 'bisphosphonate']
+  ];
+  
+  return {
+    id: `RHEU-WL-${(index + 1).toString().padStart(3, '0')}`,
+    ubrn: `RWL${(2000000 + index).toString().padStart(8, '0')}`,
+    created,
+    status: 'accepted' as const,
+    priority,
+    patient: mockPatients[patientIndex],
+    referrer: mockPractitioners[practitionerIndex],
+    specialty: 'Rheumatology',
+    service: index % 3 === 0 ? 'General Rheumatology' : 
+             index % 3 === 1 ? 'Early Inflammatory Arthritis' : 'Biologics Clinic',
+    triageStatus: 'waiting-list' as const,
+    tags: tagOptions[i % tagOptions.length],
+    clinicalInfo: {
+      reason: index % 4 === 0 ? 'RA monitoring' : 
+              index % 4 === 1 ? 'Joint replacement assessment' : 
+              index % 4 === 2 ? 'Biologic therapy review' : 'Pain management',
+      history: `Patient with established rheumatological condition requiring ongoing care.`,
+      diagnosis: index % 3 === 0 ? 'Rheumatoid arthritis' : 
+                index % 3 === 1 ? 'Osteoarthritis' : 'Fibromyalgia',
+      medications: ['Methotrexate 15mg weekly', 'Folic acid 5mg weekly'],
+      allergies: index % 7 === 0 ? ['Sulfa drugs'] : [],
+      notes: `Waiting list patient for routine rheumatology follow-up.`
+    },
+    attachments: index % 2 === 0 ? [
+      {
+        id: `RHEU-WL-ATT-${index}-1`,
+        title: 'Blood Test Results',
+        contentType: 'application/pdf',
+        url: '/mock-data/bloods.pdf',
+        date: new Date(date.getTime() - 86400000).toISOString(),
+        size: 1567000
+      }
+    ] : []
+  };
+});
+
+export const allRheumatologyReferrals = [...rheumatologyReferrals, ...additionalRheumatologyReferrals, ...additionalWaitingListReferrals];
