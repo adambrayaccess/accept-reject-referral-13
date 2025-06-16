@@ -69,6 +69,10 @@ export interface Referral {
   collaborationNotes?: CollaborationNote[];
   triageStatus?: TriageStatus;
   tags?: string[];
+  // Parent-child relationship fields
+  parentReferralId?: string;
+  childReferralIds?: string[];
+  isSubReferral?: boolean;
   // Calculated fields (for filtering)
   calculatedReferralAge?: number;
   calculatedPatientAge?: number;

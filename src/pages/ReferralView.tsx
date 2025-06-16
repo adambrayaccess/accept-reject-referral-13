@@ -12,6 +12,7 @@ import { ArrowLeft } from 'lucide-react';
 import { useToast } from '@/components/ui/use-toast';
 import ReferralWorkspace from '@/components/ReferralWorkspace';
 import PatientActivityTimeline from '@/components/PatientActivityTimeline';
+import { Badge } from '@/components/ui/badge';
 
 const ReferralView = () => {
   const { id } = useParams<{ id: string }>();
@@ -72,7 +73,7 @@ const ReferralView = () => {
 
   useEffect(() => {
     loadReferral();
-  }, [id]);
+  }, [id]); // Re-load when the ID changes (important for parent-child navigation)
 
   const handleStatusChange = () => {
     loadReferral();
@@ -123,7 +124,12 @@ const ReferralView = () => {
       
       <div className="flex flex-col md:flex-row justify-between items-start gap-4 mb-6">
         <div>
-          <h1 className="text-2xl font-bold">{referral.patient.name}</h1>
+          <div className="flex items-center gap-2">
+            <h1 className="text-2xl font-bold">{referral.patient.name}</h1>
+            {referral.isSubReferral && (
+              <Badge variant="outline" className="text-xs">Sub-referral</Badge>
+            )}
+          </div>
           <p className="text-muted-foreground">
             NHS: <span className="font-mono">{referral.patient.nhsNumber}</span>
           </p>
