@@ -93,8 +93,9 @@ export const useDashboardData = (currentSpecialty: string | null = null) => {
       );
     }
 
-    // Apply sorting only if not using display order
-    if (sortField !== 'displayOrder') {
+    // Apply sorting - but preserve display order when no explicit sort is set
+    if (sortField !== 'created' || searchTerm || statusFilter !== 'all' || priorityFilter !== 'all') {
+      // Only apply custom sorting when filters are active or sort field is changed
       filtered.sort((a, b) => {
         let valueA = sortField.includes('.') 
           ? sortField.split('.').reduce((obj, key) => obj[key], a)
@@ -110,6 +111,18 @@ export const useDashboardData = (currentSpecialty: string | null = null) => {
         if (valueA > valueB) return sortDirection === 'asc' ? 1 : -1;
         return 0;
       });
+    } else {
+      // Maintain display order when no filters or custom sorting
+      filtered.sort((a, b) => {
+        const aOrder = (a as any).displayOrder;
+        const bOrder = (b as any).displayOrder;
+        
+        if (aOrder !== undefined && bOrder !== undefined) {
+          return aOrder - bOrder;
+        }
+        
+        return new Date(b.created).getTime() - new Date(a.created).getTime();
+      });
     }
 
     setFilteredReferrals(filtered);
@@ -119,6 +132,10 @@ export const useDashboardData = (currentSpecialty: string | null = null) => {
     if (sourceIndex === destinationIndex || isReordering) return;
 
     setIsReordering(true);
+
+    // Store original state for potential revert
+    const originalFilteredReferrals = [...filteredReferrals];
+    const originalReferrals = [...referrals];
 
     // Optimistic update
     const currentReferrals = [...filteredReferrals];
@@ -141,18 +158,20 @@ export const useDashboardData = (currentSpecialty: string | null = null) => {
       );
 
       if (response.success) {
-        // Update the main referrals state
-        let updatedReferrals = [...referrals];
+        // Update the main referrals state with new display orders
+        const updatedReferrals = [...referrals];
         
-        // Apply the same reordering to the main list
-        const mainSourceIndex = updatedReferrals.findIndex(r => r.id === movedItem.id);
-        if (mainSourceIndex !== -1) {
-          const [mainMovedItem] = updatedReferrals.splice(mainSourceIndex, 1);
-          const mainDestinationIndex = Math.min(destinationIndex, updatedReferrals.length);
-          updatedReferrals.splice(mainDestinationIndex, 0, mainMovedItem);
-        }
+        // Update display orders for all items in the reordered list
+        currentReferrals.forEach((referral, index) => {
+          const mainIndex = updatedReferrals.findIndex(r => r.id === referral.id);
+          if (mainIndex !== -1) {
+            (updatedReferrals[mainIndex] as any).displayOrder = index;
+          }
+        });
         
         setReferrals(updatedReferrals);
+        
+        console.log(`Successfully reordered: moved "${movedItem.patient.name}" from position ${sourceIndex} to ${destinationIndex}`);
         
         toast({
           title: "Order Updated",
@@ -160,7 +179,8 @@ export const useDashboardData = (currentSpecialty: string | null = null) => {
         });
       } else {
         // Revert on failure
-        setFilteredReferrals(filteredReferrals);
+        setFilteredReferrals(originalFilteredReferrals);
+        setReferrals(originalReferrals);
         toast({
           title: "Reorder Failed",
           description: response.error || "Failed to update referral order",
@@ -169,7 +189,8 @@ export const useDashboardData = (currentSpecialty: string | null = null) => {
       }
     } catch (error) {
       // Revert on error
-      setFilteredReferrals(filteredReferrals);
+      setFilteredReferrals(originalFilteredReferrals);
+      setReferrals(originalReferrals);
       console.error('Error reordering referrals:', error);
       toast({
         title: "Reorder Failed",

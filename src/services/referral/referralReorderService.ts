@@ -39,20 +39,18 @@ export const reorderReferrals = async (
         // Insert it at the destination position
         reorderedReferrals.splice(destinationIndex, 0, movedItem);
         
-        // Update the mock data store (in a real app, this would be a backend call)
-        const referralIds = reorderedReferrals.map(r => r.id);
-        
-        // Find and update positions in the main mock data
-        referralIds.forEach((id, index) => {
-          const referralIndex = mockReferrals.findIndex(r => r.id === id);
-          if (referralIndex !== -1) {
-            // Add position metadata for ordering
-            (mockReferrals[referralIndex] as any).displayOrder = index;
+        // Update the mock data store with new display orders
+        reorderedReferrals.forEach((referral, index) => {
+          const mockIndex = mockReferrals.findIndex(r => r.id === referral.id);
+          if (mockIndex !== -1) {
+            // Set display order based on the new position
+            (mockReferrals[mockIndex] as any).displayOrder = index;
           }
         });
         
         console.log(`Reordered referrals: moved "${movedItem.patient.name}" from position ${sourceIndex} to ${destinationIndex}`);
         console.log('Context:', context);
+        console.log('Updated display orders in mock data');
         
         resolve({
           success: true,
@@ -78,7 +76,7 @@ export const batchReorderReferrals = async (
     setTimeout(() => {
       try {
         // Process all reorder requests
-        reorderRequests.forEach((request, index) => {
+        reorderRequests.forEach((request) => {
           const referralIndex = mockReferrals.findIndex(r => r.id === request.referralId);
           if (referralIndex !== -1) {
             (mockReferrals[referralIndex] as any).displayOrder = request.newPosition;
