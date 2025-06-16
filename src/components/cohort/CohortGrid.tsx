@@ -4,7 +4,8 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Badge } from '@/components/ui/badge';
 import { differenceInDays } from 'date-fns';
-import { MapPin, Calendar, Flag } from 'lucide-react';
+import { MapPin, Calendar } from 'lucide-react';
+import ReferralPriorityBadge from '@/components/dashboard/ReferralPriorityBadge';
 
 interface CohortGridProps {
   referrals: Referral[];
@@ -57,15 +58,6 @@ const CohortGrid = ({
     return parts.pop()?.trim() || 'Unknown';
   };
 
-  const getPriorityColor = (priority: string) => {
-    switch (priority) {
-      case 'routine': return 'bg-blue-100 text-blue-800 hover:bg-blue-200';
-      case 'urgent': return 'bg-orange-100 text-orange-800 hover:bg-orange-200';
-      case 'emergency': return 'bg-red-100 text-red-800 hover:bg-red-200';
-      default: return 'bg-gray-100 text-gray-800';
-    }
-  };
-
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 py-6">
       {referrals.map((referral) => {
@@ -93,9 +85,7 @@ const CohortGrid = ({
                     <p className="text-sm text-muted-foreground">NHS: {referral.patient.nhsNumber}</p>
                   </div>
                 </div>
-                <Badge className={getPriorityColor(referral.priority)}>
-                  {referral.priority}
-                </Badge>
+                <ReferralPriorityBadge priority={referral.priority} />
               </div>
               
               <div className="p-4 space-y-3">

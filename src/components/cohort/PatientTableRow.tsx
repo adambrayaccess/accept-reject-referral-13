@@ -7,11 +7,11 @@ import { format } from 'date-fns';
 import { GripVertical, Calendar, MapPin } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Referral } from '@/types/referral';
+import ReferralPriorityBadge from '@/components/dashboard/ReferralPriorityBadge';
 import {
   calculateReferralAgeDays,
   calculatePatientAge,
-  getLocationFromAddress,
-  getPriorityVariant
+  getLocationFromAddress
 } from './utils/waitingListUtils';
 
 interface PatientTableRowProps {
@@ -91,9 +91,7 @@ const PatientTableRow = ({
       </TableCell>
       <TableCell>{patientAge} years</TableCell>
       <TableCell>
-        <Badge variant={getPriorityVariant(referral.priority)}>
-          {referral.priority}
-        </Badge>
+        <ReferralPriorityBadge priority={referral.priority} />
       </TableCell>
       <TableCell>
         <div className="flex items-center gap-1">
