@@ -61,6 +61,22 @@ const getStatusText = (referral: Referral) => {
   return referral.status.charAt(0).toUpperCase() + referral.status.slice(1);
 };
 
+const getSourceText = (referral: Referral) => {
+  // Based on referrer organization or default to GP
+  if (referral.referrer.organization) {
+    if (referral.referrer.organization.toLowerCase().includes('hospital')) {
+      return 'Hospital';
+    }
+    if (referral.referrer.organization.toLowerCase().includes('clinic')) {
+      return 'Clinic';
+    }
+    if (referral.referrer.organization.toLowerCase().includes('emergency')) {
+      return 'A&E';
+    }
+  }
+  return 'GP';
+};
+
 const ReferralList = ({ referrals, isLoading, filter }: ReferralListProps) => {
   const filteredReferrals = filter ? referrals.filter(filter) : referrals;
 
@@ -93,6 +109,7 @@ const ReferralList = ({ referrals, isLoading, filter }: ReferralListProps) => {
             <TableHead>Name</TableHead>
             <TableHead>Gender</TableHead>
             <TableHead>NHS Number</TableHead>
+            <TableHead>UBRN</TableHead>
             <TableHead>Referral Date and time</TableHead>
             <TableHead>Contact Number</TableHead>
             <TableHead>HCP referred to</TableHead>
@@ -125,6 +142,7 @@ const ReferralList = ({ referrals, isLoading, filter }: ReferralListProps) => {
               </TableCell>
               <TableCell>{referral.patient.gender}</TableCell>
               <TableCell className="font-mono text-sm">{referral.patient.nhsNumber}</TableCell>
+              <TableCell className="font-mono text-sm">{referral.ubrn}</TableCell>
               <TableCell className="text-sm">
                 <div>{format(new Date(referral.created), 'dd MMM yyyy')}</div>
                 <div>{format(new Date(referral.created), 'HH:mm')}</div>
@@ -145,9 +163,9 @@ const ReferralList = ({ referrals, isLoading, filter }: ReferralListProps) => {
                 </Badge>
               </TableCell>
               <TableCell>
-                <Button variant="outline" size="sm">
-                  Source
-                </Button>
+                <Badge variant="outline">
+                  {getSourceText(referral)}
+                </Badge>
               </TableCell>
             </TableRow>
           ))}
