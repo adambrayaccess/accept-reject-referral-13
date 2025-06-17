@@ -11,10 +11,20 @@ interface AppointmentStatusProps {
   variant?: 'default' | 'compact';
 }
 
+interface AppointmentStatusResult {
+  status: string;
+  text: string;
+  icon: any;
+  variant: 'default' | 'destructive' | 'secondary' | 'outline';
+  details: string;
+  canBook: boolean;
+  appointmentInfo?: any;
+}
+
 const AppointmentStatus = ({ referral, variant = 'default' }: AppointmentStatusProps) => {
   const { toast } = useToast();
 
-  const getAppointmentStatus = () => {
+  const getAppointmentStatus = (): AppointmentStatusResult => {
     const age = referral.calculatedReferralAge || 0;
     
     // If there's actual appointment data, use it
@@ -29,17 +39,42 @@ const AppointmentStatus = ({ referral, variant = 'default' }: AppointmentStatusP
       
       try {
         const appointmentDate = parseISO(appointment.date);
-        const isPastAppointment = isPast(appointmentDate);
         
         switch (appointment.status) {
           case 'scheduled':
+            // Check if this is actually an overdue appointment based on age and notes
+            if (age > 90 || appointment.notes?.includes('overdue')) {
+              return {
+                status: 'overdue',
+                text: 'Appointment Overdue',
+                icon: AlertCircle,
+                variant: 'destructive',
+                details: `${age} days waiting`,
+                canBook: true,
+                appointmentInfo: appointment
+              };
+            }
+            
+            // Check if this is actually pending based on notes
+            if (appointment.notes?.includes('Awaiting') || appointment.notes?.includes('to be scheduled')) {
+              return {
+                status: 'pending',
+                text: 'Appointment Pending',
+                icon: Clock,
+                variant: 'secondary',
+                details: 'Awaiting scheduling',
+                canBook: true,
+                appointmentInfo: appointment
+              };
+            }
+            
             return {
               status: 'scheduled',
               text: isToday(appointmentDate) ? 'Appointment Today' : 
                     isTomorrow(appointmentDate) ? 'Appointment Tomorrow' :
                     `Appointment ${format(appointmentDate, 'MMM dd')}`,
               icon: Calendar,
-              variant: 'default' as const,
+              variant: 'default',
               details: `${appointment.time} - ${appointment.location}`,
               canBook: false,
               appointmentInfo: appointment
@@ -51,17 +86,30 @@ const AppointmentStatus = ({ referral, variant = 'default' }: AppointmentStatusP
                     isTomorrow(appointmentDate) ? 'Confirmed Tomorrow' :
                     `Confirmed ${format(appointmentDate, 'MMM dd')}`,
               icon: CheckCircle,
-              variant: 'default' as const,
+              variant: 'default',
               details: `${appointment.time} - ${appointment.location}`,
               canBook: false,
               appointmentInfo: appointment
             };
           case 'cancelled':
+            // Check if this represents an overdue appointment
+            if (age > 90 || appointment.notes?.includes('overdue')) {
+              return {
+                status: 'overdue',
+                text: 'Appointment Overdue',
+                icon: AlertCircle,
+                variant: 'destructive',
+                details: `${age} days waiting`,
+                canBook: true,
+                appointmentInfo: appointment
+              };
+            }
+            
             return {
               status: 'cancelled',
               text: 'Appointment Cancelled',
               icon: XCircle,
-              variant: 'destructive' as const,
+              variant: 'destructive',
               details: 'Needs rescheduling',
               canBook: true,
               appointmentInfo: appointment
@@ -71,29 +119,9 @@ const AppointmentStatus = ({ referral, variant = 'default' }: AppointmentStatusP
               status: 'completed',
               text: 'Appointment Completed',
               icon: CheckCircle,
-              variant: 'default' as const,
+              variant: 'default',
               details: `${format(appointmentDate, 'MMM dd')} - ${appointment.location}`,
               canBook: false,
-              appointmentInfo: appointment
-            };
-          case 'pending':
-            return {
-              status: 'pending',
-              text: 'Appointment Pending',
-              icon: Clock,
-              variant: 'secondary' as const,
-              details: 'Awaiting scheduling',
-              canBook: true,
-              appointmentInfo: appointment
-            };
-          case 'overdue':
-            return {
-              status: 'overdue',
-              text: 'Appointment Overdue',
-              icon: AlertCircle,
-              variant: 'destructive' as const,
-              details: `${age} days waiting`,
-              canBook: true,
               appointmentInfo: appointment
             };
         }
@@ -106,7 +134,7 @@ const AppointmentStatus = ({ referral, variant = 'default' }: AppointmentStatusP
     return getFallbackStatus(age);
   };
 
-  const getFallbackStatus = (age: number) => {
+  const getFallbackStatus = (age: number): AppointmentStatusResult => {
     // Fallback to original logic for referrals without appointment data
     if (referral.triageStatus === 'waiting-list') {
       if (age > 60) {
@@ -114,7 +142,7 @@ const AppointmentStatus = ({ referral, variant = 'default' }: AppointmentStatusP
           status: 'overdue',
           text: 'Appointment Overdue',
           icon: AlertCircle,
-          variant: 'destructive' as const,
+          variant: 'destructive',
           details: `${age} days waiting`,
           canBook: true
         };
@@ -123,7 +151,7 @@ const AppointmentStatus = ({ referral, variant = 'default' }: AppointmentStatusP
           status: 'due',
           text: 'Appointment Due',
           icon: Clock,
-          variant: 'secondary' as const,
+          variant: 'secondary',
           details: `${age} days waiting`,
           canBook: true
         };
@@ -132,7 +160,7 @@ const AppointmentStatus = ({ referral, variant = 'default' }: AppointmentStatusP
           status: 'scheduled',
           text: 'Awaiting Appointment',
           icon: Calendar,
-          variant: 'outline' as const,
+          variant: 'outline',
           details: `${age} days waiting`,
           canBook: true
         };
@@ -142,7 +170,7 @@ const AppointmentStatus = ({ referral, variant = 'default' }: AppointmentStatusP
         status: 'booked',
         text: 'Appointment Booked',
         icon: CheckCircle,
-        variant: 'default' as const,
+        variant: 'default',
         details: 'Pre-admission assessment',
         canBook: false
       };
@@ -151,7 +179,7 @@ const AppointmentStatus = ({ referral, variant = 'default' }: AppointmentStatusP
         status: 'completed',
         text: 'Assessment Complete',
         icon: CheckCircle,
-        variant: 'default' as const,
+        variant: 'default',
         details: 'Awaiting next step',
         canBook: true
       };
@@ -160,7 +188,7 @@ const AppointmentStatus = ({ referral, variant = 'default' }: AppointmentStatusP
         status: 'pending',
         text: 'Assessment Pending',
         icon: Clock,
-        variant: 'secondary' as const,
+        variant: 'secondary',
         details: 'Awaiting triage',
         canBook: false
       };
@@ -217,7 +245,7 @@ const AppointmentStatus = ({ referral, variant = 'default' }: AppointmentStatusP
           style={{ backgroundColor: '#007A7A' }}
         >
           <Calendar className="h-4 w-4 mr-1" />
-          {appointmentStatus.status === 'cancelled' ? 'Reschedule' : 'Book Appointment'}
+          {appointmentStatus.status === 'cancelled' || appointmentStatus.status === 'overdue' ? 'Reschedule' : 'Book Appointment'}
         </Button>
       )}
     </div>

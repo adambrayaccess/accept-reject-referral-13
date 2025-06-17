@@ -73,7 +73,7 @@ const generateAppointmentDetails = (referral: Referral, ageInDays: number) => {
       time: '09:00',
       type: 'consultation' as const,
       location: 'Outpatient Clinic',
-      status: 'overdue' as const,
+      status: 'cancelled' as const, // Use cancelled to indicate overdue appointments
       notes: 'Appointment overdue - requires urgent scheduling'
     };
   }
@@ -100,7 +100,7 @@ const generateAppointmentDetails = (referral: Referral, ageInDays: number) => {
       time: '14:00',
       type: 'consultation' as const,
       location: 'Outpatient Clinic',
-      status: 'pending' as const,
+      status: 'scheduled' as const, // Use scheduled for pending appointments
       notes: 'Awaiting appointment scheduling'
     };
   }
@@ -126,7 +126,7 @@ const generateAppointmentDetails = (referral: Referral, ageInDays: number) => {
     time: '09:30',
     type: 'consultation' as const,
     location: 'Outpatient Clinic',
-    status: 'pending' as const,
+    status: 'scheduled' as const,
     notes: 'Recently received - appointment to be scheduled'
   };
 };
