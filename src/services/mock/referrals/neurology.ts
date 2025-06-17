@@ -1,9 +1,11 @@
+
 import { Referral, TriageStatus } from '@/types/referral';
 import { mockPatients } from '../patients';
 import { mockPractitioners } from '../practitioners';
+import { updateUbrnIfSelected } from '../utils/ubrn-randomizer';
 
 export const neurologyReferrals: Referral[] = [
-  {
+  updateUbrnIfSelected({
     id: 'REF-2023-003',
     ubrn: '345678901234',
     created: '2023-06-13T11:05:00Z',
@@ -41,7 +43,7 @@ export const neurologyReferrals: Referral[] = [
         size: 2345000
       }
     ]
-  }
+  })
 ];
 
 const additionalNeurologyReferrals: Referral[] = Array.from({ length: 49 }, (_, i) => {
@@ -99,7 +101,7 @@ const additionalNeurologyReferrals: Referral[] = Array.from({ length: 49 }, (_, 
     { title: 'Neuropsychology Assessment', contentType: 'application/pdf', url: '/mock-data/neuropsych.pdf', size: 2890000 }
   ];
   
-  return {
+  return updateUbrnIfSelected({
     id: `NEUR-2024-${index.toString().padStart(3, '0')}`,
     ubrn: `N${(1000000 + index).toString().padStart(8, '0')}`,
     created: date.toISOString(),
@@ -144,7 +146,7 @@ const additionalNeurologyReferrals: Referral[] = Array.from({ length: 49 }, (_, 
         date: new Date(date.getTime() - 172800000).toISOString(),
       }
     ] : []
-  };
+  });
 });
 
 // Add 7 additional test records for Dashboard
@@ -170,7 +172,7 @@ const additionalDashboardReferrals: Referral[] = Array.from({ length: 7 }, (_, i
     ['memory-loss', 'dashboard-test']
   ];
   
-  return {
+  return updateUbrnIfSelected({
     id: `NEUR-DASH-${(index + 1).toString().padStart(3, '0')}`,
     ubrn: `NDASH${(3000000 + index).toString().padStart(8, '0')}`,
     created,
@@ -207,7 +209,7 @@ const additionalDashboardReferrals: Referral[] = Array.from({ length: 7 }, (_, i
         size: 4567000
       }
     ] : []
-  };
+  });
 });
 
 // Add 7 additional waiting list test records
@@ -233,7 +235,7 @@ const additionalWaitingListReferrals: Referral[] = Array.from({ length: 7 }, (_,
     ['tremor', 'essential-tremor']
   ];
   
-  return {
+  return updateUbrnIfSelected({
     id: `NEUR-WL-${(index + 1).toString().padStart(3, '0')}`,
     ubrn: `NWL${(2000000 + index).toString().padStart(8, '0')}`,
     created,
@@ -268,7 +270,7 @@ const additionalWaitingListReferrals: Referral[] = Array.from({ length: 7 }, (_,
         size: 4567000
       }
     ] : []
-  };
+  });
 });
 
 export const allNeurologyReferrals = [...neurologyReferrals, ...additionalNeurologyReferrals, ...additionalWaitingListReferrals, ...additionalDashboardReferrals];

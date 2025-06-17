@@ -1,13 +1,15 @@
+
 import { Referral } from '@/types/referral';
 import { mockPatients } from '../patients';
 import { mockPractitioners } from '../practitioners';
+import { updateUbrnIfSelected } from '../utils/ubrn-randomizer';
 
 const cardiologyPatients = mockPatients.slice(0, 50);
 const cardiologyPractitioners = mockPractitioners.slice(0, 10);
 
 // First 10 referrals for quick testing
 export const cardiologyReferrals: Referral[] = [
-  {
+  updateUbrnIfSelected({
     id: 'card-001',
     ubrn: 'CARD001',
     created: new Date(Date.now() - 15 * 24 * 60 * 60 * 1000).toISOString(),
@@ -30,8 +32,8 @@ export const cardiologyReferrals: Referral[] = [
     tags: ['urgent', 'two-week-wait', 'complex-case'],
     calculatedReferralAge: 15,
     aiGenerated: false
-  },
-  {
+  }),
+  updateUbrnIfSelected({
     id: 'card-002', 
     ubrn: 'CARD002',
     created: new Date(Date.now() - 8 * 24 * 60 * 60 * 1000).toISOString(),
@@ -54,8 +56,8 @@ export const cardiologyReferrals: Referral[] = [
     tags: ['anticoagulation', 'rate-control'],
     calculatedReferralAge: 8,
     aiGenerated: false
-  },
-  {
+  }),
+  updateUbrnIfSelected({
     id: 'card-003',
     ubrn: 'CARD003',
     created: new Date(Date.now() - 22 * 24 * 60 * 60 * 1000).toISOString(),
@@ -78,7 +80,7 @@ export const cardiologyReferrals: Referral[] = [
     tags: ['chest-pain', 'investigation-required'],
     calculatedReferralAge: 22,
     aiGenerated: false
-  }
+  })
 ];
 
 // Generate the remaining 47 referrals to make 50 total
@@ -97,7 +99,7 @@ const generateCardiologyReferral = (index: number): Referral => {
     tags.push(tagOptions[Math.floor(Math.random() * tagOptions.length)]);
   }
   
-  return {
+  return updateUbrnIfSelected({
     id: `card-${String(index + 1).padStart(3, '0')}`,
     ubrn: `CARD${String(index + 1).padStart(3, '0')}`,
     created: new Date(Date.now() - daysAgo * 24 * 60 * 60 * 1000).toISOString(),
@@ -120,7 +122,7 @@ const generateCardiologyReferral = (index: number): Referral => {
     tags,
     calculatedReferralAge: daysAgo,
     aiGenerated: false
-  };
+  });
 };
 
 const additionalReferrals = Array.from({ length: 47 }, (_, i) => generateCardiologyReferral(i + 3));

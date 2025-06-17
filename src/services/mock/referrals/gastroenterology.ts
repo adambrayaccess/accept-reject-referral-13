@@ -1,9 +1,11 @@
+
 import { Referral, TriageStatus } from '@/types/referral';
 import { mockPatients } from '../patients';
 import { mockPractitioners } from '../practitioners';
+import { updateUbrnIfSelected } from '../utils/ubrn-randomizer';
 
 export const gastroenterologyReferrals: Referral[] = [
-  {
+  updateUbrnIfSelected({
     id: 'REF-2023-005',
     ubrn: '567890123456',
     created: '2023-06-11T09:15:00Z',
@@ -33,7 +35,7 @@ export const gastroenterologyReferrals: Referral[] = [
         size: 985000
       }
     ]
-  }
+  })
 ];
 
 const additionalGastroenterologyReferrals: Referral[] = Array.from({ length: 49 }, (_, i) => {
@@ -91,7 +93,7 @@ const additionalGastroenterologyReferrals: Referral[] = Array.from({ length: 49 
     { title: 'Stool Sample Results', contentType: 'application/pdf', url: '/mock-data/stool-culture.pdf', size: 1567000 }
   ];
   
-  return {
+  return updateUbrnIfSelected({
     id: `GAST-2024-${index.toString().padStart(3, '0')}`,
     ubrn: `G${(1000000 + index).toString().padStart(8, '0')}`,
     created: date.toISOString(),
@@ -124,7 +126,7 @@ const additionalGastroenterologyReferrals: Referral[] = Array.from({ length: 49 
         date: new Date(date.getTime() - 86400000).toISOString(),
       }
     ] : []
-  };
+  });
 });
 
 // Add 7 additional waiting list test records
@@ -150,7 +152,7 @@ const additionalWaitingListReferrals: Referral[] = Array.from({ length: 7 }, (_,
     ['hepatitis', 'treatment-monitoring']
   ];
   
-  return {
+  return updateUbrnIfSelected({
     id: `GAST-WL-${(index + 1).toString().padStart(3, '0')}`,
     ubrn: `GWL${(2000000 + index).toString().padStart(8, '0')}`,
     created,
@@ -184,7 +186,7 @@ const additionalWaitingListReferrals: Referral[] = Array.from({ length: 7 }, (_,
         size: 2340000
       }
     ] : []
-  };
+  });
 });
 
 // Add 7 additional test records for Dashboard
@@ -210,7 +212,7 @@ const additionalDashboardReferrals: Referral[] = Array.from({ length: 7 }, (_, i
     ['gallstones', 'dashboard-test']
   ];
   
-  return {
+  return updateUbrnIfSelected({
     id: `GAST-DASH-${(index + 1).toString().padStart(3, '0')}`,
     ubrn: `GDASH${(3000000 + index).toString().padStart(8, '0')}`,
     created,
@@ -246,7 +248,7 @@ const additionalDashboardReferrals: Referral[] = Array.from({ length: 7 }, (_, i
         size: 985000
       }
     ] : []
-  };
+  });
 });
 
 export const allGastroenterologyReferrals = [...gastroenterologyReferrals, ...additionalGastroenterologyReferrals, ...additionalWaitingListReferrals, ...additionalDashboardReferrals];

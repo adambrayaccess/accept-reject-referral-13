@@ -1,10 +1,12 @@
+
 import { Referral, TriageStatus } from '@/types/referral';
 import { mockPatients } from '../patients';
 import { mockPractitioners } from '../practitioners';
 import { generateMockAppointment, generateSubReferralData } from '../appointmentGenerator';
+import { updateUbrnIfSelected } from '../utils/ubrn-randomizer';
 
 export const mentalHealthReferrals: Referral[] = [
-  {
+  updateUbrnIfSelected({
     id: 'MH-2024-001',
     ubrn: 'MH12345678',
     created: '2024-05-18T10:45:00Z',
@@ -34,7 +36,7 @@ export const mentalHealthReferrals: Referral[] = [
         size: 1856000
       }
     ]
-  }
+  })
 ];
 
 const additionalMentalHealthReferrals: Referral[] = Array.from({ length: 49 }, (_, i) => {
@@ -97,7 +99,7 @@ const additionalMentalHealthReferrals: Referral[] = Array.from({ length: 49 }, (
   const appointmentDetails = generateMockAppointment(`MH-2024-${(index + 1).toString().padStart(3, '0')}`, created, 'Mental Health');
   const subReferralData = generateSubReferralData(`MH-2024-${(index + 1).toString().padStart(3, '0')}`);
   
-  return {
+  return updateUbrnIfSelected({
     id: `MH-2024-${(index + 1).toString().padStart(3, '0')}`,
     ubrn: `MH${(1000000 + index).toString().padStart(8, '0')}`,
     created,
@@ -144,7 +146,7 @@ const additionalMentalHealthReferrals: Referral[] = Array.from({ length: 49 }, (
         date: new Date(date.getTime() - 172800000).toISOString(),
       }
     ] : []
-  };
+  });
 });
 
 // Add 7 additional waiting list test records
@@ -173,7 +175,7 @@ const additionalWaitingListReferrals: Referral[] = Array.from({ length: 7 }, (_,
   const appointmentDetails = generateMockAppointment(`MH-WL-${(index + 1).toString().padStart(3, '0')}`, created, 'Mental Health');
   const subReferralData = generateSubReferralData(`MH-WL-${(index + 1).toString().padStart(3, '0')}`);
   
-  return {
+  return updateUbrnIfSelected({
     id: `MH-WL-${(index + 1).toString().padStart(3, '0')}`,
     ubrn: `MHWL${(2000000 + index).toString().padStart(8, '0')}`,
     created,
@@ -210,7 +212,7 @@ const additionalWaitingListReferrals: Referral[] = Array.from({ length: 7 }, (_,
         size: 1234000
       }
     ] : []
-  };
+  });
 });
 
 // Add 7 additional test records for Dashboard
@@ -239,7 +241,7 @@ const additionalDashboardReferrals: Referral[] = Array.from({ length: 7 }, (_, i
   const appointmentDetails = generateMockAppointment(`MH-DASH-${(index + 1).toString().padStart(3, '0')}`, created, 'Mental Health');
   const subReferralData = generateSubReferralData(`MH-DASH-${(index + 1).toString().padStart(3, '0')}`);
   
-  return {
+  return updateUbrnIfSelected({
     id: `MH-DASH-${(index + 1).toString().padStart(3, '0')}`,
     ubrn: `MHDASH${(3000000 + index).toString().padStart(8, '0')}`,
     created,
@@ -278,7 +280,7 @@ const additionalDashboardReferrals: Referral[] = Array.from({ length: 7 }, (_, i
         size: 1856000
       }
     ] : []
-  };
+  });
 });
 
 export const allMentalHealthReferrals = [...mentalHealthReferrals, ...additionalMentalHealthReferrals, ...additionalWaitingListReferrals, ...additionalDashboardReferrals];

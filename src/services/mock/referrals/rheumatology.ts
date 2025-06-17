@@ -1,9 +1,11 @@
+
 import { Referral, TriageStatus } from '@/types/referral';
 import { mockPatients } from '../patients';
 import { mockPractitioners } from '../practitioners';
+import { updateUbrnIfSelected } from '../utils/ubrn-randomizer';
 
 export const rheumatologyReferrals: Referral[] = [
-  {
+  updateUbrnIfSelected({
     id: 'REF-2023-004',
     ubrn: '456789012345',
     created: '2023-06-12T15:45:00Z',
@@ -33,7 +35,7 @@ export const rheumatologyReferrals: Referral[] = [
         size: 1567000
       }
     ]
-  }
+  })
 ];
 
 const additionalRheumatologyReferrals: Referral[] = Array.from({ length: 49 }, (_, i) => {
@@ -91,7 +93,7 @@ const additionalRheumatologyReferrals: Referral[] = Array.from({ length: 49 }, (
     { title: 'Inflammatory Markers', contentType: 'application/pdf', url: '/mock-data/inflammatory-markers.pdf', size: 1890000 }
   ];
   
-  return {
+  return updateUbrnIfSelected({
     id: `RHEU-2024-${index.toString().padStart(3, '0')}`,
     ubrn: `R${(1000000 + index).toString().padStart(8, '0')}`,
     created: date.toISOString(),
@@ -123,7 +125,7 @@ const additionalRheumatologyReferrals: Referral[] = Array.from({ length: 49 }, (
         date: new Date(date.getTime() - 86400000).toISOString(),
       }
     ] : []
-  };
+  });
 });
 
 // Add 7 additional waiting list test records
@@ -149,7 +151,7 @@ const additionalWaitingListReferrals: Referral[] = Array.from({ length: 7 }, (_,
     ['osteoporosis', 'bisphosphonate']
   ];
   
-  return {
+  return updateUbrnIfSelected({
     id: `RHEU-WL-${(index + 1).toString().padStart(3, '0')}`,
     ubrn: `RWL${(2000000 + index).toString().padStart(8, '0')}`,
     created,
@@ -183,7 +185,7 @@ const additionalWaitingListReferrals: Referral[] = Array.from({ length: 7 }, (_,
         size: 1567000
       }
     ] : []
-  };
+  });
 });
 
 // Add 7 additional test records for Dashboard
@@ -209,7 +211,7 @@ const additionalDashboardReferrals: Referral[] = Array.from({ length: 7 }, (_, i
     ['vasculitis', 'dashboard-test']
   ];
   
-  return {
+  return updateUbrnIfSelected({
     id: `RHEU-DASH-${(index + 1).toString().padStart(3, '0')}`,
     ubrn: `RDASH${(3000000 + index).toString().padStart(8, '0')}`,
     created,
@@ -244,7 +246,7 @@ const additionalDashboardReferrals: Referral[] = Array.from({ length: 7 }, (_, i
         size: 1567000
       }
     ] : []
-  };
+  });
 });
 
 export const allRheumatologyReferrals = [...rheumatologyReferrals, ...additionalRheumatologyReferrals, ...additionalWaitingListReferrals, ...additionalDashboardReferrals];
