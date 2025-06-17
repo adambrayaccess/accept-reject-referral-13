@@ -59,11 +59,11 @@ const AdminAICopilot = ({ referrals, overallStats, specialtyStats }: AdminAICopi
     
     switch (type) {
       case 'alert': return 'text-red-600 bg-red-50 border-red-200';
-      case 'performance': return 'text-blue-600 bg-blue-50 border-blue-200';
+      case 'performance': return 'text-purple-600 bg-purple-50 border-purple-200';
       case 'bottleneck': return 'text-orange-600 bg-orange-50 border-orange-200';
       case 'resource': return 'text-purple-600 bg-purple-50 border-purple-200';
       case 'optimization': return 'text-green-600 bg-green-50 border-green-200';
-      default: return 'text-gray-600 bg-gray-50 border-gray-200';
+      default: return 'text-purple-600 bg-purple-50 border-purple-200';
     }
   };
 
@@ -72,8 +72,8 @@ const AdminAICopilot = ({ referrals, overallStats, specialtyStats }: AdminAICopi
       case 'critical': return 'bg-red-100 text-red-800 border-red-200';
       case 'high': return 'bg-orange-100 text-orange-800 border-orange-200';
       case 'medium': return 'bg-yellow-100 text-yellow-800 border-yellow-200';
-      case 'low': return 'bg-blue-100 text-blue-800 border-blue-200';
-      default: return 'bg-gray-100 text-gray-800 border-gray-200';
+      case 'low': return 'bg-purple-100 text-purple-800 border-purple-200';
+      default: return 'bg-purple-100 text-purple-800 border-purple-200';
     }
   };
 
@@ -86,16 +86,16 @@ const AdminAICopilot = ({ referrals, overallStats, specialtyStats }: AdminAICopi
   };
 
   return (
-    <Card className="bg-gradient-to-r from-blue-50 to-indigo-100 border-indigo-200">
+    <Card className="bg-gradient-to-r from-pink-50 to-purple-100 border-purple-200">
       <CardHeader className="pb-3">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <Brain className="h-5 w-5 text-indigo-700" />
-            <CardTitle className="text-lg text-indigo-800">AI Admin Copilot</CardTitle>
+            <Brain className="h-5 w-5 text-purple-700" />
+            <CardTitle className="text-lg text-purple-800">AI Admin Copilot</CardTitle>
             {suggestions && (
               <Badge 
                 variant="outline" 
-                className="text-xs bg-indigo-100 text-indigo-800 border-indigo-200"
+                className="text-xs bg-purple-100 text-purple-800 border-purple-200"
               >
                 {Math.round(suggestions.confidence * 100)}% confidence
               </Badge>
@@ -107,7 +107,7 @@ const AdminAICopilot = ({ referrals, overallStats, specialtyStats }: AdminAICopi
               size="sm"
               onClick={loadSuggestions}
               disabled={isLoading}
-              className="text-indigo-700 hover:text-indigo-800 hover:bg-indigo-200"
+              className="text-purple-700 hover:text-purple-800 hover:bg-purple-200"
             >
               <RefreshCw className={`h-4 w-4 ${isLoading ? 'animate-spin' : ''}`} />
             </Button>
@@ -115,14 +115,14 @@ const AdminAICopilot = ({ referrals, overallStats, specialtyStats }: AdminAICopi
               variant="ghost"
               size="sm"
               onClick={() => setIsExpanded(!isExpanded)}
-              className="text-indigo-700 hover:text-indigo-800 hover:bg-indigo-200"
+              className="text-purple-700 hover:text-purple-800 hover:bg-purple-200"
             >
               {isExpanded ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
             </Button>
           </div>
         </div>
         {suggestions && isExpanded && (
-          <p className="text-sm text-indigo-600">{suggestions.summary}</p>
+          <p className="text-sm text-purple-600">{suggestions.summary}</p>
         )}
       </CardHeader>
       
@@ -130,7 +130,7 @@ const AdminAICopilot = ({ referrals, overallStats, specialtyStats }: AdminAICopi
         <CardContent className="pt-0">
           {isLoading ? (
             <div className="flex items-center justify-center py-8">
-              <div className="flex items-center gap-2 text-indigo-600">
+              <div className="flex items-center gap-2 text-purple-600">
                 <Brain className="h-5 w-5 animate-pulse" />
                 <span>Analyzing system performance...</span>
               </div>
@@ -186,19 +186,19 @@ const AdminAICopilot = ({ referrals, overallStats, specialtyStats }: AdminAICopi
                         </div>
                       )}
                     </div>
-                    {index < suggestions.suggestions.length - 1 && <Separator className="mt-4 bg-indigo-200" />}
+                    {index < suggestions.suggestions.length - 1 && <Separator className="mt-4 bg-purple-200" />}
                   </div>
                 );
               })}
               
-              <div className="pt-3 mt-3 border-t border-indigo-200">
-                <div className="text-xs text-indigo-600">
+              <div className="pt-3 mt-3 border-t border-purple-200">
+                <div className="text-xs text-purple-600">
                   Generated in {suggestions.processingTime}ms at {new Date(suggestions.generatedAt).toLocaleTimeString()}
                 </div>
               </div>
             </div>
           ) : (
-            <div className="text-center py-6 text-indigo-600">
+            <div className="text-center py-6 text-purple-600">
               <Brain className="h-8 w-8 mx-auto mb-2 opacity-50" />
               <p>No AI insights available at this time</p>
             </div>

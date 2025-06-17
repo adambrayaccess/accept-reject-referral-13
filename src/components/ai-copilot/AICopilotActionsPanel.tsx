@@ -69,13 +69,13 @@ const AICopilotActionsPanel = ({ selectedReferrals, onSuggestionApplied }: AICop
   }
 
   return (
-    <Card className="bg-gradient-to-r from-orange-50 to-orange-100 border border-orange-200">
+    <Card className="bg-gradient-to-r from-pink-50 to-purple-100 border-purple-200">
       <CardHeader className="pb-3">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <Brain className="h-5 w-5 text-orange-600" />
-            <CardTitle className="text-lg text-orange-800">AI Copilot Actions</CardTitle>
-            <Badge variant="outline" className="bg-orange-100 text-orange-800 border-orange-300">
+            <Brain className="h-5 w-5 text-purple-700" />
+            <CardTitle className="text-lg text-purple-800">AI Copilot Actions</CardTitle>
+            <Badge variant="outline" className="bg-purple-100 text-purple-800 border-purple-200">
               <Users className="h-3 w-3 mr-1" />
               {selectedReferrals.length} selected
             </Badge>
@@ -94,7 +94,7 @@ const AICopilotActionsPanel = ({ selectedReferrals, onSuggestionApplied }: AICop
               size="sm"
               onClick={handleRefresh}
               disabled={isLoading}
-              className="text-orange-600 hover:text-orange-700 hover:bg-orange-200"
+              className="text-purple-700 hover:text-purple-800 hover:bg-purple-200"
             >
               <RefreshCw className={`h-4 w-4 ${isLoading ? 'animate-spin' : ''}`} />
             </Button>
@@ -102,7 +102,7 @@ const AICopilotActionsPanel = ({ selectedReferrals, onSuggestionApplied }: AICop
               variant="ghost"
               size="sm"
               onClick={() => setIsExpanded(!isExpanded)}
-              className="text-orange-600 hover:text-orange-700 hover:bg-orange-200"
+              className="text-purple-700 hover:text-purple-800 hover:bg-purple-200"
             >
               {isExpanded ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
             </Button>
@@ -114,7 +114,7 @@ const AICopilotActionsPanel = ({ selectedReferrals, onSuggestionApplied }: AICop
         <CardContent className="pt-0">
           {isLoading ? (
             <div className="flex items-center justify-center py-8">
-              <div className="flex items-center gap-2 text-orange-600">
+              <div className="flex items-center gap-2 text-purple-600">
                 <Brain className="h-5 w-5 animate-pulse" />
                 <span>Analyzing {selectedReferrals.length} selected patients...</span>
               </div>
@@ -128,21 +128,21 @@ const AICopilotActionsPanel = ({ selectedReferrals, onSuggestionApplied }: AICop
                     selectedReferrals={selectedReferrals}
                     onApplied={onSuggestionApplied}
                   />
-                  {index < suggestions.suggestions.length - 1 && <Separator className="mt-3 bg-orange-200" />}
+                  {index < suggestions.suggestions.length - 1 && <Separator className="mt-3 bg-purple-200" />}
                 </div>
               ))}
               
-              <div className="pt-3 mt-3 border-t border-orange-200">
-                <div className="text-xs text-orange-600">
+              <div className="pt-3 mt-3 border-t border-purple-200">
+                <div className="text-xs text-purple-600">
                   Generated in {suggestions.processingTime}ms at {new Date(suggestions.generatedAt).toLocaleTimeString()}
                 </div>
               </div>
             </div>
           ) : (
-            <div className="text-center py-6 text-orange-600">
+            <div className="text-center py-6 text-purple-600">
               <Brain className="h-8 w-8 mx-auto mb-2 opacity-50" />
               <p>No AI Copilot actions available for the current selection</p>
-              <p className="text-sm text-orange-500 mt-1">Try selecting different patients or refresh to re-analyze</p>
+              <p className="text-sm text-purple-500 mt-1">Try selecting different patients or refresh to re-analyze</p>
             </div>
           )}
         </CardContent>
