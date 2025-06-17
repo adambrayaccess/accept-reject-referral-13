@@ -1,6 +1,8 @@
+
 import { Referral } from '@/types/referral';
 import { mockPatients } from '../patients';
 import { mockPractitioners } from '../practitioners';
+import { calculateRTTPathway } from '@/utils/rttPathwayUtils';
 
 const cardiologyPatients = mockPatients.slice(0, 50);
 const cardiologyPractitioners = mockPractitioners.slice(0, 10);
@@ -29,7 +31,8 @@ export const cardiologyReferrals: Referral[] = [
     triageStatus: 'waiting-list',
     tags: ['urgent', 'two-week-wait', 'complex-case'],
     calculatedReferralAge: 15,
-    aiGenerated: false
+    aiGenerated: false,
+    rttPathway: calculateRTTPathway(new Date(Date.now() - 15 * 24 * 60 * 60 * 1000).toISOString())
   },
   {
     id: 'card-002', 
@@ -53,7 +56,8 @@ export const cardiologyReferrals: Referral[] = [
     triageStatus: 'waiting-list',
     tags: ['anticoagulation', 'rate-control'],
     calculatedReferralAge: 8,
-    aiGenerated: false
+    aiGenerated: false,
+    rttPathway: calculateRTTPathway(new Date(Date.now() - 8 * 24 * 60 * 60 * 1000).toISOString())
   },
   {
     id: 'card-003',
@@ -77,7 +81,8 @@ export const cardiologyReferrals: Referral[] = [
     triageStatus: 'waiting-list',
     tags: ['chest-pain', 'investigation-required'],
     calculatedReferralAge: 22,
-    aiGenerated: false
+    aiGenerated: false,
+    rttPathway: calculateRTTPathway(new Date(Date.now() - 22 * 24 * 60 * 60 * 1000).toISOString())
   }
 ];
 
@@ -86,6 +91,7 @@ const generateCardiologyReferral = (index: number): Referral => {
   const patientIndex = index % cardiologyPatients.length;
   const practitionerIndex = index % cardiologyPractitioners.length;
   const daysAgo = Math.floor(Math.random() * 90) + 1;
+  const created = new Date(Date.now() - daysAgo * 24 * 60 * 60 * 1000).toISOString();
   
   const services = ['Heart Failure', 'Arrhythmia', 'General Cardiology', 'Interventional Cardiology'];
   const priorities: ('routine' | 'urgent' | 'emergency')[] = ['routine', 'routine', 'routine', 'urgent', 'emergency'];
@@ -100,7 +106,7 @@ const generateCardiologyReferral = (index: number): Referral => {
   return {
     id: `card-${String(index + 1).padStart(3, '0')}`,
     ubrn: `CARD${String(index + 1).padStart(3, '0')}`,
-    created: new Date(Date.now() - daysAgo * 24 * 60 * 60 * 1000).toISOString(),
+    created,
     status: 'accepted',
     priority: priorities[Math.floor(Math.random() * priorities.length)],
     patient: cardiologyPatients[patientIndex],
@@ -119,7 +125,8 @@ const generateCardiologyReferral = (index: number): Referral => {
     triageStatus: 'waiting-list',
     tags,
     calculatedReferralAge: daysAgo,
-    aiGenerated: false
+    aiGenerated: false,
+    rttPathway: calculateRTTPathway(created)
   };
 };
 
