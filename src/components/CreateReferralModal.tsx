@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
@@ -11,6 +10,7 @@ import { Referral, ReferralPriority, Patient } from '@/types/referral';
 import { EnhancedTabs, EnhancedTabsContent, EnhancedTabsList, EnhancedTabsTrigger } from '@/components/ui/enhanced-tabs';
 import PatientDetailsForm from './referral-form/PatientDetailsForm';
 import ClinicalDetailsForm from './referral-form/ClinicalDetailsForm';
+import { specialties } from '@/data/specialtyOptions';
 
 interface CreateReferralModalProps {
   isOpen: boolean;
@@ -178,13 +178,18 @@ const CreateReferralModal = ({ isOpen, onClose, onSubmit }: CreateReferralModalP
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
                 <Label htmlFor="specialty">Specialty</Label>
-                <Input
-                  id="specialty"
-                  value={specialty}
-                  onChange={(e) => setSpecialty(e.target.value)}
-                  placeholder="Enter specialty"
-                  required
-                />
+                <Select value={specialty} onValueChange={(value: string) => setSpecialty(value)}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select specialty" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {specialties.map((specialtyOption) => (
+                      <SelectItem key={specialtyOption.id} value={specialtyOption.name}>
+                        {specialtyOption.name}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
               </div>
               <div className="space-y-2">
                 <Label htmlFor="practitioner">Referring Practitioner</Label>
