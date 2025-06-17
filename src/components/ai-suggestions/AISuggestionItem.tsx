@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
-import { ChevronDown, ChevronRight, CheckCircle, AlertCircle, Clock, Tag, Calendar, Users } from 'lucide-react';
+import { ChevronDown, ChevronRight, CheckCircle, AlertCircle, Clock, Tag, Calendar, Users, FileText, Eye } from 'lucide-react';
 import { SpecificAISuggestion } from '@/types/aiSuggestions';
 import { Referral } from '@/types/referral';
 import { useToast } from '@/hooks/use-toast';
@@ -32,6 +32,10 @@ const AISuggestionItem = ({ suggestion, referral, onApplied }: AISuggestionItemP
         return <Tag className="h-4 w-4" />;
       case 'follow-up':
         return <Clock className="h-4 w-4" />;
+      case 'review':
+        return <Eye className="h-4 w-4" />;
+      case 'documentation':
+        return <FileText className="h-4 w-4" />;
       default:
         return <AlertCircle className="h-4 w-4" />;
     }
@@ -51,7 +55,13 @@ const AISuggestionItem = ({ suggestion, referral, onApplied }: AISuggestionItemP
   };
 
   const handleApplySuggestion = async () => {
-    if (!suggestion.actionable) return;
+    if (!suggestion.actionable) {
+      toast({
+        title: 'Suggestion Not Actionable',
+        description: 'This suggestion is for informational purposes and cannot be automatically applied',
+      });
+      return;
+    }
 
     setIsApplying(true);
     try {
@@ -59,6 +69,14 @@ const AISuggestionItem = ({ suggestion, referral, onApplied }: AISuggestionItemP
 
       switch (suggestion.type) {
         case 'triage-status':
+          if (referral.status !== 'accepted') {
+            toast({
+              title: 'Action Not Available',
+              description: 'Triage status can only be updated for accepted referrals',
+              variant: 'destructive',
+            });
+            return;
+          }
           const triageSuggestion = suggestion as any;
           success = await updateTriageStatus(
             referral.id,
@@ -77,6 +95,8 @@ const AISuggestionItem = ({ suggestion, referral, onApplied }: AISuggestionItemP
         case 'appointment':
         case 'waiting-list':
         case 'follow-up':
+        case 'review':
+        case 'documentation':
           // These would require integration with appointment/scheduling systems
           toast({
             title: 'Feature Coming Soon',
@@ -114,6 +134,95 @@ const AISuggestionItem = ({ suggestion, referral, onApplied }: AISuggestionItemP
     }
   };
 
+  const renderSuggestionDetails = () => {
+    switch (suggestion.type) {
+      case 'triage-status':
+        const triageSuggestion = suggestion as any;
+        return (
+          <div>
+            <span className="text-xs font-medium text-purple-600">Suggested Status:</span>
+            <p className="text-sm text-purple-800">{triageSuggestion.suggestedStatus.replace('-', ' ')}</p>
+            {triageSuggestion.estimatedTimeframe && (
+              <>
+                <span className="text-xs font-medium text-purple-600">Timeframe:</span>
+                <p className="text-sm text-purple-800">{triageSuggestion.estimatedTimeframe}</p>
+              </>
+            )}
+          </div>
+        );
+        
+      case 'appointment':
+        const appointmentSuggestion = suggestion as any;
+        return (
+          <div>
+            <span className="text-xs font-medium text-purple-600">Urgency:</span>
+            <p className="text-sm text-purple-800">{appointmentSuggestion.urgency} - {appointmentSuggestion.suggestedTimeframe}</p>
+          </div>
+        );
+        
+      case 'tagging':
+        const taggingSuggestion = suggestion as any;
+        return (
+          <div>
+            <span className="text-xs font-medium text-purple-600">Suggested Tags:</span>
+            <div className="flex flex-wrap gap-1 mt-1">
+              {taggingSuggestion.suggestedTags.map((tag: string) => (
+                <Badge key={tag} variant="outline" className="text-xs bg-purple-100 text-purple-800 border-purple-300">
+                  {tag}
+                </Badge>
+              ))}
+            </div>
+          </div>
+        );
+        
+      case 'review':
+        const reviewSuggestion = suggestion as any;
+        return (
+          <div>
+            <span className="text-xs font-medium text-purple-600">Review Type:</span>
+            <p className="text-sm text-purple-800">{reviewSuggestion.reviewType.replace('-', ' ')}</p>
+            <span className="text-xs font-medium text-purple-600">Recommended Action:</span>
+            <p className="text-sm text-purple-800">{reviewSuggestion.recommendedAction}</p>
+          </div>
+        );
+        
+      case 'documentation':
+        const docSuggestion = suggestion as any;
+        return (
+          <div>
+            <span className="text-xs font-medium text-purple-600">Completion:</span>
+            <p className="text-sm text-purple-800">{docSuggestion.completionPercentage}% complete</p>
+            {docSuggestion.missingFields.length > 0 && (
+              <>
+                <span className="text-xs font-medium text-purple-600">Missing Fields:</span>
+                <div className="flex flex-wrap gap-1 mt-1">
+                  {docSuggestion.missingFields.map((field: string) => (
+                    <Badge key={field} variant="outline" className="text-xs bg-red-100 text-red-800 border-red-300">
+                      {field}
+                    </Badge>
+                  ))}
+                </div>
+              </>
+            )}
+          </div>
+        );
+        
+      case 'follow-up':
+        const followUpSuggestion = suggestion as any;
+        return (
+          <div>
+            <span className="text-xs font-medium text-purple-600">Type:</span>
+            <p className="text-sm text-purple-800">{followUpSuggestion.followUpType.replace('-', ' ')}</p>
+            <span className="text-xs font-medium text-purple-600">Timeline:</span>
+            <p className="text-sm text-purple-800">{followUpSuggestion.timeline}</p>
+          </div>
+        );
+        
+      default:
+        return null;
+    }
+  };
+
   return (
     <div className="bg-gradient-to-r from-orange-100 to-purple-200 border border-purple-200 rounded-lg p-3">
       <Collapsible open={isExpanded} onOpenChange={setIsExpanded}>
@@ -131,6 +240,11 @@ const AISuggestionItem = ({ suggestion, referral, onApplied }: AISuggestionItemP
                 <Badge variant="secondary" className="text-xs bg-purple-100 text-purple-800">
                   {Math.round(suggestion.confidence * 100)}%
                 </Badge>
+                {!suggestion.actionable && (
+                  <Badge variant="outline" className="text-xs bg-gray-100 text-gray-600 border-gray-300">
+                    Info only
+                  </Badge>
+                )}
               </div>
               <p className="text-sm text-purple-700">{suggestion.description}</p>
             </div>
@@ -163,32 +277,7 @@ const AISuggestionItem = ({ suggestion, referral, onApplied }: AISuggestionItemP
               <p className="text-sm text-purple-800">{suggestion.reasoning}</p>
             </div>
             
-            {suggestion.type === 'triage-status' && (
-              <div>
-                <span className="text-xs font-medium text-purple-600">Suggested Status:</span>
-                <p className="text-sm text-purple-800">{(suggestion as any).suggestedStatus}</p>
-              </div>
-            )}
-            
-            {suggestion.type === 'appointment' && (
-              <div>
-                <span className="text-xs font-medium text-purple-600">Urgency:</span>
-                <p className="text-sm text-purple-800">{(suggestion as any).urgency} - {(suggestion as any).suggestedTimeframe}</p>
-              </div>
-            )}
-            
-            {suggestion.type === 'tagging' && (
-              <div>
-                <span className="text-xs font-medium text-purple-600">Suggested Tags:</span>
-                <div className="flex flex-wrap gap-1 mt-1">
-                  {(suggestion as any).suggestedTags.map((tag: string) => (
-                    <Badge key={tag} variant="outline" className="text-xs bg-purple-100 text-purple-800 border-purple-300">
-                      {tag}
-                    </Badge>
-                  ))}
-                </div>
-              </div>
-            )}
+            {renderSuggestionDetails()}
           </div>
         </CollapsibleContent>
       </Collapsible>

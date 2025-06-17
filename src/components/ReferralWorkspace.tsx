@@ -42,13 +42,11 @@ const ReferralWorkspace = ({ referral, onStatusChange }: ReferralWorkspaceProps)
         <ParentReferralInfo childReferralId={referral.id} />
       )}
 
-      {/* AI Suggestions Panel - Show for accepted referrals */}
-      {referral.status === 'accepted' && (
-        <AISuggestionsPanel 
-          referral={referral}
-          onSuggestionApplied={handleAISuggestionApplied}
-        />
-      )}
+      {/* AI Suggestions Panel - Now shown for all referrals */}
+      <AISuggestionsPanel 
+        referral={referral}
+        onSuggestionApplied={handleAISuggestionApplied}
+      />
 
       {/* Appointment Status Card */}
       <Card>

@@ -1,6 +1,6 @@
 
 import { Referral } from '@/types/referral';
-import { AISuggestionsResponse, SpecificAISuggestion, TriageStatusSuggestion, AppointmentSuggestion, WaitingListSuggestion, TaggingSuggestion, FollowUpSuggestion } from '@/types/aiSuggestions';
+import { AISuggestionsResponse, SpecificAISuggestion, TriageStatusSuggestion, AppointmentSuggestion, WaitingListSuggestion, TaggingSuggestion, FollowUpSuggestion, ReviewSuggestion, DocumentationSuggestion } from '@/types/aiSuggestions';
 
 const MOCK_DELAY = 1500; // Simulate AI processing time
 
@@ -32,24 +32,113 @@ export const generateAISuggestions = async (referral: Referral): Promise<AISugge
 const analyzeReferralAndGenerateSuggestions = (referral: Referral): SpecificAISuggestion[] => {
   const suggestions: SpecificAISuggestion[] = [];
 
-  // Generate triage status suggestion
+  // Status-specific suggestions
+  if (referral.status === 'new') {
+    suggestions.push(...generateNewReferralSuggestions(referral));
+  } else if (referral.status === 'accepted') {
+    suggestions.push(...generateAcceptedReferralSuggestions(referral));
+  } else if (referral.status === 'rejected') {
+    suggestions.push(...generateRejectedReferralSuggestions(referral));
+  }
+
+  // Always generate these universal suggestions
+  suggestions.push(generateTaggingSuggestion(referral));
+  suggestions.push(generateDocumentationSuggestion(referral));
+  suggestions.push(...generateFollowUpSuggestions(referral));
+
+  return suggestions.sort((a, b) => b.confidence - a.confidence);
+};
+
+const generateNewReferralSuggestions = (referral: Referral): SpecificAISuggestion[] => {
+  const suggestions: SpecificAISuggestion[] = [];
+
+  // Review suggestion for new referrals
+  suggestions.push(generateReviewSuggestion(referral));
+
+  // Triage status suggestion
   suggestions.push(generateTriageStatusSuggestion(referral));
+
+  // Priority assessment
+  if (referral.priority === 'routine') {
+    const clinicalInfo = referral.clinicalInfo.reason.toLowerCase();
+    if (CLINICAL_PATTERNS.urgent_indicators.some(indicator => clinicalInfo.includes(indicator))) {
+      suggestions.push({
+        id: `priority-${Date.now()}`,
+        type: 'review',
+        title: 'Consider upgrading priority',
+        description: 'Clinical indicators suggest this may require urgent attention',
+        confidence: 0.85,
+        reasoning: 'Urgent clinical indicators detected in routine referral',
+        priority: 'high',
+        actionable: true,
+        reviewType: 'priority-assessment',
+        recommendedAction: 'Upgrade to urgent priority'
+      } as ReviewSuggestion);
+    }
+  }
+
+  return suggestions;
+};
+
+const generateAcceptedReferralSuggestions = (referral: Referral): SpecificAISuggestion[] => {
+  const suggestions: SpecificAISuggestion[] = [];
 
   // Generate appointment suggestion
   suggestions.push(generateAppointmentSuggestion(referral));
 
-  // Generate waiting list suggestion if applicable
-  if (referral.status === 'accepted') {
-    suggestions.push(generateWaitingListSuggestion(referral));
+  // Generate waiting list suggestion
+  suggestions.push(generateWaitingListSuggestion(referral));
+
+  // Triage progression suggestion
+  suggestions.push(generateTriageStatusSuggestion(referral));
+
+  return suggestions;
+};
+
+const generateRejectedReferralSuggestions = (referral: Referral): SpecificAISuggestion[] => {
+  const suggestions: SpecificAISuggestion[] = [];
+
+  // Alternative pathway suggestion
+  suggestions.push({
+    id: `alternative-${Date.now()}`,
+    type: 'review',
+    title: 'Consider alternative pathways',
+    description: 'Explore other specialties or services that might be appropriate',
+    confidence: 0.75,
+    reasoning: 'Rejected referrals may benefit from alternative care pathways',
+    priority: 'medium',
+    actionable: true,
+    reviewType: 'alternative-pathway',
+    recommendedAction: 'Review alternative specialties or primary care options'
+  } as ReviewSuggestion);
+
+  return suggestions;
+};
+
+const generateReviewSuggestion = (referral: Referral): ReviewSuggestion => {
+  const clinicalInfo = referral.clinicalInfo.reason.toLowerCase();
+  let confidence = 0.8;
+  let reviewType: ReviewSuggestion['reviewType'] = 'initial-assessment';
+  let recommendedAction = 'Complete initial clinical review';
+
+  if (CLINICAL_PATTERNS.urgent_indicators.some(indicator => clinicalInfo.includes(indicator))) {
+    confidence = 0.95;
+    reviewType = 'urgent-review';
+    recommendedAction = 'Immediate clinical review required';
   }
 
-  // Generate tagging suggestions
-  suggestions.push(generateTaggingSuggestion(referral));
-
-  // Generate follow-up suggestions
-  suggestions.push(...generateFollowUpSuggestions(referral));
-
-  return suggestions.sort((a, b) => b.confidence - a.confidence);
+  return {
+    id: `review-${Date.now()}`,
+    type: 'review',
+    title: 'Clinical review required',
+    description: `Recommend ${reviewType.replace('-', ' ')} within appropriate timeframe`,
+    confidence,
+    reasoning: 'New referral requires clinical assessment to determine appropriate care pathway',
+    priority: confidence > 0.9 ? 'high' : 'medium',
+    actionable: true,
+    reviewType,
+    recommendedAction
+  };
 };
 
 const generateTriageStatusSuggestion = (referral: Referral): TriageStatusSuggestion => {
@@ -60,19 +149,26 @@ const generateTriageStatusSuggestion = (referral: Referral): TriageStatusSuggest
   let confidence = 0.7;
   let reasoning = 'Based on clinical information analysis';
 
-  // Analyze urgency and complexity
-  if (CLINICAL_PATTERNS.urgent_indicators.some(indicator => clinicalInfo.includes(indicator))) {
-    suggestedStatus = 'pre-admission-assessment';
+  // Status-specific logic
+  if (referral.status === 'new') {
+    suggestedStatus = 'pre-assessment';
     confidence = 0.9;
-    reasoning = 'Urgent clinical indicators detected requiring immediate pre-admission assessment';
-  } else if (referral.priority === 'urgent') {
-    suggestedStatus = 'assessed';
-    confidence = 0.85;
-    reasoning = 'Urgent priority referral should be assessed promptly';
-  } else if (currentStatus === 'pre-assessment') {
-    suggestedStatus = 'assessed';
-    confidence = 0.8;
-    reasoning = 'Ready to progress from pre-assessment to assessed status';
+    reasoning = 'New referrals should begin with pre-assessment';
+  } else if (referral.status === 'accepted') {
+    // Analyze urgency and complexity for accepted referrals
+    if (CLINICAL_PATTERNS.urgent_indicators.some(indicator => clinicalInfo.includes(indicator))) {
+      suggestedStatus = 'pre-admission-assessment';
+      confidence = 0.9;
+      reasoning = 'Urgent clinical indicators detected requiring immediate pre-admission assessment';
+    } else if (referral.priority === 'urgent') {
+      suggestedStatus = 'assessed';
+      confidence = 0.85;
+      reasoning = 'Urgent priority referral should be assessed promptly';
+    } else if (currentStatus === 'pre-assessment') {
+      suggestedStatus = 'assessed';
+      confidence = 0.8;
+      reasoning = 'Ready to progress from pre-assessment to assessed status';
+    }
   }
 
   return {
@@ -83,7 +179,7 @@ const generateTriageStatusSuggestion = (referral: Referral): TriageStatusSuggest
     confidence,
     reasoning,
     priority: confidence > 0.8 ? 'high' : 'medium',
-    actionable: true,
+    actionable: referral.status === 'accepted', // Only actionable for accepted referrals
     suggestedStatus,
     estimatedTimeframe: suggestedStatus === 'pre-admission-assessment' ? '24-48 hours' : '1-2 weeks'
   };
@@ -113,7 +209,7 @@ const generateAppointmentSuggestion = (referral: Referral): AppointmentSuggestio
     confidence,
     reasoning: `Based on clinical priority and referral urgency level`,
     priority: urgency === 'urgent' ? 'high' : 'medium',
-    actionable: true,
+    actionable: false, // Not directly actionable in current system
     urgency,
     suggestedTimeframe: timeframe,
     appointmentType: referral.specialty
@@ -143,7 +239,7 @@ const generateWaitingListSuggestion = (referral: Referral): WaitingListSuggestio
     confidence,
     reasoning: `Based on referral priority and current service capacity`,
     priority: position === 'priority' ? 'high' : 'medium',
-    actionable: true,
+    actionable: false, // Not directly actionable in current system
     suggestedPosition: position,
     estimatedWaitTime: waitTime
   };
@@ -154,6 +250,12 @@ const generateTaggingSuggestion = (referral: Referral): TaggingSuggestion => {
   const existingTags = referral.tags || [];
   const suggestedTags: string[] = [];
   const categories: string[] = [];
+
+  // Status-specific tags
+  if (referral.status === 'new') {
+    suggestedTags.push('Requires review');
+    categories.push('status');
+  }
 
   // Analyze clinical content for tag suggestions
   if (CLINICAL_PATTERNS.urgent_indicators.some(indicator => clinicalInfo.includes(indicator))) {
@@ -172,7 +274,7 @@ const generateTaggingSuggestion = (referral: Referral): TaggingSuggestion => {
   }
 
   if (!suggestedTags.length) {
-    suggestedTags.push('Routine follow-up');
+    suggestedTags.push('Standard care');
     categories.push('status');
   }
 
@@ -193,6 +295,45 @@ const generateTaggingSuggestion = (referral: Referral): TaggingSuggestion => {
   };
 };
 
+const generateDocumentationSuggestion = (referral: Referral): DocumentationSuggestion => {
+  const missingFields: string[] = [];
+  let confidence = 0.6;
+
+  if (!referral.clinicalInfo.diagnosis) {
+    missingFields.push('Provisional diagnosis');
+  }
+  if (!referral.clinicalInfo.history) {
+    missingFields.push('Clinical history');
+  }
+  if (!referral.clinicalInfo.medications || referral.clinicalInfo.medications.length === 0) {
+    missingFields.push('Current medications');
+  }
+  if (!referral.attachments || referral.attachments.length === 0) {
+    missingFields.push('Supporting documents');
+  }
+
+  if (missingFields.length > 0) {
+    confidence = 0.9;
+  }
+
+  return {
+    id: `documentation-${Date.now()}`,
+    type: 'documentation',
+    title: missingFields.length > 0 ? 'Complete missing documentation' : 'Documentation review',
+    description: missingFields.length > 0 
+      ? `${missingFields.length} key fields require completion`
+      : 'Clinical documentation appears complete',
+    confidence,
+    reasoning: missingFields.length > 0 
+      ? 'Missing clinical information may impact care planning'
+      : 'Regular documentation review ensures completeness',
+    priority: missingFields.length > 2 ? 'high' : 'medium',
+    actionable: missingFields.length > 0,
+    missingFields,
+    completionPercentage: Math.round(((4 - missingFields.length) / 4) * 100)
+  };
+};
+
 const generateFollowUpSuggestions = (referral: Referral): FollowUpSuggestion[] => {
   const suggestions: FollowUpSuggestion[] = [];
 
@@ -207,25 +348,25 @@ const generateFollowUpSuggestions = (referral: Referral): FollowUpSuggestion[] =
       confidence: 0.85,
       reasoning: 'Clinical information indicates pending test results',
       priority: 'medium',
-      actionable: true,
+      actionable: false,
       followUpType: 'test-results',
       timeline: '1-2 weeks'
     });
   }
 
-  // Documentation follow-up
-  if (!referral.clinicalInfo.diagnosis) {
+  // Status-specific follow-ups
+  if (referral.status === 'new') {
     suggestions.push({
-      id: `followup-docs-${Date.now()}`,
+      id: `followup-decision-${Date.now()}`,
       type: 'follow-up',
-      title: 'Complete clinical documentation',
-      description: 'Missing provisional diagnosis - request additional clinical information',
-      confidence: 0.9,
-      reasoning: 'Incomplete clinical documentation detected',
+      title: 'Review and decide on referral',
+      description: 'New referral requires acceptance or rejection decision',
+      confidence: 0.95,
+      reasoning: 'New referrals should be processed within standard timeframes',
       priority: 'high',
-      actionable: true,
-      followUpType: 'documentation',
-      timeline: '3-5 days'
+      actionable: false,
+      followUpType: 'specialist-review',
+      timeline: '2-5 days'
     });
   }
 

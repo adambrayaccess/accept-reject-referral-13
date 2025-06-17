@@ -1,7 +1,7 @@
 
 export interface AISuggestion {
   id: string;
-  type: 'triage-status' | 'appointment' | 'waiting-list' | 'tagging' | 'follow-up';
+  type: 'triage-status' | 'appointment' | 'waiting-list' | 'tagging' | 'follow-up' | 'review' | 'documentation';
   title: string;
   description: string;
   confidence: number; // 0-1
@@ -42,12 +42,26 @@ export interface FollowUpSuggestion extends AISuggestion {
   timeline: string;
 }
 
+export interface ReviewSuggestion extends AISuggestion {
+  type: 'review';
+  reviewType: 'initial-assessment' | 'urgent-review' | 'priority-assessment' | 'alternative-pathway';
+  recommendedAction: string;
+}
+
+export interface DocumentationSuggestion extends AISuggestion {
+  type: 'documentation';
+  missingFields: string[];
+  completionPercentage: number;
+}
+
 export type SpecificAISuggestion = 
   | TriageStatusSuggestion 
   | AppointmentSuggestion 
   | WaitingListSuggestion 
   | TaggingSuggestion 
-  | FollowUpSuggestion;
+  | FollowUpSuggestion
+  | ReviewSuggestion
+  | DocumentationSuggestion;
 
 export interface AISuggestionsResponse {
   suggestions: SpecificAISuggestion[];

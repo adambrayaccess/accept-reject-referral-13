@@ -19,7 +19,7 @@ interface AISuggestionsPanelProps {
 const AISuggestionsPanel = ({ referral, onSuggestionApplied }: AISuggestionsPanelProps) => {
   const [suggestions, setSuggestions] = useState<AISuggestionsResponse | null>(null);
   const [isLoading, setIsLoading] = useState(false);
-  const [isExpanded, setIsExpanded] = useState(false); // Changed default to collapsed
+  const [isExpanded, setIsExpanded] = useState(false);
   const { toast } = useToast();
 
   const loadSuggestions = async () => {
@@ -41,7 +41,7 @@ const AISuggestionsPanel = ({ referral, onSuggestionApplied }: AISuggestionsPane
 
   useEffect(() => {
     loadSuggestions();
-  }, [referral.id]);
+  }, [referral.id, referral.status, referral.triageStatus]);
 
   const handleRefresh = () => {
     loadSuggestions();
@@ -53,6 +53,24 @@ const AISuggestionsPanel = ({ referral, onSuggestionApplied }: AISuggestionsPane
     return 'bg-red-100 text-red-800 border-red-200';
   };
 
+  const getStatusColor = () => {
+    switch (referral.status) {
+      case 'new':
+        return 'bg-blue-100 text-blue-800';
+      case 'accepted':
+        return 'bg-green-100 text-green-800';
+      case 'rejected':
+        return 'bg-red-100 text-red-800';
+      default:
+        return 'bg-gray-100 text-gray-800';
+    }
+  };
+
+  const getActionableSuggestionsCount = () => {
+    if (!suggestions) return 0;
+    return suggestions.suggestions.filter(s => s.actionable).length;
+  };
+
   return (
     <Card className="bg-gradient-to-r from-pink-50 to-purple-100 border-purple-200">
       <CardHeader className="pb-3">
@@ -60,6 +78,9 @@ const AISuggestionsPanel = ({ referral, onSuggestionApplied }: AISuggestionsPane
           <div className="flex items-center gap-2">
             <Brain className="h-5 w-5 text-purple-700" />
             <CardTitle className="text-lg text-purple-800">AI Copilot Suggestions</CardTitle>
+            <Badge variant="outline" className={`text-xs ${getStatusColor()}`}>
+              {referral.status}
+            </Badge>
             {suggestions && (
               <Badge 
                 variant="outline" 
@@ -89,6 +110,11 @@ const AISuggestionsPanel = ({ referral, onSuggestionApplied }: AISuggestionsPane
             </Button>
           </div>
         </div>
+        {suggestions && suggestions.suggestions.length > 0 && (
+          <div className="text-xs text-purple-600">
+            {suggestions.suggestions.length} suggestions • {getActionableSuggestionsCount()} actionable
+          </div>
+        )}
       </CardHeader>
       
       {isExpanded && (
