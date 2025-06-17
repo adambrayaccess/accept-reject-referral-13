@@ -13,7 +13,7 @@ import { Progress } from '@/components/ui/progress';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { useToast } from '@/hooks/use-toast';
 import { Referral, ReferralPriority } from '@/types/referral';
-import { Bot, Sparkles, FileText, User, Clock, AlertTriangle, Upload, Wand2, Brain } from 'lucide-react';
+import { Brain, Sparkles, FileText, User, Clock, AlertTriangle, Upload, Wand2 } from 'lucide-react';
 import { mockPractitioners } from '@/services/mock/practitioners';
 import { analyzeDocument, mergeAnalysisResults, DocumentAnalysisResult } from '@/services/documentAnalysisService';
 import DocumentAnalysisProgress from '@/components/documents/DocumentAnalysisProgress';
@@ -378,12 +378,16 @@ const AutoReferralModal = ({ isOpen, onClose, onSubmit }: AutoReferralModalProps
 
   return (
     <Dialog open={isOpen} onOpenChange={handleClose}>
-      <DialogContent className="max-w-5xl max-h-[90vh] overflow-y-auto">
-        <DialogHeader>
-          <DialogTitle className="flex items-center gap-2">
-            <Bot className="h-5 w-5 text-blue-600" />
-            Add Auto Referral
-            <Badge variant="secondary" className="text-xs">
+      <DialogContent className="max-w-5xl max-h-[90vh] overflow-y-auto bg-gradient-to-br from-purple-50 via-white to-purple-50">
+        <DialogHeader className="pb-4 border-b border-purple-100">
+          <DialogTitle className="flex items-center gap-3 text-xl">
+            <div className="p-2 rounded-lg bg-gradient-to-br from-purple-500 to-purple-600 shadow-lg">
+              <Brain className="h-5 w-5 text-white" />
+            </div>
+            <span className="bg-gradient-to-r from-purple-600 to-purple-800 bg-clip-text text-transparent font-semibold">
+              AI Pilot Referral Generator
+            </span>
+            <Badge className="bg-gradient-to-r from-purple-100 to-purple-200 text-purple-800 border-purple-300 font-medium">
               <Sparkles className="h-3 w-3 mr-1" />
               AI-Powered
             </Badge>
@@ -391,27 +395,54 @@ const AutoReferralModal = ({ isOpen, onClose, onSubmit }: AutoReferralModalProps
         </DialogHeader>
         
         <EnhancedTabs defaultValue="documents" className="w-full">
-          <EnhancedTabsList variant="grid" size="md">
-            <EnhancedTabsTrigger value="documents" variant="grid" size="md">Upload Documents</EnhancedTabsTrigger>
-            <EnhancedTabsTrigger value="input" variant="grid" size="md">Text Input</EnhancedTabsTrigger>
-            <EnhancedTabsTrigger value="review" variant="grid" size="md" disabled={!generatedData}>Review & Submit</EnhancedTabsTrigger>
+          <EnhancedTabsList variant="grid" size="md" className="bg-gradient-to-r from-purple-50 to-purple-100 border-purple-200">
+            <EnhancedTabsTrigger 
+              value="documents" 
+              variant="grid" 
+              size="md"
+              className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-purple-500 data-[state=active]:to-purple-600 data-[state=active]:text-white hover:from-purple-100 hover:to-purple-200"
+            >
+              <Upload className="h-4 w-4 mr-2" />
+              Upload Documents
+            </EnhancedTabsTrigger>
+            <EnhancedTabsTrigger 
+              value="input" 
+              variant="grid" 
+              size="md"
+              className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-purple-500 data-[state=active]:to-purple-600 data-[state=active]:text-white hover:from-purple-100 hover:to-purple-200"
+            >
+              <FileText className="h-4 w-4 mr-2" />
+              Text Input
+            </EnhancedTabsTrigger>
+            <EnhancedTabsTrigger 
+              value="review" 
+              variant="grid" 
+              size="md" 
+              disabled={!generatedData}
+              className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-purple-500 data-[state=active]:to-purple-600 data-[state=active]:text-white hover:from-purple-100 hover:to-purple-200 disabled:opacity-50"
+            >
+              <User className="h-4 w-4 mr-2" />
+              Review & Submit
+            </EnhancedTabsTrigger>
           </EnhancedTabsList>
           
           <EnhancedTabsContent value="documents" className="space-y-6">
             <div className="space-y-4">
               {/* Document Upload Zone */}
               <div
-                className={`border-2 border-dashed rounded-lg p-8 text-center transition-colors ${
+                className={`border-2 border-dashed rounded-lg p-8 text-center transition-all duration-300 ${
                   dragActive 
-                    ? 'border-primary bg-primary/5' 
-                    : 'border-muted-foreground/25 hover:border-primary/50'
+                    ? 'border-purple-400 bg-gradient-to-br from-purple-50 to-purple-100 shadow-lg' 
+                    : 'border-purple-200 hover:border-purple-300 hover:bg-gradient-to-br hover:from-purple-25 hover:to-purple-50'
                 }`}
                 onDrop={handleDrop}
                 onDragOver={handleDragOver}
                 onDragLeave={handleDragLeave}
               >
-                <Upload className="h-10 w-10 mx-auto mb-4 text-muted-foreground" />
-                <p className="text-sm text-muted-foreground mb-2">
+                <div className="p-3 rounded-full bg-gradient-to-br from-purple-100 to-purple-200 w-fit mx-auto mb-4">
+                  <Upload className="h-8 w-8 text-purple-600" />
+                </div>
+                <p className="text-sm text-purple-700 mb-2 font-medium">
                   Drag and drop referral documents here, or click to browse
                 </p>
                 <Input
@@ -423,11 +454,16 @@ const AutoReferralModal = ({ isOpen, onClose, onSubmit }: AutoReferralModalProps
                   id="document-upload"
                 />
                 <Label htmlFor="document-upload" className="cursor-pointer">
-                  <Button variant="outline" size="sm" asChild>
+                  <Button 
+                    variant="outline" 
+                    size="sm" 
+                    asChild
+                    className="border-purple-300 text-purple-700 hover:bg-purple-50 hover:border-purple-400"
+                  >
                     <span>Browse Documents</span>
                   </Button>
                 </Label>
-                <p className="text-xs text-muted-foreground mt-2">
+                <p className="text-xs text-purple-600 mt-2">
                   Supported: PDF, DOC, DOCX, TXT, JPG, PNG (max 10MB each)
                 </p>
               </div>
@@ -436,13 +472,14 @@ const AutoReferralModal = ({ isOpen, onClose, onSubmit }: AutoReferralModalProps
               {uploadedFiles.length > 0 && (
                 <div className="space-y-4">
                   <div className="flex items-center justify-between">
-                    <h4 className="font-medium">Uploaded Documents ({uploadedFiles.length})</h4>
+                    <h4 className="font-semibold text-purple-800">Uploaded Documents ({uploadedFiles.length})</h4>
                     <div className="flex gap-2">
                       <Button
                         onClick={analyzeDocuments}
                         disabled={isAnalyzing || analysisResults.length === uploadedFiles.length}
                         size="sm"
                         variant="outline"
+                        className="border-purple-300 text-purple-700 hover:bg-purple-50"
                       >
                         <Brain className="h-3 w-3 mr-1" />
                         {isAnalyzing ? 'Analyzing...' : 'Analyze Documents'}
@@ -452,6 +489,7 @@ const AutoReferralModal = ({ isOpen, onClose, onSubmit }: AutoReferralModalProps
                           onClick={generateFromDocuments}
                           disabled={isGenerating}
                           size="sm"
+                          className="bg-gradient-to-r from-purple-500 to-purple-600 hover:from-purple-600 hover:to-purple-700 text-white shadow-md"
                         >
                           <Wand2 className="h-3 w-3 mr-1" />
                           Generate Referral
@@ -488,16 +526,16 @@ const AutoReferralModal = ({ isOpen, onClose, onSubmit }: AutoReferralModalProps
 
               {/* Generation Progress for Documents */}
               {isGenerating && uploadedFiles.length > 0 && (
-                <Card>
+                <Card className="border-purple-200 bg-gradient-to-br from-purple-50 to-white">
                   <CardHeader>
-                    <CardTitle className="text-sm flex items-center gap-2">
-                      <Bot className="h-4 w-4 animate-pulse" />
+                    <CardTitle className="text-sm flex items-center gap-2 text-purple-800">
+                      <Brain className="h-4 w-4 animate-pulse text-purple-600" />
                       Generating Referral from Documents...
                     </CardTitle>
                   </CardHeader>
                   <CardContent>
-                    <Progress value={generationProgress} className="w-full" />
-                    <p className="text-sm text-muted-foreground mt-2">
+                    <Progress value={generationProgress} className="w-full [&>div]:bg-gradient-to-r [&>div]:from-purple-500 [&>div]:to-purple-600" />
+                    <p className="text-sm text-purple-600 mt-2">
                       Processing {analysisResults.length} analyzed documents and generating structured referral data...
                     </p>
                   </CardContent>
@@ -509,24 +547,24 @@ const AutoReferralModal = ({ isOpen, onClose, onSubmit }: AutoReferralModalProps
           <EnhancedTabsContent value="input" className="space-y-6">
             <div className="space-y-4">
               <div className="space-y-2">
-                <Label htmlFor="patientInfo">Patient Information</Label>
+                <Label htmlFor="patientInfo" className="text-purple-800 font-medium">Patient Information</Label>
                 <Textarea
                   id="patientInfo"
                   value={patientInfo}
                   onChange={(e) => setPatientInfo(e.target.value)}
                   placeholder="Enter patient information in natural language. For example: 'Patient John Smith, 45 years old, presenting with chest pain and shortness of breath. History of hypertension. Needs cardiology review urgently.'"
                   rows={6}
-                  className="resize-none"
+                  className="resize-none border-purple-200 focus:border-purple-400 focus:ring-purple-400"
                 />
               </div>
               
               <div className="space-y-2">
-                <Label htmlFor="specialty">Target Specialty (Optional)</Label>
+                <Label htmlFor="specialty" className="text-purple-800 font-medium">Target Specialty (Optional)</Label>
                 <Select value={specialty} onValueChange={setSpecialty}>
-                  <SelectTrigger>
+                  <SelectTrigger className="border-purple-200 focus:border-purple-400 focus:ring-purple-400">
                     <SelectValue placeholder="AI will determine if not specified" />
                   </SelectTrigger>
-                  <SelectContent>
+                  <SelectContent className="border-purple-200">
                     <SelectItem value="Cardiology">Cardiology</SelectItem>
                     <SelectItem value="Dermatology">Dermatology</SelectItem>
                     <SelectItem value="Neurology">Neurology</SelectItem>
@@ -538,16 +576,16 @@ const AutoReferralModal = ({ isOpen, onClose, onSubmit }: AutoReferralModalProps
               </div>
 
               {isGenerating && (
-                <Card>
+                <Card className="border-purple-200 bg-gradient-to-br from-purple-50 to-white">
                   <CardHeader>
-                    <CardTitle className="text-sm flex items-center gap-2">
-                      <Bot className="h-4 w-4 animate-pulse" />
+                    <CardTitle className="text-sm flex items-center gap-2 text-purple-800">
+                      <Brain className="h-4 w-4 animate-pulse text-purple-600" />
                       Generating Referral...
                     </CardTitle>
                   </CardHeader>
                   <CardContent>
-                    <Progress value={generationProgress} className="w-full" />
-                    <p className="text-sm text-muted-foreground mt-2">
+                    <Progress value={generationProgress} className="w-full [&>div]:bg-gradient-to-r [&>div]:from-purple-500 [&>div]:to-purple-600" />
+                    <p className="text-sm text-purple-600 mt-2">
                       Processing patient information and generating structured referral data...
                     </p>
                   </CardContent>
@@ -558,7 +596,7 @@ const AutoReferralModal = ({ isOpen, onClose, onSubmit }: AutoReferralModalProps
                 <Button 
                   onClick={handleGenerate} 
                   disabled={isGenerating || !patientInfo.trim()}
-                  className="flex-1"
+                  className="flex-1 bg-gradient-to-r from-purple-500 to-purple-600 hover:from-purple-600 hover:to-purple-700 text-white shadow-md"
                 >
                   <Sparkles className="mr-2 h-4 w-4" />
                   {isGenerating ? 'Generating...' : 'Generate Referral'}
@@ -570,41 +608,41 @@ const AutoReferralModal = ({ isOpen, onClose, onSubmit }: AutoReferralModalProps
           <EnhancedTabsContent value="review" className="space-y-6">
             {generatedData && (
               <div className="space-y-4">
-                <div className="flex items-center justify-between">
-                  <h3 className="text-lg font-semibold">Generated Referral Review</h3>
-                  <Badge variant="outline" className="flex items-center gap-1">
-                    <Bot className="h-3 w-3" />
+                <div className="flex items-center justify-between p-4 rounded-lg bg-gradient-to-r from-purple-50 to-purple-100 border border-purple-200">
+                  <h3 className="text-lg font-semibold text-purple-800">Generated Referral Review</h3>
+                  <Badge className="flex items-center gap-1 bg-gradient-to-r from-purple-100 to-purple-200 text-purple-800 border-purple-300">
+                    <Brain className="h-3 w-3" />
                     {generatedData.confidence}% Confidence
                   </Badge>
                 </div>
                 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <Card>
-                    <CardHeader>
-                      <CardTitle className="text-sm flex items-center gap-2">
+                  <Card className="border-purple-200">
+                    <CardHeader className="bg-gradient-to-r from-purple-50 to-purple-100">
+                      <CardTitle className="text-sm flex items-center gap-2 text-purple-800">
                         <User className="h-4 w-4" />
                         Patient Information
                       </CardTitle>
                     </CardHeader>
-                    <CardContent className="space-y-2">
-                      <div><strong>Name:</strong> {generatedData.patient.name}</div>
-                      <div><strong>NHS Number:</strong> {generatedData.patient.nhsNumber}</div>
-                      <div><strong>DOB:</strong> {generatedData.patient.birthDate}</div>
+                    <CardContent className="space-y-2 pt-4">
+                      <div><strong className="text-purple-700">Name:</strong> {generatedData.patient.name}</div>
+                      <div><strong className="text-purple-700">NHS Number:</strong> {generatedData.patient.nhsNumber}</div>
+                      <div><strong className="text-purple-700">DOB:</strong> {generatedData.patient.birthDate}</div>
                     </CardContent>
                   </Card>
                   
-                  <Card>
-                    <CardHeader>
-                      <CardTitle className="text-sm flex items-center gap-2">
+                  <Card className="border-purple-200">
+                    <CardHeader className="bg-gradient-to-r from-purple-50 to-purple-100">
+                      <CardTitle className="text-sm flex items-center gap-2 text-purple-800">
                         <FileText className="h-4 w-4" />
                         Referral Details
                       </CardTitle>
                     </CardHeader>
-                    <CardContent className="space-y-2">
-                      <div><strong>ID:</strong> {generatedData.id}</div>
-                      <div><strong>Specialty:</strong> {generatedData.specialty}</div>
+                    <CardContent className="space-y-2 pt-4">
+                      <div><strong className="text-purple-700">ID:</strong> {generatedData.id}</div>
+                      <div><strong className="text-purple-700">Specialty:</strong> {generatedData.specialty}</div>
                       <div className="flex items-center gap-2">
-                        <strong>Priority:</strong> 
+                        <strong className="text-purple-700">Priority:</strong> 
                         <Badge variant={generatedData.priority === 'urgent' ? 'destructive' : 'secondary'}>
                           {generatedData.priority === 'urgent' && <AlertTriangle className="h-3 w-3 mr-1" />}
                           {generatedData.priority}
@@ -614,29 +652,29 @@ const AutoReferralModal = ({ isOpen, onClose, onSubmit }: AutoReferralModalProps
                   </Card>
                 </div>
                 
-                <Card>
-                  <CardHeader>
-                    <CardTitle className="text-sm">Clinical Information</CardTitle>
+                <Card className="border-purple-200">
+                  <CardHeader className="bg-gradient-to-r from-purple-50 to-purple-100">
+                    <CardTitle className="text-sm text-purple-800">Clinical Information</CardTitle>
                   </CardHeader>
-                  <CardContent>
+                  <CardContent className="pt-4">
                     <div className="space-y-2">
-                      <div><strong>Reason:</strong> {generatedData.clinicalInfo.reason}</div>
-                      <div><strong>History:</strong> {generatedData.clinicalInfo.history}</div>
-                      <div><strong>Notes:</strong> {generatedData.clinicalInfo.notes}</div>
+                      <div><strong className="text-purple-700">Reason:</strong> {generatedData.clinicalInfo.reason}</div>
+                      <div><strong className="text-purple-700">History:</strong> {generatedData.clinicalInfo.history}</div>
+                      <div><strong className="text-purple-700">Notes:</strong> {generatedData.clinicalInfo.notes}</div>
                     </div>
                   </CardContent>
                 </Card>
 
                 {generatedData.documentAnalysis && (
-                  <Card>
-                    <CardHeader>
-                      <CardTitle className="text-sm">Document Analysis Summary</CardTitle>
+                  <Card className="border-purple-200">
+                    <CardHeader className="bg-gradient-to-r from-purple-50 to-purple-100">
+                      <CardTitle className="text-sm text-purple-800">Document Analysis Summary</CardTitle>
                     </CardHeader>
-                    <CardContent>
+                    <CardContent className="pt-4">
                       <div className="space-y-2 text-sm">
-                        <div><strong>Documents Analyzed:</strong> {generatedData.documentAnalysis.analyzedDocuments}</div>
-                        <div><strong>Processing Time:</strong> {generatedData.documentAnalysis.processingTime}ms</div>
-                        <div><strong>Source:</strong> Generated from uploaded documents using AI analysis</div>
+                        <div><strong className="text-purple-700">Documents Analyzed:</strong> {generatedData.documentAnalysis.analyzedDocuments}</div>
+                        <div><strong className="text-purple-700">Processing Time:</strong> {generatedData.documentAnalysis.processingTime}ms</div>
+                        <div><strong className="text-purple-700">Source:</strong> Generated from uploaded documents using AI analysis</div>
                       </div>
                     </CardContent>
                   </Card>
@@ -646,11 +684,22 @@ const AutoReferralModal = ({ isOpen, onClose, onSubmit }: AutoReferralModalProps
           </EnhancedTabsContent>
         </EnhancedTabs>
 
-        <DialogFooter>
-          <Button type="button" variant="outline" onClick={handleClose}>Cancel</Button>
+        <DialogFooter className="pt-4 border-t border-purple-100">
+          <Button 
+            type="button" 
+            variant="outline" 
+            onClick={handleClose}
+            className="border-purple-300 text-purple-700 hover:bg-purple-50"
+          >
+            Cancel
+          </Button>
           {generatedData && (
-            <Button onClick={handleSubmit} className="bg-blue-600 hover:bg-blue-700">
-              Create Auto Referral
+            <Button 
+              onClick={handleSubmit} 
+              className="bg-gradient-to-r from-purple-500 to-purple-600 hover:from-purple-600 hover:to-purple-700 text-white shadow-md"
+            >
+              <Sparkles className="mr-2 h-4 w-4" />
+              Create AI Referral
             </Button>
           )}
         </DialogFooter>
