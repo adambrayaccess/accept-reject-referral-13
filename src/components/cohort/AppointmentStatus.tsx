@@ -20,57 +20,93 @@ const AppointmentStatus = ({ referral, variant = 'default' }: AppointmentStatusP
     // If there's actual appointment data, use it
     if (referral.appointmentDetails) {
       const appointment = referral.appointmentDetails;
-      const appointmentDate = parseISO(appointment.date);
-      const isPastAppointment = isPast(appointmentDate);
       
-      switch (appointment.status) {
-        case 'scheduled':
-          return {
-            status: 'scheduled',
-            text: isToday(appointmentDate) ? 'Appointment Today' : 
-                  isTomorrow(appointmentDate) ? 'Appointment Tomorrow' :
-                  `Appointment ${format(appointmentDate, 'MMM dd')}`,
-            icon: Calendar,
-            variant: 'default' as const,
-            details: `${appointment.time} - ${appointment.location}`,
-            canBook: false,
-            appointmentInfo: appointment
-          };
-        case 'confirmed':
-          return {
-            status: 'confirmed',
-            text: isToday(appointmentDate) ? 'Confirmed Today' : 
-                  isTomorrow(appointmentDate) ? 'Confirmed Tomorrow' :
-                  `Confirmed ${format(appointmentDate, 'MMM dd')}`,
-            icon: CheckCircle,
-            variant: 'default' as const,
-            details: `${appointment.time} - ${appointment.location}`,
-            canBook: false,
-            appointmentInfo: appointment
-          };
-        case 'cancelled':
-          return {
-            status: 'cancelled',
-            text: 'Appointment Cancelled',
-            icon: XCircle,
-            variant: 'destructive' as const,
-            details: 'Needs rescheduling',
-            canBook: true,
-            appointmentInfo: appointment
-          };
-        case 'completed':
-          return {
-            status: 'completed',
-            text: 'Appointment Completed',
-            icon: CheckCircle,
-            variant: 'default' as const,
-            details: `${format(appointmentDate, 'MMM dd')} - ${appointment.location}`,
-            canBook: false,
-            appointmentInfo: appointment
-          };
+      // Safety check for date field
+      if (!appointment.date) {
+        console.warn('Appointment details missing date field:', appointment);
+        return getFallbackStatus(age);
+      }
+      
+      try {
+        const appointmentDate = parseISO(appointment.date);
+        const isPastAppointment = isPast(appointmentDate);
+        
+        switch (appointment.status) {
+          case 'scheduled':
+            return {
+              status: 'scheduled',
+              text: isToday(appointmentDate) ? 'Appointment Today' : 
+                    isTomorrow(appointmentDate) ? 'Appointment Tomorrow' :
+                    `Appointment ${format(appointmentDate, 'MMM dd')}`,
+              icon: Calendar,
+              variant: 'default' as const,
+              details: `${appointment.time} - ${appointment.location}`,
+              canBook: false,
+              appointmentInfo: appointment
+            };
+          case 'confirmed':
+            return {
+              status: 'confirmed',
+              text: isToday(appointmentDate) ? 'Confirmed Today' : 
+                    isTomorrow(appointmentDate) ? 'Confirmed Tomorrow' :
+                    `Confirmed ${format(appointmentDate, 'MMM dd')}`,
+              icon: CheckCircle,
+              variant: 'default' as const,
+              details: `${appointment.time} - ${appointment.location}`,
+              canBook: false,
+              appointmentInfo: appointment
+            };
+          case 'cancelled':
+            return {
+              status: 'cancelled',
+              text: 'Appointment Cancelled',
+              icon: XCircle,
+              variant: 'destructive' as const,
+              details: 'Needs rescheduling',
+              canBook: true,
+              appointmentInfo: appointment
+            };
+          case 'completed':
+            return {
+              status: 'completed',
+              text: 'Appointment Completed',
+              icon: CheckCircle,
+              variant: 'default' as const,
+              details: `${format(appointmentDate, 'MMM dd')} - ${appointment.location}`,
+              canBook: false,
+              appointmentInfo: appointment
+            };
+          case 'pending':
+            return {
+              status: 'pending',
+              text: 'Appointment Pending',
+              icon: Clock,
+              variant: 'secondary' as const,
+              details: 'Awaiting scheduling',
+              canBook: true,
+              appointmentInfo: appointment
+            };
+          case 'overdue':
+            return {
+              status: 'overdue',
+              text: 'Appointment Overdue',
+              icon: AlertCircle,
+              variant: 'destructive' as const,
+              details: `${age} days waiting`,
+              canBook: true,
+              appointmentInfo: appointment
+            };
+        }
+      } catch (error) {
+        console.error('Error parsing appointment date:', error, appointment);
+        return getFallbackStatus(age);
       }
     }
     
+    return getFallbackStatus(age);
+  };
+
+  const getFallbackStatus = (age: number) => {
     // Fallback to original logic for referrals without appointment data
     if (referral.triageStatus === 'waiting-list') {
       if (age > 60) {

@@ -62,12 +62,18 @@ const generateAppointmentDetails = (referral: Referral, ageInDays: number) => {
   const priority = referral.priority;
   const tags = referral.tags || [];
   
+  // Generate a unique ID for the appointment
+  const appointmentId = `apt-${referral.id}-${Date.now()}`;
+  
   // Determine appointment status based on referral characteristics
   if (ageInDays > 90) {
     return {
+      id: appointmentId,
+      date: new Date().toISOString().split('T')[0], // Today's date in YYYY-MM-DD format
+      time: '09:00',
+      type: 'consultation' as const,
+      location: 'Outpatient Clinic',
       status: 'overdue' as const,
-      scheduledDate: null,
-      location: null,
       notes: 'Appointment overdue - requires urgent scheduling'
     };
   }
@@ -77,18 +83,24 @@ const generateAppointmentDetails = (referral: Referral, ageInDays: number) => {
     scheduledDate.setDate(scheduledDate.getDate() + Math.floor(Math.random() * 14) + 1);
     
     return {
-      status: 'scheduled' as const,
-      scheduledDate: scheduledDate.toISOString(),
+      id: appointmentId,
+      date: scheduledDate.toISOString().split('T')[0],
+      time: '10:30',
+      type: 'consultation' as const,
       location: 'Outpatient Clinic 2',
+      status: 'scheduled' as const,
       notes: 'Urgent appointment scheduled'
     };
   }
   
   if (ageInDays > 60) {
     return {
+      id: appointmentId,
+      date: new Date().toISOString().split('T')[0],
+      time: '14:00',
+      type: 'consultation' as const,
+      location: 'Outpatient Clinic',
       status: 'pending' as const,
-      scheduledDate: null,
-      location: null,
       notes: 'Awaiting appointment scheduling'
     };
   }
@@ -98,17 +110,23 @@ const generateAppointmentDetails = (referral: Referral, ageInDays: number) => {
     scheduledDate.setDate(scheduledDate.getDate() + Math.floor(Math.random() * 30) + 7);
     
     return {
-      status: 'confirmed' as const,
-      scheduledDate: scheduledDate.toISOString(),
+      id: appointmentId,
+      date: scheduledDate.toISOString().split('T')[0],
+      time: '11:15',
+      type: 'consultation' as const,
       location: 'Main Outpatient Department',
+      status: 'confirmed' as const,
       notes: 'Standard appointment confirmed'
     };
   }
   
   return {
+    id: appointmentId,
+    date: new Date().toISOString().split('T')[0],
+    time: '09:30',
+    type: 'consultation' as const,
+    location: 'Outpatient Clinic',
     status: 'pending' as const,
-    scheduledDate: null,
-    location: null,
     notes: 'Recently received - appointment to be scheduled'
   };
 };
