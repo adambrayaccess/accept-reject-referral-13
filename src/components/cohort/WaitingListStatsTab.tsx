@@ -1,6 +1,5 @@
 
 import WaitingListDashboard from './WaitingListDashboard';
-import ReferralTrendsChart from './ReferralTrendsChart';
 import WaitingListCharts from './WaitingListCharts';
 import { Referral } from '@/types/referral';
 
@@ -21,7 +20,6 @@ const WaitingListStatsTab = ({
             <div key={i} className="h-32 bg-gray-200 animate-pulse rounded-lg" />
           ))}
         </div>
-        <div className="h-64 bg-gray-200 animate-pulse rounded-lg" />
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {[...Array(3)].map((_, i) => (
             <div key={i} className="h-64 bg-gray-200 animate-pulse rounded-lg" />
@@ -35,9 +33,6 @@ const WaitingListStatsTab = ({
     <div className="space-y-6">
       {/* Business Intelligence Dashboard */}
       <WaitingListDashboard referrals={referrals} />
-      
-      {/* Referral Trends Chart */}
-      <ReferralTrendsChart referrals={referrals} />
       
       {/* Analytics Charts */}
       <WaitingListCharts referrals={referrals} />
