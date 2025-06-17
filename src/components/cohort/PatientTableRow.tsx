@@ -97,52 +97,52 @@ const PatientTableRow = ({
               <div>
                 <Link 
                   to={`/referral/${referral.id}`}
-                  className="font-bold underline text-xs"
+                  className="font-bold underline text-sm"
                   style={{ color: '#007373' }}
                   onClick={(e) => !isDragDisabled && e.stopPropagation()}
                 >
                   {referral.patient.name}
                 </Link>
-                <div className="text-xs text-muted-foreground font-mono">
+                <div className="text-sm text-muted-foreground font-mono">
                   NHS: {referral.patient.nhsNumber}
                 </div>
               </div>
               <ChevronRight className="h-4 w-4 text-muted-foreground" />
             </div>
           </TableCell>
-          <TableCell className="p-2 text-xs">{patientAge} years</TableCell>
+          <TableCell className="p-2 text-sm">{patientAge} years</TableCell>
           <TableCell className="p-2">
             <ReferralPriorityBadge priority={referral.priority} />
           </TableCell>
-          <TableCell className="p-2 text-xs">
+          <TableCell className="p-2 text-sm">
             <div className="flex items-center gap-1">
               <Calendar className="h-3 w-3 text-muted-foreground" />
               <span>{referralAge} days</span>
             </div>
           </TableCell>
-          <TableCell className="p-2 text-xs">
+          <TableCell className="p-2 text-sm">
             <div className="flex items-center gap-1">
               <MapPin className="h-3 w-3 text-muted-foreground" />
               <span>{location}</span>
             </div>
           </TableCell>
-          <TableCell className="p-2 text-xs">
+          <TableCell className="p-2 text-sm">
             <div className="font-medium">{referral.referrer.name}</div>
-            <div className="text-xs text-muted-foreground">{referral.referrer.organization}</div>
+            <div className="text-sm text-muted-foreground">{referral.referrer.organization}</div>
           </TableCell>
-          <TableCell className="p-2 text-xs">
+          <TableCell className="p-2 text-sm">
             <div>{format(new Date(referral.created), 'dd MMM yyyy')}</div>
             <div>{format(new Date(referral.created), 'HH:mm')}</div>
           </TableCell>
           <TableCell className="p-2">
             <div className="flex flex-wrap gap-1 max-w-32">
               {tags.slice(0, 2).map(tag => (
-                <Badge key={tag} variant="outline" className="text-xs">
+                <Badge key={tag} variant="outline" className="text-sm">
                   {tag}
                 </Badge>
               ))}
               {tags.length > 2 && (
-                <Badge variant="outline" className="text-xs">
+                <Badge variant="outline" className="text-sm">
                   +{tags.length - 2}
                 </Badge>
               )}
@@ -151,7 +151,7 @@ const PatientTableRow = ({
           <TableCell className="p-2">
             <AppointmentStatus referral={referral} variant="compact" />
           </TableCell>
-          <TableCell className="p-2 text-xs">
+          <TableCell className="p-2 text-sm">
             {referral.rttPathway ? (
               <div>{formatTargetDate(referral.rttPathway.targetDate)}</div>
             ) : (
@@ -165,7 +165,7 @@ const PatientTableRow = ({
                 variant="compact"
               />
             ) : (
-              <span className="text-xs text-muted-foreground">No pathway</span>
+              <span className="text-sm text-muted-foreground">No pathway</span>
             )}
           </TableCell>
           <TableCell className="p-2">
@@ -176,7 +176,7 @@ const PatientTableRow = ({
                 variant="compact"
               />
             ) : (
-              <span className="text-xs text-muted-foreground">No RTT data</span>
+              <span className="text-sm text-muted-foreground">No RTT data</span>
             )}
           </TableCell>
           <TableCell className="p-2">

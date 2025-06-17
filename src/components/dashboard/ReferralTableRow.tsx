@@ -1,3 +1,4 @@
+
 import { TableCell, TableRow } from '@/components/ui/table';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
@@ -83,7 +84,7 @@ const ReferralTableRow = ({
           <TableCell className="p-2">
             <Button
               variant="link"
-              className="font-bold underline p-0 h-auto text-xs"
+              className="font-bold underline p-0 h-auto text-sm"
               style={{ color: '#007373' }}
               onClick={(e) => !isDragDisabled && onNameClick(e, referral.id)}
               disabled={isDragDisabled}
@@ -91,20 +92,20 @@ const ReferralTableRow = ({
               {referral.patient.name}
             </Button>
           </TableCell>
-          <TableCell className="p-2 text-xs">{referral.patient.gender}</TableCell>
-          <TableCell className="p-2 font-mono text-xs">{referral.patient.nhsNumber}</TableCell>
-          <TableCell className="p-2 font-mono text-xs">{referral.ubrn}</TableCell>
-          <TableCell className="p-2 text-xs">
+          <TableCell className="p-2 text-sm">{referral.patient.gender}</TableCell>
+          <TableCell className="p-2 font-mono text-sm">{referral.patient.nhsNumber}</TableCell>
+          <TableCell className="p-2 font-mono text-sm">{referral.ubrn}</TableCell>
+          <TableCell className="p-2 text-sm">
             <div>{format(new Date(referral.created), 'dd MMM yyyy')}</div>
             <div>{format(new Date(referral.created), 'HH:mm')}</div>
           </TableCell>
-          <TableCell className="p-2 font-mono text-xs">{referral.patient.phone || 'N/A'}</TableCell>
-          <TableCell className="p-2 text-xs">
+          <TableCell className="p-2 font-mono text-sm">{referral.patient.phone || 'N/A'}</TableCell>
+          <TableCell className="p-2 text-sm">
             <div>{referral.specialty}</div>
-            <div className="text-xs text-muted-foreground">{referral.referrer.name}</div>
+            <div className="text-sm text-muted-foreground">{referral.referrer.name}</div>
           </TableCell>
           <TableCell className="p-2 max-w-32">
-            <div className="text-xs truncate" title={referral.clinicalInfo.reason}>
+            <div className="text-sm truncate" title={referral.clinicalInfo.reason}>
               {referral.clinicalInfo.reason}
             </div>
           </TableCell>
