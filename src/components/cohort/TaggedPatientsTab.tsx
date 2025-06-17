@@ -2,6 +2,7 @@
 import CohortGrid from './CohortGrid';
 import TaggedPatientsStatistics from './TaggedPatientsStatistics';
 import TagInsightsDashboard from './TagInsightsDashboard';
+import AICopilotActionsPanel from '@/components/ai-copilot/AICopilotActionsPanel';
 import { Referral } from '@/types/referral';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
@@ -50,6 +51,17 @@ const TaggedPatientsTab = ({
     <div className="space-y-6">
       {/* Tag-specific statistics */}
       <TaggedPatientsStatistics referrals={taggedReferrals} />
+      
+      {/* AI Copilot Actions Panel - shows when referrals are selected */}
+      {selectedReferrals.length > 0 && (
+        <AICopilotActionsPanel
+          selectedReferrals={selectedReferrals}
+          onSuggestionApplied={() => {
+            // Trigger a refresh or update as needed
+            console.log('AI Copilot action applied, refreshing data...');
+          }}
+        />
+      )}
       
       {/* Tag insights dashboard */}
       {taggedReferrals.length > 0 && (
