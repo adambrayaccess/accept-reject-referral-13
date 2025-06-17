@@ -9,6 +9,8 @@ export interface WaitingListFilters {
   tags: string[];
   appointmentStatus: string;
   ageRange: { min: number; max: number };
+  rttBreachRisk: string;
+  rttDaysRange: { min: number; max: number };
 }
 
 export const useWaitingListFilters = () => {
@@ -18,7 +20,9 @@ export const useWaitingListFilters = () => {
     location: '',
     tags: [],
     appointmentStatus: 'all',
-    ageRange: { min: 0, max: 365 }
+    ageRange: { min: 0, max: 365 },
+    rttBreachRisk: 'all',
+    rttDaysRange: { min: 0, max: 126 }
   });
 
   const applyFilters = (referrals: Referral[]): Referral[] => {
@@ -80,6 +84,22 @@ export const useWaitingListFilters = () => {
       (ref.calculatedReferralAge || 0) <= filters.ageRange.max
     );
 
+    // Apply RTT breach risk filter
+    if (filters.rttBreachRisk !== 'all') {
+      filtered = filtered.filter(ref =>
+        ref.rttPathway?.breachRisk === filters.rttBreachRisk
+      );
+    }
+
+    // Apply RTT days range filter
+    if (filters.rttDaysRange.min > 0 || filters.rttDaysRange.max < 126) {
+      filtered = filtered.filter(ref => {
+        const daysRemaining = ref.rttPathway?.daysRemaining || 0;
+        return daysRemaining >= filters.rttDaysRange.min && 
+               daysRemaining <= filters.rttDaysRange.max;
+      });
+    }
+
     return filtered;
   };
 
@@ -94,7 +114,9 @@ export const useWaitingListFilters = () => {
       location: '',
       tags: [],
       appointmentStatus: 'all',
-      ageRange: { min: 0, max: 365 }
+      ageRange: { min: 0, max: 365 },
+      rttBreachRisk: 'all',
+      rttDaysRange: { min: 0, max: 126 }
     });
   };
 

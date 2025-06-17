@@ -49,6 +49,8 @@ const WaitingListTableHeader = ({
         <TableHead className="w-24">Date</TableHead>
         <TableHead className="min-w-[100px]">Tags</TableHead>
         <TableHead className="min-w-[120px]">Appointment Status</TableHead>
+        <TableHead className="min-w-[100px]">Target Date</TableHead>
+        <TableHead className="min-w-[120px]">RTT Pathway</TableHead>
         <TableHead className="min-w-[120px]">AI Actions</TableHead>
         <TableHead className="min-w-[100px]">Sub-referrals</TableHead>
       </TableRow>

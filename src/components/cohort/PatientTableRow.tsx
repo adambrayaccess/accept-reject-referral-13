@@ -12,11 +12,13 @@ import ReferralPriorityBadge from '@/components/dashboard/ReferralPriorityBadge'
 import AppointmentStatus from './AppointmentStatus';
 import WaitingListAIActions from './WaitingListAIActions';
 import SubReferralIndicator from './SubReferralIndicator';
+import RTTPathwayBadge from './RTTPathwayBadge';
 import {
   calculateReferralAgeDays,
   calculatePatientAge,
   getLocationFromAddress
 } from './utils/waitingListUtils';
+import { formatTargetDate } from '@/utils/rttPathwayUtils';
 
 interface PatientTableRowProps {
   referral: Referral;
@@ -147,6 +149,24 @@ const PatientTableRow = ({
           </TableCell>
           <TableCell className="p-2">
             <AppointmentStatus referral={referral} variant="compact" />
+          </TableCell>
+          <TableCell className="p-2 text-xs">
+            {referral.rttPathway ? (
+              <div>{formatTargetDate(referral.rttPathway.targetDate)}</div>
+            ) : (
+              <span className="text-muted-foreground">Not set</span>
+            )}
+          </TableCell>
+          <TableCell className="p-2">
+            {referral.rttPathway ? (
+              <RTTPathwayBadge 
+                breachRisk={referral.rttPathway.breachRisk}
+                daysRemaining={referral.rttPathway.daysRemaining}
+                variant="compact"
+              />
+            ) : (
+              <span className="text-xs text-muted-foreground">No RTT data</span>
+            )}
           </TableCell>
           <TableCell className="p-2">
             <WaitingListAIActions referral={referral} variant="compact" />

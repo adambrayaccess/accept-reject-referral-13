@@ -1,3 +1,4 @@
+
 export interface Patient {
   id: string;
   name: string;
@@ -46,6 +47,23 @@ export interface AppointmentDetails {
   notes?: string;
 }
 
+// New RTT Pathway related types
+export type RTTPathwayStatus = 'incomplete' | 'completed' | 'stopped' | 'paused';
+export type RTTBreachRisk = 'low' | 'medium' | 'high' | 'breached';
+
+export interface RTTPathway {
+  clockStart: string; // ISO date string when RTT clock started
+  targetDate: string; // ISO date string for 18-week target
+  status: RTTPathwayStatus;
+  daysRemaining: number; // Calculated field
+  breachRisk: RTTBreachRisk; // Calculated field based on days remaining
+  pauseHistory?: Array<{
+    startDate: string;
+    endDate?: string;
+    reason: string;
+  }>;
+}
+
 export type ReferralStatus = 'new' | 'accepted' | 'rejected';
 export type ReferralPriority = 'routine' | 'urgent' | 'emergency';
 export type TriageStatus = 'pre-assessment' | 'assessed' | 'pre-admission-assessment' | 'waiting-list' | 'refer-to-another-specialty';
@@ -92,6 +110,8 @@ export interface Referral {
   confidence?: number;
   // Appointment details
   appointmentDetails?: AppointmentDetails;
+  // RTT Pathway information
+  rttPathway?: RTTPathway;
 }
 
 export interface ApiResponse<T> {

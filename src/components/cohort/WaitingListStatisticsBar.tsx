@@ -1,5 +1,5 @@
 
-import { Users, Clock, Calendar, AlertTriangle } from 'lucide-react';
+import { Users, Clock, Calendar, AlertTriangle, Target, Timer } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Referral } from '@/types/referral';
 
@@ -27,7 +27,14 @@ const WaitingListStatisticsBar = ({ referrals }: WaitingListStatisticsBarProps) 
     ref.triageStatus === 'waiting-list'
   ).length;
   
-  const longestWaitTime = highestDaysWaiting;
+  // RTT Pathway statistics
+  const rttBreaches = referrals.filter(ref => 
+    ref.rttPathway?.breachRisk === 'breached'
+  ).length;
+
+  const rttHighRisk = referrals.filter(ref => 
+    ref.rttPathway?.breachRisk === 'high'
+  ).length;
 
   const statistics = [
     {
@@ -38,6 +45,24 @@ const WaitingListStatisticsBar = ({ referrals }: WaitingListStatisticsBarProps) 
       iconColor: 'text-blue-600',
       iconBg: 'bg-blue-100',
       valueColor: 'text-blue-600'
+    },
+    {
+      title: 'RTT Breaches',
+      value: rttBreaches.toString(),
+      period: 'Over 18 weeks',
+      icon: AlertTriangle,
+      iconColor: 'text-red-600',
+      iconBg: 'bg-red-100',
+      valueColor: 'text-red-600'
+    },
+    {
+      title: 'High RTT Risk',
+      value: rttHighRisk.toString(),
+      period: 'Within 2 weeks of breach',
+      icon: Timer,
+      iconColor: 'text-orange-600',
+      iconBg: 'bg-orange-100',
+      valueColor: 'text-orange-600'
     },
     {
       title: 'Appointments Scheduled',
@@ -53,23 +78,23 @@ const WaitingListStatisticsBar = ({ referrals }: WaitingListStatisticsBarProps) 
       value: awaitingAppointment.toString(),  
       period: 'Ready for scheduling',
       icon: Clock,
-      iconColor: 'text-orange-600',
-      iconBg: 'bg-orange-100',
-      valueColor: 'text-orange-600'
+      iconColor: 'text-purple-600',
+      iconBg: 'bg-purple-100',
+      valueColor: 'text-purple-600'
     },
     {
       title: 'Longest Wait Time',
-      value: `${longestWaitTime} days`,
+      value: `${highestDaysWaiting} days`,
       period: 'Maximum duration',
-      icon: AlertTriangle,
-      iconColor: 'text-red-600',
-      iconBg: 'bg-red-100',
-      valueColor: 'text-red-600'
+      icon: Target,
+      iconColor: 'text-gray-600',
+      iconBg: 'bg-gray-100',
+      valueColor: 'text-gray-600'
     }
   ];
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-4">
       {statistics.map((stat, index) => {
         const IconComponent = stat.icon;
         return (

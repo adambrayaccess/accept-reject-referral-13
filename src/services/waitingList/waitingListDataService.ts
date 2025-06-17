@@ -2,6 +2,7 @@
 import { Referral } from '@/types/referral';
 import { fetchReferrals } from '@/services/referralService';
 import { differenceInDays } from 'date-fns';
+import { calculateRTTPathway } from '@/utils/rttPathwayUtils';
 
 export const loadWaitingListReferrals = async (selectedSpecialties: string[] = []): Promise<Referral[]> => {
   let data = await fetchReferrals();
@@ -42,20 +43,24 @@ export const loadWaitingListReferrals = async (selectedSpecialties: string[] = [
     // Generate realistic appointment details if missing
     const appointmentDetails = ref.appointmentDetails || generateAppointmentDetails(ref, ageInDays);
     
+    // Generate RTT pathway data if missing
+    const rttPathway = ref.rttPathway || calculateRTTPathway(ref.created);
+    
     const processedRef = {
       ...ref,
       calculatedReferralAge: ageInDays,
       calculatedPatientAge: ageInYears,
       calculatedLocation: location,
       tags,
-      appointmentDetails
+      appointmentDetails,
+      rttPathway
     };
     
-    console.log(`Processed referral ${ref.id}: tags = ${JSON.stringify(tags)}`);
+    console.log(`Processed referral ${ref.id}: RTT pathway = ${JSON.stringify(rttPathway)}`);
     return processedRef;
   });
   
-  console.log('Processed referrals with tags:', processedData.filter(r => r.tags?.length).length);
+  console.log('Processed referrals with RTT data:', processedData.filter(r => r.rttPathway).length);
   
   // Sort by display order if available, otherwise by created date (newest first)
   const sortedData = processedData.sort((a, b) => {
