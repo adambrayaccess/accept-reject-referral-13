@@ -6,7 +6,6 @@ import CohortBuilderHeader from '@/components/cohort/CohortBuilderHeader';
 import WaitingListTab from '@/components/cohort/WaitingListTab';
 import WaitingListStatsTab from '@/components/cohort/WaitingListStatsTab';
 import TaggedPatientsTab from '@/components/cohort/TaggedPatientsTab';
-import { useCohortData } from '@/hooks/useCohortData';
 import { useWaitingListData } from '@/hooks/useWaitingListData';
 import Titlebar from '@/components/Titlebar';
 import PageHeader from '@/components/PageHeader';
@@ -15,20 +14,7 @@ const CohortBuilder = () => {
   const [selectedSpecialties, setSelectedSpecialties] = useState<string[]>([]);
   const navigate = useNavigate();
   
-  // Cohort builder data (for tagged tab)
-  const {
-    cohortReferrals,
-    isLoading: cohortLoading,
-    filters,
-    setFilters,
-    handleRefresh: refreshCohort,
-    selectedReferrals: cohortSelected,
-    toggleReferralSelection: toggleCohortSelection,
-    clearSelection: clearCohortSelection,
-    selectAll: selectAllCohort,
-  } = useCohortData(selectedSpecialties.length === 1 ? selectedSpecialties[0] : null);
-
-  // Waiting list data (for waiting list and stats tabs)
+  // Use waiting list data for all tabs (including tagged patients)
   const {
     referrals: waitingListReferrals,
     isLoading: waitingListLoading,
@@ -138,10 +124,10 @@ const CohortBuilder = () => {
           
           <EnhancedTabsContent value="tagged">
             <TaggedPatientsTab
-              referrals={cohortReferrals}
-              isLoading={cohortLoading}
-              selectedReferrals={cohortSelected}
-              toggleReferralSelection={toggleCohortSelection}
+              referrals={waitingListReferrals}
+              isLoading={waitingListLoading}
+              selectedReferrals={waitingListSelected}
+              toggleReferralSelection={toggleWaitingListSelection}
             />
           </EnhancedTabsContent>
         </EnhancedTabs>

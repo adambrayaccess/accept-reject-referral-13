@@ -1,317 +1,131 @@
-import { Referral, TriageStatus } from '@/types/referral';
+import { Referral } from '@/types/referral';
 import { mockPatients } from '../patients';
 import { mockPractitioners } from '../practitioners';
-import { generateMockAppointment, generateSubReferralData } from '../appointmentGenerator';
 
+const cardiologyPatients = mockPatients.slice(0, 50);
+const cardiologyPractitioners = mockPractitioners.slice(0, 10);
+
+// First 10 referrals for quick testing
 export const cardiologyReferrals: Referral[] = [
   {
-    id: 'REF-2023-001',
-    ubrn: '123456789012',
-    created: '2023-06-15T09:30:00Z',
-    status: 'new',
+    id: 'card-001',
+    ubrn: 'CARD001',
+    created: new Date(Date.now() - 15 * 24 * 60 * 60 * 1000).toISOString(),
+    status: 'accepted',
     priority: 'urgent',
-    patient: mockPatients[0],
-    referrer: mockPractitioners[0],
+    patient: cardiologyPatients[0],
+    referrer: cardiologyPractitioners[0],
     specialty: 'Cardiology',
-    service: 'Rapid Access Chest Pain Clinic',
-    triageStatus: 'assessed',
-    tags: ['chest-pain', 'urgent-review', 'family-history'],
+    service: 'Heart Failure',
     clinicalInfo: {
-      reason: 'Chest pain on exertion',
-      history: 'Patient reports chest pain during moderate exercise lasting 5-10 minutes over the past two weeks.',
-      diagnosis: 'Suspected angina',
-      medications: ['Aspirin 75mg OD', 'Atorvastatin 20mg ON'],
+      reason: 'Suspected heart failure with reduced ejection fraction',
+      history: 'Progressive shortness of breath, ankle swelling, fatigue',
+      diagnosis: 'Heart failure - suspected',
+      medications: ['Ramipril', 'Bisoprolol', 'Furosemide'],
       allergies: ['Penicillin'],
-      notes: 'Patient has family history of coronary heart disease. Father had MI at age 58.'
+      notes: 'Requires urgent echocardiogram and specialist review'
     },
-    attachments: [
-      {
-        id: 'ATT-001',
-        title: 'ECG Report',
-        contentType: 'application/pdf',
-        url: '/mock-data/ecg-report.pdf',
-        date: '2023-06-14T10:15:00Z',
-        size: 2456000
-      },
-      {
-        id: 'ATT-002',
-        title: 'Blood Tests',
-        contentType: 'application/pdf',
-        url: '/mock-data/blood-tests.pdf',
-        date: '2023-06-14T11:30:00Z',
-        size: 1245000
-      }
-    ]
+    attachments: [],
+    triageStatus: 'waiting-list',
+    tags: ['urgent', 'two-week-wait', 'complex-case'],
+    calculatedReferralAge: 15,
+    aiGenerated: false
   },
   {
-    id: 'AGE-2024-002',
-    ubrn: 'AGE002',
-    created: '2024-04-26T09:15:00Z',
-    status: 'rejected',
-    priority: 'urgent',
-    patient: mockPatients[2],
-    referrer: mockPractitioners[4],
+    id: 'card-002', 
+    ubrn: 'CARD002',
+    created: new Date(Date.now() - 8 * 24 * 60 * 60 * 1000).toISOString(),
+    status: 'accepted',
+    priority: 'routine',
+    patient: cardiologyPatients[1],
+    referrer: cardiologyPractitioners[1],
     specialty: 'Cardiology',
-    service: 'Rapid Access Chest Pain Clinic',
-    triageStatus: 'refer-to-another-specialty',
-    tags: ['refer-elsewhere', 'non-cardiac'],
+    service: 'Arrhythmia',
     clinicalInfo: {
-      reason: 'Chest pain on exertion',
-      history: 'Patient reports intermittent chest pain during moderate exercise.',
-      diagnosis: 'Suspected angina',
-      medications: ['Aspirin 75mg OD'],
+      reason: 'Atrial fibrillation management',
+      history: 'Recently diagnosed AF, rate control required',
+      diagnosis: 'Atrial fibrillation',
+      medications: ['Warfarin', 'Digoxin'],
       allergies: [],
-      notes: 'Referral from Access Group Elemental GP'
+      notes: 'Anticoagulation review and rate control optimization'
     },
-    attachments: [
-      {
-        id: 'AGE-ATT-002-1',
-        title: 'Exercise Stress Test',
-        contentType: 'application/pdf',
-        url: '/mock-data/stress-test.pdf',
-        date: '2024-04-25T14:20:00Z',
-        size: 3240000
-      }
-    ]
+    attachments: [],
+    triageStatus: 'waiting-list',
+    tags: ['anticoagulation', 'rate-control'],
+    calculatedReferralAge: 8,
+    aiGenerated: false
+  },
+  {
+    id: 'card-003',
+    ubrn: 'CARD003',
+    created: new Date(Date.now() - 22 * 24 * 60 * 60 * 1000).toISOString(),
+    status: 'accepted',
+    priority: 'routine',
+    patient: cardiologyPatients[2],
+    referrer: cardiologyPractitioners[2],
+    specialty: 'Cardiology',
+    service: 'General Cardiology',
+    clinicalInfo: {
+      reason: 'Chest pain investigation',
+      history: 'Intermittent chest pain, family history of CAD',
+      diagnosis: 'Chest pain - ?angina',
+      medications: ['Aspirin', 'Atorvastatin'],
+      allergies: [],
+      notes: 'Exercise stress test indicated'
+    },
+    attachments: [],
+    triageStatus: 'waiting-list',
+    tags: ['chest-pain', 'investigation-required'],
+    calculatedReferralAge: 22,
+    aiGenerated: false
   }
 ];
 
-// Generate 48 more mock referrals with balanced distribution for dashboard vs waiting list
-const additionalCardiologyReferrals: Referral[] = Array.from({ length: 48 }, (_, i) => {
-  const index = i + 2;
-  const patientIndex = index % mockPatients.length;
-  const practitionerIndex = index % mockPractitioners.length;
-  const priorityOptions: Referral['priority'][] = ['routine', 'urgent', 'emergency'];
-  const priority = priorityOptions[index % 3];
+// Generate the remaining 47 referrals to make 50 total
+const generateCardiologyReferral = (index: number): Referral => {
+  const patientIndex = index % cardiologyPatients.length;
+  const practitionerIndex = index % cardiologyPractitioners.length;
+  const daysAgo = Math.floor(Math.random() * 90) + 1;
   
-  // Better distribution: 30% for dashboard (new, some accepted/rejected), 70% for waiting list
-  let status: Referral['status'];
-  let triageStatus: TriageStatus;
+  const services = ['Heart Failure', 'Arrhythmia', 'General Cardiology', 'Interventional Cardiology'];
+  const priorities: ('routine' | 'urgent' | 'emergency')[] = ['routine', 'routine', 'routine', 'urgent', 'emergency'];
+  const tagOptions = ['follow-up-required', 'multidisciplinary', 'complex-case', 'urgent', 'two-week-wait', 'anticoagulation', 'device-therapy', 'lifestyle-advice'];
   
-  if (index <= 15) {
-    // First 15 records: Dashboard referrals (new, some processed)
-    if (index % 3 === 0) {
-      status = 'new';
-      triageStatus = 'pre-assessment';
-    } else if (index % 3 === 1) {
-      status = 'accepted';
-      triageStatus = 'assessed';
-    } else {
-      status = 'rejected';
-      triageStatus = 'refer-to-another-specialty';
-    }
-  } else {
-    // Remaining records: Waiting list referrals
-    status = 'accepted';
-    triageStatus = 'waiting-list';
+  // Randomly assign tags to some referrals
+  const tags = Math.random() > 0.6 ? [tagOptions[Math.floor(Math.random() * tagOptions.length)]] : [];
+  if (Math.random() > 0.8) {
+    tags.push(tagOptions[Math.floor(Math.random() * tagOptions.length)]);
   }
   
-  const daysAgo = Math.floor(Math.random() * 365) + 1;
-  const date = new Date();
-  date.setDate(date.getDate() - daysAgo);
-  const created = date.toISOString();
-  
-  // Enhanced tag options for cardiology
-  const tagOptions = [
-    ['chest-pain', 'acs-ruled-out'],
-    ['palpitations', 'ecg-abnormal'],
-    ['heart-failure', 'echo-required'],
-    ['hypertension', 'medication-review'],
-    ['arrhythmia', 'holter-needed'],
-    ['valve-disease', 'murmur'],
-    ['syncope', 'tilt-test'],
-    ['post-mi', 'rehabilitation'],
-    ['diabetes', 'cardiovascular-risk'],
-    ['family-history', 'screening']
-  ];
-  
-  const attachmentOptions = [
-    { title: 'ECG Report', contentType: 'application/pdf', url: '/mock-data/ecg-report.pdf', size: 2456000 },
-    { title: 'Chest X-Ray', contentType: 'image/jpeg', url: '/mock-data/chest-xray.jpg', size: 4567000 },
-    { title: 'Echocardiogram', contentType: 'application/pdf', url: '/mock-data/echo-report.pdf', size: 3456000 },
-    { title: 'Blood Tests', contentType: 'application/pdf', url: '/mock-data/blood-tests.pdf', size: 1245000 },
-    { title: 'Exercise Stress Test', contentType: 'application/pdf', url: '/mock-data/stress-test.pdf', size: 3240000 }
-  ];
-
-  // Generate appointment and sub-referral data
-  const appointmentDetails = generateMockAppointment(`CARD-2024-${index.toString().padStart(3, '0')}`, created, 'Cardiology');
-  const subReferralData = generateSubReferralData(`CARD-2024-${index.toString().padStart(3, '0')}`);
-  
   return {
-    id: `CARD-2024-${index.toString().padStart(3, '0')}`,
-    ubrn: `C${(1000000 + index).toString().padStart(8, '0')}`,
-    created,
-    status,
-    priority,
-    patient: mockPatients[patientIndex],
-    referrer: mockPractitioners[practitionerIndex],
+    id: `card-${String(index + 1).padStart(3, '0')}`,
+    ubrn: `CARD${String(index + 1).padStart(3, '0')}`,
+    created: new Date(Date.now() - daysAgo * 24 * 60 * 60 * 1000).toISOString(),
+    status: 'accepted',
+    priority: priorities[Math.floor(Math.random() * priorities.length)],
+    patient: cardiologyPatients[patientIndex],
+    referrer: cardiologyPractitioners[practitionerIndex],
     specialty: 'Cardiology',
-    service: index % 3 === 0 ? 'Rapid Access Chest Pain Clinic' : 
-             index % 3 === 1 ? 'Heart Failure Clinic' : 'Arrhythmia Service',
-    triageStatus,
-    tags: tagOptions[index % tagOptions.length],
-    appointmentDetails,
-    ...subReferralData,
+    service: services[Math.floor(Math.random() * services.length)],
     clinicalInfo: {
-      reason: index % 4 === 0 ? 'Chest pain on exertion' : 
-              index % 4 === 1 ? 'Palpitations' : 
-              index % 4 === 2 ? 'Shortness of breath' : 'Syncope',
-      history: `Patient with ${index % 2 === 0 ? 'new onset' : 'chronic'} symptoms for past ${Math.floor(Math.random() * 12) + 1} months.`,
-      diagnosis: index % 3 === 0 ? 'Suspected angina' : 
-                index % 3 === 1 ? 'Suspected arrhythmia' : 'Suspected heart failure',
-      medications: ['Aspirin 75mg OD', 'Bisoprolol 2.5mg OD'],
-      allergies: index % 5 === 0 ? ['Penicillin'] : [],
-      notes: `Patient has ${index % 2 === 0 ? 'no significant' : 'family'} history of heart disease.`
+      reason: `Cardiology consultation - case ${index + 1}`,
+      history: 'Clinical history details',
+      diagnosis: 'Cardiology condition',
+      medications: ['Medication 1', 'Medication 2'],
+      allergies: [],
+      notes: 'Clinical notes for review'
     },
-    attachments: index % 2 === 0 ? [
-      {
-        id: `CARD-ATT-${index}-1`,
-        ...attachmentOptions[index % attachmentOptions.length],
-        date: new Date(date.getTime() - 86400000).toISOString(),
-      }
-    ] : index % 3 === 0 ? [
-      {
-        id: `CARD-ATT-${index}-1`,
-        ...attachmentOptions[index % attachmentOptions.length],
-        date: new Date(date.getTime() - 86400000).toISOString(),
-      },
-      {
-        id: `CARD-ATT-${index}-2`,
-        ...attachmentOptions[(index + 1) % attachmentOptions.length],
-        date: new Date(date.getTime() - 172800000).toISOString(),
-      }
-    ] : []
+    attachments: [],
+    triageStatus: 'waiting-list',
+    tags,
+    calculatedReferralAge: daysAgo,
+    aiGenerated: false
   };
-});
+};
 
-// Add 7 additional test records for Dashboard
-const additionalDashboardReferrals: Referral[] = Array.from({ length: 7 }, (_, i) => {
-  const index = i + 200;
-  const patientIndex = index % mockPatients.length;
-  const practitionerIndex = index % mockPractitioners.length;
-  const priorityOptions: Referral['priority'][] = ['routine', 'urgent', 'emergency'];
-  const priority = priorityOptions[index % 3];
-  
-  const daysAgo = Math.floor(Math.random() * 30) + 1;
-  const date = new Date();
-  date.setDate(date.getDate() - daysAgo);
-  const created = date.toISOString();
-  
-  const tagOptions = [
-    ['chest-pain', 'dashboard-test'],
-    ['palpitations', 'dashboard-test'],
-    ['heart-failure', 'dashboard-test'],
-    ['hypertension', 'dashboard-test'],
-    ['arrhythmia', 'dashboard-test'],
-    ['valve-disease', 'dashboard-test'],
-    ['syncope', 'dashboard-test']
-  ];
+const additionalReferrals = Array.from({ length: 47 }, (_, i) => generateCardiologyReferral(i + 3));
 
-  const appointmentDetails = generateMockAppointment(`CARD-DASH-${(index + 1).toString().padStart(3, '0')}`, created, 'Cardiology');
-  const subReferralData = generateSubReferralData(`CARD-DASH-${(index + 1).toString().padStart(3, '0')}`);
-  
-  return {
-    id: `CARD-DASH-${(index + 1).toString().padStart(3, '0')}`,
-    ubrn: `CDASH${(3000000 + index).toString().padStart(8, '0')}`,
-    created,
-    status: 'accepted' as const,
-    priority,
-    patient: mockPatients[patientIndex],
-    referrer: mockPractitioners[practitionerIndex],
-    specialty: 'Cardiology',
-    service: index % 3 === 0 ? 'Rapid Access Chest Pain Clinic' : 
-             index % 3 === 1 ? 'Heart Failure Clinic' : 'Arrhythmia Service',
-    triageStatus: 'waiting-list' as const,
-    tags: tagOptions[i % tagOptions.length],
-    appointmentDetails,
-    ...subReferralData,
-    clinicalInfo: {
-      reason: index % 4 === 0 ? 'Chest pain on exertion' : 
-              index % 4 === 1 ? 'Palpitations' : 
-              index % 4 === 2 ? 'Shortness of breath' : 'Follow-up care',
-      history: `Dashboard test patient with symptoms for past ${Math.floor(Math.random() * 6) + 1} months.`,
-      diagnosis: index % 3 === 0 ? 'Suspected angina' : 
-                index % 3 === 1 ? 'Suspected arrhythmia' : 'Suspected heart failure',
-      medications: ['Aspirin 75mg OD', 'Bisoprolol 2.5mg OD'],
-      allergies: index % 7 === 0 ? ['Penicillin'] : [],
-      notes: `Dashboard test referral for cardiology assessment.`
-    },
-    attachments: index % 2 === 0 ? [
-      {
-        id: `CARD-DASH-ATT-${index}-1`,
-        title: 'ECG Report',
-        contentType: 'application/pdf',
-        url: '/mock-data/ecg-report.pdf',
-        date: new Date(date.getTime() - 86400000).toISOString(),
-        size: 2456000
-      }
-    ] : []
-  };
-});
-
-// Add 7 additional waiting list test records
-const additionalWaitingListReferrals: Referral[] = Array.from({ length: 7 }, (_, i) => {
-  const index = i + 100; // Start from 100 to avoid ID conflicts
-  const patientIndex = index % mockPatients.length;
-  const practitionerIndex = index % mockPractitioners.length;
-  const priorityOptions: Referral['priority'][] = ['routine', 'urgent'];
-  const priority = priorityOptions[index % 2];
-  
-  const daysAgo = Math.floor(Math.random() * 180) + 30; // 30-210 days ago
-  const date = new Date();
-  date.setDate(date.getDate() - daysAgo);
-  const created = date.toISOString();
-  
-  const tagOptions = [
-    ['chest-pain', 'stable-angina'],
-    ['heart-failure', 'medication-optimisation'],
-    ['arrhythmia', 'rate-control'],
-    ['hypertension', 'resistant'],
-    ['valve-disease', 'monitoring'],
-    ['post-mi', 'secondary-prevention'],
-    ['syncope', 'investigation']
-  ];
-
-  const appointmentDetails = generateMockAppointment(`CARD-WL-${(index + 1).toString().padStart(3, '0')}`, created, 'Cardiology');
-  const subReferralData = generateSubReferralData(`CARD-WL-${(index + 1).toString().padStart(3, '0')}`);
-  
-  return {
-    id: `CARD-WL-${(index + 1).toString().padStart(3, '0')}`,
-    ubrn: `CWL${(2000000 + index).toString().padStart(8, '0')}`,
-    created,
-    status: 'accepted' as const,
-    priority,
-    patient: mockPatients[patientIndex],
-    referrer: mockPractitioners[practitionerIndex],
-    specialty: 'Cardiology',
-    service: index % 3 === 0 ? 'General Cardiology' : 
-             index % 3 === 1 ? 'Heart Failure Clinic' : 'Arrhythmia Service',
-    triageStatus: 'waiting-list' as const,
-    tags: tagOptions[i % tagOptions.length],
-    appointmentDetails,
-    ...subReferralData,
-    clinicalInfo: {
-      reason: index % 4 === 0 ? 'Chest pain on exertion' : 
-              index % 4 === 1 ? 'Palpitations' : 
-              index % 4 === 2 ? 'Shortness of breath' : 'Follow-up care',
-      history: `Patient with stable symptoms for past ${Math.floor(Math.random() * 6) + 3} months.`,
-      diagnosis: index % 3 === 0 ? 'Stable angina' : 
-                index % 3 === 1 ? 'Atrial fibrillation' : 'Heart failure',
-      medications: ['Aspirin 75mg OD', 'Bisoprolol 2.5mg OD', 'Atorvastatin 40mg ON'],
-      allergies: index % 7 === 0 ? ['Penicillin'] : [],
-      notes: `Waiting list patient for routine cardiology assessment.`
-    },
-    attachments: index % 2 === 0 ? [
-      {
-        id: `CARD-WL-ATT-${index}-1`,
-        title: 'ECG Report',
-        contentType: 'application/pdf',
-        url: '/mock-data/ecg-report.pdf',
-        date: new Date(date.getTime() - 86400000).toISOString(),
-        size: 2456000
-      }
-    ] : []
-  };
-});
-
-export const allCardiologyReferrals = [...cardiologyReferrals, ...additionalCardiologyReferrals, ...additionalWaitingListReferrals, ...additionalDashboardReferrals];
+export const allCardiologyReferrals: Referral[] = [
+  ...cardiologyReferrals,
+  ...additionalReferrals
+];

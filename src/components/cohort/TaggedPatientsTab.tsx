@@ -18,7 +18,20 @@ const TaggedPatientsTab = ({
   selectedReferrals,
   toggleReferralSelection
 }: TaggedPatientsTabProps) => {
-  const taggedReferrals = referrals.filter(ref => ref.tags && ref.tags.length > 0);
+  // Filter referrals that have tags (either tags array with length > 0 or non-empty tags)
+  const taggedReferrals = referrals.filter(ref => {
+    const hasTags = ref.tags && Array.isArray(ref.tags) && ref.tags.length > 0;
+    console.log(`Referral ${ref.id}: tags = ${JSON.stringify(ref.tags)}, hasTags = ${hasTags}`);
+    return hasTags;
+  });
+
+  console.log(`Tagged Patients Tab - Total referrals: ${referrals.length}, Tagged referrals: ${taggedReferrals.length}`);
+  console.log('Sample referral data:', referrals.slice(0, 2).map(ref => ({
+    id: ref.id,
+    patient: ref.patient.name,
+    tags: ref.tags,
+    specialty: ref.specialty
+  })));
 
   if (isLoading) {
     return (
@@ -35,6 +48,18 @@ const TaggedPatientsTab = ({
 
   return (
     <div className="space-y-6">
+      {/* Debug info card - remove this after testing */}
+      <Card className="bg-blue-50 border-blue-200">
+        <CardContent className="pt-4">
+          <div className="text-sm space-y-1">
+            <p><strong>Debug Info:</strong></p>
+            <p>Total referrals loaded: {referrals.length}</p>
+            <p>Tagged referrals found: {taggedReferrals.length}</p>
+            <p>Sample tags: {JSON.stringify(referrals.slice(0, 3).map(r => r.tags))}</p>
+          </div>
+        </CardContent>
+      </Card>
+
       {/* Tag-specific statistics */}
       <TaggedPatientsStatistics referrals={taggedReferrals} />
       
