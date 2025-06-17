@@ -162,13 +162,6 @@ const Dashboard = () => {
                 <SearchBar searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
               </div>
               
-              <div className="w-full lg:w-auto lg:flex-shrink-0">
-                <AIAssistantActions 
-                  selectedReferrals={selectedReferrals}
-                  onClearSelection={clearSelection}
-                />
-              </div>
-              
               <div className="flex gap-2 w-full lg:w-auto items-center lg:flex-shrink-0">
                 <SortAndFilterControls
                   sortField={sortField}
@@ -181,6 +174,10 @@ const Dashboard = () => {
                   setPriorityFilter={setPriorityFilter}
                 />
                 <ViewToggle view={view} onViewChange={setView} />
+                <AIAssistantActions 
+                  selectedReferrals={selectedReferrals}
+                  onClearSelection={clearSelection}
+                />
               </div>
             </div>
           </div>
