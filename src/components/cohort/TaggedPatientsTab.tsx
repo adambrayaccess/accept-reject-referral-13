@@ -48,18 +48,6 @@ const TaggedPatientsTab = ({
 
   return (
     <div className="space-y-6">
-      {/* Debug info card - remove this after testing */}
-      <Card className="bg-blue-50 border-blue-200">
-        <CardContent className="pt-4">
-          <div className="text-sm space-y-1">
-            <p><strong>Debug Info:</strong></p>
-            <p>Total referrals loaded: {referrals.length}</p>
-            <p>Tagged referrals found: {taggedReferrals.length}</p>
-            <p>Sample tags: {JSON.stringify(referrals.slice(0, 3).map(r => r.tags))}</p>
-          </div>
-        </CardContent>
-      </Card>
-
       {/* Tag-specific statistics */}
       <TaggedPatientsStatistics referrals={taggedReferrals} />
       
