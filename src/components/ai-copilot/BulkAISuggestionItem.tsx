@@ -102,27 +102,27 @@ const BulkAISuggestionItem = ({ suggestion, selectedReferrals, onApplied }: Bulk
   };
 
   return (
-    <div className="bg-gradient-to-r from-orange-50 to-purple-100 border border-purple-200 rounded-lg p-3">
+    <div className="bg-white border border-orange-200 rounded-lg p-3 shadow-sm">
       <Collapsible open={isExpanded} onOpenChange={setIsExpanded}>
         <div className="flex items-start justify-between gap-3">
           <div className="flex items-start gap-3 flex-1">
-            <div className="flex items-center gap-2 text-purple-700">
+            <div className="flex items-center gap-2 text-orange-600">
               {getSuggestionIcon()}
             </div>
             <div className="space-y-1 flex-1">
               <div className="flex items-center gap-2 flex-wrap">
-                <h4 className="font-medium text-sm text-purple-800">{suggestion.title}</h4>
+                <h4 className="font-medium text-sm text-gray-900">{suggestion.title}</h4>
                 <Badge variant="outline" className={`text-xs ${getPriorityColor()}`}>
                   {suggestion.priority}
                 </Badge>
-                <Badge variant="secondary" className="text-xs bg-purple-100 text-purple-800">
+                <Badge variant="secondary" className="text-xs bg-orange-100 text-orange-800">
                   {Math.round(suggestion.confidence * 100)}%
                 </Badge>
                 <Badge variant="outline" className="text-xs bg-blue-50 text-blue-700 border-blue-200">
                   {suggestion.affectedReferralsCount} patients
                 </Badge>
               </div>
-              <p className="text-sm text-purple-700">{suggestion.description}</p>
+              <p className="text-sm text-gray-600">{suggestion.description}</p>
             </div>
           </div>
           
@@ -133,32 +133,32 @@ const BulkAISuggestionItem = ({ suggestion, selectedReferrals, onApplied }: Bulk
                 variant="default"
                 onClick={handleApplySuggestion}
                 disabled={isApplying}
-                className="bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white font-medium rounded-full px-4"
+                className="bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white font-medium rounded-full px-4"
               >
                 {isApplying ? 'Applying...' : 'Apply to All'}
               </Button>
             )}
             <CollapsibleTrigger asChild>
-              <Button variant="ghost" size="sm" className="text-purple-700 hover:text-purple-800 hover:bg-purple-200">
+              <Button variant="ghost" size="sm" className="text-orange-600 hover:text-orange-700 hover:bg-orange-100">
                 {isExpanded ? <ChevronDown className="h-4 w-4" /> : <ChevronRight className="h-4 w-4" />}
               </Button>
             </CollapsibleTrigger>
           </div>
         </div>
 
-        <CollapsibleContent className="mt-3 pt-3 border-t border-purple-200">
+        <CollapsibleContent className="mt-3 pt-3 border-t border-orange-200">
           <div className="space-y-2">
             <div>
-              <span className="text-xs font-medium text-purple-600">Reasoning:</span>
-              <p className="text-sm text-purple-800">{suggestion.reasoning}</p>
+              <span className="text-xs font-medium text-orange-600">Reasoning:</span>
+              <p className="text-sm text-gray-700">{suggestion.reasoning}</p>
             </div>
             
             {suggestion.type === 'batch-tagging' && (
               <div>
-                <span className="text-xs font-medium text-purple-600">Suggested Tags:</span>
+                <span className="text-xs font-medium text-orange-600">Suggested Tags:</span>
                 <div className="flex flex-wrap gap-1 mt-1">
                   {(suggestion as BatchTaggingSuggestion).suggestedTags.map((tag: string) => (
-                    <Badge key={tag} variant="outline" className="text-xs bg-purple-100 text-purple-800 border-purple-300">
+                    <Badge key={tag} variant="outline" className="text-xs bg-orange-100 text-orange-800 border-orange-300">
                       {tag}
                     </Badge>
                   ))}
@@ -168,8 +168,8 @@ const BulkAISuggestionItem = ({ suggestion, selectedReferrals, onApplied }: Bulk
             
             {suggestion.type === 'priority-rebalancing' && (
               <div>
-                <span className="text-xs font-medium text-purple-600">Rebalancing Actions:</span>
-                <p className="text-sm text-purple-800">
+                <span className="text-xs font-medium text-orange-600">Rebalancing Actions:</span>
+                <p className="text-sm text-gray-700">
                   {(suggestion as PriorityRebalancingSuggestion).rebalanceActions?.length || 0} priority adjustments recommended
                 </p>
               </div>
@@ -177,8 +177,8 @@ const BulkAISuggestionItem = ({ suggestion, selectedReferrals, onApplied }: Bulk
             
             {suggestion.type === 'appointment-scheduling' && (
               <div>
-                <span className="text-xs font-medium text-purple-600">Strategy:</span>
-                <p className="text-sm text-purple-800">
+                <span className="text-xs font-medium text-orange-600">Strategy:</span>
+                <p className="text-sm text-gray-700">
                   {(suggestion as AppointmentSchedulingSuggestion).schedulingStrategy} - {(suggestion as AppointmentSchedulingSuggestion).estimatedTimeframe}
                 </p>
               </div>
