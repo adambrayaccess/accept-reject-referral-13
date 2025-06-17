@@ -16,7 +16,7 @@ const ReferralViewNotFound = ({ onBack }: ReferralViewNotFoundProps) => {
       <div className="container py-3">
         <Button variant="ghost" onClick={onBack} className="mb-2">
           <ArrowLeft className="mr-2 h-4 w-4" />
-          Back to Dashboard
+          Back
         </Button>
         
         <div className="flex flex-col items-center justify-center py-12">

@@ -16,7 +16,7 @@ const ReferralViewHeader = ({ referral, onBack }: ReferralViewHeaderProps) => {
     <>
       <Button variant="ghost" onClick={onBack} className="mb-3">
         <ArrowLeft className="mr-2 h-4 w-4" />
-        Back to Dashboard
+        Back
       </Button>
       
       <div className="flex flex-col md:flex-row justify-between items-start gap-3 mb-4">

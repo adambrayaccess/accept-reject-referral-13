@@ -17,7 +17,7 @@ const ReferralViewSkeleton = ({ onBack }: ReferralViewSkeletonProps) => {
       <div className="container py-3 space-y-4">
         <Button variant="ghost" onClick={onBack} className="mb-2">
           <ArrowLeft className="mr-2 h-4 w-4" />
-          Back to Dashboard
+          Back
         </Button>
         
         <Skeleton className="w-full h-[400px] rounded-lg" />

@@ -1,4 +1,3 @@
-
 import { useParams, useNavigate } from 'react-router-dom';
 import Titlebar from '@/components/Titlebar';
 import PageHeader from '@/components/PageHeader';
@@ -14,7 +13,7 @@ const ReferralView = () => {
   const { referral, relatedReferrals, isLoading, loadReferral } = useReferralData(id);
 
   const handleBack = () => {
-    navigate('/');
+    navigate(-1);
   };
 
   const handleStatusChange = () => {
