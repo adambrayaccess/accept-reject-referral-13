@@ -1,6 +1,6 @@
 
 import { Button } from '@/components/ui/button';
-import { Brain, ChevronDown, Users, Bot } from 'lucide-react';
+import { Sparkles, ChevronDown, Users, Bot } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { Referral } from '@/types/referral';
 import { 
@@ -81,7 +81,7 @@ const AIAssistantActions = ({ selectedReferrals = [], onClearSelection }: AIAssi
               : 'bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white'
           }`}
         >
-          <Brain className="h-4 w-4" />
+          <Sparkles className="h-4 w-4" />
           {hasSelection ? (
             <>
               <Users className="h-4 w-4" />
@@ -101,17 +101,17 @@ const AIAssistantActions = ({ selectedReferrals = [], onClearSelection }: AIAssi
         {hasSelection ? (
           <>
             <DropdownMenuItem onClick={handleBulkTriage}>
-              <Brain className="mr-2 h-4 w-4 text-purple-600" />
+              <Sparkles className="mr-2 h-4 w-4 text-purple-600" />
               Auto-triage selected referrals
               <span className="ml-auto text-xs text-purple-600 font-semibold">AI-Powered</span>
             </DropdownMenuItem>
             <DropdownMenuItem onClick={handleBulkAddToCaseload}>
-              <Brain className="mr-2 h-4 w-4 text-purple-600" />
+              <Sparkles className="mr-2 h-4 w-4 text-purple-600" />
               Bulk add to caseload
               <span className="ml-auto text-xs text-purple-600 font-semibold">AI-Powered</span>
             </DropdownMenuItem>
             <DropdownMenuItem onClick={handleBulkAddToWaitingList}>
-              <Brain className="mr-2 h-4 w-4 text-purple-600" />
+              <Sparkles className="mr-2 h-4 w-4 text-purple-600" />
               Bulk add to waiting list
               <span className="ml-auto text-xs text-purple-600 font-semibold">AI-Powered</span>
             </DropdownMenuItem>
@@ -119,17 +119,17 @@ const AIAssistantActions = ({ selectedReferrals = [], onClearSelection }: AIAssi
         ) : (
           <>
             <DropdownMenuItem onClick={handleAutoAddReferral}>
-              <Brain className="mr-2 h-4 w-4 text-purple-600" />
+              <Sparkles className="mr-2 h-4 w-4 text-purple-600" />
               Auto add a new referral
               <span className="ml-auto text-xs text-purple-600 font-semibold">AI-Powered</span>
             </DropdownMenuItem>
             <DropdownMenuItem onClick={handleAutoAddToCaseload}>
-              <Brain className="mr-2 h-4 w-4 text-purple-600" />
+              <Sparkles className="mr-2 h-4 w-4 text-purple-600" />
               Auto add patient to caseload
               <span className="ml-auto text-xs text-purple-600 font-semibold">AI-Powered</span>
             </DropdownMenuItem>
             <DropdownMenuItem onClick={handleAutoAddToWaitingList}>
-              <Brain className="mr-2 h-4 w-4 text-purple-600" />
+              <Sparkles className="mr-2 h-4 w-4 text-purple-600" />
               Auto add patient to waiting list
               <span className="ml-auto text-xs text-purple-600 font-semibold">AI-Powered</span>
             </DropdownMenuItem>

@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
-import { Brain, RefreshCw, ChevronDown, ChevronUp } from 'lucide-react';
+import { Sparkles, RefreshCw, ChevronDown, ChevronUp } from 'lucide-react';
 import { Referral } from '@/types/referral';
 import { AISuggestionsResponse } from '@/types/aiSuggestions';
 import { generateAISuggestions } from '@/services/aiSuggestionsService';
@@ -76,7 +76,7 @@ const AISuggestionsPanel = ({ referral, onSuggestionApplied }: AISuggestionsPane
       <CardHeader className="pb-3">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <Brain className="h-5 w-5 text-purple-700" />
+            <Sparkles className="h-5 w-5 text-purple-700" />
             <CardTitle className="text-lg text-purple-800">AI Copilot Suggestions</CardTitle>
             <Badge variant="outline" className={`text-xs ${getStatusColor()}`}>
               {referral.status}
@@ -122,7 +122,7 @@ const AISuggestionsPanel = ({ referral, onSuggestionApplied }: AISuggestionsPane
           {isLoading ? (
             <div className="flex items-center justify-center py-8">
               <div className="flex items-center gap-2 text-purple-600">
-                <Brain className="h-5 w-5 animate-pulse" />
+                <Sparkles className="h-5 w-5 animate-pulse" />
                 <span>Analyzing referral...</span>
               </div>
             </div>
@@ -147,7 +147,7 @@ const AISuggestionsPanel = ({ referral, onSuggestionApplied }: AISuggestionsPane
             </div>
           ) : (
             <div className="text-center py-6 text-purple-600">
-              <Brain className="h-8 w-8 mx-auto mb-2 opacity-50" />
+              <Sparkles className="h-8 w-8 mx-auto mb-2 opacity-50" />
               <p>No AI suggestions available at this time</p>
             </div>
           )}

@@ -1,7 +1,7 @@
 
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Sparkles, Brain, TrendingUp } from 'lucide-react';
+import { Sparkles, TrendingUp } from 'lucide-react';
 import { Referral } from '@/types/referral';
 
 interface WaitingListAIActionsProps {
@@ -81,7 +81,7 @@ const WaitingListAIActions = ({ referral, variant = 'default' }: WaitingListAIAc
   if (suggestions.length === 0) {
     return (
       <div className="text-xs text-muted-foreground flex items-center gap-1">
-        <Brain className="h-3 w-3" />
+        <Sparkles className="h-3 w-3" />
         <span>No AI suggestions</span>
       </div>
     );

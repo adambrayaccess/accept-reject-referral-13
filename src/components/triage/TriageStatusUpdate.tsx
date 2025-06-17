@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
 import { Badge } from '@/components/ui/badge';
-import { Clipboard, Brain } from 'lucide-react';
+import { Clipboard, Sparkles } from 'lucide-react';
 import { TriageStatus } from '@/types/referral';
 import { updateTriageStatus } from '@/services/referralService';
 import { useToast } from '@/hooks/use-toast';
@@ -97,7 +97,7 @@ const TriageStatusUpdate = ({
             onClick={handleApplyAISuggestion}
             className="text-xs"
           >
-            <Brain className="h-3 w-3 mr-1" />
+            <Sparkles className="h-3 w-3 mr-1" />
             Apply AI Suggestion
           </Button>
         )}
@@ -106,7 +106,7 @@ const TriageStatusUpdate = ({
       {aiSuggestedStatus && aiSuggestedStatus !== currentStatus && (
         <div className="p-3 bg-blue-50 border border-blue-200 rounded-lg">
           <div className="flex items-center gap-2 mb-1">
-            <Brain className="h-4 w-4 text-blue-600" />
+            <Sparkles className="h-4 w-4 text-blue-600" />
             <span className="text-sm font-medium text-blue-800">AI Suggestion</span>
             <Badge variant="outline" className="text-xs bg-blue-100 text-blue-800">
               {Math.round((aiConfidence || 0) * 100)}% confidence
@@ -133,7 +133,7 @@ const TriageStatusUpdate = ({
                 <div className="flex items-center gap-2">
                   {status.label}
                   {aiSuggestedStatus === status.value && (
-                    <Brain className="h-3 w-3 text-blue-600" />
+                    <Sparkles className="h-3 w-3 text-blue-600" />
                   )}
                 </div>
               </SelectItem>

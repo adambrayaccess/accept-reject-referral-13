@@ -2,7 +2,7 @@
 import { Progress } from '@/components/ui/progress';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { FileText, Brain, CheckCircle, AlertCircle } from 'lucide-react';
+import { FileText, Sparkles, CheckCircle, AlertCircle } from 'lucide-react';
 
 interface DocumentAnalysisProgressProps {
   files: File[];
@@ -27,7 +27,7 @@ const DocumentAnalysisProgress = ({
     <Card>
       <CardHeader>
         <CardTitle className="text-sm flex items-center gap-2">
-          <Brain className={`h-4 w-4 ${isComplete ? 'text-green-600' : hasError ? 'text-red-600' : 'animate-pulse text-blue-600'}`} />
+          <Sparkles className={`h-4 w-4 ${isComplete ? 'text-green-600' : hasError ? 'text-red-600' : 'animate-pulse text-blue-600'}`} />
           AI Document Analysis
           {isComplete && <Badge variant="outline" className="text-green-600 border-green-600">Complete</Badge>}
           {hasError && <Badge variant="outline" className="text-red-600 border-red-600">Error</Badge>}

@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
-import { Brain, RefreshCw, ChevronDown, ChevronUp, Users, Info } from 'lucide-react';
+import { Sparkles, RefreshCw, ChevronDown, ChevronUp, Users, Info } from 'lucide-react';
 import { Referral } from '@/types/referral';
 import { BulkAISuggestionsResponse } from '@/types/bulkAISuggestions';
 import { generateBulkAICopilotSuggestions } from '@/services/bulkAICopilotService';
@@ -70,7 +70,7 @@ const AICopilotActionsPanel = ({ selectedReferrals, onSuggestionApplied }: AICop
       <CardHeader className="pb-3">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <Brain className="h-5 w-5 text-purple-700" />
+            <Sparkles className="h-5 w-5 text-purple-700" />
             <CardTitle className="text-lg text-purple-800">AI Copilot Actions</CardTitle>
             <Badge variant="outline" className="bg-purple-100 text-purple-800 border-purple-200">
               <Users className="h-3 w-3 mr-1" />
@@ -120,7 +120,7 @@ const AICopilotActionsPanel = ({ selectedReferrals, onSuggestionApplied }: AICop
           ) : isLoading ? (
             <div className="flex items-center justify-center py-8">
               <div className="flex items-center gap-2 text-purple-600">
-                <Brain className="h-5 w-5 animate-pulse" />
+                <Sparkles className="h-5 w-5 animate-pulse" />
                 <span>Analyzing {selectedReferrals.length} selected patients...</span>
               </div>
             </div>
@@ -145,7 +145,7 @@ const AICopilotActionsPanel = ({ selectedReferrals, onSuggestionApplied }: AICop
             </div>
           ) : (
             <div className="text-center py-6 text-purple-600">
-              <Brain className="h-8 w-8 mx-auto mb-2 opacity-50" />
+              <Sparkles className="h-8 w-8 mx-auto mb-2 opacity-50" />
               <p>No AI Copilot actions available for the current selection</p>
               <p className="text-sm text-purple-500 mt-1">Try selecting different patients or refresh to re-analyze</p>
             </div>

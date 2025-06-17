@@ -7,7 +7,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { FilePlus, ChevronDown, Brain, FileText } from 'lucide-react';
+import { FilePlus, ChevronDown, Sparkles, FileText } from 'lucide-react';
 import CreateReferralModal from '@/components/CreateReferralModal';
 import AutoReferralModal from '@/components/AutoReferralModal';
 import { Referral } from '@/types/referral';
@@ -46,7 +46,7 @@ const CreateReferralDropdown = ({ onReferralCreated }: CreateReferralDropdownPro
             onClick={() => setIsAutoModalOpen(true)}
             className="relative bg-gradient-to-r from-purple-50 to-purple-100 border border-purple-200 text-purple-900 hover:from-purple-100 hover:to-purple-200 hover:border-purple-300 focus:from-purple-100 focus:to-purple-200 focus:border-purple-300 transition-all duration-200"
           >
-            <Brain className="mr-2 h-4 w-4 text-purple-600" />
+            <Sparkles className="mr-2 h-4 w-4 text-purple-600" />
             <span className="font-medium">Add Auto Referral</span>
             <span className="ml-auto text-xs text-purple-600 font-semibold">AI-Powered</span>
           </DropdownMenuItem>

@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
-import { Brain, RefreshCw, ChevronDown, ChevronUp, AlertTriangle, TrendingUp, Activity, Target } from 'lucide-react';
+import { Sparkles, RefreshCw, ChevronDown, ChevronUp, AlertTriangle, TrendingUp, Activity, Target } from 'lucide-react';
 import { Referral } from '@/types/referral';
 import { SpecialtyStats, OverallStats } from '@/hooks/useAdminStatistics';
 import { AdminAIResponse, AdminAISuggestion, generateAdminAISuggestions } from '@/services/adminAIService';
@@ -90,7 +90,7 @@ const AdminAICopilot = ({ referrals, overallStats, specialtyStats }: AdminAICopi
       <CardHeader className="pb-3">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <Brain className="h-5 w-5 text-purple-700" />
+            <Sparkles className="h-5 w-5 text-purple-700" />
             <CardTitle className="text-lg text-purple-800">AI Admin Copilot</CardTitle>
             {suggestions && (
               <Badge 
@@ -131,7 +131,7 @@ const AdminAICopilot = ({ referrals, overallStats, specialtyStats }: AdminAICopi
           {isLoading ? (
             <div className="flex items-center justify-center py-8">
               <div className="flex items-center gap-2 text-purple-600">
-                <Brain className="h-5 w-5 animate-pulse" />
+                <Sparkles className="h-5 w-5 animate-pulse" />
                 <span>Analyzing system performance...</span>
               </div>
             </div>
@@ -199,7 +199,7 @@ const AdminAICopilot = ({ referrals, overallStats, specialtyStats }: AdminAICopi
             </div>
           ) : (
             <div className="text-center py-6 text-purple-600">
-              <Brain className="h-8 w-8 mx-auto mb-2 opacity-50" />
+              <Sparkles className="h-8 w-8 mx-auto mb-2 opacity-50" />
               <p>No AI insights available at this time</p>
             </div>
           )}
