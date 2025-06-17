@@ -97,6 +97,7 @@ const WaitingListTab = ({
             <AIAssistantActions 
               selectedReferrals={selectedReferrals}
               onClearSelection={clearSelection}
+              context="waitingList"
             />
           </div>
         </div>

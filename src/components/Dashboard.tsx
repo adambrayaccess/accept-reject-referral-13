@@ -177,6 +177,7 @@ const Dashboard = () => {
                 <AIAssistantActions 
                   selectedReferrals={selectedReferrals}
                   onClearSelection={clearSelection}
+                  context="dashboard"
                 />
               </div>
             </div>
