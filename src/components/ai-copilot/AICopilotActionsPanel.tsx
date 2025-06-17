@@ -69,7 +69,7 @@ const AICopilotActionsPanel = ({ selectedReferrals, onSuggestionApplied }: AICop
   }
 
   return (
-    <Card className="bg-gradient-to-r from-purple-50 to-pink-50 border-purple-200">
+    <Card className="bg-gradient-to-r from-orange-50 to-purple-100 border border-purple-200">
       <CardHeader className="pb-3">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
