@@ -1,4 +1,3 @@
-
 export interface DocumentAnalysisResult {
   patientInfo: {
     name?: string;
@@ -76,7 +75,7 @@ const generateMockAnalysisResult = (fileName: string): Omit<DocumentAnalysisResu
       },
       referralInfo: {
         specialty: 'Cardiology',
-        priority: 'urgent',
+        priority: 'urgent' as const,
         urgency: 'Symptoms suggestive of cardiac etiology'
       },
       confidence: 0.92,
@@ -96,7 +95,7 @@ const generateMockAnalysisResult = (fileName: string): Omit<DocumentAnalysisResu
       },
       referralInfo: {
         specialty: 'Rheumatology',
-        priority: 'routine'
+        priority: 'routine' as const
       },
       confidence: 0.78,
       extractedText: 'Blood Test Results:\nESR: 85 mm/hr (elevated)\nCRP: 45 mg/L (elevated)\nRheumatoid Factor: Positive...'
@@ -116,7 +115,7 @@ const generateMockAnalysisResult = (fileName: string): Omit<DocumentAnalysisResu
       },
       referralInfo: {
         specialty: 'Respiratory Medicine',
-        priority: 'routine'
+        priority: 'routine' as const
       },
       confidence: 0.88,
       extractedText: 'Discharge Summary:\nAdmission Date: 10/01/2024\nDischarge Date: 15/01/2024\nDiagnosis: Community Acquired Pneumonia...'
@@ -135,7 +134,7 @@ const generateMockAnalysisResult = (fileName: string): Omit<DocumentAnalysisResu
       },
       referralInfo: {
         specialty: 'General Medicine',
-        priority: 'routine'
+        priority: 'routine' as const
       },
       confidence: 0.65,
       extractedText: 'Document text extracted for analysis...'
@@ -185,13 +184,14 @@ export const mergeAnalysisResults = (results: DocumentAnalysisResult[]): Documen
     }
   });
 
-  // Merge clinical info
-  const clinicalFields: (keyof DocumentAnalysisResult['clinicalInfo'])[] = ['reason', 'history', 'diagnosis', 'notes'];
+  // Merge clinical info - keep as arrays for medications and allergies
+  const clinicalFields: (keyof Omit<DocumentAnalysisResult['clinicalInfo'], 'medications' | 'allergies'>)[] = ['reason', 'history', 'diagnosis', 'notes'];
   clinicalFields.forEach(field => {
     const values = results
       .map(r => r.clinicalInfo[field])
       .filter(Boolean);
     if (values.length > 0) {
+      // Join multiple values with semicolon for text fields
       merged.clinicalInfo[field] = values.join('; ');
     }
   });
@@ -208,7 +208,7 @@ export const mergeAnalysisResults = (results: DocumentAnalysisResult[]): Documen
   }
 
   // Merge referral info (take most confident values)
-  const referralFields: (keyof DocumentAnalysisResult['referralInfo'])[] = ['specialty', 'priority', 'urgency'];
+  const referralFields: (keyof Omit<DocumentAnalysisResult['referralInfo'], 'priority'>)[] = ['specialty', 'urgency'];
   referralFields.forEach(field => {
     const bestResult = results
       .filter(r => r.referralInfo[field])
@@ -217,6 +217,14 @@ export const mergeAnalysisResults = (results: DocumentAnalysisResult[]): Documen
       merged.referralInfo[field] = bestResult.referralInfo[field];
     }
   });
+
+  // Handle priority field specially to ensure type safety
+  const priorityResult = results
+    .filter(r => r.referralInfo.priority)
+    .sort((a, b) => b.confidence - a.confidence)[0];
+  if (priorityResult?.referralInfo.priority) {
+    merged.referralInfo.priority = priorityResult.referralInfo.priority;
+  }
 
   return merged;
 };

@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
@@ -12,7 +13,7 @@ import { Progress } from '@/components/ui/progress';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { useToast } from '@/hooks/use-toast';
 import { Referral, ReferralPriority } from '@/types/referral';
-import { Bot, Sparkles, FileText, User, Clock, AlertTriangle, Upload, Wand2 } from 'lucide-react';
+import { Bot, Sparkles, FileText, User, Clock, AlertTriangle, Upload, Wand2, Brain } from 'lucide-react';
 import { mockPractitioners } from '@/services/mock/practitioners';
 import { analyzeDocument, mergeAnalysisResults, DocumentAnalysisResult } from '@/services/documentAnalysisService';
 import DocumentAnalysisProgress from '@/components/documents/DocumentAnalysisProgress';
