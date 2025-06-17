@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
 import { ChevronDown, ChevronRight, Tag, Users, Calendar, FileText, Settings } from 'lucide-react';
-import { SpecificBulkAISuggestion } from '@/types/bulkAISuggestions';
+import { SpecificBulkAISuggestion, BatchTaggingSuggestion, PriorityRebalancingSuggestion, AppointmentSchedulingSuggestion } from '@/types/bulkAISuggestions';
 import { Referral } from '@/types/referral';
 import { useToast } from '@/hooks/use-toast';
 
@@ -61,7 +61,7 @@ const BulkAISuggestionItem = ({ suggestion, selectedReferrals, onApplied }: Bulk
       
       switch (suggestion.type) {
         case 'batch-tagging':
-          const taggingSuggestion = suggestion as any;
+          const taggingSuggestion = suggestion as BatchTaggingSuggestion;
           successMessage = `Applied tags "${taggingSuggestion.suggestedTags.join(', ')}" to ${suggestion.affectedReferralsCount} patients`;
           break;
         case 'priority-rebalancing':
@@ -78,6 +78,7 @@ const BulkAISuggestionItem = ({ suggestion, selectedReferrals, onApplied }: Bulk
           break;
         default:
           successMessage = suggestion.title;
+          break;
       }
 
       toast({
@@ -154,7 +155,7 @@ const BulkAISuggestionItem = ({ suggestion, selectedReferrals, onApplied }: Bulk
               <div>
                 <span className="text-xs font-medium text-purple-600">Suggested Tags:</span>
                 <div className="flex flex-wrap gap-1 mt-1">
-                  {(suggestion as any).suggestedTags.map((tag: string) => (
+                  {(suggestion as BatchTaggingSuggestion).suggestedTags.map((tag: string) => (
                     <Badge key={tag} variant="outline" className="text-xs bg-purple-100 text-purple-800 border-purple-300">
                       {tag}
                     </Badge>
@@ -167,7 +168,7 @@ const BulkAISuggestionItem = ({ suggestion, selectedReferrals, onApplied }: Bulk
               <div>
                 <span className="text-xs font-medium text-purple-600">Rebalancing Actions:</span>
                 <p className="text-sm text-purple-800">
-                  {(suggestion as any).rebalanceActions?.length || 0} priority adjustments recommended
+                  {(suggestion as PriorityRebalancingSuggestion).rebalanceActions?.length || 0} priority adjustments recommended
                 </p>
               </div>
             )}
@@ -176,7 +177,7 @@ const BulkAISuggestionItem = ({ suggestion, selectedReferrals, onApplied }: Bulk
               <div>
                 <span className="text-xs font-medium text-purple-600">Strategy:</span>
                 <p className="text-sm text-purple-800">
-                  {(suggestion as any).schedulingStrategy} - {(suggestion as any).estimatedTimeframe}
+                  {(suggestion as AppointmentSchedulingSuggestion).schedulingStrategy} - {(suggestion as AppointmentSchedulingSuggestion).estimatedTimeframe}
                 </p>
               </div>
             )}
