@@ -77,7 +77,8 @@ const BulkAISuggestionItem = ({ suggestion, selectedReferrals, onApplied }: Bulk
           successMessage = `Applied workflow optimization for ${suggestion.affectedReferralsCount} patients`;
           break;
         default:
-          successMessage = suggestion.title;
+          // Use the base interface properties that are always available
+          successMessage = `Applied ${suggestion.type} action for ${suggestion.affectedReferralsCount} patients`;
           break;
       }
 
