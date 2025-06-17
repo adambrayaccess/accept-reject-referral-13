@@ -1,6 +1,6 @@
 
 import { Button } from '@/components/ui/button';
-import { Bot, ChevronDown, Users } from 'lucide-react';
+import { Brain, ChevronDown, Users, Bot } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { Referral } from '@/types/referral';
 import { 
@@ -75,14 +75,13 @@ const AIAssistantActions = ({ selectedReferrals = [], onClearSelection }: AIAssi
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button
-          variant="outline"
-          className={`font-medium rounded-lg px-6 py-3 flex items-center gap-3 transition-all duration-200 ${
+          className={`flex items-center gap-2 ${
             hasSelection 
-              ? 'bg-gradient-to-r from-blue-200 to-green-300 hover:from-blue-300 hover:to-green-400 text-blue-800 border-blue-300'
-              : 'bg-gradient-to-r from-pink-200 to-purple-300 hover:from-pink-300 hover:to-purple-400 text-purple-800 border-none'
+              ? 'bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white'
+              : 'bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white'
           }`}
         >
-          <Bot className="h-5 w-5" />
+          <Brain className="h-4 w-4" />
           {hasSelection ? (
             <>
               <Users className="h-4 w-4" />
@@ -96,60 +95,43 @@ const AIAssistantActions = ({ selectedReferrals = [], onClearSelection }: AIAssi
       </DropdownMenuTrigger>
       
       <DropdownMenuContent 
-        className="w-80 bg-white border border-purple-200 shadow-lg rounded-lg p-2" 
-        align="start"
-        sideOffset={5}
+        align="end" 
+        className="w-56 bg-white border border-gray-200 shadow-lg z-50"
       >
         {hasSelection ? (
           <>
-            <DropdownMenuItem
-              onClick={handleBulkTriage}
-              className="bg-gradient-to-r from-blue-100 to-green-200 hover:from-blue-200 hover:to-green-300 text-blue-800 border border-blue-200 font-medium rounded-full px-6 py-3 mb-2 flex items-center gap-2 transition-all duration-200 cursor-pointer"
-            >
-              <Bot className="h-4 w-4" />
+            <DropdownMenuItem onClick={handleBulkTriage}>
+              <Brain className="mr-2 h-4 w-4 text-purple-600" />
               Auto-triage selected referrals
+              <span className="ml-auto text-xs text-purple-600 font-semibold">AI-Powered</span>
             </DropdownMenuItem>
-            
-            <DropdownMenuItem
-              onClick={handleBulkAddToCaseload}
-              className="bg-gradient-to-r from-blue-100 to-green-200 hover:from-blue-200 hover:to-green-300 text-blue-800 border border-blue-200 font-medium rounded-full px-6 py-3 mb-2 flex items-center gap-2 transition-all duration-200 cursor-pointer"
-            >
-              <Bot className="h-4 w-4" />
+            <DropdownMenuItem onClick={handleBulkAddToCaseload}>
+              <Brain className="mr-2 h-4 w-4 text-purple-600" />
               Bulk add to caseload
+              <span className="ml-auto text-xs text-purple-600 font-semibold">AI-Powered</span>
             </DropdownMenuItem>
-            
-            <DropdownMenuItem
-              onClick={handleBulkAddToWaitingList}
-              className="bg-gradient-to-r from-blue-100 to-green-200 hover:from-blue-200 hover:to-green-300 text-blue-800 border border-blue-200 font-medium rounded-full px-6 py-3 flex items-center gap-2 transition-all duration-200 cursor-pointer"
-            >
-              <Bot className="h-4 w-4" />
+            <DropdownMenuItem onClick={handleBulkAddToWaitingList}>
+              <Brain className="mr-2 h-4 w-4 text-purple-600" />
               Bulk add to waiting list
+              <span className="ml-auto text-xs text-purple-600 font-semibold">AI-Powered</span>
             </DropdownMenuItem>
           </>
         ) : (
           <>
-            <DropdownMenuItem
-              onClick={handleAutoAddReferral}
-              className="bg-gradient-to-r from-orange-100 to-purple-200 hover:from-orange-200 hover:to-purple-300 text-purple-800 border border-purple-200 font-medium rounded-full px-6 py-3 mb-2 flex items-center gap-2 transition-all duration-200 cursor-pointer"
-            >
-              <Bot className="h-4 w-4" />
+            <DropdownMenuItem onClick={handleAutoAddReferral}>
+              <Brain className="mr-2 h-4 w-4 text-purple-600" />
               Auto add a new referral
+              <span className="ml-auto text-xs text-purple-600 font-semibold">AI-Powered</span>
             </DropdownMenuItem>
-            
-            <DropdownMenuItem
-              onClick={handleAutoAddToCaseload}
-              className="bg-gradient-to-r from-orange-100 to-purple-200 hover:from-orange-200 hover:to-purple-300 text-purple-800 border border-purple-200 font-medium rounded-full px-6 py-3 mb-2 flex items-center gap-2 transition-all duration-200 cursor-pointer"
-            >
-              <Bot className="h-4 w-4" />
-              Auto add a patient to a caseload
+            <DropdownMenuItem onClick={handleAutoAddToCaseload}>
+              <Brain className="mr-2 h-4 w-4 text-purple-600" />
+              Auto add patient to caseload
+              <span className="ml-auto text-xs text-purple-600 font-semibold">AI-Powered</span>
             </DropdownMenuItem>
-            
-            <DropdownMenuItem
-              onClick={handleAutoAddToWaitingList}
-              className="bg-gradient-to-r from-orange-100 to-purple-200 hover:from-orange-200 hover:to-purple-300 text-purple-800 border border-purple-200 font-medium rounded-full px-6 py-3 flex items-center gap-2 transition-all duration-200 cursor-pointer"
-            >
-              <Bot className="h-4 w-4" />
-              Auto add a patient to a waiting list
+            <DropdownMenuItem onClick={handleAutoAddToWaitingList}>
+              <Brain className="mr-2 h-4 w-4 text-purple-600" />
+              Auto add patient to waiting list
+              <span className="ml-auto text-xs text-purple-600 font-semibold">AI-Powered</span>
             </DropdownMenuItem>
           </>
         )}
