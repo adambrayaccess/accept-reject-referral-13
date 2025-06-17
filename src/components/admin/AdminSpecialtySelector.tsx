@@ -1,7 +1,7 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import SpecialtySelector from '@/components/SpecialtySelector';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
 interface AdminSpecialtySelectorProps {
   specialties: string[];
@@ -16,6 +16,19 @@ const AdminSpecialtySelector = ({
   onSpecialtySelect, 
   onShowAll 
 }: AdminSpecialtySelectorProps) => {
+  const handleSpecialtyChange = (value: string) => {
+    if (value === 'all') {
+      onShowAll();
+    } else {
+      onSpecialtySelect(value);
+    }
+  };
+
+  const getCurrentValue = () => {
+    if (!currentSpecialty) return 'all';
+    return currentSpecialty;
+  };
+
   return (
     <Card>
       <CardHeader>
@@ -24,16 +37,19 @@ const AdminSpecialtySelector = ({
       <CardContent>
         <div className="flex items-center gap-4">
           <div className="flex-1">
-            <SpecialtySelector
-              specialties={['All Specialties', ...specialties]}
-              onSpecialtySelect={(specialty) => {
-                if (specialty === 'All Specialties') {
-                  onShowAll();
-                } else {
-                  onSpecialtySelect(specialty);
-                }
-              }}
-            />
+            <Select value={getCurrentValue()} onValueChange={handleSpecialtyChange}>
+              <SelectTrigger className="w-full">
+                <SelectValue placeholder="Select specialty" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">All Specialties</SelectItem>
+                {specialties.map((specialty) => (
+                  <SelectItem key={specialty} value={specialty}>
+                    {specialty}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           </div>
           {currentSpecialty && (
             <Button variant="outline" onClick={onShowAll}>
