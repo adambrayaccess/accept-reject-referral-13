@@ -1,7 +1,7 @@
 
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { Users, RefreshCw } from 'lucide-react';
+import { Users } from 'lucide-react';
 import { Referral } from '@/types/referral';
 import WaitingListTable from './WaitingListTable';
 import WaitingListControls from './WaitingListControls';
@@ -75,39 +75,28 @@ const WaitingListTab = ({
         </div>
       )}
 
-      <div className="flex flex-col lg:flex-row gap-4 items-start lg:items-center">
-        <div className="w-full lg:flex-1">
-          <WaitingListControls
-            filters={filters}
-            updateFilters={updateFilters}
-            clearFilters={clearFilters}
-            sortField={sortField}
-            setSortField={setSortField}
-            sortDirection={sortDirection}
-            setSortDirection={setSortDirection}
-            view={view}
-            onViewChange={setView}
-          />
-        </div>
-        
-        <div className="w-full lg:w-auto lg:flex-shrink-0">
-          <AIAssistantActions 
-            selectedReferrals={selectedReferrals}
-            onClearSelection={clearSelection}
-          />
-        </div>
-        
-        <div className="flex gap-2 w-full lg:w-auto items-center lg:flex-shrink-0">
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={handleRefresh}
-            disabled={isLoading}
-            className="gap-2"
-          >
-            <RefreshCw className={`h-4 w-4 ${isLoading ? 'animate-spin' : ''}`} />
-            Refresh
-          </Button>
+      <div className="flex flex-col gap-4">
+        <div className="flex flex-col lg:flex-row gap-4 items-start lg:items-center">
+          <div className="w-full lg:flex-1">
+            <WaitingListControls
+              filters={filters}
+              updateFilters={updateFilters}
+              clearFilters={clearFilters}
+              sortField={sortField}
+              setSortField={setSortField}
+              sortDirection={sortDirection}
+              setSortDirection={setSortDirection}
+              view={view}
+              onViewChange={setView}
+            />
+          </div>
+          
+          <div className="w-full lg:w-auto lg:flex-shrink-0">
+            <AIAssistantActions 
+              selectedReferrals={selectedReferrals}
+              onClearSelection={clearSelection}
+            />
+          </div>
         </div>
       </div>
 
