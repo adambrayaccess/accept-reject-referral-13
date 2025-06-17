@@ -1,15 +1,13 @@
 
-import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
-import { Search, RefreshCw } from 'lucide-react';
+import { Badge } from '@/components/ui/badge';
+import { X } from 'lucide-react';
+import WaitingListSearchBar from './WaitingListSearchBar';
 import WaitingListSortAndFilterControls from './WaitingListSortAndFilterControls';
 import WaitingListViewToggle from './WaitingListViewToggle';
-import WaitingListFilters from './WaitingListFilters';
-import { WaitingListFilters as WaitingListFiltersType } from '@/hooks/waitingList/useWaitingListFilters';
 
 interface WaitingListControlsProps {
-  filters: WaitingListFiltersType;
-  updateFilters: (filters: Partial<WaitingListFiltersType>) => void;
+  filters: any;
+  updateFilters: (updates: any) => void;
   clearFilters: () => void;
   sortField: string;
   setSortField: (field: string) => void;
@@ -30,47 +28,86 @@ const WaitingListControls = ({
   view,
   onViewChange
 }: WaitingListControlsProps) => {
+  const getActiveFiltersCount = () => {
+    let count = 0;
+    if (filters.priority !== 'all') count++;
+    if (filters.location) count++;
+    if (filters.search) count++;
+    if (filters.ageRange?.min > 0 || filters.ageRange?.max < 365) count++;
+    return count;
+  };
+
+  const activeFiltersCount = getActiveFiltersCount();
+
   return (
     <div className="space-y-4">
-      <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between">
-        <div className="flex-1 min-w-0">
-          <div className="relative">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
-            <Input
-              placeholder="Search by patient name, NHS number, or UBRN..."
-              value={filters.search}
-              onChange={(e) => updateFilters({ search: e.target.value })}
-              className="pl-10"
-            />
-          </div>
-        </div>
-        
-        <div className="flex items-center gap-2">
-          <WaitingListViewToggle view={view} onViewChange={onViewChange} />
-          <Button variant="outline" size="sm">
-            <RefreshCw className="h-4 w-4" />
-          </Button>
-        </div>
-      </div>
-
-      <div className="flex flex-col lg:flex-row gap-4">
-        <div className="flex-1">
-          <WaitingListFilters
-            filters={filters}
-            updateFilters={updateFilters}
-            clearFilters={clearFilters}
+      <div className="flex flex-col lg:flex-row gap-4 items-start lg:items-center">
+        <div className="w-full lg:flex-1">
+          <WaitingListSearchBar
+            searchValue={filters.search || ''}
+            onSearchChange={(value) => updateFilters({ search: value })}
           />
         </div>
         
-        <div className="lg:w-auto">
+        <div className="flex gap-2 w-full lg:w-auto items-center lg:flex-shrink-0">
           <WaitingListSortAndFilterControls
+            filters={filters}
+            updateFilters={updateFilters}
+            clearFilters={clearFilters}
             sortField={sortField}
             setSortField={setSortField}
             sortDirection={sortDirection}
             setSortDirection={setSortDirection}
           />
+          <WaitingListViewToggle view={view} onViewChange={onViewChange} />
         </div>
       </div>
+
+      {activeFiltersCount > 0 && (
+        <div className="flex flex-wrap gap-2 items-center">
+          <span className="text-sm text-muted-foreground">Active filters:</span>
+          
+          {filters.priority !== 'all' && (
+            <Badge variant="secondary" className="flex items-center gap-1">
+              Priority: {filters.priority}
+              <X 
+                className="h-3 w-3 cursor-pointer" 
+                onClick={() => updateFilters({ priority: 'all' })}
+              />
+            </Badge>
+          )}
+          
+          {filters.location && (
+            <Badge variant="secondary" className="flex items-center gap-1">
+              Location: {filters.location}
+              <X 
+                className="h-3 w-3 cursor-pointer" 
+                onClick={() => updateFilters({ location: '' })}
+              />
+            </Badge>
+          )}
+          
+          {filters.search && (
+            <Badge variant="secondary" className="flex items-center gap-1">
+              Search: {filters.search}
+              <X 
+                className="h-3 w-3 cursor-pointer" 
+                onClick={() => updateFilters({ search: '' })}
+              />
+            </Badge>
+          )}
+          
+          {(filters.ageRange?.min > 0 || filters.ageRange?.max < 365) && (
+            <Badge variant="secondary" className="flex items-center gap-1">
+              Days: {filters.ageRange?.min || 0}-{filters.ageRange?.max || 365}
+              <X 
+                className="h-3 w-3 cursor-pointer" 
+                onClick={() => updateFilters({ ageRange: { min: 0, max: 365 } })}
+              />
+            </Badge>
+          )}
+        </div>
+      )}
     </div>
   );
 };

@@ -8,7 +8,6 @@ import WaitingListControls from './WaitingListControls';
 import WaitingListStatisticsBar from './WaitingListStatisticsBar';
 import CohortGrid from './CohortGrid';
 import AIAssistantActions from '@/components/dashboard/AIAssistantActions';
-import SpecialtySwitcher from './SpecialtySwitcher';
 
 interface WaitingListTabProps {
   referrals: Referral[];
@@ -30,8 +29,6 @@ interface WaitingListTabProps {
   isIndeterminate: boolean;
   handleRefresh: () => void;
   reorderReferrals: (reorderedReferrals: Referral[]) => void;
-  selectedSpecialties: string[];
-  onSpecialtyChange: (specialties: string[]) => void;
 }
 
 const WaitingListTab = ({
@@ -53,24 +50,13 @@ const WaitingListTab = ({
   isAllSelected,
   isIndeterminate,
   handleRefresh,
-  reorderReferrals,
-  selectedSpecialties,
-  onSpecialtyChange
+  reorderReferrals
 }: WaitingListTabProps) => {
   const [view, setView] = useState<'table' | 'grid'>('table');
 
   return (
     <div className="space-y-6">
       <WaitingListStatisticsBar referrals={referrals} />
-      
-      {view === 'table' && (
-        <div className="bg-white border rounded-lg p-4">
-          <SpecialtySwitcher 
-            selectedSpecialties={selectedSpecialties}
-            onSpecialtyChange={onSpecialtyChange}
-          />
-        </div>
-      )}
       
       {selectedCount > 0 && (
         <div className="flex items-center justify-between bg-blue-50 border border-blue-200 rounded-lg p-3">

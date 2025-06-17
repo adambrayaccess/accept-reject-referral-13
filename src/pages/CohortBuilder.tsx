@@ -58,7 +58,6 @@ const CohortBuilder = () => {
 
   const handleSpecialtyChange = (newSpecialties: string[]) => {
     setSelectedSpecialties(newSpecialties);
-    localStorage.setItem('selectedSpecialties', JSON.stringify(newSpecialties));
   };
 
   const handleBack = () => {
@@ -113,8 +112,6 @@ const CohortBuilder = () => {
               isIndeterminate={isIndeterminate}
               handleRefresh={refreshWaitingList}
               reorderReferrals={reorderReferrals}
-              selectedSpecialties={selectedSpecialties}
-              onSpecialtyChange={handleSpecialtyChange}
             />
           </EnhancedTabsContent>
           
