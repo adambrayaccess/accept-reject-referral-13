@@ -11,6 +11,7 @@ export const useWaitingListData = (selectedSpecialties: string[] = []) => {
   const [allReferrals, setAllReferrals] = useState<Referral[]>([]);
   const [orderedReferrals, setOrderedReferrals] = useState<Referral[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [isReordering, setIsReordering] = useState(false);
   const { toast } = useToast();
   
   const { filters, updateFilters, clearFilters, applyFilters } = useWaitingListFilters();
@@ -76,11 +77,35 @@ export const useWaitingListData = (selectedSpecialties: string[] = []) => {
   };
 
   const reorderReferrals = (reorderedReferrals: Referral[]) => {
+    setIsReordering(true);
+    
+    // Update the ordered referrals state
     setOrderedReferrals(reorderedReferrals);
+    
+    // Update display order in the data
+    const updatedReferrals = reorderedReferrals.map((ref, index) => ({
+      ...ref,
+      displayOrder: index
+    }));
+    
+    setAllReferrals(prev => {
+      const updated = [...prev];
+      updatedReferrals.forEach(updatedRef => {
+        const index = updated.findIndex(r => r.id === updatedRef.id);
+        if (index !== -1) {
+          updated[index] = updatedRef;
+        }
+      });
+      return updated;
+    });
+    
     toast({
       title: 'Order Updated',
       description: 'Waiting list order has been updated',
     });
+    
+    // Reset reordering state
+    setTimeout(() => setIsReordering(false), 500);
   };
 
   const toggleReferralSelection = (referral: Referral) => {
@@ -96,6 +121,7 @@ export const useWaitingListData = (selectedSpecialties: string[] = []) => {
   return {
     referrals: filteredAndSortedReferrals,
     isLoading,
+    isReordering,
     filters,
     updateFilters,
     clearFilters,

@@ -12,6 +12,7 @@ import AIAssistantActions from '@/components/dashboard/AIAssistantActions';
 interface WaitingListTabProps {
   referrals: Referral[];
   isLoading: boolean;
+  isReordering?: boolean;
   filters: any;
   updateFilters: (updates: any) => void;
   clearFilters: () => void;
@@ -33,6 +34,7 @@ interface WaitingListTabProps {
 const WaitingListTab = ({
   referrals,
   isLoading,
+  isReordering = false,
   filters,
   updateFilters,
   clearFilters,
@@ -103,7 +105,7 @@ const WaitingListTab = ({
       {view === 'table' ? (
         <WaitingListTable
           referrals={referrals}
-          isLoading={isLoading}
+          isLoading={isLoading || isReordering}
           selectedReferrals={selectedReferrals}
           onSelectReferral={toggleReferralSelection}
           onReorderReferrals={reorderReferrals}

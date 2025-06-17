@@ -1,6 +1,6 @@
 
 import { Button } from '@/components/ui/button';
-import { Table, Grid3X3 } from 'lucide-react';
+import { LayoutList, LayoutGrid } from 'lucide-react';
 
 interface WaitingListViewToggleProps {
   view: 'table' | 'grid';
@@ -19,7 +19,7 @@ const WaitingListViewToggle = ({
         onClick={() => onViewChange('table')}
         className="rounded-r-none"
       >
-        <Table className="h-4 w-4" />
+        <LayoutList className="h-4 w-4" />
       </Button>
       <Button
         variant={view === 'grid' ? 'default' : 'ghost'}
@@ -27,7 +27,7 @@ const WaitingListViewToggle = ({
         onClick={() => onViewChange('grid')}
         className="rounded-l-none"
       >
-        <Grid3X3 className="h-4 w-4" />
+        <LayoutGrid className="h-4 w-4" />
       </Button>
     </div>
   );

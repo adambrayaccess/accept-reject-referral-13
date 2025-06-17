@@ -4,7 +4,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import { format } from 'date-fns';
-import { GripVertical, Calendar, MapPin } from 'lucide-react';
+import { GripVertical, Calendar, MapPin, ChevronRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Referral } from '@/types/referral';
 import { Draggable } from 'react-beautiful-dnd';
@@ -23,6 +23,7 @@ interface PatientTableRowProps {
   index: number;
   isSelected: boolean;
   onSelectReferral: (referral: Referral) => void;
+  onRowClick?: (referral: Referral) => void;
   isDragDisabled?: boolean;
 }
 
@@ -31,6 +32,7 @@ const PatientTableRow = ({
   index,
   isSelected,
   onSelectReferral,
+  onRowClick,
   isDragDisabled = false
 }: PatientTableRowProps) => {
   const referralAge = calculateReferralAgeDays(referral.created);
@@ -41,6 +43,12 @@ const PatientTableRow = ({
   const handleCheckboxChange = (e: React.MouseEvent) => {
     e.stopPropagation();
     onSelectReferral(referral);
+  };
+
+  const handleRowClick = () => {
+    if (!isDragDisabled && onRowClick) {
+      onRowClick(referral);
+    }
   };
 
   return (
@@ -59,6 +67,7 @@ const PatientTableRow = ({
           } ${isDragDisabled ? 'opacity-50' : ''} ${
             isSelected ? 'bg-blue-50' : ''
           }`}
+          onClick={handleRowClick}
         >
           <TableCell className="p-2">
             <div 
@@ -81,16 +90,21 @@ const PatientTableRow = ({
             />
           </TableCell>
           <TableCell className="p-2">
-            <Link 
-              to={`/referral/${referral.id}`}
-              className="font-bold underline text-xs"
-              style={{ color: '#007373' }}
-              onClick={(e) => !isDragDisabled && e.stopPropagation()}
-            >
-              {referral.patient.name}
-            </Link>
-            <div className="text-xs text-muted-foreground font-mono">
-              NHS: {referral.patient.nhsNumber}
+            <div className="flex items-center justify-between">
+              <div>
+                <Link 
+                  to={`/referral/${referral.id}`}
+                  className="font-bold underline text-xs"
+                  style={{ color: '#007373' }}
+                  onClick={(e) => !isDragDisabled && e.stopPropagation()}
+                >
+                  {referral.patient.name}
+                </Link>
+                <div className="text-xs text-muted-foreground font-mono">
+                  NHS: {referral.patient.nhsNumber}
+                </div>
+              </div>
+              <ChevronRight className="h-4 w-4 text-muted-foreground" />
             </div>
           </TableCell>
           <TableCell className="p-2 text-xs">{patientAge} years</TableCell>

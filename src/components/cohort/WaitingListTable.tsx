@@ -7,6 +7,7 @@ import WaitingListTableHeader from './WaitingListTableHeader';
 import PatientTableRow from './PatientTableRow';
 import WaitingListLoadingState from './WaitingListLoadingState';
 import WaitingListEmptyState from './WaitingListEmptyState';
+import ReferralDetailModal from '@/components/modals/ReferralDetailModal';
 
 interface WaitingListTableProps {
   referrals: Referral[];
@@ -32,6 +33,8 @@ const WaitingListTable = ({
   isIndeterminate = false
 }: WaitingListTableProps) => {
   const [isReordering, setIsReordering] = useState(false);
+  const [selectedReferralId, setSelectedReferralId] = useState<string | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   if (isLoading) {
     return <WaitingListLoadingState />;
@@ -70,50 +73,69 @@ const WaitingListTable = ({
     }
   };
 
-  return (
-    <div className="border rounded-lg">
-      <DragDropContext onDragEnd={handleDragEnd}>
-        <Table>
-          <WaitingListTableHeader 
-            referrals={referrals}
-            isAllSelected={isAllSelected}
-            isIndeterminate={isIndeterminate}
-            onSelectAll={handleSelectAll}
-          />
-          <Droppable droppableId="waiting-list" isDropDisabled={isReordering}>
-            {(provided, snapshot) => (
-              <TableBody 
-                ref={provided.innerRef}
-                {...provided.droppableProps}
-                className={isReordering ? 'opacity-70' : ''}
-              >
-                {referrals.map((referral, index) => {
-                  const isSelected = selectedReferrals.some(r => r.id === referral.id);
+  const handleRowClick = (referral: Referral) => {
+    setSelectedReferralId(referral.id);
+    setIsModalOpen(true);
+  };
 
-                  return (
-                    <PatientTableRow
-                      key={referral.id}
-                      referral={referral}
-                      index={index}
-                      isSelected={isSelected}
-                      onSelectReferral={onSelectReferral}
-                      isDragDisabled={isReordering}
-                    />
-                  );
-                })}
-                {provided.placeholder}
-              </TableBody>
-            )}
-          </Droppable>
-        </Table>
-      </DragDropContext>
-      
-      {isReordering && (
-        <div className="text-center py-2">
-          <div className="text-sm text-muted-foreground">Updating order...</div>
-        </div>
-      )}
-    </div>
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+    setSelectedReferralId(null);
+  };
+
+  return (
+    <>
+      <div className="border rounded-lg">
+        <DragDropContext onDragEnd={handleDragEnd}>
+          <Table>
+            <WaitingListTableHeader 
+              referrals={referrals}
+              isAllSelected={isAllSelected}
+              isIndeterminate={isIndeterminate}
+              onSelectAll={handleSelectAll}
+            />
+            <Droppable droppableId="waiting-list" isDropDisabled={isReordering}>
+              {(provided, snapshot) => (
+                <TableBody 
+                  ref={provided.innerRef}
+                  {...provided.droppableProps}
+                  className={isReordering ? 'opacity-70' : ''}
+                >
+                  {referrals.map((referral, index) => {
+                    const isSelected = selectedReferrals.some(r => r.id === referral.id);
+
+                    return (
+                      <PatientTableRow
+                        key={referral.id}
+                        referral={referral}
+                        index={index}
+                        isSelected={isSelected}
+                        onSelectReferral={onSelectReferral}
+                        onRowClick={handleRowClick}
+                        isDragDisabled={isReordering}
+                      />
+                    );
+                  })}
+                  {provided.placeholder}
+                </TableBody>
+              )}
+            </Droppable>
+          </Table>
+        </DragDropContext>
+        
+        {isReordering && (
+          <div className="text-center py-2">
+            <div className="text-sm text-muted-foreground">Updating order...</div>
+          </div>
+        )}
+      </div>
+
+      <ReferralDetailModal
+        referralId={selectedReferralId}
+        isOpen={isModalOpen}
+        onClose={handleCloseModal}
+      />
+    </>
   );
 };
 
