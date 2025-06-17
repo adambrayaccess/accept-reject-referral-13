@@ -2,7 +2,7 @@
 import { Referral } from '@/types/referral';
 import { mockReferrals } from '../mockData';
 
-const MOCK_DELAY = 800;
+const MOCK_DELAY = 300; // Reduced delay for better UX
 
 export interface ReorderRequest {
   referralId: string;
@@ -30,6 +30,8 @@ export const reorderReferrals = async (
   return new Promise((resolve) => {
     setTimeout(() => {
       try {
+        console.log(`Reordering: ${sourceIndex} → ${destinationIndex}`);
+        
         // Create a copy of the referrals array
         const reorderedReferrals = [...referrals];
         
@@ -45,23 +47,30 @@ export const reorderReferrals = async (
           if (mockIndex !== -1) {
             // Set display order based on the new position
             (mockReferrals[mockIndex] as any).displayOrder = index;
+            console.log(`Updated ${referral.id} displayOrder to ${index}`);
           }
         });
         
-        console.log(`Reordered referrals: moved "${movedItem.patient.name}" from position ${sourceIndex} to ${destinationIndex}`);
+        // Return the reordered referrals with updated display orders
+        const updatedReferrals = reorderedReferrals.map((ref, index) => ({
+          ...ref,
+          displayOrder: index
+        }));
+        
+        console.log(`Reorder successful: moved "${movedItem.patient.name}" from position ${sourceIndex} to ${destinationIndex}`);
         console.log('Context:', context);
         console.log('Updated display orders in mock data');
         
         resolve({
           success: true,
-          updatedReferrals: reorderedReferrals
+          updatedReferrals
         });
       } catch (error) {
         console.error('Error reordering referrals:', error);
         resolve({
           success: false,
           updatedReferrals: referrals,
-          error: 'Failed to reorder referrals'
+          error: 'Failed to reorder referrals. Please try again.'
         });
       }
     }, MOCK_DELAY);
@@ -80,6 +89,7 @@ export const batchReorderReferrals = async (
           const referralIndex = mockReferrals.findIndex(r => r.id === request.referralId);
           if (referralIndex !== -1) {
             (mockReferrals[referralIndex] as any).displayOrder = request.newPosition;
+            console.log(`Batch updated ${request.referralId} displayOrder to ${request.newPosition}`);
           }
         });
         
@@ -95,6 +105,45 @@ export const batchReorderReferrals = async (
           success: false,
           updatedReferrals: mockReferrals.slice(),
           error: 'Failed to batch reorder referrals'
+        });
+      }
+    }, MOCK_DELAY);
+  });
+};
+
+// Reset all display orders for a specialty
+export const resetDisplayOrder = async (specialty?: string): Promise<ReorderResponse> => {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      try {
+        let filteredReferrals = mockReferrals;
+        
+        if (specialty) {
+          filteredReferrals = mockReferrals.filter(r => r.specialty === specialty);
+        }
+        
+        // Reset display orders based on creation date (newest first)
+        filteredReferrals
+          .sort((a, b) => new Date(b.created).getTime() - new Date(a.created).getTime())
+          .forEach((referral, index) => {
+            const mockIndex = mockReferrals.findIndex(r => r.id === referral.id);
+            if (mockIndex !== -1) {
+              (mockReferrals[mockIndex] as any).displayOrder = index;
+            }
+          });
+        
+        console.log(`Reset display orders for ${specialty || 'all specialties'}`);
+        
+        resolve({
+          success: true,
+          updatedReferrals: mockReferrals.slice()
+        });
+      } catch (error) {
+        console.error('Error resetting display order:', error);
+        resolve({
+          success: false,
+          updatedReferrals: mockReferrals.slice(),
+          error: 'Failed to reset display order'
         });
       }
     }, MOCK_DELAY);

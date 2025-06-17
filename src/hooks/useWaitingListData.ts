@@ -32,6 +32,7 @@ export const useWaitingListData = (selectedSpecialties: string[] = []) => {
     setIsLoading(true);
     try {
       const processedData = await loadWaitingListReferrals(selectedSpecialties);
+      console.log('Loaded referrals with display order:', processedData.map(r => ({ id: r.id, name: r.patient.name, displayOrder: (r as any).displayOrder })));
       setAllReferrals(processedData);
       setOrderedReferrals(processedData);
     } catch (error) {
@@ -64,7 +65,12 @@ export const useWaitingListData = (selectedSpecialties: string[] = []) => {
   // Filter and sort referrals
   const filteredAndSortedReferrals = useMemo(() => {
     let filtered = applyFilters(orderedReferrals);
-    filtered = applySorting(filtered);
+    
+    // Only apply sorting if not using display order (preserve manual ordering)
+    if (sortField !== 'displayOrder' && sortField !== 'created') {
+      filtered = applySorting(filtered);
+    }
+    
     return filtered;
   }, [orderedReferrals, filters, sortField, sortDirection]);
 
@@ -77,12 +83,13 @@ export const useWaitingListData = (selectedSpecialties: string[] = []) => {
   };
 
   const reorderReferrals = (reorderedReferrals: Referral[]) => {
+    console.log('Updating referrals order in state');
     setIsReordering(true);
     
-    // Update the ordered referrals state
+    // Update the ordered referrals state with the new order
     setOrderedReferrals(reorderedReferrals);
     
-    // Update display order in the data
+    // Update display order in the all referrals data
     const updatedReferrals = reorderedReferrals.map((ref, index) => ({
       ...ref,
       displayOrder: index
@@ -97,11 +104,6 @@ export const useWaitingListData = (selectedSpecialties: string[] = []) => {
         }
       });
       return updated;
-    });
-    
-    toast({
-      title: 'Order Updated',
-      description: 'Waiting list order has been updated',
     });
     
     // Reset reordering state
