@@ -1,6 +1,7 @@
 
 import { Badge } from '@/components/ui/badge';
 import { Plus, X } from 'lucide-react';
+import { getTagStyle, getTagCategoryInfo, TagCategory } from '@/utils/tagCategoryUtils';
 
 interface TagCategorySectionProps {
   categoryName: string;
@@ -19,15 +20,19 @@ const TagCategorySection = ({
   onRemoveTag, 
   isUpdating 
 }: TagCategorySectionProps) => {
+  const categoryInfo = getTagCategoryInfo(categoryName as TagCategory);
+
   return (
     <div className="space-y-2">
-      <h4 className="text-sm font-medium capitalize">{categoryName}</h4>
+      <h4 className={`text-sm font-medium capitalize ${categoryInfo.color}`}>{categoryName}</h4>
       <div className="flex flex-wrap gap-1">
         {tags.map(tag => (
           <Badge
             key={tag}
-            variant={currentTags.includes(tag) ? "default" : "outline"}
-            className={`cursor-pointer hover:bg-secondary text-xs ${isUpdating ? 'opacity-50' : ''}`}
+            variant="outline"
+            className={`cursor-pointer hover:opacity-80 text-xs ${isUpdating ? 'opacity-50' : ''} ${
+              currentTags.includes(tag) ? getTagStyle(tag) : 'text-gray-600 bg-gray-50 border-gray-200 hover:bg-gray-100'
+            }`}
             onClick={() => !isUpdating && (currentTags.includes(tag) ? onRemoveTag(tag) : onAddTag(tag))}
           >
             {tag}

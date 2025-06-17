@@ -1,6 +1,7 @@
 
 import { Badge } from '@/components/ui/badge';
 import { Tag } from 'lucide-react';
+import { getTagStyle } from '@/utils/tagCategoryUtils';
 
 interface ReferralTagsDisplayProps {
   tags: string[];
@@ -20,8 +21,8 @@ const ReferralTagsDisplay = ({ tags, maxVisible = 3, size = 'default' }: Referra
       {visibleTags.map(tag => (
         <Badge 
           key={tag} 
-          variant="secondary" 
-          className={size === 'sm' ? 'text-xs px-1.5 py-0.5' : 'text-xs'}
+          variant="outline" 
+          className={`${size === 'sm' ? 'text-xs px-1.5 py-0.5' : 'text-xs'} ${getTagStyle(tag)}`}
         >
           {tag}
         </Badge>
@@ -29,7 +30,7 @@ const ReferralTagsDisplay = ({ tags, maxVisible = 3, size = 'default' }: Referra
       {remainingCount > 0 && (
         <Badge 
           variant="outline" 
-          className={size === 'sm' ? 'text-xs px-1.5 py-0.5' : 'text-xs'}
+          className={`${size === 'sm' ? 'text-xs px-1.5 py-0.5' : 'text-xs'} text-gray-800 bg-gray-100 border-gray-200`}
         >
           +{remainingCount}
         </Badge>

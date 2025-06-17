@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { Referral } from '@/types/referral';
 import { Card, CardContent } from '@/components/ui/card';
@@ -7,6 +6,7 @@ import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { Tag, Plus, X } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import { getTagStyle } from '@/utils/tagCategoryUtils';
 
 interface TagManagerProps {
   selectedReferrals: Referral[];
@@ -90,7 +90,7 @@ const TagManager = ({ selectedReferrals, onTagged }: TagManagerProps) => {
                 <Badge 
                   key={tag} 
                   variant="outline" 
-                  className="cursor-pointer hover:bg-secondary"
+                  className={`cursor-pointer hover:opacity-80 ${getTagStyle(tag)}`}
                   onClick={() => handleAddTag(tag)}
                 >
                   {tag}
