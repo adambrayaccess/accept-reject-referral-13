@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
-import { Brain, RefreshCw, ChevronDown, ChevronUp, Users } from 'lucide-react';
+import { Brain, RefreshCw, ChevronDown, ChevronUp, Users, Info } from 'lucide-react';
 import { Referral } from '@/types/referral';
 import { BulkAISuggestionsResponse } from '@/types/bulkAISuggestions';
 import { generateBulkAICopilotSuggestions } from '@/services/bulkAICopilotService';
@@ -19,7 +19,7 @@ interface AICopilotActionsPanelProps {
 const AICopilotActionsPanel = ({ selectedReferrals, onSuggestionApplied }: AICopilotActionsPanelProps) => {
   const [suggestions, setSuggestions] = useState<BulkAISuggestionsResponse | null>(null);
   const [isLoading, setIsLoading] = useState(false);
-  const [isExpanded, setIsExpanded] = useState(false);
+  const [isExpanded, setIsExpanded] = useState(true); // Default to expanded
   const { toast } = useToast();
 
   const loadSuggestions = async () => {
@@ -64,10 +64,7 @@ const AICopilotActionsPanel = ({ selectedReferrals, onSuggestionApplied }: AICop
     return 'bg-red-100 text-red-800 border-red-200';
   };
 
-  if (selectedReferrals.length === 0) {
-    return null;
-  }
-
+  // Always render the panel
   return (
     <Card className="bg-gradient-to-r from-pink-50 to-purple-100 border-purple-200">
       <CardHeader className="pb-3">
@@ -93,7 +90,7 @@ const AICopilotActionsPanel = ({ selectedReferrals, onSuggestionApplied }: AICop
               variant="ghost"
               size="sm"
               onClick={handleRefresh}
-              disabled={isLoading}
+              disabled={isLoading || selectedReferrals.length === 0}
               className="text-purple-700 hover:text-purple-800 hover:bg-purple-200"
             >
               <RefreshCw className={`h-4 w-4 ${isLoading ? 'animate-spin' : ''}`} />
@@ -112,7 +109,15 @@ const AICopilotActionsPanel = ({ selectedReferrals, onSuggestionApplied }: AICop
       
       {isExpanded && (
         <CardContent className="pt-0">
-          {isLoading ? (
+          {selectedReferrals.length === 0 ? (
+            <div className="text-center py-6 text-purple-600">
+              <Info className="h-8 w-8 mx-auto mb-2 opacity-50" />
+              <p className="font-medium">Select patients to see AI suggestions</p>
+              <p className="text-sm text-purple-500 mt-1">
+                Choose one or more tagged patients to get personalized AI-powered recommendations
+              </p>
+            </div>
+          ) : isLoading ? (
             <div className="flex items-center justify-center py-8">
               <div className="flex items-center gap-2 text-purple-600">
                 <Brain className="h-5 w-5 animate-pulse" />

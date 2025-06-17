@@ -2,6 +2,7 @@
 import CohortGrid from './CohortGrid';
 import TaggedPatientsStatistics from './TaggedPatientsStatistics';
 import TagInsightsDashboard from './TagInsightsDashboard';
+import TaggedPatientsSelectionControls from './TaggedPatientsSelectionControls';
 import AICopilotActionsPanel from '@/components/ai-copilot/AICopilotActionsPanel';
 import { Referral } from '@/types/referral';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -34,6 +35,30 @@ const TaggedPatientsTab = ({
     specialty: ref.specialty
   })));
 
+  // Selection handlers
+  const handleSelectAll = () => {
+    taggedReferrals.forEach(referral => {
+      if (!selectedReferrals.some(r => r.id === referral.id)) {
+        toggleReferralSelection(referral);
+      }
+    });
+  };
+
+  const handleClearSelection = () => {
+    selectedReferrals.forEach(referral => {
+      if (taggedReferrals.some(r => r.id === referral.id)) {
+        toggleReferralSelection(referral);
+      }
+    });
+  };
+
+  const isAllSelected = taggedReferrals.length > 0 && 
+    taggedReferrals.every(referral => selectedReferrals.some(r => r.id === referral.id));
+
+  const isIndeterminate = selectedReferrals.some(referral => 
+    taggedReferrals.some(r => r.id === referral.id)
+  ) && !isAllSelected;
+
   if (isLoading) {
     return (
       <div className="space-y-6">
@@ -52,21 +77,21 @@ const TaggedPatientsTab = ({
       {/* Tag-specific statistics */}
       <TaggedPatientsStatistics referrals={taggedReferrals} />
       
-      {/* AI Copilot Actions Panel - shows when referrals are selected */}
-      {selectedReferrals.length > 0 && (
-        <AICopilotActionsPanel
-          selectedReferrals={selectedReferrals}
-          onSuggestionApplied={() => {
-            // Trigger a refresh or update as needed
-            console.log('AI Copilot action applied, refreshing data...');
-          }}
-        />
-      )}
-      
       {/* Tag insights dashboard */}
       {taggedReferrals.length > 0 && (
         <TagInsightsDashboard referrals={taggedReferrals} />
       )}
+      
+      {/* AI Copilot Actions Panel - always shown */}
+      <AICopilotActionsPanel
+        selectedReferrals={selectedReferrals.filter(ref => 
+          taggedReferrals.some(tagged => tagged.id === ref.id)
+        )}
+        onSuggestionApplied={() => {
+          // Trigger a refresh or update as needed
+          console.log('AI Copilot action applied, refreshing data...');
+        }}
+      />
       
       {/* Tagged patients grid */}
       {taggedReferrals.length > 0 ? (
@@ -75,10 +100,25 @@ const TaggedPatientsTab = ({
             <CardTitle className="flex items-center justify-between">
               <span>Tagged Patients ({taggedReferrals.length})</span>
               <span className="text-sm font-normal text-muted-foreground">
-                {selectedReferrals.length} selected
+                {selectedReferrals.filter(ref => 
+                  taggedReferrals.some(tagged => tagged.id === ref.id)
+                ).length} selected
               </span>
             </CardTitle>
           </CardHeader>
+          
+          {/* Selection controls */}
+          <TaggedPatientsSelectionControls
+            taggedReferrals={taggedReferrals}
+            selectedReferrals={selectedReferrals.filter(ref => 
+              taggedReferrals.some(tagged => tagged.id === ref.id)
+            )}
+            onSelectAll={handleSelectAll}
+            onClearSelection={handleClearSelection}
+            isAllSelected={isAllSelected}
+            isIndeterminate={isIndeterminate}
+          />
+          
           <CardContent className="p-0">
             <CohortGrid 
               referrals={taggedReferrals}
