@@ -27,11 +27,6 @@ const TaggedPatientsSelectionControls = ({
         <div className="flex items-center space-x-2">
           <Checkbox
             checked={isAllSelected}
-            ref={(el) => {
-              if (el) {
-                el.indeterminate = isIndeterminate;
-              }
-            }}
             onCheckedChange={(checked) => {
               if (checked) {
                 onSelectAll();
@@ -40,6 +35,7 @@ const TaggedPatientsSelectionControls = ({
               }
             }}
             id="select-all-tagged"
+            className={isIndeterminate ? 'data-[state=indeterminate]:bg-primary data-[state=indeterminate]:text-primary-foreground' : ''}
           />
           <label 
             htmlFor="select-all-tagged" 
