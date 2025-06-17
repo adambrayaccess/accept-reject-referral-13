@@ -7,7 +7,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Label } from '@/components/ui/label';
 import { useToast } from '@/hooks/use-toast';
 import { mockPractitioners } from '@/services/mock/practitioners';
-import { Referral, ReferralPriority } from '@/types/referral';
+import { Referral, ReferralPriority, Patient } from '@/types/referral';
 import { EnhancedTabs, EnhancedTabsContent, EnhancedTabsList, EnhancedTabsTrigger } from '@/components/ui/enhanced-tabs';
 import PatientDetailsForm from './referral-form/PatientDetailsForm';
 import ClinicalDetailsForm from './referral-form/ClinicalDetailsForm';
@@ -24,6 +24,7 @@ const CreateReferralModal = ({ isOpen, onClose, onSubmit }: CreateReferralModalP
   const [specialty, setSpecialty] = useState('');
   const [practitionerId, setPractitionerId] = useState('');
   
+  const [selectedPatient, setSelectedPatient] = useState<Patient | undefined>();
   const [patientName, setPatientName] = useState('');
   const [birthDate, setBirthDate] = useState('');
   const [gender, setGender] = useState('');
@@ -39,6 +40,33 @@ const CreateReferralModal = ({ isOpen, onClose, onSubmit }: CreateReferralModalP
   const [notes, setNotes] = useState('');
 
   const { toast } = useToast();
+
+  const handlePatientSelect = (patient: Patient | undefined) => {
+    setSelectedPatient(patient);
+    
+    if (patient) {
+      // Auto-fill all patient fields
+      setPatientName(patient.name);
+      setBirthDate(patient.birthDate);
+      setGender(patient.gender);
+      setNhsNumber(patient.nhsNumber);
+      setAddress(patient.address || '');
+      setPhone(patient.phone || '');
+      
+      toast({
+        title: "Patient Selected",
+        description: `${patient.name} has been selected and fields auto-filled.`,
+      });
+    } else {
+      // Clear all fields when patient is deselected
+      setPatientName('');
+      setBirthDate('');
+      setGender('');
+      setNhsNumber('');
+      setAddress('');
+      setPhone('');
+    }
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -71,7 +99,7 @@ const CreateReferralModal = ({ isOpen, onClose, onSubmit }: CreateReferralModalP
       specialty,
       referrer,
       patient: {
-        id: nhsNumber,
+        id: selectedPatient?.id || nhsNumber,
         name: patientName,
         birthDate,
         gender,
@@ -92,6 +120,25 @@ const CreateReferralModal = ({ isOpen, onClose, onSubmit }: CreateReferralModalP
 
     onSubmit(newReferral);
     onClose();
+    
+    // Reset form
+    setSelectedPatient(undefined);
+    setReferralId('');
+    setPriority('routine');
+    setSpecialty('');
+    setPractitionerId('');
+    setPatientName('');
+    setBirthDate('');
+    setGender('');
+    setNhsNumber('');
+    setAddress('');
+    setPhone('');
+    setReason('');
+    setHistory('');
+    setDiagnosis('');
+    setMedications('');
+    setAllergies('');
+    setNotes('');
   };
 
   return (
@@ -164,6 +211,8 @@ const CreateReferralModal = ({ isOpen, onClose, onSubmit }: CreateReferralModalP
             </EnhancedTabsList>
             <EnhancedTabsContent value="patient" className="mt-4">
               <PatientDetailsForm
+                selectedPatient={selectedPatient}
+                onPatientSelect={handlePatientSelect}
                 patientName={patientName}
                 setPatientName={setPatientName}
                 birthDate={birthDate}

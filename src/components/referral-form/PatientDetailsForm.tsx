@@ -2,6 +2,8 @@
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Patient } from "@/types/referral";
+import PatientAutocomplete from "@/components/ui/patient-autocomplete";
 
 interface PatientDetailsFormProps {
   patientName: string;
@@ -16,6 +18,8 @@ interface PatientDetailsFormProps {
   setAddress: (value: string) => void;
   phone: string;
   setPhone: (value: string) => void;
+  selectedPatient?: Patient;
+  onPatientSelect: (patient: Patient | undefined) => void;
 }
 
 const PatientDetailsForm = ({
@@ -31,9 +35,25 @@ const PatientDetailsForm = ({
   setAddress,
   phone,
   setPhone,
+  selectedPatient,
+  onPatientSelect,
 }: PatientDetailsFormProps) => {
   return (
     <div className="space-y-4">
+      <div className="space-y-2">
+        <Label>Search Existing Patient</Label>
+        <PatientAutocomplete
+          value={selectedPatient}
+          onSelect={onPatientSelect}
+          placeholder="Search by name, NHS number, or phone..."
+        />
+        {selectedPatient && (
+          <p className="text-sm text-muted-foreground">
+            Patient found! Fields below have been auto-filled.
+          </p>
+        )}
+      </div>
+
       <div className="grid grid-cols-2 gap-4">
         <div className="space-y-2">
           <Label htmlFor="patientName">Patient Name</Label>
