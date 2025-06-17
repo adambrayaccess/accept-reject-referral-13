@@ -13,6 +13,7 @@ import AppointmentStatus from './AppointmentStatus';
 import WaitingListAIActions from './WaitingListAIActions';
 import SubReferralIndicator from './SubReferralIndicator';
 import RTTPathwayBadge from './RTTPathwayBadge';
+import CarePathwayBadge from './CarePathwayBadge';
 import {
   calculateReferralAgeDays,
   calculatePatientAge,
@@ -155,6 +156,16 @@ const PatientTableRow = ({
               <div>{formatTargetDate(referral.rttPathway.targetDate)}</div>
             ) : (
               <span className="text-muted-foreground">Not set</span>
+            )}
+          </TableCell>
+          <TableCell className="p-2">
+            {referral.carePathway ? (
+              <CarePathwayBadge 
+                carePathway={referral.carePathway}
+                variant="compact"
+              />
+            ) : (
+              <span className="text-xs text-muted-foreground">No pathway</span>
             )}
           </TableCell>
           <TableCell className="p-2">

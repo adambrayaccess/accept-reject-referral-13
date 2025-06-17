@@ -1,4 +1,3 @@
-
 export interface Patient {
   id: string;
   name: string;
@@ -64,6 +63,30 @@ export interface RTTPathway {
   }>;
 }
 
+// New Care Pathway related types
+export type CarePathwayType = 
+  | 'cancer-two-week-wait'
+  | 'urgent-suspected-cancer'
+  | 'elective-surgery'
+  | 'emergency-pathway'
+  | 'chronic-disease-management'
+  | 'diagnostic-pathway'
+  | 'mental-health-pathway'
+  | 'paediatric-pathway'
+  | 'maternity-pathway'
+  | 'rehabilitation-pathway'
+  | 'end-of-life-care'
+  | 'screening-programme';
+
+export interface CarePathway {
+  type: CarePathwayType;
+  name: string;
+  description?: string;
+  priority: 'routine' | 'urgent' | 'emergency';
+  targetTimeframe?: string; // e.g., "14 days", "6 weeks"
+  status: 'active' | 'completed' | 'paused' | 'discontinued';
+}
+
 export type ReferralStatus = 'new' | 'accepted' | 'rejected';
 export type ReferralPriority = 'routine' | 'urgent' | 'emergency';
 export type TriageStatus = 'pre-assessment' | 'assessed' | 'pre-admission-assessment' | 'waiting-list' | 'refer-to-another-specialty';
@@ -112,6 +135,8 @@ export interface Referral {
   appointmentDetails?: AppointmentDetails;
   // RTT Pathway information
   rttPathway?: RTTPathway;
+  // Care Pathway information
+  carePathway?: CarePathway;
 }
 
 export interface ApiResponse<T> {

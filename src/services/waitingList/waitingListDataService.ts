@@ -3,6 +3,7 @@ import { Referral } from '@/types/referral';
 import { fetchReferrals } from '@/services/referralService';
 import { differenceInDays } from 'date-fns';
 import { calculateRTTPathway } from '@/utils/rttPathwayUtils';
+import { generateCarePathway } from '@/utils/carePathwayUtils';
 
 export const loadWaitingListReferrals = async (selectedSpecialties: string[] = []): Promise<Referral[]> => {
   let data = await fetchReferrals();
@@ -46,6 +47,9 @@ export const loadWaitingListReferrals = async (selectedSpecialties: string[] = [
     // Generate RTT pathway data if missing
     const rttPathway = ref.rttPathway || calculateRTTPathway(ref.created);
     
+    // Generate Care pathway data if missing
+    const carePathway = ref.carePathway || generateCarePathway(ref.specialty, ref.priority, tags);
+    
     const processedRef = {
       ...ref,
       calculatedReferralAge: ageInDays,
@@ -53,14 +57,15 @@ export const loadWaitingListReferrals = async (selectedSpecialties: string[] = [
       calculatedLocation: location,
       tags,
       appointmentDetails,
-      rttPathway
+      rttPathway,
+      carePathway
     };
     
-    console.log(`Processed referral ${ref.id}: RTT pathway = ${JSON.stringify(rttPathway)}`);
+    console.log(`Processed referral ${ref.id}: Care pathway = ${carePathway ? carePathway.name : 'None'}`);
     return processedRef;
   });
   
-  console.log('Processed referrals with RTT data:', processedData.filter(r => r.rttPathway).length);
+  console.log('Processed referrals with care pathway data:', processedData.filter(r => r.carePathway).length);
   
   // Sort by display order if available, otherwise by created date (newest first)
   const sortedData = processedData.sort((a, b) => {
