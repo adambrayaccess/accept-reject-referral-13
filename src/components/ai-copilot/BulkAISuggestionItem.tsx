@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -77,8 +76,9 @@ const BulkAISuggestionItem = ({ suggestion, selectedReferrals, onApplied }: Bulk
           successMessage = `Applied workflow optimization for ${suggestion.affectedReferralsCount} patients`;
           break;
         default:
-          // Use the base interface properties that are always available
-          successMessage = `Applied ${suggestion.type} action for ${suggestion.affectedReferralsCount} patients`;
+          // Cast to base type to access common properties
+          const baseSuggestion = suggestion as SpecificBulkAISuggestion;
+          successMessage = `Applied ${baseSuggestion.type} action for ${baseSuggestion.affectedReferralsCount} patients`;
           break;
       }
 
