@@ -2,20 +2,22 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { getAllSpecialtyNames } from '@/data/specialtyOptions';
 
 interface AdminSpecialtySelectorProps {
-  specialties: string[];
   currentSpecialty: string | null;
   onSpecialtySelect: (specialty: string) => void;
   onShowAll: () => void;
 }
 
 const AdminSpecialtySelector = ({ 
-  specialties, 
   currentSpecialty, 
   onSpecialtySelect, 
   onShowAll 
 }: AdminSpecialtySelectorProps) => {
+  // Use centralized specialty data
+  const specialties = getAllSpecialtyNames();
+
   const handleSpecialtyChange = (value: string) => {
     if (value === 'all') {
       onShowAll();

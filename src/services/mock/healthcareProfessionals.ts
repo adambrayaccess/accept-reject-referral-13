@@ -1,30 +1,26 @@
 
 import { HealthcareProfessional } from '@/types/referral';
+import { getAllSpecialtyNames } from '@/data/specialtyOptions';
 
-export const mockHealthcareProfessionals: HealthcareProfessional[] = [
-  // Cardiology
-  { id: 'HP001', name: 'Dr. Sarah Mitchell', role: 'Consultant Cardiologist', specialty: 'Cardiology' },
-  { id: 'HP002', name: 'Dr. James Robinson', role: 'Senior Registrar', specialty: 'Cardiology' },
-  { id: 'HP003', name: 'Dr. Emma Clarke', role: 'Specialist Registrar', specialty: 'Cardiology' },
+// Import the centralized healthcare professionals data
+export { healthcareProfessionals as mockHealthcareProfessionals } from '@/data/specialtyOptions';
+
+// Helper function to get healthcare professionals by specialty
+export const getHealthcareProfessionalsBySpecialty = (specialtyName: string): HealthcareProfessional[] => {
+  const { healthcareProfessionals, getSpecialtyIdByName } = require('@/data/specialtyOptions');
+  const specialtyId = getSpecialtyIdByName(specialtyName);
+  return healthcareProfessionals.filter((hp: HealthcareProfessional) => hp.specialty === specialtyId);
+};
+
+// Helper function to validate specialty coverage
+export const validateSpecialtyCoverage = (): { [key: string]: number } => {
+  const { healthcareProfessionals } = require('@/data/specialtyOptions');
+  const specialtyNames = getAllSpecialtyNames();
+  const coverage: { [key: string]: number } = {};
   
-  // Dermatology
-  { id: 'HP004', name: 'Dr. Michael Thompson', role: 'Consultant Dermatologist', specialty: 'Dermatology' },
-  { id: 'HP005', name: 'Dr. Lisa Chen', role: 'Senior Registrar', specialty: 'Dermatology' },
+  specialtyNames.forEach(name => {
+    coverage[name] = getHealthcareProfessionalsBySpecialty(name).length;
+  });
   
-  // Neurology
-  { id: 'HP006', name: 'Dr. Robert Taylor', role: 'Consultant Neurologist', specialty: 'Neurology' },
-  { id: 'HP007', name: 'Dr. Sophie Anderson', role: 'Senior Registrar', specialty: 'Neurology' },
-  
-  // Mental Health
-  { id: 'HP008', name: 'Dr. David Wilson', role: 'Consultant Psychiatrist', specialty: 'Mental Health' },
-  { id: 'HP009', name: 'Dr. Rachel Green', role: 'Clinical Psychologist', specialty: 'Mental Health' },
-  { id: 'HP010', name: 'Dr. Mark Johnson', role: 'Senior Registrar', specialty: 'Mental Health' },
-  
-  // Rheumatology
-  { id: 'HP011', name: 'Dr. Helen Davies', role: 'Consultant Rheumatologist', specialty: 'Rheumatology' },
-  { id: 'HP012', name: 'Dr. Peter Evans', role: 'Senior Registrar', specialty: 'Rheumatology' },
-  
-  // Gastroenterology
-  { id: 'HP013', name: 'Dr. Anna Smith', role: 'Consultant Gastroenterologist', specialty: 'Gastroenterology' },
-  { id: 'HP014', name: 'Dr. Thomas Brown', role: 'Senior Registrar', specialty: 'Gastroenterology' }
-];
+  return coverage;
+};

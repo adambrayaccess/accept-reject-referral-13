@@ -1,20 +1,10 @@
 
 import SpecialtySelector from '@/components/SpecialtySelector';
+import { getAllSpecialtyNames } from '@/data/specialtyOptions';
 
 const SpecialtySelection = () => {
-  const specialties = [
-    'Cardiology',
-    'Dermatology',
-    'Endocrinology',
-    'Gastroenterology',
-    'Neurology',
-    'Oncology',
-    'Orthopedics',
-    'Psychiatry',
-    'Pulmonology',
-    'Rheumatology',
-    'Mental Health'
-  ];
+  // Use centralized specialty data instead of hardcoded list
+  const specialties = getAllSpecialtyNames();
 
   return (
     <div className="container mx-auto">
