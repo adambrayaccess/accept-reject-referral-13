@@ -7,7 +7,6 @@ import {
   Calendar, 
   FileText, 
   Activity, 
-  Pill, 
   ClipboardList, 
   Clock,
   AlertCircle,
@@ -18,7 +17,9 @@ import {
   Phone,
   PhoneCall,
   Mail,
-  MessageSquare
+  MessageSquare,
+  UserCheck,
+  Stethoscope
 } from 'lucide-react';
 import { format, parseISO } from 'date-fns';
 import { useState } from 'react';
@@ -29,7 +30,7 @@ interface JourneyEvent {
   title: string;
   description?: string;
   date: string;
-  type: 'referral' | 'medication' | 'vital-signs' | 'document' | 'appointment' | 'triage' | 'pathway' | 'phone-call' | 'letter' | 'communication';
+  type: 'referral' | 'document' | 'appointment' | 'triage' | 'pathway' | 'phone-call' | 'letter' | 'communication' | 'booking' | 'assessment';
   status?: 'completed' | 'active' | 'scheduled' | 'cancelled';
   priority?: 'low' | 'medium' | 'high';
   metadata?: Record<string, any>;
@@ -43,10 +44,6 @@ const getEventIcon = (type: JourneyEvent['type']) => {
   switch (type) {
     case 'referral':
       return <FileText className="h-4 w-4 text-white" />;
-    case 'medication':
-      return <Pill className="h-4 w-4 text-white" />;
-    case 'vital-signs':
-      return <Activity className="h-4 w-4 text-white" />;
     case 'document':
       return <Upload className="h-4 w-4 text-white" />;
     case 'appointment':
@@ -61,6 +58,10 @@ const getEventIcon = (type: JourneyEvent['type']) => {
       return <Mail className="h-4 w-4 text-white" />;
     case 'communication':
       return <MessageSquare className="h-4 w-4 text-white" />;
+    case 'booking':
+      return <UserCheck className="h-4 w-4 text-white" />;
+    case 'assessment':
+      return <Stethoscope className="h-4 w-4 text-white" />;
     default:
       return <Activity className="h-4 w-4 text-white" />;
   }
@@ -73,10 +74,6 @@ const getEventColor = (type: JourneyEvent['type'], status?: string, priority?: s
   switch (type) {
     case 'referral':
       return 'bg-[#007A7A]'; // Primary teal
-    case 'medication':
-      return 'bg-blue-600'; // Blue for medications
-    case 'vital-signs':
-      return 'bg-green-600'; // Green for vitals
     case 'document':
       return 'bg-purple-600'; // Purple for documents
     case 'appointment':
@@ -91,6 +88,10 @@ const getEventColor = (type: JourneyEvent['type'], status?: string, priority?: s
       return 'bg-amber-600'; // Amber for letters
     case 'communication':
       return 'bg-cyan-600'; // Cyan for other communications
+    case 'booking':
+      return 'bg-blue-600'; // Blue for bookings
+    case 'assessment':
+      return 'bg-green-600'; // Green for assessments
     default:
       return 'bg-gray-500';
   }
@@ -143,6 +144,23 @@ const PatientJourney = ({ referral }: PatientJourneyProps) => {
       metadata: { direction: 'outbound', duration: '5 minutes', outcome: 'confirmed' }
     });
 
+    // Initial appointment booking (3 days after referral)
+    const bookingDate = new Date(createDate);
+    bookingDate.setDate(bookingDate.getDate() + 3);
+    events.push({
+      id: 'appointment-booking',
+      title: 'Appointment Booking: Initial Assessment',
+      description: 'Appointment booked for initial consultation and assessment',
+      date: bookingDate.toISOString(),
+      type: 'booking',
+      status: 'completed',
+      metadata: { 
+        appointmentType: 'initial_consultation',
+        bookedBy: 'Booking Team',
+        method: 'online_system'
+      }
+    });
+
     // Letter sent with appointment details
     if (referral.appointmentDetails) {
       const letterDate = new Date(referral.appointmentDetails.date);
@@ -174,7 +192,7 @@ const PatientJourney = ({ referral }: PatientJourneyProps) => {
       });
     }
 
-    // Pre-assessment information letter
+    // Pre-assessment questionnaire sent
     if (referral.triageStatus === 'pre-assessment' || referral.triageStatus === 'assessed') {
       const preAssessmentDate = new Date(createDate);
       preAssessmentDate.setDate(preAssessmentDate.getDate() + 7);
@@ -189,7 +207,26 @@ const PatientJourney = ({ referral }: PatientJourneyProps) => {
       });
     }
 
-    // Follow-up communication based on specialty
+    // Pre-assessment conducted (if applicable)
+    if (referral.triageStatus === 'assessed' || referral.triageStatus === 'pre-admission-assessment') {
+      const assessmentDate = new Date(createDate);
+      assessmentDate.setDate(assessmentDate.getDate() + 14);
+      events.push({
+        id: 'pre-assessment-conducted',
+        title: 'Pre-Assessment Conducted',
+        description: 'Comprehensive pre-assessment completed including health questionnaire and baseline measurements',
+        date: assessmentDate.toISOString(),
+        type: 'assessment',
+        status: 'completed',
+        metadata: {
+          assessmentType: 'pre_admission',
+          duration: '45 minutes',
+          outcome: 'suitable_for_procedure'
+        }
+      });
+    }
+
+    // Specialty-specific assessments
     if (referral.specialty === 'Mental Health') {
       const mentalHealthCallDate = new Date(createDate);
       mentalHealthCallDate.setDate(mentalHealthCallDate.getDate() + 5);
@@ -202,22 +239,60 @@ const PatientJourney = ({ referral }: PatientJourneyProps) => {
         status: 'completed',
         metadata: { direction: 'outbound', duration: '15 minutes', outcome: 'stable' }
       });
-    }
 
-    // Results letter (if there are test results or assessments)
-    if (referral.patient.medicalHistory?.vitalSigns && referral.patient.medicalHistory.vitalSigns.length > 0) {
-      const resultsDate = new Date(createDate);
-      resultsDate.setDate(resultsDate.getDate() + 10);
+      // Mental health assessment
+      const mentalHealthAssessmentDate = new Date(createDate);
+      mentalHealthAssessmentDate.setDate(mentalHealthAssessmentDate.getDate() + 10);
       events.push({
-        id: 'results-letter',
-        title: 'Letter Sent: Test Results',
-        description: 'Letter containing latest test results and next steps in care pathway',
-        date: resultsDate.toISOString(),
-        type: 'letter',
+        id: 'mental-health-assessment',
+        title: 'Mental Health Assessment',
+        description: 'Comprehensive mental health assessment conducted by specialist clinician',
+        date: mentalHealthAssessmentDate.toISOString(),
+        type: 'assessment',
         status: 'completed',
-        metadata: { type: 'results', method: 'post' }
+        metadata: {
+          assessmentType: 'psychological_evaluation',
+          duration: '60 minutes',
+          outcome: 'treatment_plan_developed'
+        }
       });
     }
+
+    // Cardiology-specific assessments
+    if (referral.specialty === 'Cardiology') {
+      const cardioAssessmentDate = new Date(createDate);
+      cardioAssessmentDate.setDate(cardioAssessmentDate.getDate() + 12);
+      events.push({
+        id: 'cardiology-assessment',
+        title: 'Cardiology Assessment',
+        description: 'Comprehensive cardiac assessment including ECG and exercise stress test',
+        date: cardioAssessmentDate.toISOString(),
+        type: 'assessment',
+        status: 'completed',
+        metadata: {
+          assessmentType: 'cardiac_evaluation',
+          duration: '90 minutes',
+          outcome: 'further_investigations_required'
+        }
+      });
+    }
+
+    // Follow-up appointment booking (after initial assessment)
+    const followUpBookingDate = new Date(createDate);
+    followUpBookingDate.setDate(followUpBookingDate.getDate() + 21);
+    events.push({
+      id: 'followup-booking',
+      title: 'Appointment Booking: Follow-up',
+      description: 'Follow-up appointment booked to review assessment results and discuss treatment options',
+      date: followUpBookingDate.toISOString(),
+      type: 'booking',
+      status: 'scheduled',
+      metadata: {
+        appointmentType: 'follow_up',
+        bookedBy: 'Consultant Secretary',
+        method: 'phone_booking'
+      }
+    });
 
     // Appointment reminder call
     if (referral.appointmentDetails) {
@@ -244,43 +319,6 @@ const PatientJourney = ({ referral }: PatientJourneyProps) => {
         type: 'triage',
         status: 'completed'
       });
-    });
-
-    // Medical history - vital signs
-    referral.patient.medicalHistory?.vitalSigns?.forEach((vital, index) => {
-      events.push({
-        id: `vital-${index}`,
-        title: 'Vital Signs Recorded',
-        description: `NEWS2 Score: ${vital.news2}, Temperature: ${vital.temperature}°C`,
-        date: vital.timestamp,
-        type: 'vital-signs',
-        status: 'completed',
-        priority: vital.news2 > 4 ? 'high' : vital.news2 > 2 ? 'medium' : 'low'
-      });
-    });
-
-    // Medical history - medications
-    referral.patient.medicalHistory?.medicationHistory?.forEach((med) => {
-      events.push({
-        id: `med-${med.id}`,
-        title: `Medication: ${med.name}`,
-        description: `${med.dosage} - ${med.frequency}`,
-        date: med.prescribedDate,
-        type: 'medication',
-        status: med.status === 'active' ? 'active' : 'completed'
-      });
-
-      // Add end date event if medication was completed
-      if (med.endDate) {
-        events.push({
-          id: `med-end-${med.id}`,
-          title: `Medication Completed: ${med.name}`,
-          description: 'Treatment course finished',
-          date: med.endDate,
-          type: 'medication',
-          status: 'completed'
-        });
-      }
     });
 
     // Attachments/Documents
@@ -412,8 +450,8 @@ const PatientJourney = ({ referral }: PatientJourneyProps) => {
                             </p>
                           )}
                           
-                          {/* Additional metadata for phone calls and letters */}
-                          {event.metadata && (event.type === 'phone-call' || event.type === 'letter') && (
+                          {/* Additional metadata for different event types */}
+                          {event.metadata && (
                             <div className="text-xs text-muted-foreground mb-2 space-y-1">
                               {event.type === 'phone-call' && (
                                 <>
@@ -437,6 +475,32 @@ const PatientJourney = ({ referral }: PatientJourneyProps) => {
                                   <Mail className="h-3 w-3" />
                                   <span>Sent via {event.metadata.method}</span>
                                 </div>
+                              )}
+                              {event.type === 'booking' && (
+                                <>
+                                  {event.metadata.appointmentType && (
+                                    <div>Type: {event.metadata.appointmentType.replace('_', ' ')}</div>
+                                  )}
+                                  {event.metadata.bookedBy && (
+                                    <div>Booked by: {event.metadata.bookedBy}</div>
+                                  )}
+                                  {event.metadata.method && (
+                                    <div>Method: {event.metadata.method.replace('_', ' ')}</div>
+                                  )}
+                                </>
+                              )}
+                              {event.type === 'assessment' && (
+                                <>
+                                  {event.metadata.assessmentType && (
+                                    <div>Type: {event.metadata.assessmentType.replace('_', ' ')}</div>
+                                  )}
+                                  {event.metadata.duration && (
+                                    <div>Duration: {event.metadata.duration}</div>
+                                  )}
+                                  {event.metadata.outcome && (
+                                    <div>Outcome: {event.metadata.outcome.replace('_', ' ')}</div>
+                                  )}
+                                </>
                               )}
                             </div>
                           )}
