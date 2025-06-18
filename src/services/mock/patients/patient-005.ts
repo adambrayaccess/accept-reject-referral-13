@@ -1,3 +1,4 @@
+
 import { Patient } from '@/types/patient';
 
 export const patient005: Patient = {
@@ -19,6 +20,51 @@ export const patient005: Patient = {
         oxygenSaturation: 96,
         bloodPressureSystolic: 142,
         bloodPressureDiastolic: 88
+      }
+    ],
+    testResults: [
+      {
+        id: 'TEST005',
+        testName: 'Lipid Profile',
+        testType: 'blood',
+        requestedDate: '2023-06-02T00:00:00Z',
+        sampleDate: '2023-06-02T09:30:00Z',
+        reportDate: '2023-06-02T17:15:00Z',
+        requestedBy: 'Dr. Andrew Clark',
+        performedBy: 'NHS Pathology Lab',
+        status: 'completed',
+        results: [
+          {
+            parameter: 'Total Cholesterol',
+            value: '6.2',
+            unit: 'mmol/L',
+            referenceRange: '<5.0',
+            flag: 'high'
+          },
+          {
+            parameter: 'HDL Cholesterol',
+            value: '1.1',
+            unit: 'mmol/L',
+            referenceRange: '>1.0',
+            flag: 'normal'
+          },
+          {
+            parameter: 'LDL Cholesterol',
+            value: '4.1',
+            unit: 'mmol/L',
+            referenceRange: '<3.0',
+            flag: 'high'
+          },
+          {
+            parameter: 'Triglycerides',
+            value: '2.8',
+            unit: 'mmol/L',
+            referenceRange: '<2.3',
+            flag: 'high'
+          }
+        ],
+        interpretation: 'Elevated cholesterol and triglycerides. Recommend statin therapy and lifestyle modifications.',
+        notes: 'Patient advised on diet and exercise'
       }
     ],
     medicationHistory: [
