@@ -224,14 +224,10 @@ const PatientJourney = ({ referral }: PatientJourneyProps) => {
             <CardTitle className="text-lg flex items-center justify-between">
               <div className="flex items-center">
                 <Route className="h-5 w-5 mr-2" />
-                Patient Journey - {patient.name}
-                <div className="flex items-center gap-4 text-sm text-muted-foreground ml-4">
-                  <span>NHS: {patient.nhsNumber}</span>
-                  <span>DOB: {format(parseISO(patient.birthDate), 'dd/MM/yyyy')}</span>
-                  <Badge variant="outline" className="text-xs">
-                    {referral.specialty}
-                  </Badge>
-                </div>
+                Patient Journey
+                <Badge variant="outline" className="text-xs ml-4">
+                  {referral.specialty}
+                </Badge>
               </div>
               <ChevronDown className={`h-5 w-5 transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`} />
             </CardTitle>
