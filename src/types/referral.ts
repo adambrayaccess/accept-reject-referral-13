@@ -138,6 +138,11 @@ export interface Referral {
   rttPathway?: RTTPathway;
   // Care Pathway information
   carePathway?: CarePathway;
+  // Team allocation - NEW
+  teamId?: string;
+  assignedHCPId?: string; // Individual HCP within the team
+  allocatedDate?: string;
+  allocatedBy?: string;
 }
 
 export interface ApiResponse<T> {
@@ -197,4 +202,6 @@ export interface HealthcareProfessional {
   name: string;
   role: string;
   specialty: string;
+  teamIds?: string[]; // NEW - Teams this HCP belongs to
+  isTeamLead?: boolean; // NEW - Whether this HCP leads any teams
 }

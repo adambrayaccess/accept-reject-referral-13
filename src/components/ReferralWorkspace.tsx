@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from 'react';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Referral } from '@/types/referral';
@@ -12,6 +11,7 @@ import PatientJourney from './PatientJourney';
 import ReferralTagging from './referral-tagging/ReferralTagging';
 import AISuggestionsPanel from './ai-suggestions/AISuggestionsPanel';
 import AppointmentStatus from './cohort/AppointmentStatus';
+import TeamBadge from './team/TeamBadge';
 
 interface ReferralWorkspaceProps {
   referral: Referral;
@@ -47,6 +47,26 @@ const ReferralWorkspace = ({ referral, onStatusChange }: ReferralWorkspaceProps)
         referral={referral}
         onSuggestionApplied={handleAISuggestionApplied}
       />
+
+      {/* Team Allocation Card - NEW */}
+      {referral.teamId && (
+        <Card>
+          <CardHeader className="pb-3">
+            <CardTitle className="text-lg">Team Allocation</CardTitle>
+          </CardHeader>
+          <CardContent className="pt-0">
+            <div className="flex items-center gap-2">
+              <TeamBadge teamId={referral.teamId} />
+              {referral.assignedHCPId && (
+                <div className="text-sm text-muted-foreground">
+                  Assigned to: {/* Add HCP name lookup here */}
+                  <span className="font-medium">Individual Healthcare Professional</span>
+                </div>
+              )}
+            </div>
+          </CardContent>
+        </Card>
+      )}
 
       {/* Appointment Status Card */}
       <Card>
