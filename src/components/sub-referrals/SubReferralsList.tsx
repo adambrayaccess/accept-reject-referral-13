@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { ExternalLink, Users } from 'lucide-react';
+import { ExternalLink, LayoutList } from 'lucide-react';
 import { Referral } from '@/types/referral';
 import { fetchChildReferrals } from '@/services/referralService';
 import { format } from 'date-fns';
@@ -75,7 +75,7 @@ const SubReferralsList = ({ parentReferralId, onRefresh }: SubReferralsListProps
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
-            <Users className="h-5 w-5" />
+            <LayoutList className="h-5 w-5" />
             Sub-referrals
           </CardTitle>
         </CardHeader>
@@ -91,7 +91,7 @@ const SubReferralsList = ({ parentReferralId, onRefresh }: SubReferralsListProps
       <CardHeader>
         <div className="flex items-center justify-between">
           <CardTitle className="flex items-center gap-2">
-            <Users className="h-5 w-5" />
+            <LayoutList className="h-5 w-5" />
             Sub-referrals ({subReferrals.length})
           </CardTitle>
           <CreateSubReferralDialog 
