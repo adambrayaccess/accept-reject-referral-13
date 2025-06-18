@@ -1,4 +1,3 @@
-
 import { Referral } from '@/types/referral';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { EnhancedTabs, EnhancedTabsContent, EnhancedTabsList, EnhancedTabsTrigger } from '@/components/ui/enhanced-tabs';
@@ -6,6 +5,7 @@ import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import { format } from 'date-fns';
 import ReferralPriorityBadge from '@/components/dashboard/ReferralPriorityBadge';
+import RTTPathwayTabContent from '@/components/referral-detail/RTTPathwayTabContent';
 
 interface ReferralDetailProps {
   referral: Referral;
@@ -45,6 +45,9 @@ const ReferralDetail = ({ referral, relatedReferrals }: ReferralDetailProps) => 
               </EnhancedTabsTrigger>
               <EnhancedTabsTrigger value="referrer" variant="grid" size="md">
                 Referrer
+              </EnhancedTabsTrigger>
+              <EnhancedTabsTrigger value="rtt-pathway" variant="grid" size="md">
+                RTT/Pathway
               </EnhancedTabsTrigger>
             </EnhancedTabsList>
           </div>
@@ -219,6 +222,10 @@ const ReferralDetail = ({ referral, relatedReferrals }: ReferralDetailProps) => 
                 <div className="font-medium">{format(new Date(referral.created), 'dd MMM yyyy, HH:mm')}</div>
               </div>
             </div>
+          </EnhancedTabsContent>
+          
+          <EnhancedTabsContent value="rtt-pathway" className="space-y-3">
+            <RTTPathwayTabContent referral={referral} />
           </EnhancedTabsContent>
         </EnhancedTabs>
       </CardContent>
