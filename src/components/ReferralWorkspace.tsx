@@ -94,17 +94,17 @@ const ReferralWorkspace = ({ referral, onStatusChange }: ReferralWorkspaceProps)
         onTagsUpdated={handleTagsUpdated}
       />
 
+      <PatientJourney referral={referral} />
+
       <Card className="flex-1">
         <CardHeader className="pb-3">
-          <CardTitle className="text-lg">Triage Workspace</CardTitle>
+          <CardTitle className="text-lg">Triage History</CardTitle>
         </CardHeader>
         <CardContent className="pt-0 space-y-3">
           <AuditLog entries={referral.auditLog} />
           <CollaborationNotes notes={referral.collaborationNotes} />
         </CardContent>
       </Card>
-
-      <PatientJourney referral={referral} />
     </div>
   );
 };
