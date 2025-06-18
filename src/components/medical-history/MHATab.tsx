@@ -1,6 +1,5 @@
-
 import { format } from 'date-fns';
-import { MHASection } from '@/types/referral';
+import { MHASection } from '@/types/medical';
 import { Badge } from '@/components/ui/badge';
 import { FileText, Calendar, User, Building2 } from 'lucide-react';
 
