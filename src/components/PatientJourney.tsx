@@ -1,9 +1,9 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
 import { 
-  User, 
+  Route,
   Calendar, 
   FileText, 
   Activity, 
@@ -13,9 +13,11 @@ import {
   AlertCircle,
   CheckCircle,
   XCircle,
-  Upload
+  Upload,
+  ChevronDown
 } from 'lucide-react';
 import { format, parseISO } from 'date-fns';
+import { useState } from 'react';
 import { Referral } from '@/types/referral';
 
 interface JourneyEvent {
@@ -36,43 +38,43 @@ interface PatientJourneyProps {
 const getEventIcon = (type: JourneyEvent['type']) => {
   switch (type) {
     case 'referral':
-      return <FileText className="h-4 w-4" />;
+      return <FileText className="h-4 w-4 text-white" />;
     case 'medication':
-      return <Pill className="h-4 w-4" />;
+      return <Pill className="h-4 w-4 text-white" />;
     case 'vital-signs':
-      return <Activity className="h-4 w-4" />;
+      return <Activity className="h-4 w-4 text-white" />;
     case 'document':
-      return <Upload className="h-4 w-4" />;
+      return <Upload className="h-4 w-4 text-white" />;
     case 'appointment':
-      return <Calendar className="h-4 w-4" />;
+      return <Calendar className="h-4 w-4 text-white" />;
     case 'triage':
-      return <ClipboardList className="h-4 w-4" />;
+      return <ClipboardList className="h-4 w-4 text-white" />;
     case 'pathway':
-      return <Clock className="h-4 w-4" />;
+      return <Clock className="h-4 w-4 text-white" />;
     default:
-      return <Activity className="h-4 w-4" />;
+      return <Activity className="h-4 w-4 text-white" />;
   }
 };
 
 const getEventColor = (type: JourneyEvent['type'], status?: string, priority?: string) => {
-  if (priority === 'high') return 'bg-red-500';
+  if (priority === 'high') return 'bg-red-600'; // High priority red
   if (status === 'cancelled') return 'bg-gray-400';
   
   switch (type) {
     case 'referral':
-      return 'bg-[#007A7A]';
+      return 'bg-[#007A7A]'; // Primary teal
     case 'medication':
-      return 'bg-blue-500';
+      return 'bg-blue-600'; // Blue for medications
     case 'vital-signs':
-      return 'bg-green-500';
+      return 'bg-green-600'; // Green for vitals
     case 'document':
-      return 'bg-purple-500';
+      return 'bg-purple-600'; // Purple for documents
     case 'appointment':
-      return 'bg-orange-500';
+      return 'bg-orange-600'; // Orange for appointments
     case 'triage':
-      return 'bg-[#973060]';
+      return 'bg-[#973060]'; // Purple-pink for triage
     case 'pathway':
-      return 'bg-indigo-500';
+      return 'bg-indigo-600'; // Indigo for pathways
     default:
       return 'bg-gray-500';
   }
@@ -92,6 +94,8 @@ const getStatusIcon = (status?: string) => {
 };
 
 const PatientJourney = ({ referral }: PatientJourneyProps) => {
+  const [isOpen, setIsOpen] = useState(false);
+
   // Generate journey events from referral data
   const generateJourneyEvents = (): JourneyEvent[] => {
     const events: JourneyEvent[] = [];
@@ -213,118 +217,117 @@ const PatientJourney = ({ referral }: PatientJourneyProps) => {
   const journeyEvents = generateJourneyEvents();
   const patient = referral.patient;
 
-  // Generate patient initials for avatar fallback
-  const getInitials = (name: string) => {
-    return name.split(' ').map(n => n[0]).join('').toUpperCase();
-  };
-
   return (
-    <Card>
-      <CardHeader className="pb-4">
-        <div className="flex items-center gap-3">
-          <Avatar className="h-12 w-12">
-            <AvatarImage src="/placeholder.svg?height=48&width=48" alt={patient.name} />
-            <AvatarFallback className="bg-[#007A7A] text-white font-semibold">
-              {getInitials(patient.name)}
-            </AvatarFallback>
-          </Avatar>
-          <div className="flex-1">
-            <CardTitle className="flex items-center gap-2 text-lg">
-              <User className="h-5 w-5" />
-              Patient Journey - {patient.name}
-            </CardTitle>
-            <div className="flex items-center gap-4 text-sm text-muted-foreground mt-1">
-              <span>NHS: {patient.nhsNumber}</span>
-              <span>DOB: {format(parseISO(patient.birthDate), 'dd/MM/yyyy')}</span>
-              <Badge variant="outline" className="text-xs">
-                {referral.specialty}
-              </Badge>
+    <Collapsible open={isOpen} onOpenChange={setIsOpen}>
+      <Card>
+        <CollapsibleTrigger asChild>
+          <CardHeader className="pb-4 cursor-pointer hover:bg-gray-50 transition-colors">
+            <div className="flex items-center gap-3">
+              <div className="w-12 h-12 rounded-full bg-[#007A7A] flex items-center justify-center flex-shrink-0">
+                <Route className="h-6 w-6 text-white" />
+              </div>
+              <div className="flex-1">
+                <CardTitle className="flex items-center justify-between text-lg">
+                  <span>Patient Journey - {patient.name}</span>
+                  <ChevronDown className={`h-5 w-5 transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`} />
+                </CardTitle>
+                <div className="flex items-center gap-4 text-sm text-muted-foreground mt-1">
+                  <span>NHS: {patient.nhsNumber}</span>
+                  <span>DOB: {format(parseISO(patient.birthDate), 'dd/MM/yyyy')}</span>
+                  <Badge variant="outline" className="text-xs">
+                    {referral.specialty}
+                  </Badge>
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
-      </CardHeader>
-      <CardContent>
-        <div className="relative">
-          {/* Timeline line */}
-          <div className="absolute left-6 top-0 bottom-0 w-0.5 bg-[#007A7A] opacity-30"></div>
-          
-          <div className="space-y-6">
-            {journeyEvents.map((event, index) => {
-              const isLast = index === journeyEvents.length - 1;
-              const eventDate = new Date(event.date);
-              const isUpcoming = eventDate > new Date();
+          </CardHeader>
+        </CollapsibleTrigger>
+        
+        <CollapsibleContent>
+          <CardContent>
+            <div className="relative">
+              {/* Timeline line */}
+              <div className="absolute left-6 top-0 bottom-0 w-0.5 bg-[#007A7A] opacity-30"></div>
               
-              return (
-                <div key={event.id} className="relative flex items-start gap-4">
-                  {/* Timeline dot */}
-                  <div className={`relative z-10 w-12 h-12 rounded-full ${getEventColor(event.type, event.status, event.priority)} flex items-center justify-center flex-shrink-0 ${isUpcoming ? 'opacity-60' : ''}`}>
-                    {getEventIcon(event.type)}
-                  </div>
+              <div className="space-y-6">
+                {journeyEvents.map((event, index) => {
+                  const isLast = index === journeyEvents.length - 1;
+                  const eventDate = new Date(event.date);
+                  const isUpcoming = eventDate > new Date();
                   
-                  <div className={`flex-1 min-w-0 pb-6 ${isLast ? 'pb-0' : ''}`}>
-                    <div className="bg-white rounded-lg border border-gray-200 p-4 shadow-sm hover:shadow-md transition-shadow">
-                      <div className="flex items-start justify-between gap-2 mb-2">
-                        <div className="flex items-center gap-2 flex-1 min-w-0">
-                          <h4 className="font-semibold text-gray-900 truncate">
-                            {event.title}
-                          </h4>
-                          {event.status && getStatusIcon(event.status)}
-                          {event.priority === 'high' && (
-                            <Badge variant="destructive" className="text-xs">
-                              High Priority
-                            </Badge>
-                          )}
-                          {isUpcoming && (
-                            <Badge variant="outline" className="text-xs">
-                              Scheduled
-                            </Badge>
-                          )}
-                        </div>
-                        <div className="text-right flex-shrink-0">
-                          <div className="text-sm font-medium text-gray-700">
-                            {format(eventDate, 'dd/MM/yyyy')}
-                          </div>
-                          <div className="text-xs text-muted-foreground">
-                            {format(eventDate, 'HH:mm')}
-                          </div>
-                        </div>
+                  return (
+                    <div key={event.id} className="relative flex items-start gap-4">
+                      {/* Timeline dot */}
+                      <div className={`relative z-10 w-12 h-12 rounded-full ${getEventColor(event.type, event.status, event.priority)} flex items-center justify-center flex-shrink-0 ${isUpcoming ? 'opacity-60' : ''}`}>
+                        {getEventIcon(event.type)}
                       </div>
                       
-                      {event.description && (
-                        <p className="text-sm text-muted-foreground mb-2">
-                          {event.description}
-                        </p>
-                      )}
-                      
-                      <div className="flex items-center gap-2">
-                        <Badge variant="secondary" className="text-xs">
-                          {event.type.replace('-', ' ').replace(/\b\w/g, l => l.toUpperCase())}
-                        </Badge>
-                        {event.status && event.status !== 'completed' && (
-                          <Badge 
-                            variant={event.status === 'active' ? 'default' : 'outline'} 
-                            className="text-xs"
-                          >
-                            {event.status.charAt(0).toUpperCase() + event.status.slice(1)}
-                          </Badge>
-                        )}
+                      <div className={`flex-1 min-w-0 pb-6 ${isLast ? 'pb-0' : ''}`}>
+                        <div className="bg-white rounded-lg border border-gray-200 p-4 shadow-sm hover:shadow-md transition-shadow">
+                          <div className="flex items-start justify-between gap-2 mb-2">
+                            <div className="flex items-center gap-2 flex-1 min-w-0">
+                              <h4 className="font-semibold text-gray-900 truncate">
+                                {event.title}
+                              </h4>
+                              {event.status && getStatusIcon(event.status)}
+                              {event.priority === 'high' && (
+                                <Badge variant="destructive" className="text-xs">
+                                  High Priority
+                                </Badge>
+                              )}
+                              {isUpcoming && (
+                                <Badge variant="outline" className="text-xs">
+                                  Scheduled
+                                </Badge>
+                              )}
+                            </div>
+                            <div className="text-right flex-shrink-0">
+                              <div className="text-sm font-medium text-gray-700">
+                                {format(eventDate, 'dd/MM/yyyy')}
+                              </div>
+                              <div className="text-xs text-muted-foreground">
+                                {format(eventDate, 'HH:mm')}
+                              </div>
+                            </div>
+                          </div>
+                          
+                          {event.description && (
+                            <p className="text-sm text-muted-foreground mb-2">
+                              {event.description}
+                            </p>
+                          )}
+                          
+                          <div className="flex items-center gap-2">
+                            <Badge variant="secondary" className="text-xs">
+                              {event.type.replace('-', ' ').replace(/\b\w/g, l => l.toUpperCase())}
+                            </Badge>
+                            {event.status && event.status !== 'completed' && (
+                              <Badge 
+                                variant={event.status === 'active' ? 'default' : 'outline'} 
+                                className="text-xs"
+                              >
+                                {event.status.charAt(0).toUpperCase() + event.status.slice(1)}
+                              </Badge>
+                            )}
+                          </div>
+                        </div>
                       </div>
                     </div>
-                  </div>
+                  );
+                })}
+              </div>
+              
+              {journeyEvents.length === 0 && (
+                <div className="text-center py-8">
+                  <Activity className="h-12 w-12 text-muted-foreground mx-auto mb-3" />
+                  <p className="text-muted-foreground">No journey events available for this patient.</p>
                 </div>
-              );
-            })}
-          </div>
-          
-          {journeyEvents.length === 0 && (
-            <div className="text-center py-8">
-              <Activity className="h-12 w-12 text-muted-foreground mx-auto mb-3" />
-              <p className="text-muted-foreground">No journey events available for this patient.</p>
+              )}
             </div>
-          )}
-        </div>
-      </CardContent>
-    </Card>
+          </CardContent>
+        </CollapsibleContent>
+      </Card>
+    </Collapsible>
   );
 };
 
