@@ -67,8 +67,14 @@ const TeamSelector = ({
     setShowHCPSelector(true);
     // Reset HCP selection when team changes
     if (selectedHCPId) {
-      onHCPChange('');
+      onHCPChange('unassigned');
     }
+  };
+
+  const handleHCPChange = (hcpId: string) => {
+    // Convert "unassigned" to empty string for the parent component
+    const finalHCPId = hcpId === 'unassigned' ? '' : hcpId;
+    onHCPChange(finalHCPId);
   };
 
   // Add safety check for specialty ID
@@ -152,15 +158,15 @@ const TeamSelector = ({
                 Assign to Healthcare Professional (Optional)
               </label>
               <Select 
-                value={selectedHCPId || ''} 
-                onValueChange={onHCPChange}
+                value={selectedHCPId || 'unassigned'} 
+                onValueChange={handleHCPChange}
                 disabled={disabled}
               >
                 <SelectTrigger>
                   <SelectValue placeholder="Assign to team member (optional)" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="">
+                  <SelectItem value="unassigned">
                     <span className="text-muted-foreground">Keep unassigned to team</span>
                   </SelectItem>
                   {availableHCPs.map((hcp) => (

@@ -101,9 +101,13 @@ const AcceptReferralDialog = ({ referral, onStatusChange }: AcceptReferralDialog
 
     setIsSubmitting(true);
     try {
+      // Convert "unassigned" back to empty string for the service call
+      const finalHCPId = selectedHCPId === 'unassigned' ? '' : selectedHCPId;
+      const finalProfessionalId = selectedProfessional === 'unassigned' ? '' : selectedProfessional;
+
       console.log('AcceptReferralDialog: Submitting with data:', {
         teamId: selectedTeamId,
-        assignedHCPId: selectedHCPId || selectedProfessional,
+        assignedHCPId: finalHCPId || finalProfessionalId,
         triageStatus: selectedStatus
       });
 
@@ -114,7 +118,7 @@ const AcceptReferralDialog = ({ referral, onStatusChange }: AcceptReferralDialog
         acceptNotes,
         {
           teamId: selectedTeamId,
-          assignedHCPId: selectedHCPId || selectedProfessional,
+          assignedHCPId: finalHCPId || finalProfessionalId,
           triageStatus: selectedStatus
         }
       );
@@ -129,14 +133,14 @@ const AcceptReferralDialog = ({ referral, onStatusChange }: AcceptReferralDialog
           const specialty = specialties.find(s => s.id === selectedSpecialty);
           successMessage = `The referral has been accepted and referred to ${specialty?.name} specialty with status: Refer to Another Specialty.`;
         } else if (selectedTeamId) {
-          const assignedTo = selectedHCPId 
-            ? healthcareProfessionals.find(hp => hp.id === selectedHCPId)?.name
+          const assignedTo = (finalHCPId && finalHCPId !== 'unassigned')
+            ? healthcareProfessionals.find(hp => hp.id === finalHCPId)?.name
             : 'team';
           successMessage = `The referral has been accepted and allocated to ${assignedTo} with status: ${
             triageStatusOptions.find(s => s.value === selectedStatus)?.label
           }.`;
         } else {
-          const professional = healthcareProfessionals.find(hp => hp.id === selectedProfessional);
+          const professional = healthcareProfessionals.find(hp => hp.id === finalProfessionalId);
           successMessage = `The referral has been accepted and allocated to ${professional?.name} with status: ${
             triageStatusOptions.find(s => s.value === selectedStatus)?.label
           }.`;
