@@ -1,3 +1,4 @@
+
 import { TableCell, TableRow } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -13,6 +14,7 @@ import WaitingListAIActions from './WaitingListAIActions';
 import SubReferralIndicator from './SubReferralIndicator';
 import RTTPathwayBadge from './RTTPathwayBadge';
 import CarePathwayBadge from './CarePathwayBadge';
+import TeamBadge from '@/components/team/TeamBadge';
 import {
   calculateReferralAgeDays,
   calculatePatientAge,
@@ -107,7 +109,6 @@ const PatientTableRow = ({
                   NHS: {referral.patient.nhsNumber}
                 </div>
               </div>
-              <ChevronRight className="h-4 w-4 text-muted-foreground" />
             </div>
           </TableCell>
           <TableCell className="p-2 text-sm">{patientAge} years</TableCell>
@@ -180,10 +181,20 @@ const PatientTableRow = ({
             )}
           </TableCell>
           <TableCell className="p-2">
+            {referral.teamId ? (
+              <TeamBadge teamId={referral.teamId} size="sm" />
+            ) : (
+              <span className="text-sm text-muted-foreground">Unassigned</span>
+            )}
+          </TableCell>
+          <TableCell className="p-2">
             <WaitingListAIActions referral={referral} variant="compact" />
           </TableCell>
           <TableCell className="p-2">
             <SubReferralIndicator referral={referral} variant="compact" />
+          </TableCell>
+          <TableCell className="p-2">
+            <ChevronRight className="h-4 w-4 text-muted-foreground" />
           </TableCell>
         </TableRow>
       )}
