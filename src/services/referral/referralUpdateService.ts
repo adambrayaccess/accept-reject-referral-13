@@ -1,5 +1,6 @@
 
 import { Referral, TriageStatus } from '@/types/referral';
+import { fetchReferralById } from './referralFetchService';
 
 interface TeamAllocationData {
   teamId?: string;
@@ -20,10 +21,19 @@ export const updateReferralStatus = async (
     // Simulate API delay
     await new Promise(resolve => setTimeout(resolve, 500));
     
-    const referralIndex = referrals.findIndex(r => r.id === referralId);
+    // First, try to find the referral in our local store
+    let referralIndex = referrals.findIndex(r => r.id === referralId);
+    
+    // If not found, fetch it from the main data source and add to local store
     if (referralIndex === -1) {
-      console.error(`Referral with ID ${referralId} not found`);
-      return false;
+      console.log(`Referral ${referralId} not found in local store, fetching from main data source`);
+      const fetchedReferral = await fetchReferralById(referralId);
+      if (!fetchedReferral) {
+        console.error(`Referral with ID ${referralId} not found in any data source`);
+        return false;
+      }
+      referrals.push(fetchedReferral);
+      referralIndex = referrals.length - 1;
     }
     
     const referral = referrals[referralIndex];
