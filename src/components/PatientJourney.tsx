@@ -1,3 +1,4 @@
+
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
@@ -13,7 +14,11 @@ import {
   CheckCircle,
   XCircle,
   Upload,
-  ChevronDown
+  ChevronDown,
+  Phone,
+  PhoneCall,
+  Mail,
+  MessageSquare
 } from 'lucide-react';
 import { format, parseISO } from 'date-fns';
 import { useState } from 'react';
@@ -24,7 +29,7 @@ interface JourneyEvent {
   title: string;
   description?: string;
   date: string;
-  type: 'referral' | 'medication' | 'vital-signs' | 'document' | 'appointment' | 'triage' | 'pathway';
+  type: 'referral' | 'medication' | 'vital-signs' | 'document' | 'appointment' | 'triage' | 'pathway' | 'phone-call' | 'letter' | 'communication';
   status?: 'completed' | 'active' | 'scheduled' | 'cancelled';
   priority?: 'low' | 'medium' | 'high';
   metadata?: Record<string, any>;
@@ -50,6 +55,12 @@ const getEventIcon = (type: JourneyEvent['type']) => {
       return <ClipboardList className="h-4 w-4 text-white" />;
     case 'pathway':
       return <Clock className="h-4 w-4 text-white" />;
+    case 'phone-call':
+      return <Phone className="h-4 w-4 text-white" />;
+    case 'letter':
+      return <Mail className="h-4 w-4 text-white" />;
+    case 'communication':
+      return <MessageSquare className="h-4 w-4 text-white" />;
     default:
       return <Activity className="h-4 w-4 text-white" />;
   }
@@ -74,6 +85,12 @@ const getEventColor = (type: JourneyEvent['type'], status?: string, priority?: s
       return 'bg-[#973060]'; // Purple-pink for triage
     case 'pathway':
       return 'bg-indigo-600'; // Indigo for pathways
+    case 'phone-call':
+      return 'bg-emerald-600'; // Emerald for phone calls
+    case 'letter':
+      return 'bg-amber-600'; // Amber for letters
+    case 'communication':
+      return 'bg-cyan-600'; // Cyan for other communications
     default:
       return 'bg-gray-500';
   }
@@ -109,6 +126,113 @@ const PatientJourney = ({ referral }: PatientJourneyProps) => {
       status: 'completed',
       priority: referral.priority === 'emergency' ? 'high' : referral.priority === 'urgent' ? 'medium' : 'low'
     });
+
+    // Generate sample patient interactions based on referral data
+    const createDate = new Date(referral.created);
+    
+    // Phone call to confirm receipt (1 day after referral)
+    const confirmCallDate = new Date(createDate);
+    confirmCallDate.setDate(confirmCallDate.getDate() + 1);
+    events.push({
+      id: 'confirm-call',
+      title: 'Phone Call: Referral Confirmation',
+      description: 'Outbound call to patient confirming receipt of referral and initial triage assessment',
+      date: confirmCallDate.toISOString(),
+      type: 'phone-call',
+      status: 'completed',
+      metadata: { direction: 'outbound', duration: '5 minutes', outcome: 'confirmed' }
+    });
+
+    // Letter sent with appointment details
+    if (referral.appointmentDetails) {
+      const letterDate = new Date(referral.appointmentDetails.date);
+      letterDate.setDate(letterDate.getDate() - 14); // 2 weeks before appointment
+      events.push({
+        id: 'appointment-letter',
+        title: 'Letter Sent: Appointment Details',
+        description: `Appointment letter sent for ${referral.appointmentDetails.type} on ${format(new Date(referral.appointmentDetails.date), 'dd/MM/yyyy')}`,
+        date: letterDate.toISOString(),
+        type: 'letter',
+        status: 'completed',
+        metadata: { type: 'appointment_confirmation', method: 'post' }
+      });
+    }
+
+    // Phone call from patient with query (based on priority)
+    if (referral.priority === 'urgent' || referral.priority === 'emergency') {
+      const queryCallDate = new Date(createDate);
+      queryCallDate.setDate(queryCallDate.getDate() + 3);
+      events.push({
+        id: 'patient-query-call',
+        title: 'Phone Call: Patient Query',
+        description: 'Inbound call from patient asking about appointment timing due to urgent symptoms',
+        date: queryCallDate.toISOString(),
+        type: 'phone-call',
+        status: 'completed',
+        priority: referral.priority === 'emergency' ? 'high' : 'medium',
+        metadata: { direction: 'inbound', duration: '8 minutes', outcome: 'reassured' }
+      });
+    }
+
+    // Pre-assessment information letter
+    if (referral.triageStatus === 'pre-assessment' || referral.triageStatus === 'assessed') {
+      const preAssessmentDate = new Date(createDate);
+      preAssessmentDate.setDate(preAssessmentDate.getDate() + 7);
+      events.push({
+        id: 'pre-assessment-letter',
+        title: 'Letter Sent: Pre-Assessment Information',
+        description: 'Information pack sent with pre-assessment questionnaire and preparation instructions',
+        date: preAssessmentDate.toISOString(),
+        type: 'letter',
+        status: 'completed',
+        metadata: { type: 'pre_assessment', method: 'post' }
+      });
+    }
+
+    // Follow-up communication based on specialty
+    if (referral.specialty === 'Mental Health') {
+      const mentalHealthCallDate = new Date(createDate);
+      mentalHealthCallDate.setDate(mentalHealthCallDate.getDate() + 5);
+      events.push({
+        id: 'mental-health-check',
+        title: 'Phone Call: Welfare Check',
+        description: 'Outbound welfare check call to assess current mental state and provide support',
+        date: mentalHealthCallDate.toISOString(),
+        type: 'phone-call',
+        status: 'completed',
+        metadata: { direction: 'outbound', duration: '15 minutes', outcome: 'stable' }
+      });
+    }
+
+    // Results letter (if there are test results or assessments)
+    if (referral.patient.medicalHistory?.vitalSigns && referral.patient.medicalHistory.vitalSigns.length > 0) {
+      const resultsDate = new Date(createDate);
+      resultsDate.setDate(resultsDate.getDate() + 10);
+      events.push({
+        id: 'results-letter',
+        title: 'Letter Sent: Test Results',
+        description: 'Letter containing latest test results and next steps in care pathway',
+        date: resultsDate.toISOString(),
+        type: 'letter',
+        status: 'completed',
+        metadata: { type: 'results', method: 'post' }
+      });
+    }
+
+    // Appointment reminder call
+    if (referral.appointmentDetails) {
+      const reminderDate = new Date(referral.appointmentDetails.date);
+      reminderDate.setDate(reminderDate.getDate() - 2); // 2 days before
+      events.push({
+        id: 'appointment-reminder',
+        title: 'Phone Call: Appointment Reminder',
+        description: `Reminder call for upcoming ${referral.appointmentDetails.type} appointment`,
+        date: reminderDate.toISOString(),
+        type: 'phone-call',
+        status: 'completed',
+        metadata: { direction: 'outbound', duration: '3 minutes', outcome: 'confirmed' }
+      });
+    }
 
     // Audit log events (triage actions)
     referral.auditLog?.forEach((entry, index) => {
@@ -286,6 +410,35 @@ const PatientJourney = ({ referral }: PatientJourneyProps) => {
                             <p className="text-sm text-muted-foreground mb-2">
                               {event.description}
                             </p>
+                          )}
+                          
+                          {/* Additional metadata for phone calls and letters */}
+                          {event.metadata && (event.type === 'phone-call' || event.type === 'letter') && (
+                            <div className="text-xs text-muted-foreground mb-2 space-y-1">
+                              {event.type === 'phone-call' && (
+                                <>
+                                  {event.metadata.direction && (
+                                    <div className="flex items-center gap-1">
+                                      {event.metadata.direction === 'inbound' ? 
+                                        <PhoneCall className="h-3 w-3" /> : 
+                                        <Phone className="h-3 w-3" />
+                                      }
+                                      <span className="capitalize">{event.metadata.direction} call</span>
+                                      {event.metadata.duration && <span>• {event.metadata.duration}</span>}
+                                    </div>
+                                  )}
+                                  {event.metadata.outcome && (
+                                    <div>Outcome: {event.metadata.outcome}</div>
+                                  )}
+                                </>
+                              )}
+                              {event.type === 'letter' && event.metadata.method && (
+                                <div className="flex items-center gap-1">
+                                  <Mail className="h-3 w-3" />
+                                  <span>Sent via {event.metadata.method}</span>
+                                </div>
+                              )}
+                            </div>
                           )}
                           
                           <div className="flex items-center gap-2">
