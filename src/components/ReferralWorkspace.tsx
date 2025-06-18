@@ -1,7 +1,7 @@
 
 import { useEffect, useState } from 'react';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
-import { History, Calendar, Clipboard } from 'lucide-react';
+import { History, Calendar, Clipboard, Users } from 'lucide-react';
 import { Referral } from '@/types/referral';
 import ReferralActions from './ReferralActions';
 import AuditLog from './audit/AuditLog';
@@ -47,7 +47,10 @@ const ReferralWorkspace = ({ referral, onStatusChange }: ReferralWorkspaceProps)
       {referral.teamId && (
         <Card>
           <CardHeader className="pb-3">
-            <CardTitle className="text-lg">Team Allocation</CardTitle>
+            <CardTitle className="text-lg flex items-center">
+              <Users className="h-5 w-5 mr-2" />
+              Team Allocation
+            </CardTitle>
           </CardHeader>
           <CardContent className="pt-0">
             <div className="flex items-center gap-2">
