@@ -1,9 +1,9 @@
 
 import { useEffect, useState } from 'react';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
+import { history } from 'lucide-react';
 import { Referral } from '@/types/referral';
 import ReferralActions from './ReferralActions';
-import CollaborationNotes from './collaboration/CollaborationNotes';
 import AuditLog from './audit/AuditLog';
 import SubReferralsList from './sub-referrals/SubReferralsList';
 import ParentReferralInfo from './sub-referrals/ParentReferralInfo';
@@ -98,11 +98,13 @@ const ReferralWorkspace = ({ referral, onStatusChange }: ReferralWorkspaceProps)
 
       <Card className="flex-1">
         <CardHeader className="pb-3">
-          <CardTitle className="text-lg">Triage History</CardTitle>
+          <CardTitle className="text-lg flex items-center">
+            <history className="h-5 w-5 mr-2" />
+            Triage History
+          </CardTitle>
         </CardHeader>
-        <CardContent className="pt-0 space-y-3">
+        <CardContent className="pt-0">
           <AuditLog entries={referral.auditLog} />
-          <CollaborationNotes notes={referral.collaborationNotes} />
         </CardContent>
       </Card>
     </div>

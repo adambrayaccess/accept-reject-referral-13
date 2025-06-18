@@ -1,4 +1,6 @@
 
+import type { MedicalHistory } from './medical';
+
 export interface Patient {
   id: string;
   name: string;
@@ -26,6 +28,3 @@ export interface HealthcareProfessional {
   teamIds?: string[]; // NEW - Teams this HCP belongs to
   isTeamLead?: boolean; // NEW - Whether this HCP leads any teams
 }
-
-// Re-export medical history from medical types
-export type { MedicalHistory } from './medical';
