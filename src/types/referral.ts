@@ -1,108 +1,25 @@
-export interface Patient {
-  id: string;
-  name: string;
-  birthDate: string;
-  gender: string;
-  nhsNumber: string;
-  address?: string;
-  phone?: string;
-  medicalHistory?: MedicalHistory;
-}
 
-export interface Practitioner {
-  id: string;
-  name: string;
-  role?: string;
-  organization?: string;
-  contact?: string;
-}
+// Import all the types from the modular files
+export * from './patient';
+export * from './medical';
+export * from './pathway';
+export * from './workflow';
+export * from './common';
 
-export interface Attachment {
-  id: string;
-  title: string;
-  contentType: string;
-  url: string;
-  date: string;
-  size?: number;
-}
-
-export interface ClinicalInfo {
-  reason: string;
-  history?: string;
-  diagnosis?: string;
-  medications?: string[];
-  allergies?: string[];
-  notes?: string;
-}
-
-export interface AppointmentDetails {
-  id: string;
-  date: string;
-  time: string;
-  type: 'consultation' | 'pre-admission' | 'follow-up' | 'procedure';
-  location: string;
-  consultant?: string;
-  status: 'scheduled' | 'confirmed' | 'cancelled' | 'completed';
-  notes?: string;
-}
-
-// New RTT Pathway related types
-export type RTTPathwayStatus = 'incomplete' | 'completed' | 'stopped' | 'paused';
-export type RTTBreachRisk = 'low' | 'medium' | 'high' | 'breached';
-
-export interface RTTPathway {
-  clockStart: string; // ISO date string when RTT clock started
-  targetDate: string; // ISO date string for 18-week target
-  status: RTTPathwayStatus;
-  daysRemaining: number; // Calculated field
-  breachRisk: RTTBreachRisk; // Calculated field based on days remaining
-  pauseHistory?: Array<{
-    startDate: string;
-    endDate?: string;
-    reason: string;
-  }>;
-}
-
-// New Care Pathway related types
-export type CarePathwayType = 
-  | 'cancer-two-week-wait'
-  | 'urgent-suspected-cancer'
-  | 'elective-surgery'
-  | 'emergency-pathway'
-  | 'chronic-disease-management'
-  | 'diagnostic-pathway'
-  | 'mental-health-pathway'
-  | 'paediatric-pathway'
-  | 'maternity-pathway'
-  | 'rehabilitation-pathway'
-  | 'end-of-life-care'
-  | 'screening-programme';
-
-export interface CarePathway {
-  type: CarePathwayType;
-  name: string;
-  description?: string;
-  priority: 'routine' | 'urgent' | 'emergency';
-  targetTimeframe?: string; // e.g., "14 days", "6 weeks"
-  status: 'active' | 'completed' | 'paused' | 'discontinued';
-}
-
-export type ReferralStatus = 'new' | 'accepted' | 'rejected';
-export type ReferralPriority = 'routine' | 'urgent' | 'emergency';
-export type TriageStatus = 'pre-assessment' | 'assessed' | 'pre-admission-assessment' | 'waiting-list' | 'refer-to-another-specialty';
-
-export interface AuditLogEntry {
-  timestamp: string;
-  user: string;
-  action: string;
-  notes?: string;
-}
-
-export interface CollaborationNote {
-  timestamp: string;
-  author: string;
-  content: string;
-}
+// Import specific types for the main Referral interface
+import type { Patient } from './patient';
+import type { Practitioner } from './patient';
+import type { RTTPathway, CarePathway } from './pathway';
+import type { 
+  ReferralStatus, 
+  ReferralPriority, 
+  TriageStatus, 
+  AuditLogEntry, 
+  CollaborationNote, 
+  Attachment, 
+  ClinicalInfo, 
+  AppointmentDetails 
+} from './workflow';
 
 export interface Referral {
   id: string;
@@ -142,102 +59,4 @@ export interface Referral {
   assignedHCPId?: string; // Individual HCP within the team
   allocatedDate?: string;
   allocatedBy?: string;
-}
-
-export interface ApiResponse<T> {
-  data?: T;
-  error?: string;
-  loading: boolean;
-}
-
-export interface VitalSign {
-  timestamp: string;
-  news2: number;
-  temperature: number;
-  heartRate: number;
-  respiration: number;
-  oxygenSaturation: number;
-  bloodPressureSystolic: number;
-  bloodPressureDiastolic: number;
-}
-
-export interface CardiogramDataPoint {
-  time: number;
-  value: number;
-}
-
-export interface Cardiogram {
-  timestamp: string;
-  data: CardiogramDataPoint[];
-  interpretation: string;
-}
-
-export interface MedicationPrescription {
-  id: string;
-  name: string;
-  dosage: string;
-  frequency: string;
-  prescribedDate: string;
-  prescribedBy: string;
-  indication: string;
-  status: 'active' | 'discontinued' | 'completed';
-  notes?: string;
-  endDate?: string;
-}
-
-export interface MedicalHistory {
-  vitalSigns: VitalSign[];
-  cardiograms?: Cardiogram[];
-  medicationHistory?: MedicationPrescription[];
-  mhaSections?: MHASection[];
-  testResults?: TestResult[];
-}
-
-export interface MHASection {
-  id: string;
-  sectionNumber: string;
-  sectionTitle: string;
-  appliedDate: string;
-  expiryDate?: string;
-  status: 'active' | 'expired' | 'discharged';
-  consultantResponsible: string;
-  hospital: string;
-  reason: string;
-  reviewDate?: string;
-  notes?: string;
-}
-
-export interface TestResult {
-  id: string;
-  testName: string;
-  testType: 'blood' | 'urine' | 'imaging' | 'biopsy' | 'other';
-  requestedDate: string;
-  sampleDate?: string;
-  reportDate: string;
-  requestedBy: string;
-  performedBy: string;
-  status: 'pending' | 'in-progress' | 'completed' | 'cancelled';
-  results: {
-    parameter: string;
-    value: string;
-    unit?: string;
-    referenceRange?: string;
-    flag?: 'normal' | 'high' | 'low' | 'critical';
-  }[];
-  interpretation?: string;
-  notes?: string;
-}
-
-export interface SpecialtyOption {
-  id: string;
-  name: string;
-}
-
-export interface HealthcareProfessional {
-  id: string;
-  name: string;
-  role: string;
-  specialty: string;
-  teamIds?: string[]; // NEW - Teams this HCP belongs to
-  isTeamLead?: boolean; // NEW - Whether this HCP leads any teams
 }

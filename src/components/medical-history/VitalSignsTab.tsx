@@ -1,5 +1,5 @@
 
-import { VitalSign } from '@/types/referral';
+import { VitalSign } from '@/types/medical';
 import { NEWS2Details } from './NEWS2Details';
 
 interface VitalSignsTabProps {

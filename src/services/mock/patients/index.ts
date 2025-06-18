@@ -1,5 +1,5 @@
 
-import { Patient } from '@/types/referral';
+import { Patient } from '@/types/patient';
 import { patient001 } from './patient-001';
 import { patient002 } from './patient-002';
 import { patient003 } from './patient-003';

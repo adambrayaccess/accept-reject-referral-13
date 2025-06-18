@@ -1,7 +1,7 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { EnhancedTabs, EnhancedTabsContent, EnhancedTabsList, EnhancedTabsTrigger } from '@/components/ui/enhanced-tabs';
-import { Patient } from '@/types/referral';
+import { Patient } from '@/types/patient';
 import VitalSignsTab from './medical-history/VitalSignsTab';
 import TestResultsTab from './medical-history/TestResultsTab';
 import MedicationHistoryTab from './medical-history/MedicationHistoryTab';

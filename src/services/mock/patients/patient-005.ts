@@ -1,5 +1,4 @@
-
-import { Patient } from '@/types/referral';
+import { Patient } from '@/types/patient';
 
 export const patient005: Patient = {
   id: 'P005',

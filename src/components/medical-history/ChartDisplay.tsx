@@ -1,5 +1,5 @@
 
-import { VitalSign } from '@/types/referral';
+import { VitalSign } from '@/types/medical';
 import NEWS2Chart from './charts/NEWS2Chart';
 import TemperatureChart from './charts/TemperatureChart';
 import HeartRateChart from './charts/HeartRateChart';

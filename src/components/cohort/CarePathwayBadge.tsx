@@ -1,6 +1,6 @@
 
 import { Badge } from '@/components/ui/badge';
-import { CarePathway } from '@/types/referral';
+import { CarePathway } from '@/types/pathway';
 import { getCarePathwayStatusColor, formatCarePathwayName } from '@/utils/carePathwayUtils';
 
 interface CarePathwayBadgeProps {

@@ -1,5 +1,4 @@
-
-import { CardiogramDataPoint } from '@/types/referral';
+import { CardiogramDataPoint } from '@/types/medical';
 
 export const generateECGData = (): CardiogramDataPoint[] => {
   const data: CardiogramDataPoint[] = [];
@@ -36,4 +35,3 @@ export const generateECGData = (): CardiogramDataPoint[] => {
   
   return data;
 };
-

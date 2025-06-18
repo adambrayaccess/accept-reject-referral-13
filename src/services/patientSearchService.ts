@@ -1,6 +1,5 @@
-
 import { mockPatients } from '@/services/mock/patients';
-import { Patient } from '@/types/referral';
+import { Patient } from '@/types/patient';
 
 export interface PatientSearchResult {
   patient: Patient;

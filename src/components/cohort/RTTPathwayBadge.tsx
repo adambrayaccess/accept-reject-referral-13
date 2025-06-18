@@ -1,7 +1,7 @@
 
 import { Badge } from '@/components/ui/badge';
 import { AlertTriangle, Clock, CheckCircle } from 'lucide-react';
-import { RTTBreachRisk } from '@/types/referral';
+import { RTTBreachRisk } from '@/types/pathway';
 import { getRTTStatusColor, formatRTTStatus } from '@/utils/rttPathwayUtils';
 
 interface RTTPathwayBadgeProps {
