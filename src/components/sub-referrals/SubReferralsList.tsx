@@ -8,6 +8,7 @@ import { Referral } from '@/types/referral';
 import { fetchChildReferrals } from '@/services/referralService';
 import { format } from 'date-fns';
 import { useNavigate } from 'react-router-dom';
+import CreateSubReferralDialog from './CreateSubReferralDialog';
 
 interface SubReferralsListProps {
   parentReferralId: string;
@@ -41,6 +42,7 @@ const getStatusColor = (status: Referral['status']) => {
 const SubReferralsList = ({ parentReferralId, onRefresh }: SubReferralsListProps) => {
   const [subReferrals, setSubReferrals] = useState<Referral[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [refreshKey, setRefreshKey] = useState(0);
   const navigate = useNavigate();
 
   const loadSubReferrals = async () => {
@@ -55,9 +57,14 @@ const SubReferralsList = ({ parentReferralId, onRefresh }: SubReferralsListProps
     }
   };
 
+  const handleSubReferralCreated = () => {
+    setRefreshKey(prev => prev + 1);
+    loadSubReferrals();
+  };
+
   useEffect(() => {
     loadSubReferrals();
-  }, [parentReferralId, onRefresh]);
+  }, [parentReferralId, onRefresh, refreshKey]);
 
   const handleViewSubReferral = (subReferralId: string) => {
     navigate(`/referral/${subReferralId}`);
@@ -82,10 +89,16 @@ const SubReferralsList = ({ parentReferralId, onRefresh }: SubReferralsListProps
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="flex items-center gap-2">
-          <Users className="h-5 w-5" />
-          Sub-referrals ({subReferrals.length})
-        </CardTitle>
+        <div className="flex items-center justify-between">
+          <CardTitle className="flex items-center gap-2">
+            <Users className="h-5 w-5" />
+            Sub-referrals ({subReferrals.length})
+          </CardTitle>
+          <CreateSubReferralDialog 
+            parentReferralId={parentReferralId}
+            onSubReferralCreated={handleSubReferralCreated}
+          />
+        </div>
       </CardHeader>
       <CardContent>
         {subReferrals.length === 0 ? (

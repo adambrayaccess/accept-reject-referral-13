@@ -1,10 +1,10 @@
+
 import { useEffect, useState } from 'react';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Referral } from '@/types/referral';
 import ReferralActions from './ReferralActions';
 import CollaborationNotes from './collaboration/CollaborationNotes';
 import AuditLog from './audit/AuditLog';
-import CreateSubReferralDialog from './sub-referrals/CreateSubReferralDialog';
 import SubReferralsList from './sub-referrals/SubReferralsList';
 import ParentReferralInfo from './sub-referrals/ParentReferralInfo';
 import PatientJourney from './PatientJourney';
@@ -20,11 +20,6 @@ interface ReferralWorkspaceProps {
 
 const ReferralWorkspace = ({ referral, onStatusChange }: ReferralWorkspaceProps) => {
   const [refreshKey, setRefreshKey] = useState(0);
-
-  const handleSubReferralCreated = () => {
-    setRefreshKey(prev => prev + 1);
-    onStatusChange();
-  };
 
   const handleTagsUpdated = () => {
     // Refresh parent component to show updated tags
@@ -83,18 +78,7 @@ const ReferralWorkspace = ({ referral, onStatusChange }: ReferralWorkspaceProps)
           <CardTitle className="text-lg">Triage Actions</CardTitle>
         </CardHeader>
         <CardContent className="pt-0">
-          <div className="space-y-3">
-            <ReferralActions referral={referral} onStatusChange={onStatusChange} />
-            
-            {referral.status === 'accepted' && !referral.isSubReferral && (
-              <div className="pt-2 border-t">
-                <CreateSubReferralDialog 
-                  parentReferralId={referral.id}
-                  onSubReferralCreated={handleSubReferralCreated}
-                />
-              </div>
-            )}
-          </div>
+          <ReferralActions referral={referral} onStatusChange={onStatusChange} />
         </CardContent>
       </Card>
 
