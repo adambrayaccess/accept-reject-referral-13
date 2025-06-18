@@ -38,9 +38,11 @@ const ReferralActions = ({ referral, onStatusChange }: ReferralActionsProps) => 
       <Collapsible open={isOpen} onOpenChange={setIsOpen}>
         <div className="space-y-4">
           <CollapsibleTrigger className="w-full">
-            <div className="flex items-center justify-between w-full">
-              <ReferralStatusIndicator status={referral.status} />
-              <ChevronDown className={`h-4 w-4 transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`} />
+            <div className="flex items-center justify-between w-full gap-2">
+              <div className="flex-1">
+                <ReferralStatusIndicator status={referral.status} />
+              </div>
+              <ChevronDown className={`h-4 w-4 flex-shrink-0 transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`} />
             </div>
           </CollapsibleTrigger>
           <CollapsibleContent>
