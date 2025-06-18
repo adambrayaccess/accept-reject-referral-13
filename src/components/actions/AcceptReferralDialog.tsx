@@ -35,7 +35,18 @@ const AcceptReferralDialog = ({ referral, onStatusChange }: AcceptReferralDialog
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { toast } = useToast();
 
-  const specialtyId = getSpecialtyIdByName(referral.specialty);
+  // Safely get specialty ID with error handling
+  const specialtyId = (() => {
+    try {
+      console.log('AcceptReferralDialog: Getting specialty ID for:', referral.specialty);
+      const id = getSpecialtyIdByName(referral.specialty);
+      console.log('AcceptReferralDialog: Specialty ID resolved to:', id);
+      return id;
+    } catch (error) {
+      console.error('AcceptReferralDialog: Error getting specialty ID:', error);
+      return '';
+    }
+  })();
 
   // Reset selection when status changes
   useEffect(() => {
@@ -49,11 +60,13 @@ const AcceptReferralDialog = ({ referral, onStatusChange }: AcceptReferralDialog
   }, [selectedStatus]);
 
   const handleTeamChange = (teamId: string) => {
+    console.log('AcceptReferralDialog: Team changed to:', teamId);
     setSelectedTeamId(teamId);
     setSelectedProfessional(''); // Clear old HCP selection
   };
 
   const handleHCPChange = (hcpId: string) => {
+    console.log('AcceptReferralDialog: HCP changed to:', hcpId);
     setSelectedHCPId(hcpId);
     setSelectedProfessional(''); // Clear old HCP selection
   };
@@ -88,6 +101,12 @@ const AcceptReferralDialog = ({ referral, onStatusChange }: AcceptReferralDialog
 
     setIsSubmitting(true);
     try {
+      console.log('AcceptReferralDialog: Submitting with data:', {
+        teamId: selectedTeamId,
+        assignedHCPId: selectedHCPId || selectedProfessional,
+        triageStatus: selectedStatus
+      });
+
       // 1. Update the referral status with team allocation
       const statusUpdated = await updateReferralStatus(
         referral.id, 
@@ -134,7 +153,7 @@ const AcceptReferralDialog = ({ referral, onStatusChange }: AcceptReferralDialog
         throw new Error("Failed to update referral status");
       }
     } catch (error) {
-      console.error("Error accepting referral:", error);
+      console.error("AcceptReferralDialog: Error accepting referral:", error);
       toast({
         title: "Error",
         description: "There was a problem accepting this referral. Please try again.",
@@ -154,6 +173,11 @@ const AcceptReferralDialog = ({ referral, onStatusChange }: AcceptReferralDialog
     
     return !!(selectedTeamId || selectedProfessional);
   };
+
+  // Add safety check for specialty ID
+  if (!specialtyId) {
+    console.warn('AcceptReferralDialog: Invalid specialty ID, cannot show team selector');
+  }
 
   return (
     <AlertDialog>
@@ -208,15 +232,17 @@ const AcceptReferralDialog = ({ referral, onStatusChange }: AcceptReferralDialog
             </div>
           ) : (
             <>
-              <TeamSelector
-                specialtyId={specialtyId}
-                selectedTeamId={selectedTeamId}
-                selectedHCPId={selectedHCPId}
-                onTeamChange={handleTeamChange}
-                onHCPChange={handleHCPChange}
-              />
+              {specialtyId && (
+                <TeamSelector
+                  specialtyId={specialtyId}
+                  selectedTeamId={selectedTeamId}
+                  selectedHCPId={selectedHCPId}
+                  onTeamChange={handleTeamChange}
+                  onHCPChange={handleHCPChange}
+                />
+              )}
               
-              {!selectedTeamId && (
+              {(!specialtyId || !selectedTeamId) && (
                 <div className="space-y-2">
                   <label className="text-sm font-medium">Or assign directly to Healthcare Professional</label>
                   <Select value={selectedProfessional} onValueChange={setSelectedProfessional}>
@@ -225,7 +251,7 @@ const AcceptReferralDialog = ({ referral, onStatusChange }: AcceptReferralDialog
                     </SelectTrigger>
                     <SelectContent>
                       {healthcareProfessionals
-                        .filter(hp => hp.specialty === specialtyId)
+                        .filter(hp => !specialtyId || hp.specialty === specialtyId)
                         .map((professional) => (
                         <SelectItem key={professional.id} value={professional.id}>
                           {professional.name} - {professional.role}

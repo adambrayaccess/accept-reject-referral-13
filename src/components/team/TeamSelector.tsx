@@ -1,5 +1,5 @@
 
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -27,10 +27,42 @@ const TeamSelector = ({
 }: TeamSelectorProps) => {
   const [showHCPSelector, setShowHCPSelector] = useState(false);
   
-  const availableTeams = getTeamsBySpecialty(specialtyId);
-  const availableHCPs = selectedTeamId ? getHCPsByTeam(selectedTeamId) : [];
+  // Memoize team and HCP data to prevent unnecessary re-renders
+  const availableTeams = useMemo(() => {
+    console.log('TeamSelector: Loading teams for specialty:', specialtyId);
+    try {
+      const teams = getTeamsBySpecialty(specialtyId);
+      console.log('TeamSelector: Found teams:', teams);
+      return teams;
+    } catch (error) {
+      console.error('TeamSelector: Error loading teams:', error);
+      return [];
+    }
+  }, [specialtyId]);
+
+  const availableHCPs = useMemo(() => {
+    if (!selectedTeamId) return [];
+    console.log('TeamSelector: Loading HCPs for team:', selectedTeamId);
+    try {
+      const hcps = getHCPsByTeam(selectedTeamId);
+      console.log('TeamSelector: Found HCPs:', hcps);
+      return hcps;
+    } catch (error) {
+      console.error('TeamSelector: Error loading HCPs:', error);
+      return [];
+    }
+  }, [selectedTeamId]);
+
+  const selectedTeam = useMemo(() => {
+    return availableTeams.find(team => team.id === selectedTeamId);
+  }, [availableTeams, selectedTeamId]);
+
+  const selectedHCP = useMemo(() => {
+    return availableHCPs.find(hcp => hcp.id === selectedHCPId);
+  }, [availableHCPs, selectedHCPId]);
 
   const handleTeamChange = (teamId: string) => {
+    console.log('TeamSelector: Team changed to:', teamId);
     onTeamChange(teamId);
     setShowHCPSelector(true);
     // Reset HCP selection when team changes
@@ -39,8 +71,19 @@ const TeamSelector = ({
     }
   };
 
-  const selectedTeam = availableTeams.find(team => team.id === selectedTeamId);
-  const selectedHCP = availableHCPs.find(hcp => hcp.id === selectedHCPId);
+  // Add safety check for specialty ID
+  if (!specialtyId) {
+    console.warn('TeamSelector: No specialty ID provided');
+    return (
+      <Card>
+        <CardContent className="p-4">
+          <div className="text-sm text-muted-foreground">
+            Unable to load teams: No specialty specified
+          </div>
+        </CardContent>
+      </Card>
+    );
+  }
 
   return (
     <div className="space-y-4">
@@ -54,29 +97,35 @@ const TeamSelector = ({
         <CardContent className="space-y-3">
           <div className="space-y-2">
             <label className="text-sm font-medium">Select Team</label>
-            <Select 
-              value={selectedTeamId || ''} 
-              onValueChange={handleTeamChange}
-              disabled={disabled}
-            >
-              <SelectTrigger>
-                <SelectValue placeholder="Choose a team" />
-              </SelectTrigger>
-              <SelectContent>
-                {availableTeams.map((team) => (
-                  <SelectItem key={team.id} value={team.id}>
-                    <div className="flex flex-col">
-                      <span className="font-medium">{team.name}</span>
-                      {team.description && (
-                        <span className="text-xs text-muted-foreground">
-                          {team.description}
-                        </span>
-                      )}
-                    </div>
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
+            {availableTeams.length === 0 ? (
+              <div className="text-sm text-muted-foreground p-3 bg-muted rounded-lg">
+                No teams available for specialty: {specialtyId}
+              </div>
+            ) : (
+              <Select 
+                value={selectedTeamId || ''} 
+                onValueChange={handleTeamChange}
+                disabled={disabled}
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder="Choose a team" />
+                </SelectTrigger>
+                <SelectContent>
+                  {availableTeams.map((team) => (
+                    <SelectItem key={team.id} value={team.id}>
+                      <div className="flex flex-col">
+                        <span className="font-medium">{team.name}</span>
+                        {team.description && (
+                          <span className="text-xs text-muted-foreground">
+                            {team.description}
+                          </span>
+                        )}
+                      </div>
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            )}
           </div>
 
           {selectedTeam && (
@@ -130,7 +179,8 @@ const TeamSelector = ({
                     </SelectItem>
                   ))}
                 </SelectContent>
-              </Select>
+              </SelectItem>
+              )}
             </div>
           )}
 
