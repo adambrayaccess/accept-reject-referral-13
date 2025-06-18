@@ -4,6 +4,9 @@ import AcceptReferralDialog from './actions/AcceptReferralDialog';
 import RejectReferralDialog from './actions/RejectReferralDialog';
 import ReferralStatusIndicator from './actions/ReferralStatusIndicator';
 import TriageStatusUpdate from './triage/TriageStatusUpdate';
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
+import { ChevronDown } from 'lucide-react';
+import { useState } from 'react';
 
 interface ReferralActionsProps {
   referral: Referral;
@@ -11,6 +14,8 @@ interface ReferralActionsProps {
 }
 
 const ReferralActions = ({ referral, onStatusChange }: ReferralActionsProps) => {
+  const [isOpen, setIsOpen] = useState(false);
+
   console.log('ReferralActions rendering with referral:', {
     id: referral.id,
     status: referral.status,
@@ -30,15 +35,24 @@ const ReferralActions = ({ referral, onStatusChange }: ReferralActionsProps) => 
 
   if (referral.status === 'accepted') {
     return (
-      <div className="space-y-4">
-        <ReferralStatusIndicator status={referral.status} />
-        <TriageStatusUpdate 
-          referralId={referral.id}
-          currentStatus={referral.triageStatus}
-          specialty={referral.specialty}
-          onStatusChange={onStatusChange}
-        />
-      </div>
+      <Collapsible open={isOpen} onOpenChange={setIsOpen}>
+        <div className="space-y-4">
+          <CollapsibleTrigger className="w-full">
+            <div className="flex items-center justify-between w-full">
+              <ReferralStatusIndicator status={referral.status} />
+              <ChevronDown className={`h-4 w-4 transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`} />
+            </div>
+          </CollapsibleTrigger>
+          <CollapsibleContent>
+            <TriageStatusUpdate 
+              referralId={referral.id}
+              currentStatus={referral.triageStatus}
+              specialty={referral.specialty}
+              onStatusChange={onStatusChange}
+            />
+          </CollapsibleContent>
+        </div>
+      </Collapsible>
     );
   }
 
