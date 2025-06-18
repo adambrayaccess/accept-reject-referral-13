@@ -1,3 +1,4 @@
+
 import { useParams, useNavigate } from 'react-router-dom';
 import Titlebar from '@/components/Titlebar';
 import PageHeader from '@/components/PageHeader';
@@ -37,7 +38,7 @@ const ReferralView = () => {
       <Titlebar />
       <PageHeader showSearch={false} />
       
-      <div className="container py-3 max-w-none">
+      <div className="container py-3 max-w-none" style={{ paddingTop: '1.5rem' }}>
         <ReferralViewHeader referral={referral} onBack={handleBack} />
         
         <ReferralViewContent
