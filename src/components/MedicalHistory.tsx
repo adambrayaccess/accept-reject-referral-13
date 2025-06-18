@@ -3,8 +3,9 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { EnhancedTabs, EnhancedTabsContent, EnhancedTabsList, EnhancedTabsTrigger } from '@/components/ui/enhanced-tabs';
 import { Patient } from '@/types/referral';
 import VitalSignsTab from './medical-history/VitalSignsTab';
-import CardiogramView from './medical-history/CardiogramView';
+import TestResultsTab from './medical-history/TestResultsTab';
 import MedicationHistoryTab from './medical-history/MedicationHistoryTab';
+import MHATab from './medical-history/MHATab';
 
 interface MedicalHistoryProps {
   patient: Patient;
@@ -36,11 +37,14 @@ const MedicalHistory = ({ patient }: MedicalHistoryProps) => {
               <EnhancedTabsTrigger value="vitals" variant="grid" size="md">
                 Vital Signs
               </EnhancedTabsTrigger>
-              <EnhancedTabsTrigger value="cardiogram" variant="grid" size="md">
-                Cardiogram Data
+              <EnhancedTabsTrigger value="test-results" variant="grid" size="md">
+                Test Results
               </EnhancedTabsTrigger>
               <EnhancedTabsTrigger value="medications" variant="grid" size="md">
                 Medication History
+              </EnhancedTabsTrigger>
+              <EnhancedTabsTrigger value="mha" variant="grid" size="md">
+                MHA
               </EnhancedTabsTrigger>
             </EnhancedTabsList>
           </div>
@@ -49,12 +53,16 @@ const MedicalHistory = ({ patient }: MedicalHistoryProps) => {
             <VitalSignsTab vitalSigns={patient.medicalHistory.vitalSigns} />
           </EnhancedTabsContent>
 
-          <EnhancedTabsContent value="cardiogram">
-            <CardiogramView cardiograms={patient.medicalHistory.cardiograms || []} />
+          <EnhancedTabsContent value="test-results">
+            <TestResultsTab testResults={patient.medicalHistory.testResults} />
           </EnhancedTabsContent>
 
           <EnhancedTabsContent value="medications">
             <MedicationHistoryTab medicationHistory={patient.medicalHistory.medicationHistory} />
+          </EnhancedTabsContent>
+
+          <EnhancedTabsContent value="mha">
+            <MHATab mhaSections={patient.medicalHistory.mhaSections} />
           </EnhancedTabsContent>
         </EnhancedTabs>
       </CardContent>

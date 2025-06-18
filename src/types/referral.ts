@@ -1,4 +1,3 @@
-
 export interface Patient {
   id: string;
   name: string;
@@ -190,6 +189,43 @@ export interface MedicalHistory {
   vitalSigns: VitalSign[];
   cardiograms?: Cardiogram[];
   medicationHistory?: MedicationPrescription[];
+  mhaSections?: MHASection[];
+  testResults?: TestResult[];
+}
+
+export interface MHASection {
+  id: string;
+  sectionNumber: string;
+  sectionTitle: string;
+  appliedDate: string;
+  expiryDate?: string;
+  status: 'active' | 'expired' | 'discharged';
+  consultantResponsible: string;
+  hospital: string;
+  reason: string;
+  reviewDate?: string;
+  notes?: string;
+}
+
+export interface TestResult {
+  id: string;
+  testName: string;
+  testType: 'blood' | 'urine' | 'imaging' | 'biopsy' | 'other';
+  requestedDate: string;
+  sampleDate?: string;
+  reportDate: string;
+  requestedBy: string;
+  performedBy: string;
+  status: 'pending' | 'in-progress' | 'completed' | 'cancelled';
+  results: {
+    parameter: string;
+    value: string;
+    unit?: string;
+    referenceRange?: string;
+    flag?: 'normal' | 'high' | 'low' | 'critical';
+  }[];
+  interpretation?: string;
+  notes?: string;
 }
 
 export interface SpecialtyOption {

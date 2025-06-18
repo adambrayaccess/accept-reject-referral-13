@@ -1,4 +1,3 @@
-
 import { Patient } from '@/types/referral';
 
 export const mockPatients: Patient[] = [
@@ -110,6 +109,42 @@ export const mockPatients: Patient[] = [
           endDate: '2023-06-08T00:00:00Z',
           notes: 'Complete full course even if feeling better'
         }
+      ],
+      testResults: [
+        {
+          id: 'TEST001',
+          testName: 'Full Blood Count',
+          testType: 'blood',
+          requestedDate: '2023-06-01T00:00:00Z',
+          sampleDate: '2023-06-02T08:30:00Z',
+          reportDate: '2023-06-02T16:45:00Z',
+          requestedBy: 'Dr. Sarah Wilson',
+          performedBy: 'NHS Laboratory Services',
+          status: 'completed',
+          results: [
+            { parameter: 'Haemoglobin', value: '14.2', unit: 'g/dL', referenceRange: '13.5-17.5', flag: 'normal' },
+            { parameter: 'White Blood Cells', value: '8.5', unit: '×10⁹/L', referenceRange: '4.0-11.0', flag: 'normal' },
+            { parameter: 'Platelets', value: '250', unit: '×10⁹/L', referenceRange: '150-450', flag: 'normal' },
+            { parameter: 'Haematocrit', value: '42.1', unit: '%', referenceRange: '40.0-50.0', flag: 'normal' }
+          ],
+          interpretation: 'Normal full blood count with no evidence of anaemia or infection.'
+        },
+        {
+          id: 'TEST002',
+          testName: 'HbA1c',
+          testType: 'blood',
+          requestedDate: '2023-06-01T00:00:00Z',
+          sampleDate: '2023-06-02T08:30:00Z',
+          reportDate: '2023-06-02T16:45:00Z',
+          requestedBy: 'Dr. James Brown',
+          performedBy: 'NHS Laboratory Services',
+          status: 'completed',
+          results: [
+            { parameter: 'HbA1c', value: '58', unit: 'mmol/mol', referenceRange: '<42', flag: 'high' }
+          ],
+          interpretation: 'Elevated HbA1c indicating suboptimal diabetes control. Consider medication adjustment.',
+          notes: 'Patient advised on lifestyle modifications and medication compliance.'
+        }
       ]
     }
   },
@@ -176,6 +211,34 @@ export const mockPatients: Patient[] = [
           indication: 'Pain relief',
           status: 'active',
           notes: 'Take with food to avoid stomach irritation'
+        }
+      ],
+      mhaSections: [
+        {
+          id: 'MHA001',
+          sectionNumber: '2',
+          sectionTitle: 'Admission for Assessment',
+          appliedDate: '2023-05-15T00:00:00Z',
+          expiryDate: '2023-06-12T00:00:00Z',
+          status: 'expired',
+          consultantResponsible: 'Dr. Michael Thompson',
+          hospital: 'Birmingham Mental Health Trust',
+          reason: 'Patient presenting with acute psychotic symptoms and risk to self. Admission required for comprehensive psychiatric assessment and medication review.',
+          reviewDate: '2023-05-29T00:00:00Z',
+          notes: 'Patient cooperative with assessment. Family involved in care planning.'
+        },
+        {
+          id: 'MHA002',
+          sectionNumber: '3',
+          sectionTitle: 'Admission for Treatment',
+          appliedDate: '2023-06-12T00:00:00Z',
+          expiryDate: '2023-12-12T00:00:00Z',
+          status: 'active',
+          consultantResponsible: 'Dr. Michael Thompson',
+          hospital: 'Birmingham Mental Health Trust',
+          reason: 'Continuation of treatment following Section 2. Patient requires ongoing antipsychotic medication and therapeutic intervention.',
+          reviewDate: '2023-07-12T00:00:00Z',
+          notes: 'Treatment plan includes medication optimization and psychological therapies.'
         }
       ]
     }
@@ -291,6 +354,42 @@ export const mockPatients: Patient[] = [
           indication: 'Angina',
           status: 'active',
           notes: 'Use under tongue when experiencing chest pain'
+        }
+      ],
+      testResults: [
+        {
+          id: 'TEST003',
+          testName: 'Troponin I',
+          testType: 'blood',
+          requestedDate: '2023-06-12T08:00:00Z',
+          sampleDate: '2023-06-12T08:15:00Z',
+          reportDate: '2023-06-12T10:30:00Z',
+          requestedBy: 'Dr. David Martinez',
+          performedBy: 'Emergency Laboratory',
+          status: 'completed',
+          results: [
+            { parameter: 'Troponin I', value: '0.15', unit: 'ng/mL', referenceRange: '<0.04', flag: 'high' }
+          ],
+          interpretation: 'Elevated troponin consistent with myocardial injury. Requires cardiology review.',
+          notes: 'Urgent cardiology consultation arranged.'
+        },
+        {
+          id: 'TEST004',
+          testName: 'Lipid Profile',
+          testType: 'blood',
+          requestedDate: '2023-06-10T00:00:00Z',
+          sampleDate: '2023-06-11T08:00:00Z',
+          reportDate: '2023-06-11T14:00:00Z',
+          requestedBy: 'Dr. Rachel Green',
+          performedBy: 'NHS Laboratory Services',
+          status: 'completed',
+          results: [
+            { parameter: 'Total Cholesterol', value: '6.2', unit: 'mmol/L', referenceRange: '<5.0', flag: 'high' },
+            { parameter: 'LDL Cholesterol', value: '4.1', unit: 'mmol/L', referenceRange: '<3.0', flag: 'high' },
+            { parameter: 'HDL Cholesterol', value: '1.1', unit: 'mmol/L', referenceRange: '>1.0', flag: 'normal' },
+            { parameter: 'Triglycerides', value: '2.8', unit: 'mmol/L', referenceRange: '<1.7', flag: 'high' }
+          ],
+          interpretation: 'Dyslipidaemia with elevated total cholesterol, LDL, and triglycerides. Statin therapy optimization required.'
         }
       ]
     }
