@@ -20,6 +20,36 @@ export const patient004: Patient = {
         oxygenSaturation: 98,
         bloodPressureSystolic: 125,
         bloodPressureDiastolic: 75
+      },
+      {
+        timestamp: '2023-06-09T15:20:00Z',
+        news2: 1,
+        temperature: 36.9,
+        heartRate: 75,
+        respiration: 16,
+        oxygenSaturation: 97,
+        bloodPressureSystolic: 128,
+        bloodPressureDiastolic: 78
+      },
+      {
+        timestamp: '2023-06-08T11:45:00Z',
+        news2: 0,
+        temperature: 36.6,
+        heartRate: 68,
+        respiration: 14,
+        oxygenSaturation: 98,
+        bloodPressureSystolic: 122,
+        bloodPressureDiastolic: 72
+      },
+      {
+        timestamp: '2023-06-07T09:15:00Z',
+        news2: 2,
+        temperature: 37.1,
+        heartRate: 82,
+        respiration: 18,
+        oxygenSaturation: 96,
+        bloodPressureSystolic: 135,
+        bloodPressureDiastolic: 82
       }
     ],
     testResults: [
@@ -58,6 +88,64 @@ export const patient004: Patient = {
         ],
         interpretation: 'Normal thyroid function.',
         notes: 'Baseline assessment for mood symptoms'
+      },
+      {
+        id: 'TEST012',
+        testName: 'Full Blood Count',
+        testType: 'blood',
+        requestedDate: '2023-05-28T00:00:00Z',
+        sampleDate: '2023-05-28T09:30:00Z',
+        reportDate: '2023-05-28T16:15:00Z',
+        requestedBy: 'Dr. Helen Roberts',
+        performedBy: 'NHS Pathology Lab',
+        status: 'completed',
+        results: [
+          {
+            parameter: 'Haemoglobin',
+            value: '12.8',
+            unit: 'g/dL',
+            referenceRange: '12.0-15.5',
+            flag: 'normal'
+          },
+          {
+            parameter: 'White Cell Count',
+            value: '6.2',
+            unit: '×10⁹/L',
+            referenceRange: '4.0-11.0',
+            flag: 'normal'
+          },
+          {
+            parameter: 'Platelets',
+            value: '275',
+            unit: '×10⁹/L',
+            referenceRange: '150-450',
+            flag: 'normal'
+          }
+        ],
+        interpretation: 'Normal blood count parameters.',
+        notes: 'Baseline before starting antidepressant therapy'
+      },
+      {
+        id: 'TEST013',
+        testName: 'Vitamin D',
+        testType: 'blood',
+        requestedDate: '2023-05-25T00:00:00Z',
+        sampleDate: '2023-05-25T08:15:00Z',
+        reportDate: '2023-05-25T14:30:00Z',
+        requestedBy: 'Dr. Helen Roberts',
+        performedBy: 'NHS Pathology Lab',
+        status: 'completed',
+        results: [
+          {
+            parameter: 'Vitamin D',
+            value: '35',
+            unit: 'nmol/L',
+            referenceRange: '50-125',
+            flag: 'low'
+          }
+        ],
+        interpretation: 'Vitamin D deficiency. Supplement recommended.',
+        notes: 'May contribute to mood symptoms'
       }
     ],
     medicationHistory: [
@@ -82,6 +170,17 @@ export const patient004: Patient = {
         indication: 'Depression and anxiety',
         status: 'active',
         notes: 'Started 4 weeks ago, monitoring response and side effects'
+      },
+      {
+        id: 'MED020',
+        name: 'Vitamin D3',
+        dosage: '4000 IU',
+        frequency: 'Once daily',
+        prescribedDate: '2023-05-25T00:00:00Z',
+        prescribedBy: 'Dr. Helen Roberts',
+        indication: 'Vitamin D deficiency',
+        status: 'active',
+        notes: 'Take with fatty meal for better absorption. Recheck levels in 3 months.'
       }
     ],
     mhaSections: [
