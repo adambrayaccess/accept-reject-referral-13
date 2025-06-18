@@ -179,8 +179,7 @@ const TeamSelector = ({
                     </SelectItem>
                   ))}
                 </SelectContent>
-              </SelectItem>
-              )}
+              </Select>
             </div>
           )}
 
