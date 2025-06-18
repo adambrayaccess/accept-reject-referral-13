@@ -1,4 +1,3 @@
-
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
@@ -221,17 +220,12 @@ const PatientJourney = ({ referral }: PatientJourneyProps) => {
     <Collapsible open={isOpen} onOpenChange={setIsOpen}>
       <Card>
         <CollapsibleTrigger asChild>
-          <CardHeader className="pb-4 cursor-pointer hover:bg-gray-50 transition-colors">
-            <div className="flex items-center gap-3">
-              <div className="w-12 h-12 rounded-full bg-[#007A7A] flex items-center justify-center flex-shrink-0">
-                <Route className="h-6 w-6 text-white" />
-              </div>
-              <div className="flex-1">
-                <CardTitle className="flex items-center justify-between text-lg">
-                  <span>Patient Journey - {patient.name}</span>
-                  <ChevronDown className={`h-5 w-5 transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`} />
-                </CardTitle>
-                <div className="flex items-center gap-4 text-sm text-muted-foreground mt-1">
+          <CardHeader className="pb-4 cursor-pointer hover:bg-muted/50 transition-colors">
+            <CardTitle className="text-lg flex items-center justify-between">
+              <div className="flex items-center">
+                <Route className="h-5 w-5 mr-2" />
+                Patient Journey - {patient.name}
+                <div className="flex items-center gap-4 text-sm text-muted-foreground ml-4">
                   <span>NHS: {patient.nhsNumber}</span>
                   <span>DOB: {format(parseISO(patient.birthDate), 'dd/MM/yyyy')}</span>
                   <Badge variant="outline" className="text-xs">
@@ -239,7 +233,8 @@ const PatientJourney = ({ referral }: PatientJourneyProps) => {
                   </Badge>
                 </div>
               </div>
-            </div>
+              <ChevronDown className={`h-5 w-5 transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`} />
+            </CardTitle>
           </CardHeader>
         </CollapsibleTrigger>
         
