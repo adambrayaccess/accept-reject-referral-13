@@ -70,6 +70,89 @@ export const updateReferralStatus = async (
   }
 };
 
+export const updateTriageStatus = async (
+  referralId: string,
+  triageStatus: TriageStatus,
+  notes?: string
+): Promise<boolean> => {
+  try {
+    // Simulate API delay
+    await new Promise(resolve => setTimeout(resolve, 500));
+    
+    const referralIndex = referrals.findIndex(r => r.id === referralId);
+    if (referralIndex === -1) {
+      console.error(`Referral with ID ${referralId} not found`);
+      return false;
+    }
+    
+    const referral = referrals[referralIndex];
+    
+    // Update triage status
+    referral.triageStatus = triageStatus;
+    
+    // Add audit log entry
+    if (!referral.auditLog) {
+      referral.auditLog = [];
+    }
+    
+    const auditEntry = {
+      timestamp: new Date().toISOString(),
+      user: 'Current User', // In real app, get from auth context
+      action: `Triage status updated to ${triageStatus}`,
+      notes: notes || undefined
+    };
+    
+    referral.auditLog.push(auditEntry);
+    
+    console.log(`Referral ${referralId} triage status updated to ${triageStatus}`, referral);
+    return true;
+  } catch (error) {
+    console.error('Error updating triage status:', error);
+    return false;
+  }
+};
+
+export const updateReferralTags = async (
+  referralId: string,
+  tags: string[]
+): Promise<boolean> => {
+  try {
+    // Simulate API delay
+    await new Promise(resolve => setTimeout(resolve, 500));
+    
+    const referralIndex = referrals.findIndex(r => r.id === referralId);
+    if (referralIndex === -1) {
+      console.error(`Referral with ID ${referralId} not found`);
+      return false;
+    }
+    
+    const referral = referrals[referralIndex];
+    
+    // Update tags
+    referral.tags = tags;
+    
+    // Add audit log entry
+    if (!referral.auditLog) {
+      referral.auditLog = [];
+    }
+    
+    const auditEntry = {
+      timestamp: new Date().toISOString(),
+      user: 'Current User', // In real app, get from auth context
+      action: `Tags updated`,
+      notes: `Tags set to: ${tags.join(', ')}`
+    };
+    
+    referral.auditLog.push(auditEntry);
+    
+    console.log(`Referral ${referralId} tags updated`, referral);
+    return true;
+  } catch (error) {
+    console.error('Error updating referral tags:', error);
+    return false;
+  }
+};
+
 // Initialize with mock data if needed
 export const setReferralsData = (data: Referral[]) => {
   referrals = data;
