@@ -1,5 +1,5 @@
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
@@ -8,10 +8,13 @@ import { Clipboard, Sparkles, Users } from 'lucide-react';
 import { TriageStatus } from '@/types/referral';
 import { updateTriageStatus } from '@/services/referralService';
 import { useToast } from '@/hooks/use-toast';
+import TeamSelector from '@/components/team/TeamSelector';
+import { getSpecialtyIdByName } from '@/data/specialtyOptions';
 
 interface TriageStatusUpdateProps {
   referralId: string;
   currentStatus?: TriageStatus;
+  specialty: string;
   onStatusChange: () => void;
   aiSuggestedStatus?: TriageStatus;
   aiConfidence?: number;
@@ -28,14 +31,43 @@ const triageStatuses: { value: TriageStatus; label: string }[] = [
 const TriageStatusUpdate = ({ 
   referralId, 
   currentStatus, 
+  specialty,
   onStatusChange, 
   aiSuggestedStatus,
   aiConfidence 
 }: TriageStatusUpdateProps) => {
   const [triageStatus, setTriageStatus] = useState<TriageStatus | ''>(currentStatus || '');
   const [triageNotes, setTriageNotes] = useState('');
+  const [selectedTeamId, setSelectedTeamId] = useState<string>('');
+  const [selectedHCPId, setSelectedHCPId] = useState<string>('');
   const [isUpdatingStatus, setIsUpdatingStatus] = useState(false);
   const { toast } = useToast();
+
+  // Get specialty ID safely
+  const specialtyId = (() => {
+    try {
+      return getSpecialtyIdByName(specialty);
+    } catch (error) {
+      console.error('TriageStatusUpdate: Error getting specialty ID:', error);
+      return '';
+    }
+  })();
+
+  // Reset team selection when status changes to refer-to-another-specialty
+  useEffect(() => {
+    if (triageStatus === 'refer-to-another-specialty') {
+      setSelectedTeamId('');
+      setSelectedHCPId('');
+    }
+  }, [triageStatus]);
+
+  const handleTeamChange = (teamId: string) => {
+    setSelectedTeamId(teamId);
+  };
+
+  const handleHCPChange = (hcpId: string) => {
+    setSelectedHCPId(hcpId);
+  };
 
   const handleTriageStatusChange = async () => {
     if (!triageStatus) {
@@ -56,18 +88,37 @@ const TriageStatusUpdate = ({
         : triageNotes;
 
       console.log(`Calling updateTriageStatus with referralId: ${referralId}, status: ${triageStatus}, notes: ${notes}`);
-      const updated = await updateTriageStatus(referralId, triageStatus, notes);
+      
+      // Prepare team allocation data
+      const teamAllocationData = (selectedTeamId || selectedHCPId) ? {
+        teamId: selectedTeamId,
+        assignedHCPId: selectedHCPId,
+        triageStatus: triageStatus
+      } : { triageStatus: triageStatus };
+
+      const updated = await updateTriageStatus(referralId, triageStatus, notes, teamAllocationData);
       
       console.log(`updateTriageStatus result: ${updated}`);
       
       if (updated) {
+        let successMessage = `Triage status changed to ${
+          triageStatuses.find(s => s.value === triageStatus)?.label
+        }`;
+
+        if (selectedTeamId || selectedHCPId) {
+          const assignmentDetails = selectedHCPId 
+            ? "assigned to healthcare professional"
+            : "allocated to team";
+          successMessage += ` and ${assignmentDetails}`;
+        }
+
         toast({
           title: "Status Updated",
-          description: `Triage status changed to ${
-            triageStatuses.find(s => s.value === triageStatus)?.label
-          }`,
+          description: successMessage,
         });
         setTriageNotes('');
+        setSelectedTeamId('');
+        setSelectedHCPId('');
         console.log('Calling onStatusChange to refresh data');
         onStatusChange();
       } else {
@@ -150,6 +201,22 @@ const TriageStatusUpdate = ({
           </SelectContent>
         </Select>
       </div>
+
+      {/* Team Assignment Section - Only show if status is not refer-to-another-specialty */}
+      {triageStatus && triageStatus !== 'refer-to-another-specialty' && specialtyId && (
+        <div className="space-y-3 p-3 bg-muted/50 rounded-lg">
+          <div className="text-sm font-medium text-muted-foreground">
+            Team Assignment (Optional)
+          </div>
+          <TeamSelector
+            specialtyId={specialtyId}
+            selectedTeamId={selectedTeamId}
+            selectedHCPId={selectedHCPId}
+            onTeamChange={handleTeamChange}
+            onHCPChange={handleHCPChange}
+          />
+        </div>
+      )}
       
       <Textarea
         placeholder="Add notes about status change (optional)"

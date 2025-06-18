@@ -35,6 +35,7 @@ const ReferralActions = ({ referral, onStatusChange }: ReferralActionsProps) => 
         <TriageStatusUpdate 
           referralId={referral.id}
           currentStatus={referral.triageStatus}
+          specialty={referral.specialty}
           onStatusChange={onStatusChange}
         />
       </div>

@@ -83,7 +83,8 @@ export const updateReferralStatus = async (
 export const updateTriageStatus = async (
   referralId: string,
   triageStatus: TriageStatus,
-  notes?: string
+  notes?: string,
+  teamAllocationData?: TeamAllocationData
 ): Promise<boolean> => {
   try {
     console.log(`Attempting to update triage status for referral ${referralId} to ${triageStatus}`);
@@ -111,15 +112,39 @@ export const updateTriageStatus = async (
     // Update triage status
     referral.triageStatus = triageStatus;
     
+    // Handle team allocation if provided
+    if (teamAllocationData) {
+      if (teamAllocationData.teamId) {
+        referral.teamId = teamAllocationData.teamId;
+        if (!referral.allocatedDate) {
+          referral.allocatedDate = new Date().toISOString();
+          referral.allocatedBy = 'Current User'; // In real app, get from auth context
+        }
+      }
+      
+      if (teamAllocationData.assignedHCPId) {
+        referral.assignedHCPId = teamAllocationData.assignedHCPId;
+      }
+    }
+    
     // Add audit log entry
     if (!referral.auditLog) {
       referral.auditLog = [];
     }
     
+    let auditAction = `Triage status updated to ${triageStatus}`;
+    if (teamAllocationData?.teamId || teamAllocationData?.assignedHCPId) {
+      if (teamAllocationData.assignedHCPId) {
+        auditAction += ' with HCP assignment';
+      } else if (teamAllocationData.teamId) {
+        auditAction += ' with team allocation';
+      }
+    }
+    
     const auditEntry = {
       timestamp: new Date().toISOString(),
       user: 'Current User', // In real app, get from auth context
-      action: `Triage status updated to ${triageStatus}`,
+      action: auditAction,
       notes: notes || undefined
     };
     
