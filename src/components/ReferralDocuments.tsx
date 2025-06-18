@@ -129,14 +129,6 @@ const ReferralDocuments = ({ attachments, referralId, onDocumentUploaded }: Refe
                       </div>
                     )}
                   </div>
-                  
-                  <Separator />
-                  
-                  <div className="aspect-video bg-muted flex items-center justify-center rounded-md">
-                    <p className="text-muted-foreground text-sm text-center px-4">
-                      Preview not available. Please click View to open the document.
-                    </p>
-                  </div>
                 </div>
               </EnhancedTabsContent>
             ))}
