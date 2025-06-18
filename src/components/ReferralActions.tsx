@@ -42,7 +42,7 @@ const ReferralActions = ({ referral, onStatusChange }: ReferralActionsProps) => 
               <div className="flex-1">
                 <ReferralStatusIndicator status={referral.status} />
               </div>
-              <ChevronDown className={`h-4 w-4 flex-shrink-0 transition-all duration-200 group-hover:text-purple-600 ${isOpen ? 'rotate-180' : ''}`} />
+              <ChevronDown className={`h-4 w-4 flex-shrink-0 transition-all duration-200 text-muted-foreground group-hover:text-primary group-hover:bg-accent/50 group-hover:rounded-sm group-hover:p-0.5 ${isOpen ? 'rotate-180' : ''}`} />
             </div>
           </CollapsibleTrigger>
           <CollapsibleContent>
