@@ -1,5 +1,8 @@
 
 import { Patient } from '@/types/patient';
+import { createVitalSignsSequence } from '../shared/vital-signs';
+import { createCommonTestResults, createSpecializedTestResults } from '../shared/test-results';
+import { createMedicationHistory } from '../shared/medications';
 
 export const patient001: Patient = {
   id: 'P001',
@@ -10,114 +13,10 @@ export const patient001: Patient = {
   address: '42 Baker Street, London, NW1 6XE',
   phone: '07700 900123',
   medicalHistory: {
-    vitalSigns: [
-      {
-        timestamp: '2023-06-15T09:30:00Z',
-        news2: 1,
-        temperature: 36.8,
-        heartRate: 75,
-        respiration: 16,
-        oxygenSaturation: 98,
-        bloodPressureSystolic: 130,
-        bloodPressureDiastolic: 80
-      },
-      {
-        timestamp: '2023-06-14T14:15:00Z',
-        news2: 0,
-        temperature: 36.6,
-        heartRate: 72,
-        respiration: 14,
-        oxygenSaturation: 99,
-        bloodPressureSystolic: 125,
-        bloodPressureDiastolic: 78
-      },
-      {
-        timestamp: '2023-06-13T11:20:00Z',
-        news2: 2,
-        temperature: 37.0,
-        heartRate: 82,
-        respiration: 18,
-        oxygenSaturation: 97,
-        bloodPressureSystolic: 135,
-        bloodPressureDiastolic: 85
-      },
-      {
-        timestamp: '2023-06-12T16:45:00Z',
-        news2: 1,
-        temperature: 36.9,
-        heartRate: 78,
-        respiration: 15,
-        oxygenSaturation: 98,
-        bloodPressureSystolic: 128,
-        bloodPressureDiastolic: 82
-      }
-    ],
+    vitalSigns: createVitalSignsSequence('2023-06-12T00:00:00Z', 'stable'),
     testResults: [
-      {
-        id: 'TEST001',
-        testName: 'Full Blood Count',
-        testType: 'blood',
-        requestedDate: '2023-06-10T00:00:00Z',
-        sampleDate: '2023-06-10T08:30:00Z',
-        reportDate: '2023-06-10T14:00:00Z',
-        requestedBy: 'Dr. Sarah Wilson',
-        performedBy: 'NHS Pathology Lab',
-        status: 'completed',
-        results: [
-          {
-            parameter: 'Haemoglobin',
-            value: '14.2',
-            unit: 'g/dL',
-            referenceRange: '13.5-17.5',
-            flag: 'normal'
-          },
-          {
-            parameter: 'White Cell Count',
-            value: '6.8',
-            unit: '×10⁹/L',
-            referenceRange: '4.0-11.0',
-            flag: 'normal'
-          },
-          {
-            parameter: 'Platelets',
-            value: '285',
-            unit: '×10⁹/L',
-            referenceRange: '150-450',
-            flag: 'normal'
-          },
-          {
-            parameter: 'Haematocrit',
-            value: '42.1',
-            unit: '%',
-            referenceRange: '40.0-50.0',
-            flag: 'normal'
-          }
-        ],
-        interpretation: 'Normal full blood count parameters.',
-        notes: 'Routine annual health check'
-      },
-      {
-        id: 'TEST008',
-        testName: 'HbA1c',
-        testType: 'blood',
-        requestedDate: '2023-06-05T00:00:00Z',
-        sampleDate: '2023-06-05T09:15:00Z',
-        reportDate: '2023-06-05T15:30:00Z',
-        requestedBy: 'Dr. Sarah Wilson',
-        performedBy: 'NHS Pathology Lab',
-        status: 'completed',
-        results: [
-          {
-            parameter: 'HbA1c',
-            value: '45',
-            unit: 'mmol/mol',
-            referenceRange: '<42',
-            flag: 'high'
-          }
-        ],
-        interpretation: 'Slightly elevated HbA1c indicating pre-diabetes range.',
-        notes: 'Lifestyle modifications recommended'
-      },
+      ...createCommonTestResults('001', 'Dr. Sarah Wilson', '2023-06-10T00:00:00Z'),
+      ...createSpecializedTestResults('001', 'Dr. Sarah Wilson', 'diabetes', '2023-06-05T00:00:00Z'),
       {
         id: 'TEST009',
         testName: 'Lipid Profile',
@@ -162,41 +61,7 @@ export const patient001: Patient = {
         notes: 'Dietary advice provided'
       }
     ],
-    medicationHistory: [
-      {
-        id: 'MED001',
-        name: 'Lisinopril',
-        dosage: '10mg',
-        frequency: 'Once daily',
-        prescribedDate: '2023-04-15T00:00:00Z',
-        prescribedBy: 'Dr. Sarah Wilson',
-        indication: 'Hypertension',
-        status: 'active',
-        notes: 'Monitor blood pressure monthly'
-      },
-      {
-        id: 'MED016',
-        name: 'Atorvastatin',
-        dosage: '20mg',
-        frequency: 'Once daily at bedtime',
-        prescribedDate: '2023-06-05T00:00:00Z',
-        prescribedBy: 'Dr. Sarah Wilson',
-        indication: 'High cholesterol',
-        status: 'active',
-        notes: 'Monitor liver function tests in 6 weeks'
-      },
-      {
-        id: 'MED017',
-        name: 'Metformin',
-        dosage: '500mg',
-        frequency: 'Twice daily with meals',
-        prescribedDate: '2023-06-10T00:00:00Z',
-        prescribedBy: 'Dr. Sarah Wilson',
-        indication: 'Pre-diabetes',
-        status: 'active',
-        notes: 'Start with once daily, increase to twice daily if tolerated'
-      }
-    ],
+    medicationHistory: createMedicationHistory('001', 'Dr. Sarah Wilson', ['hypertension', 'cholesterol', 'diabetes'], '2023-06-01T00:00:00Z'),
     mhaSections: [
       {
         id: 'MHA001',
