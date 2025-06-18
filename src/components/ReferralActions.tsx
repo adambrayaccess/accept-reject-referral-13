@@ -11,6 +11,14 @@ interface ReferralActionsProps {
 }
 
 const ReferralActions = ({ referral, onStatusChange }: ReferralActionsProps) => {
+  console.log('ReferralActions rendering with referral:', {
+    id: referral.id,
+    status: referral.status,
+    triageStatus: referral.triageStatus,
+    teamId: referral.teamId,
+    assignedHCPId: referral.assignedHCPId
+  });
+
   if (referral.status === 'new') {
     return (
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">

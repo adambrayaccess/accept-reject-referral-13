@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
 import { Badge } from '@/components/ui/badge';
-import { Clipboard, Sparkles } from 'lucide-react';
+import { Clipboard, Sparkles, Users } from 'lucide-react';
 import { TriageStatus } from '@/types/referral';
 import { updateTriageStatus } from '@/services/referralService';
 import { useToast } from '@/hooks/use-toast';
@@ -47,13 +47,18 @@ const TriageStatusUpdate = ({
       return;
     }
 
+    console.log(`Starting triage status update for referral ${referralId} to ${triageStatus}`);
     setIsUpdatingStatus(true);
+    
     try {
       const notes = aiSuggestedStatus === triageStatus && aiConfidence 
         ? `${triageNotes}\n\nAI-suggested status (${Math.round(aiConfidence * 100)}% confidence)`
         : triageNotes;
 
+      console.log(`Calling updateTriageStatus with referralId: ${referralId}, status: ${triageStatus}, notes: ${notes}`);
       const updated = await updateTriageStatus(referralId, triageStatus, notes);
+      
+      console.log(`updateTriageStatus result: ${updated}`);
       
       if (updated) {
         toast({
@@ -63,6 +68,7 @@ const TriageStatusUpdate = ({
           }`,
         });
         setTriageNotes('');
+        console.log('Calling onStatusChange to refresh data');
         onStatusChange();
       } else {
         throw new Error("Failed to update triage status");
@@ -89,7 +95,10 @@ const TriageStatusUpdate = ({
   return (
     <div className="space-y-4 pt-4 border-t">
       <div className="flex items-center justify-between">
-        <h3 className="text-sm font-medium">Update Triage Status</h3>
+        <div className="flex items-center gap-2">
+          <Users className="h-4 w-4 text-muted-foreground" />
+          <h3 className="text-sm font-medium">Update Triage Status</h3>
+        </div>
         {aiSuggestedStatus && aiSuggestedStatus !== currentStatus && (
           <Button
             variant="outline"
