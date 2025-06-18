@@ -8,7 +8,7 @@ import AuditLog from './audit/AuditLog';
 import CreateSubReferralDialog from './sub-referrals/CreateSubReferralDialog';
 import SubReferralsList from './sub-referrals/SubReferralsList';
 import ParentReferralInfo from './sub-referrals/ParentReferralInfo';
-import PatientActivityTimeline from './PatientActivityTimeline';
+import PatientJourney from './PatientJourney';
 import ReferralTagging from './referral-tagging/ReferralTagging';
 import AISuggestionsPanel from './ai-suggestions/AISuggestionsPanel';
 import AppointmentStatus from './cohort/AppointmentStatus';
@@ -100,7 +100,7 @@ const ReferralWorkspace = ({ referral, onStatusChange }: ReferralWorkspaceProps)
         </CardContent>
       </Card>
 
-      <PatientActivityTimeline />
+      <PatientJourney referral={referral} />
     </div>
   );
 };
