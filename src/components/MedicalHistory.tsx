@@ -4,6 +4,7 @@ import { EnhancedTabs, EnhancedTabsContent, EnhancedTabsList, EnhancedTabsTrigge
 import { Patient } from '@/types/referral';
 import VitalSignsTab from './medical-history/VitalSignsTab';
 import CardiogramView from './medical-history/CardiogramView';
+import MedicationHistoryTab from './medical-history/MedicationHistoryTab';
 
 interface MedicalHistoryProps {
   patient: Patient;
@@ -38,6 +39,9 @@ const MedicalHistory = ({ patient }: MedicalHistoryProps) => {
               <EnhancedTabsTrigger value="cardiogram" variant="grid" size="md">
                 Cardiogram Data
               </EnhancedTabsTrigger>
+              <EnhancedTabsTrigger value="medications" variant="grid" size="md">
+                Medication History
+              </EnhancedTabsTrigger>
             </EnhancedTabsList>
           </div>
 
@@ -47,6 +51,10 @@ const MedicalHistory = ({ patient }: MedicalHistoryProps) => {
 
           <EnhancedTabsContent value="cardiogram">
             <CardiogramView cardiograms={patient.medicalHistory.cardiograms || []} />
+          </EnhancedTabsContent>
+
+          <EnhancedTabsContent value="medications">
+            <MedicationHistoryTab medicationHistory={patient.medicalHistory.medicationHistory} />
           </EnhancedTabsContent>
         </EnhancedTabs>
       </CardContent>

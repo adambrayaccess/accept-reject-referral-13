@@ -1,3 +1,4 @@
+
 export interface Patient {
   id: string;
   name: string;
@@ -167,9 +168,23 @@ export interface Cardiogram {
   interpretation: string;
 }
 
+export interface MedicationPrescription {
+  id: string;
+  name: string;
+  dosage: string;
+  frequency: string;
+  prescribedDate: string;
+  prescribedBy: string;
+  indication: string;
+  status: 'active' | 'discontinued' | 'completed';
+  notes?: string;
+  endDate?: string;
+}
+
 export interface MedicalHistory {
   vitalSigns: VitalSign[];
   cardiograms?: Cardiogram[];
+  medicationHistory?: MedicationPrescription[];
 }
 
 export interface SpecialtyOption {

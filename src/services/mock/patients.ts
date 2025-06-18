@@ -74,6 +74,42 @@ export const mockPatients: Patient[] = [
           data: [],
           interpretation: 'Normal sinus rhythm. No significant changes from previous ECG.'
         }
+      ],
+      medicationHistory: [
+        {
+          id: 'MED001',
+          name: 'Lisinopril',
+          dosage: '10mg',
+          frequency: 'Once daily',
+          prescribedDate: '2023-05-15T00:00:00Z',
+          prescribedBy: 'Dr. Sarah Wilson',
+          indication: 'Hypertension',
+          status: 'active',
+          notes: 'Monitor blood pressure regularly'
+        },
+        {
+          id: 'MED002',
+          name: 'Metformin',
+          dosage: '500mg',
+          frequency: 'Twice daily with meals',
+          prescribedDate: '2023-04-20T00:00:00Z',
+          prescribedBy: 'Dr. James Brown',
+          indication: 'Type 2 Diabetes',
+          status: 'active',
+          notes: 'Take with food to reduce gastric upset'
+        },
+        {
+          id: 'MED003',
+          name: 'Amoxicillin',
+          dosage: '500mg',
+          frequency: 'Three times daily',
+          prescribedDate: '2023-06-01T00:00:00Z',
+          prescribedBy: 'Dr. Emily Davis',
+          indication: 'Respiratory tract infection',
+          status: 'completed',
+          endDate: '2023-06-08T00:00:00Z',
+          notes: 'Complete full course even if feeling better'
+        }
       ]
     }
   },
@@ -116,6 +152,30 @@ export const mockPatients: Patient[] = [
           oxygenSaturation: 98,
           bloodPressureSystolic: 122,
           bloodPressureDiastolic: 76
+        }
+      ],
+      medicationHistory: [
+        {
+          id: 'MED004',
+          name: 'Sertraline',
+          dosage: '50mg',
+          frequency: 'Once daily',
+          prescribedDate: '2023-03-10T00:00:00Z',
+          prescribedBy: 'Dr. Michael Thompson',
+          indication: 'Depression',
+          status: 'active',
+          notes: 'Monitor mood and side effects closely'
+        },
+        {
+          id: 'MED005',
+          name: 'Ibuprofen',
+          dosage: '400mg',
+          frequency: 'As needed, maximum 3 times daily',
+          prescribedDate: '2023-06-01T00:00:00Z',
+          prescribedBy: 'Dr. Lisa Garcia',
+          indication: 'Pain relief',
+          status: 'active',
+          notes: 'Take with food to avoid stomach irritation'
         }
       ]
     }
@@ -197,6 +257,41 @@ export const mockPatients: Patient[] = [
           data: [],
           interpretation: 'Resolution of ST changes. Normal sinus rhythm.'
         }
+      ],
+      medicationHistory: [
+        {
+          id: 'MED006',
+          name: 'Atorvastatin',
+          dosage: '40mg',
+          frequency: 'Once daily at bedtime',
+          prescribedDate: '2023-01-15T00:00:00Z',
+          prescribedBy: 'Dr. Rachel Green',
+          indication: 'High cholesterol',
+          status: 'active',
+          notes: 'Monitor liver function tests'
+        },
+        {
+          id: 'MED007',
+          name: 'Aspirin',
+          dosage: '75mg',
+          frequency: 'Once daily',
+          prescribedDate: '2023-02-01T00:00:00Z',
+          prescribedBy: 'Dr. Rachel Green',
+          indication: 'Cardiovascular protection',
+          status: 'active',
+          notes: 'Take with food'
+        },
+        {
+          id: 'MED008',
+          name: 'GTN Spray',
+          dosage: '0.4mg',
+          frequency: 'As needed for chest pain',
+          prescribedDate: '2023-06-12T00:00:00Z',
+          prescribedBy: 'Dr. David Martinez',
+          indication: 'Angina',
+          status: 'active',
+          notes: 'Use under tongue when experiencing chest pain'
+        }
       ]
     }
   },
@@ -220,6 +315,19 @@ export const mockPatients: Patient[] = [
           bloodPressureSystolic: 125,
           bloodPressureDiastolic: 75
         }
+      ],
+      medicationHistory: [
+        {
+          id: 'MED009',
+          name: 'Microgynon 30',
+          dosage: '1 tablet',
+          frequency: 'Once daily',
+          prescribedDate: '2023-01-05T00:00:00Z',
+          prescribedBy: 'Dr. Helen Roberts',
+          indication: 'Contraception',
+          status: 'active',
+          notes: 'Take at the same time each day'
+        }
       ]
     }
   },
@@ -242,6 +350,31 @@ export const mockPatients: Patient[] = [
           oxygenSaturation: 96,
           bloodPressureSystolic: 142,
           bloodPressureDiastolic: 88
+        }
+      ],
+      medicationHistory: [
+        {
+          id: 'MED010',
+          name: 'Ramipril',
+          dosage: '5mg',
+          frequency: 'Once daily',
+          prescribedDate: '2023-04-10T00:00:00Z',
+          prescribedBy: 'Dr. Andrew Clark',
+          indication: 'Hypertension',
+          status: 'active',
+          notes: 'Monitor blood pressure and kidney function'
+        },
+        {
+          id: 'MED011',
+          name: 'Simvastatin',
+          dosage: '20mg',
+          frequency: 'Once daily at bedtime',
+          prescribedDate: '2023-04-10T00:00:00Z',
+          prescribedBy: 'Dr. Andrew Clark',
+          indication: 'High cholesterol',
+          status: 'discontinued',
+          endDate: '2023-05-15T00:00:00Z',
+          notes: 'Discontinued due to muscle pain, switched to atorvastatin'
         }
       ]
     }
