@@ -1,7 +1,7 @@
 
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { GitBranch, Plus, Users } from 'lucide-react';
+import { LayoutList, Plus } from 'lucide-react';
 import { Referral } from '@/types/referral';
 
 interface SubReferralIndicatorProps {
@@ -30,7 +30,7 @@ const SubReferralIndicator = ({ referral, variant = 'default' }: SubReferralIndi
     if (subReferralInfo.isSubReferral) {
       return (
         <div className="flex items-center gap-1">
-          <GitBranch className="h-3 w-3 text-blue-500" />
+          <LayoutList className="h-3 w-3 text-blue-500" />
           <span className="text-xs text-blue-600">Sub-referral</span>
         </div>
       );
@@ -39,7 +39,7 @@ const SubReferralIndicator = ({ referral, variant = 'default' }: SubReferralIndi
     if (subReferralInfo.hasSubReferrals) {
       return (
         <div className="flex items-center gap-1">
-          <Users className="h-3 w-3 text-green-500" />
+          <LayoutList className="h-3 w-3 text-green-500" />
           <span className="text-xs text-green-600">
             {subReferralInfo.subReferralCount} sub-referral{subReferralInfo.subReferralCount > 1 ? 's' : ''}
           </span>
@@ -55,7 +55,7 @@ const SubReferralIndicator = ({ referral, variant = 'default' }: SubReferralIndi
       {subReferralInfo.isSubReferral && (
         <div className="space-y-1">
           <Badge variant="outline" className="text-xs bg-blue-50 border-blue-200">
-            <GitBranch className="h-3 w-3 mr-1 text-blue-500" />
+            <LayoutList className="h-3 w-3 mr-1 text-blue-500" />
             Sub-referral
           </Badge>
           {subReferralInfo.parentReferralId && (
@@ -69,7 +69,7 @@ const SubReferralIndicator = ({ referral, variant = 'default' }: SubReferralIndi
       {subReferralInfo.hasSubReferrals && (
         <div className="space-y-1">
           <Badge variant="outline" className="text-xs bg-green-50 border-green-200">
-            <Users className="h-3 w-3 mr-1 text-green-500" />
+            <LayoutList className="h-3 w-3 mr-1 text-green-500" />
             {subReferralInfo.subReferralCount} Sub-referral{subReferralInfo.subReferralCount > 1 ? 's' : ''}
           </Badge>
           <div className="text-xs text-muted-foreground">
