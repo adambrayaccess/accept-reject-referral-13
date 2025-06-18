@@ -1,135 +1,76 @@
 
-import { ReferralStatus, TriageStatus } from '@/types/referral';
-import { mockReferrals } from '../mockData';
+import { Referral, TriageStatus } from '@/types/referral';
 
-const MOCK_DELAY = 1000;
+interface TeamAllocationData {
+  teamId?: string;
+  assignedHCPId?: string;
+  triageStatus?: TriageStatus;
+}
 
-// Update referral status
+// Mock data store (in a real app, this would be a database)
+let referrals: Referral[] = [];
+
 export const updateReferralStatus = async (
   referralId: string, 
-  status: ReferralStatus, 
-  notes?: string
+  status: 'accepted' | 'rejected', 
+  notes?: string,
+  teamAllocationData?: TeamAllocationData
 ): Promise<boolean> => {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      const referralIndex = mockReferrals.findIndex(ref => ref.id === referralId);
-      if (referralIndex !== -1) {
-        const referral = mockReferrals[referralIndex];
-        const oldStatus = referral.status;
-        const oldTriageStatus = referral.triageStatus;
-        
-        // Update status
-        referral.status = status;
-        
-        // Handle automatic triage status transitions
-        if (status === 'accepted' && oldStatus === 'new') {
-          // When accepting a new referral, set to assessed
-          referral.triageStatus = 'assessed';
-        } else if (status === 'rejected') {
-          // When rejecting, set appropriate triage status
-          referral.triageStatus = 'refer-to-another-specialty';
-        }
-        
-        // Add to audit log
-        if (!referral.auditLog) {
-          referral.auditLog = [];
-        }
-        
-        referral.auditLog.push({
-          timestamp: new Date().toISOString(),
-          user: 'Current User',
-          action: `Status updated from ${oldStatus} to ${status}${referral.triageStatus !== oldTriageStatus ? `, triage status updated to ${referral.triageStatus}` : ''}`,
-          notes: notes || undefined
-        });
-        
-        console.log(`Referral ${referralId} status updated to ${status}. Notes: ${notes || 'None'}`);
-        resolve(true);
-      } else {
-        resolve(false);
+  try {
+    // Simulate API delay
+    await new Promise(resolve => setTimeout(resolve, 500));
+    
+    const referralIndex = referrals.findIndex(r => r.id === referralId);
+    if (referralIndex === -1) {
+      console.error(`Referral with ID ${referralId} not found`);
+      return false;
+    }
+    
+    const referral = referrals[referralIndex];
+    
+    // Update basic status
+    referral.status = status;
+    
+    // Add audit log entry
+    if (!referral.auditLog) {
+      referral.auditLog = [];
+    }
+    
+    const auditEntry = {
+      timestamp: new Date().toISOString(),
+      user: 'Current User', // In real app, get from auth context
+      action: `Referral ${status}`,
+      notes: notes || undefined
+    };
+    
+    referral.auditLog.push(auditEntry);
+    
+    // Handle team allocation if provided
+    if (teamAllocationData) {
+      if (teamAllocationData.teamId) {
+        referral.teamId = teamAllocationData.teamId;
+        referral.allocatedDate = new Date().toISOString();
+        referral.allocatedBy = 'Current User'; // In real app, get from auth context
       }
-    }, MOCK_DELAY);
-  });
+      
+      if (teamAllocationData.assignedHCPId) {
+        referral.assignedHCPId = teamAllocationData.assignedHCPId;
+      }
+      
+      if (teamAllocationData.triageStatus) {
+        referral.triageStatus = teamAllocationData.triageStatus;
+      }
+    }
+    
+    console.log(`Referral ${referralId} status updated to ${status}`, referral);
+    return true;
+  } catch (error) {
+    console.error('Error updating referral status:', error);
+    return false;
+  }
 };
 
-// Update triage status
-export const updateTriageStatus = async (
-  referralId: string,
-  triageStatus: TriageStatus,
-  notes?: string
-): Promise<boolean> => {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      const referralIndex = mockReferrals.findIndex(ref => ref.id === referralId);
-      if (referralIndex !== -1) {
-        const referral = mockReferrals[referralIndex];
-        const oldTriageStatus = referral.triageStatus;
-        
-        // Update triage status
-        referral.triageStatus = triageStatus;
-        
-        // Handle automatic status transitions
-        if (triageStatus === 'waiting-list' && referral.status === 'new') {
-          // When moving to waiting list, ensure status is accepted
-          referral.status = 'accepted';
-        } else if (triageStatus === 'refer-to-another-specialty') {
-          // When referring elsewhere, set status to rejected
-          referral.status = 'rejected';
-        }
-        
-        // Add to audit log
-        if (!referral.auditLog) {
-          referral.auditLog = [];
-        }
-        
-        referral.auditLog.push({
-          timestamp: new Date().toISOString(),
-          user: 'Current User',
-          action: `Triage status updated from ${oldTriageStatus} to ${triageStatus}`,
-          notes: notes || undefined
-        });
-        
-        console.log(`Referral ${referralId} triage status updated to ${triageStatus}. Notes: ${notes || 'None'}`);
-        
-        // Trigger a custom event for real-time updates across components
-        window.dispatchEvent(new CustomEvent('referralUpdated', { 
-          detail: { referralId, triageStatus, status: referral.status } 
-        }));
-        
-        resolve(true);
-      } else {
-        resolve(false);
-      }
-    }, MOCK_DELAY);
-  });
-};
-
-// Update referral tags
-export const updateReferralTags = async (
-  referralId: string,
-  tags: string[]
-): Promise<boolean> => {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      const referralIndex = mockReferrals.findIndex(ref => ref.id === referralId);
-      if (referralIndex !== -1) {
-        mockReferrals[referralIndex].tags = tags;
-        
-        // Add to audit log
-        if (!mockReferrals[referralIndex].auditLog) {
-          mockReferrals[referralIndex].auditLog = [];
-        }
-        
-        mockReferrals[referralIndex].auditLog.push({
-          timestamp: new Date().toISOString(),
-          user: 'Current User',
-          action: `Tags updated: ${tags.join(', ')}`,
-        });
-        
-        console.log(`Referral ${referralId} tags updated:`, tags);
-        resolve(true);
-      } else {
-        resolve(false);
-      }
-    }, MOCK_DELAY);
-  });
+// Initialize with mock data if needed
+export const setReferralsData = (data: Referral[]) => {
+  referrals = data;
 };
