@@ -1,7 +1,7 @@
 
 import { useEffect, useState } from 'react';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
-import { History } from 'lucide-react';
+import { History, Calendar, Clipboard } from 'lucide-react';
 import { Referral } from '@/types/referral';
 import ReferralActions from './ReferralActions';
 import AuditLog from './audit/AuditLog';
@@ -63,22 +63,29 @@ const ReferralWorkspace = ({ referral, onStatusChange }: ReferralWorkspaceProps)
         </Card>
       )}
 
-      {/* Appointment Status Card */}
+      {/* Triage Actions Card - MOVED ABOVE Appointment Status */}
       <Card>
         <CardHeader className="pb-3">
-          <CardTitle className="text-lg">Appointment Status</CardTitle>
-        </CardHeader>
-        <CardContent className="pt-0">
-          <AppointmentStatus referral={referral} />
-        </CardContent>
-      </Card>
-
-      <Card>
-        <CardHeader className="pb-3">
-          <CardTitle className="text-lg">Triage Actions</CardTitle>
+          <CardTitle className="text-lg flex items-center">
+            <Clipboard className="h-5 w-5 mr-2" />
+            Triage Actions
+          </CardTitle>
         </CardHeader>
         <CardContent className="pt-0">
           <ReferralActions referral={referral} onStatusChange={onStatusChange} />
+        </CardContent>
+      </Card>
+
+      {/* Appointment Status Card - NOW BELOW Triage Actions */}
+      <Card>
+        <CardHeader className="pb-3">
+          <CardTitle className="text-lg flex items-center">
+            <Calendar className="h-5 w-5 mr-2" />
+            Appointment Status
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="pt-0">
+          <AppointmentStatus referral={referral} />
         </CardContent>
       </Card>
 
