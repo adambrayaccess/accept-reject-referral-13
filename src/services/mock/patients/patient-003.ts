@@ -75,6 +75,8 @@ export const patient003: Patient = {
   address: '789 King Road, Birmingham, B1 2BB',
   phone: '07700 900456',
   pronouns: 'she/her',
+  ethnicity: 'White British',
+  accommodationType: 'Owner Occupied',
   reasonableAdjustments: patient003ReasonableAdjustments,
   medicalHistory: patient003MedicalHistory,
   gpDetails: {
@@ -84,5 +86,70 @@ export const patient003: Patient = {
     address: '456 Healthcare Avenue, Birmingham, B1 3CC',
     phone: '0121 456 7890',
     email: 'r.chen@birminghammedical.nhs.uk'
-  }
+  },
+  pharmacies: [
+    {
+      id: 'PHARM003001',
+      name: 'Birmingham Central Pharmacy',
+      address: '123 High Street, Birmingham, B1 1AA',
+      phone: '0121 123 4567',
+      email: 'info@birminghamcentral.pharmacy',
+      type: 'nominated'
+    },
+    {
+      id: 'PHARM003002',
+      name: 'Health Plus Pharmacy',
+      address: '45 Church Street, Birmingham, B1 2CC',
+      phone: '0121 234 5678',
+      type: 'linked'
+    }
+  ],
+  relatedPeople: [
+    {
+      id: 'REL003001',
+      name: 'Michael Johnson',
+      relationship: 'spouse',
+      phone: '07700 900789',
+      email: 'm.johnson@email.com',
+      address: '789 King Road, Birmingham, B1 2BB',
+      isPrimaryContact: true,
+      isNextOfKin: true,
+      isEmergencyContact: true
+    },
+    {
+      id: 'REL003002',
+      name: 'Sarah Johnson',
+      relationship: 'daughter',
+      phone: '07700 900321',
+      email: 's.johnson@email.com',
+      isPrimaryContact: false,
+      isNextOfKin: false,
+      isEmergencyContact: true
+    }
+  ],
+  accessRestriction: {
+    isRestricted: true,
+    level: 'standard',
+    reason: 'Previous incident with aggressive behavior during mental health episode',
+    appliedDate: '2023-05-15T00:00:00Z',
+    appliedBy: 'Security Team',
+    reviewDate: '2024-05-15T00:00:00Z',
+    notes: 'Patient requires additional support person present during appointments. No restrictions on medical care.'
+  },
+  historicAddresses: [
+    {
+      id: 'ADDR003001',
+      address: '12 Oak Street, Birmingham, B2 1DD',
+      dateFrom: '2020-01-01T00:00:00Z',
+      dateTo: '2023-06-30T00:00:00Z',
+      type: 'residential'
+    },
+    {
+      id: 'ADDR003002',
+      address: '56 Elm Avenue, Birmingham, B3 2EE',
+      dateFrom: '2018-03-15T00:00:00Z',
+      dateTo: '2019-12-31T00:00:00Z',
+      type: 'residential'
+    }
+  ]
 };

@@ -8,4 +8,8 @@ export { default as PatientSummaryCard } from './PatientSummaryCard';
 export { default as ClinicalAlertsCard } from './ClinicalAlertsCard';
 export { default as GPDetailsCard } from './GPDetailsCard';
 export { default as DemographicDetailsCard } from './DemographicDetailsCard';
+export { default as PharmacyDetailsCard } from './PharmacyDetailsCard';
+export { default as RelatedPeopleCard } from './RelatedPeopleCard';
+export { default as AccessRestrictionCard } from './AccessRestrictionCard';
+export { default as HistoricAddressesCard } from './HistoricAddressesCard';
 export { default as RecordInformationCard } from './RecordInformationCard';

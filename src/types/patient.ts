@@ -11,6 +11,45 @@ export interface GPDetails {
   email?: string;
 }
 
+export interface PharmacyDetails {
+  id: string;
+  name: string;
+  address: string;
+  phone: string;
+  email?: string;
+  type: 'nominated' | 'linked';
+}
+
+export interface RelatedPerson {
+  id: string;
+  name: string;
+  relationship: string;
+  phone?: string;
+  email?: string;
+  address?: string;
+  isPrimaryContact: boolean;
+  isNextOfKin: boolean;
+  isEmergencyContact: boolean;
+}
+
+export interface HistoricAddress {
+  id: string;
+  address: string;
+  dateFrom: string;
+  dateTo?: string;
+  type: 'residential' | 'temporary' | 'correspondence';
+}
+
+export interface AccessRestriction {
+  isRestricted: boolean;
+  level?: 'standard' | 'high' | 'maximum';
+  reason?: string;
+  appliedDate?: string;
+  appliedBy?: string;
+  reviewDate?: string;
+  notes?: string;
+}
+
 export interface Patient {
   id: string;
   name: string;
@@ -20,8 +59,14 @@ export interface Patient {
   address?: string;
   phone?: string;
   pronouns?: string;
+  ethnicity?: string;
+  accommodationType?: string;
   medicalHistory?: MedicalHistory;
   gpDetails?: GPDetails;
+  pharmacies?: PharmacyDetails[];
+  relatedPeople?: RelatedPerson[];
+  accessRestriction?: AccessRestriction;
+  historicAddresses?: HistoricAddress[];
   reasonableAdjustments?: ReasonableAdjustmentsFlag;
 }
 
