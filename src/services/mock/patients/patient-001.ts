@@ -1,3 +1,4 @@
+
 import { Patient } from '@/types/patient';
 import { createVitalSignsSequence } from '../shared/vital-signs';
 import { createCommonTestResults, createSpecializedTestResults } from '../shared/test-results';
@@ -22,7 +23,7 @@ export const patient001: Patient = {
     allergies: createPatientAllergies('P001', 'Dr. Sarah Johnson', '2023-01-01T00:00:00Z'),
     mhaSections: [
       {
-        id: 'MHA001001',
+        id: 'M HA001001',
         sectionNumber: '2',
         sectionTitle: 'Admission for Assessment',
         appliedDate: '2022-08-15T00:00:00Z',

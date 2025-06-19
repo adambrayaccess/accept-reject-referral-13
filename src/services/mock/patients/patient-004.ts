@@ -1,8 +1,8 @@
-
 import { Patient } from '@/types/patient';
 import { createVitalSignsSequence } from '../shared/vital-signs';
 import { createCommonTestResults, createSpecializedTestResults } from '../shared/test-results';
 import { createMedicationHistory } from '../shared/medications';
+import { createPatientAllergies } from '../shared/allergies';
 
 export const patient004: Patient = {
   id: 'P004',
@@ -123,6 +123,7 @@ export const patient004: Patient = {
         notes: 'Take with food. Do not exceed 1200mg in 24 hours.'
       }
     ],
+    allergies: createPatientAllergies('P004', 'Dr. Helen Roberts', '2023-05-01T00:00:00Z'),
     mhaSections: [
       {
         id: 'MHA004003',

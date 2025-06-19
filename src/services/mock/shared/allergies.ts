@@ -4,6 +4,13 @@ import { Allergy } from '@/types/allergy';
 export const createPatientAllergies = (patientId: string, recordedBy: string, baseDate: string): Allergy[] => {
   const allergies: Allergy[] = [];
   
+  // 75% of patients should have allergies (only 25% have no allergies)
+  const shouldHaveAllergies = Math.random() > 0.25;
+  
+  if (!shouldHaveAllergies) {
+    return []; // 25% of patients have no allergies
+  }
+  
   // Different allergy profiles based on patient ID
   switch (patientId) {
     case 'P001':
@@ -145,25 +152,157 @@ export const createPatientAllergies = (patientId: string, recordedBy: string, ba
       );
       break;
 
-    default:
-      // Some patients have mild allergies or no allergies
-      if (Math.random() > 0.3) { // 70% chance of having some allergies
-        allergies.push({
-          id: `ALG${patientId}001`,
-          allergen: 'Pollen',
+    case 'P004':
+      allergies.push(
+        {
+          id: `ALG004001`,
+          allergen: 'Codeine',
+          type: 'drug',
+          severity: 'moderate',
+          status: 'active',
+          reactions: [
+            { type: 'nausea', description: 'Severe nausea and vomiting' },
+            { type: 'other', description: 'Dizziness and confusion' }
+          ],
+          onsetDate: '2022-01-10T00:00:00Z',
+          lastReactionDate: '2022-01-10T00:00:00Z',
+          notes: 'Use alternative analgesics. Patient tolerates paracetamol and ibuprofen well.',
+          verificationStatus: 'confirmed',
+          recordedBy,
+          recordedDate: baseDate
+        },
+        {
+          id: `ALG004002`,
+          allergen: 'Eggs',
+          type: 'food',
+          severity: 'mild',
+          status: 'active',
+          reactions: [
+            { type: 'other', description: 'Mild gastrointestinal upset' },
+            { type: 'nausea' }
+          ],
+          onsetDate: '2018-05-15T00:00:00Z',
+          lastReactionDate: '2023-03-20T00:00:00Z',
+          notes: 'Patient can tolerate small amounts in baked goods but not raw or lightly cooked eggs.',
+          verificationStatus: 'confirmed',
+          recordedBy,
+          recordedDate: baseDate
+        }
+      );
+      break;
+
+    case 'P005':
+      allergies.push(
+        {
+          id: `ALG005001`,
+          allergen: 'Amoxicillin',
+          type: 'drug',
+          severity: 'severe',
+          status: 'active',
+          reactions: [
+            { type: 'rash', description: 'Severe skin rash' },
+            { type: 'swelling', description: 'Facial swelling' },
+            { type: 'breathing_difficulty', description: 'Shortness of breath' }
+          ],
+          onsetDate: '2020-11-05T00:00:00Z',
+          lastReactionDate: '2020-11-05T00:00:00Z',
+          notes: 'Cross-reactivity with other penicillins. Use alternative antibiotics.',
+          verificationStatus: 'confirmed',
+          recordedBy,
+          recordedDate: baseDate
+        },
+        {
+          id: `ALG005002`,
+          allergen: 'Tree Pollen',
           type: 'environmental',
           severity: 'mild',
           status: 'active',
           reactions: [
-            { type: 'other', description: 'Seasonal rhinitis and conjunctivitis' }
+            { type: 'other', description: 'Seasonal rhinitis, sneezing, watery eyes' }
           ],
+          onsetDate: '2015-04-01T00:00:00Z',
+          lastReactionDate: '2023-04-15T00:00:00Z',
+          notes: 'Seasonal allergy, peaks in spring. Managed with antihistamines.',
+          verificationStatus: 'confirmed',
+          recordedBy,
+          recordedDate: baseDate
+        }
+      );
+      break;
+
+    default:
+      // Generate random realistic allergies for other patients
+      const commonAllergies = [
+        {
+          allergen: 'Pollen',
+          type: 'environmental' as const,
+          severity: 'mild' as const,
+          reactions: [{ type: 'other' as const, description: 'Seasonal rhinitis and conjunctivitis' }],
+          notes: 'Seasonal allergies, well controlled with antihistamines.'
+        },
+        {
+          allergen: 'Dust Mites',
+          type: 'environmental' as const,
+          severity: 'mild' as const,
+          reactions: [{ type: 'other' as const, description: 'Rhinitis, sneezing, itchy eyes' }],
+          notes: 'Year-round symptoms, managed with regular cleaning and air purifiers.'
+        },
+        {
+          allergen: 'Ibuprofen',
+          type: 'drug' as const,
+          severity: 'moderate' as const,
+          reactions: [{ type: 'nausea' as const }, { type: 'other' as const, description: 'Stomach upset' }],
+          notes: 'Use paracetamol as alternative. Avoid all NSAIDs.'
+        },
+        {
+          allergen: 'Milk',
+          type: 'food' as const,
+          severity: 'mild' as const,
+          reactions: [{ type: 'diarrhea' as const }, { type: 'nausea' as const }],
+          notes: 'Lactose intolerance. Can tolerate lactose-free products.'
+        },
+        {
+          allergen: 'Cats',
+          type: 'environmental' as const,
+          severity: 'moderate' as const,
+          reactions: [{ type: 'other' as const, description: 'Rhinitis, sneezing, itchy eyes' }],
+          notes: 'Reaction to cat dander. Symptoms improve with antihistamines.'
+        },
+        {
+          allergen: 'Trimethoprim',
+          type: 'drug' as const,
+          severity: 'moderate' as const,
+          reactions: [{ type: 'rash' as const, description: 'Skin rash' }],
+          notes: 'Alternative antibiotics should be used for UTI treatment.'
+        },
+        {
+          allergen: 'Plasters/Adhesive',
+          type: 'contact' as const,
+          severity: 'mild' as const,
+          reactions: [{ type: 'rash' as const, description: 'Contact dermatitis' }],
+          notes: 'Use hypoallergenic adhesive products in healthcare settings.'
+        }
+      ];
+
+      // Randomly select 1-3 allergies for this patient
+      const numAllergies = Math.floor(Math.random() * 3) + 1;
+      const selectedAllergies = [...commonAllergies].sort(() => 0.5 - Math.random()).slice(0, numAllergies);
+
+      selectedAllergies.forEach((allergy, index) => {
+        allergies.push({
+          id: `ALG${patientId}${String(index + 1).padStart(3, '0')}`,
+          allergen: allergy.allergen,
+          type: allergy.type,
+          severity: allergy.severity,
+          status: 'active',
+          reactions: allergy.reactions,
           onsetDate: '2020-01-01T00:00:00Z',
-          notes: 'Seasonal allergies, well controlled with antihistamines.',
+          notes: allergy.notes,
           verificationStatus: 'confirmed',
           recordedBy,
           recordedDate: baseDate
         });
-      }
+      });
       break;
   }
 
