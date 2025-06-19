@@ -1,6 +1,8 @@
 
 import { Patient } from '@/types/patient';
 import { ReasonableAdjustmentsFlag } from '@/types/reasonable-adjustments';
+import { createPatientAllergies } from '../shared/allergies';
+import { MedicalHistory } from '@/types/medical';
 
 const patient003ReasonableAdjustments: ReasonableAdjustmentsFlag = {
   hasAdjustments: true,
@@ -22,6 +24,11 @@ const patient003ReasonableAdjustments: ReasonableAdjustmentsFlag = {
   updatedBy: 'Dr. Michael Thompson'
 };
 
+const patient003MedicalHistory: MedicalHistory = {
+  vitalSigns: [],
+  allergies: createPatientAllergies('P003', 'Dr. Michael Thompson', '2023-03-10T00:00:00Z')
+};
+
 export const patient003: Patient = {
   id: 'P003',
   name: 'Alice Johnson',
@@ -30,5 +37,6 @@ export const patient003: Patient = {
   nhsNumber: '345 678 9012',
   address: '789 King Road, Birmingham, B1 2BB',
   phone: '07700 900456',
-  reasonableAdjustments: patient003ReasonableAdjustments
+  reasonableAdjustments: patient003ReasonableAdjustments,
+  medicalHistory: patient003MedicalHistory
 };
