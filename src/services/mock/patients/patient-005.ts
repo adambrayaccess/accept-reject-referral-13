@@ -6,85 +6,57 @@ import { createMedicationHistory } from '../shared/medications';
 
 export const patient005: Patient = {
   id: 'P005',
-  name: 'David Roberts',
-  birthDate: '1955-08-22',
+  name: 'David Wilson',
+  birthDate: '1988-07-22',
   gender: 'male',
   nhsNumber: '567 890 1234',
-  address: '7 Church Lane, Bristol, BS1 5TR',
+  address: '456 Elm Street, Manchester, M1 1AA',
   phone: '07700 900567',
   medicalHistory: {
-    vitalSigns: createVitalSignsSequence('2023-06-06T00:00:00Z', 'monitoring'),
+    vitalSigns: createVitalSignsSequence('2023-08-10T00:00:00Z', 'stable'),
     testResults: [
-      ...createSpecializedTestResults('005', 'Dr. Andrew Clark', 'diabetes', '2023-05-30T00:00:00Z'),
-      ...createSpecializedTestResults('005', 'Dr. Andrew Clark', 'renal', '2023-05-28T00:00:00Z'),
-      {
-        id: 'TEST005',
-        testName: 'Lipid Profile',
-        testType: 'blood',
-        requestedDate: '2023-06-02T00:00:00Z',
-        sampleDate: '2023-06-02T09:30:00Z',
-        reportDate: '2023-06-02T17:15:00Z',
-        requestedBy: 'Dr. Andrew Clark',
-        performedBy: 'NHS Pathology Lab',
-        status: 'completed',
-        results: [
-          {
-            parameter: 'Total Cholesterol',
-            value: '6.2',
-            unit: 'mmol/L',
-            referenceRange: '<5.0',
-            flag: 'high'
-          },
-          {
-            parameter: 'HDL Cholesterol',
-            value: '1.1',
-            unit: 'mmol/L',
-            referenceRange: '>1.0',
-            flag: 'normal'
-          },
-          {
-            parameter: 'LDL Cholesterol',
-            value: '4.1',
-            unit: 'mmol/L',
-            referenceRange: '<3.0',
-            flag: 'high'
-          },
-          {
-            parameter: 'Triglycerides',
-            value: '2.8',
-            unit: 'mmol/L',
-            referenceRange: '<2.3',
-            flag: 'high'
-          }
-        ],
-        interpretation: 'Elevated cholesterol and triglycerides. Recommend statin therapy and lifestyle modifications.',
-        notes: 'Patient advised on diet and exercise'
-      }
+      ...createCommonTestResults('005', 'Dr. Lisa Brown', '2023-08-05T00:00:00Z'),
+      ...createSpecializedTestResults('005', 'Dr. Lisa Brown', 'neurological', '2023-08-05T00:00:00Z')
     ],
-    medicationHistory: [
-      ...createMedicationHistory('005', 'Dr. Andrew Clark', ['hypertension', 'cholesterol', 'diabetes'], '2023-04-01T00:00:00Z'),
+    medicationHistory: createMedicationHistory('005', 'Dr. Lisa Brown', ['epilepsy', 'anxiety'], '2023-08-01T00:00:00Z'),
+    mhaSections: [
       {
-        id: 'MED011',
-        name: 'Simvastatin',
-        dosage: '20mg',
-        frequency: 'Once daily at bedtime',
-        prescribedDate: '2023-04-10T00:00:00Z',
-        prescribedBy: 'Dr. Andrew Clark',
-        indication: 'High cholesterol',
-        status: 'discontinued',
-        endDate: '2023-05-15T00:00:00Z',
-        notes: 'Discontinued due to muscle pain, switched to atorvastatin'
+        id: 'MHA005001',
+        sectionNumber: '4',
+        sectionTitle: 'Admission for Assessment in Emergency',
+        appliedDate: '2023-07-05T00:00:00Z',
+        expiryDate: '2023-07-07T00:00:00Z',
+        status: 'expired',
+        consultantResponsible: 'Dr. Andrew Wilson',
+        hospital: 'Manchester Royal Infirmary',
+        reason: 'Emergency admission due to acute manic episode with risk to self and property damage.',
+        notes: 'Converted to Section 2 after 72 hours for full assessment.'
       },
       {
-        id: 'MED023',
-        name: 'Aspirin',
-        dosage: '75mg',
-        frequency: 'Once daily',
-        prescribedDate: '2023-06-05T00:00:00Z',
-        prescribedBy: 'Dr. Andrew Clark',
-        indication: 'Cardiovascular protection',
+        id: 'MHA005002',
+        sectionNumber: '2',
+        sectionTitle: 'Admission for Assessment',
+        appliedDate: '2023-07-07T00:00:00Z',
+        expiryDate: '2023-08-05T00:00:00Z',
+        status: 'expired',
+        consultantResponsible: 'Dr. Andrew Wilson',
+        hospital: 'Manchester Royal Infirmary',
+        reason: 'Continued assessment required following Section 4. Bipolar disorder with severe manic episode.',
+        reviewDate: '2023-07-21T00:00:00Z',
+        notes: 'Patient stabilized on lithium and olanzapine. Discharged with community support.'
+      },
+      {
+        id: 'MHA005003',
+        sectionNumber: '7',
+        sectionTitle: 'Guardianship',
+        appliedDate: '2023-08-10T00:00:00Z',
+        expiryDate: '2024-08-10T00:00:00Z',
         status: 'active',
-        notes: 'Take with food. Monitor for GI bleeding.'
+        consultantResponsible: 'Dr. Andrew Wilson',
+        hospital: 'Manchester Social Services',
+        reason: 'Ongoing support needed for mental health management and ensuring compliance with treatment.',
+        reviewDate: '2023-11-10T00:00:00Z',
+        notes: 'Guardian appointed to ensure medication compliance and attendance at appointments.'
       }
     ]
   }

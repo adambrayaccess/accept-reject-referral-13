@@ -160,6 +160,19 @@ export const patient004: Patient = {
         reason: 'Formal assessment required following deterioration in mental state. Patient lacking capacity to consent to admission.',
         reviewDate: '2023-05-24T00:00:00Z',
         notes: 'Patient responded well to medication adjustment. Discharged to community mental health team with weekly follow-up arranged.'
+      },
+      {
+        id: 'MHA004006',
+        sectionNumber: '17',
+        sectionTitle: 'Community Treatment Order',
+        appliedDate: '2023-06-20T00:00:00Z',
+        expiryDate: '2024-06-20T00:00:00Z',
+        status: 'active',
+        consultantResponsible: 'Dr. Rachel Martinez',
+        hospital: 'Leeds Community Mental Health Team',
+        reason: 'To ensure ongoing compliance with medication and treatment in the community.',
+        reviewDate: '2023-09-20T00:00:00Z',
+        notes: 'Patient living independently with weekly mental health nurse visits. Good medication compliance.'
       }
     ]
   }
