@@ -41,10 +41,10 @@ export const gastroenterologyReferrals: Referral[] = [
     calculatedLocation: 'London',
     rttPathway: {
       clockStart: '2024-01-15T10:30:00Z',
-      currentWeek: 12,
-      targetWeeks: 18,
-      breachDate: '2024-05-13T10:30:00Z',
-      status: 'active',
+      targetDate: '2024-05-13T10:30:00Z',
+      status: 'incomplete',
+      daysRemaining: 14,
+      breachRisk: 'medium',
       milestones: [
         {
           id: 'referral-received',
@@ -98,10 +98,10 @@ export const gastroenterologyReferrals: Referral[] = [
     calculatedLocation: 'Manchester',
     rttPathway: {
       clockStart: '2024-02-20T14:15:00Z',
-      currentWeek: 8,
-      targetWeeks: 6,
-      breachDate: '2024-04-02T14:15:00Z',
-      status: 'at-risk',
+      targetDate: '2024-04-02T14:15:00Z',
+      status: 'incomplete',
+      daysRemaining: 5,
+      breachRisk: 'high',
       milestones: [
         {
           id: 'referral-received',
@@ -143,10 +143,10 @@ export const gastroenterologyReferrals: Referral[] = [
     calculatedLocation: 'Leeds',
     rttPathway: {
       clockStart: '2024-03-10T11:45:00Z',
-      currentWeek: 7,
-      targetWeeks: 18,
-      breachDate: '2024-07-07T11:45:00Z',
-      status: 'active',
+      targetDate: '2024-07-07T11:45:00Z',
+      status: 'incomplete',
+      daysRemaining: 95,
+      breachRisk: 'low',
       milestones: [
         {
           id: 'referral-received',
