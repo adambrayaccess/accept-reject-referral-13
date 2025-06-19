@@ -1,0 +1,46 @@
+
+import { Referral } from '@/types/referral';
+import { format } from 'date-fns';
+
+interface ReferrerTabContentProps {
+  referral: Referral;
+}
+
+const ReferrerTabContent = ({ referral }: ReferrerTabContentProps) => {
+  return (
+    <div className="grid grid-cols-1 lg:grid-cols-2 gap-x-6 gap-y-3 text-sm">
+      <div>
+        <div className="text-xs font-medium text-muted-foreground">Referrer Name</div>
+        <div className="font-medium">{referral.referrer.name}</div>
+      </div>
+      
+      {referral.referrer.role && (
+        <div>
+          <div className="text-xs font-medium text-muted-foreground">Role</div>
+          <div className="font-medium">{referral.referrer.role}</div>
+        </div>
+      )}
+      
+      {referral.referrer.organization && (
+        <div>
+          <div className="text-xs font-medium text-muted-foreground">Organization</div>
+          <div className="font-medium">{referral.referrer.organization}</div>
+        </div>
+      )}
+      
+      {referral.referrer.contact && (
+        <div>
+          <div className="text-xs font-medium text-muted-foreground">Contact</div>
+          <div className="font-medium">{referral.referrer.contact}</div>
+        </div>
+      )}
+      
+      <div>
+        <div className="text-xs font-medium text-muted-foreground">Date Referred</div>
+        <div className="font-medium">{format(new Date(referral.created), 'dd MMM yyyy, HH:mm')}</div>
+      </div>
+    </div>
+  );
+};
+
+export default ReferrerTabContent;
