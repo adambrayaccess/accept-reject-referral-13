@@ -39,6 +39,22 @@ export const useReferralData = (id: string | undefined) => {
         return;
       }
       
+      // Enhanced data validation logging
+      console.log('=== useReferralData Hook Validation ===');
+      console.log('Fetched referral data:', JSON.stringify(data, null, 2));
+      console.log('Patient object:', data.patient);
+      console.log('Patient reasonable adjustments:', data.patient?.reasonableAdjustments);
+      
+      if (data.patient?.reasonableAdjustments) {
+        console.log('Found reasonable adjustments on patient:');
+        console.log('- hasAdjustments:', data.patient.reasonableAdjustments.hasAdjustments);
+        console.log('- flagLevel:', data.patient.reasonableAdjustments.flagLevel);
+        console.log('- adjustments count:', data.patient.reasonableAdjustments.adjustments?.length);
+      } else {
+        console.log('No reasonable adjustments found on patient');
+      }
+      console.log('=====================================');
+      
       setReferral(data);
       
       const patientReferrals = await fetchPatientReferrals(data.patient.id);

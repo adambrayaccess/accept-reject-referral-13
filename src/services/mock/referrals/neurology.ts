@@ -1,53 +1,17 @@
-
 import { Referral, TriageStatus } from '@/types/referral';
 import { mockPatients } from '../patients';
 import { mockPractitioners } from '../practitioners';
 import { updateUbrnIfSelected } from '../utils/ubrn-randomizer';
+import { testReferralWithAdjustments } from './test-referral-003';
 
 export const neurologyReferrals: Referral[] = [
-  updateUbrnIfSelected({
-    id: 'REF-2023-003',
-    ubrn: '345678901234',
-    created: '2023-06-13T11:05:00Z',
-    status: 'accepted',
-    priority: 'emergency',
-    patient: mockPatients[2],
-    referrer: mockPractitioners[2],
-    specialty: 'Neurology',
-    service: 'Stroke Clinic',
-    triageStatus: 'pre-admission-assessment',
-    tags: ['tia', 'stroke-risk', 'urgent-imaging'],
-    clinicalInfo: {
-      reason: 'Transient loss of speech and right-sided weakness',
-      history: 'Patient experienced sudden onset speech difficulty and weakness in right arm lasting approximately 30 minutes yesterday evening.',
-      diagnosis: 'Suspected TIA',
-      medications: ['Amlodipine 5mg OD', 'Ramipril 5mg OD'],
-      allergies: ['Latex'],
-      notes: 'Patient has history of hypertension and type 2 diabetes. CT head performed in ED - no acute changes.'
-    },
-    attachments: [
-      {
-        id: 'ATT-004',
-        title: 'CT Head Report',
-        contentType: 'application/pdf',
-        url: '/mock-data/ct-report.pdf',
-        date: '2023-06-12T22:30:00Z',
-        size: 5678000
-      },
-      {
-        id: 'ATT-005',
-        title: 'Carotid Doppler Results',
-        contentType: 'application/pdf',
-        url: '/mock-data/doppler-results.pdf',
-        date: '2023-06-13T09:15:00Z',
-        size: 2345000
-      }
-    ]
-  })
+  // Use our test referral that specifically has reasonable adjustments data
+  testReferralWithAdjustments
 ];
 
 const additionalNeurologyReferrals: Referral[] = Array.from({ length: 49 }, (_, i) => {
   const index = i + 1;
+  // Ensure we're using the correct patient objects from mockPatients array
   const patientIndex = index % mockPatients.length;
   const practitionerIndex = index % mockPractitioners.length;
   const priorityOptions: Referral['priority'][] = ['routine', 'urgent', 'emergency'];
@@ -102,12 +66,12 @@ const additionalNeurologyReferrals: Referral[] = Array.from({ length: 49 }, (_, 
   ];
   
   return updateUbrnIfSelected({
-    id: `NEUR-2024-${index.toString().padStart(3, '0')}`,
+    id: `NEUR-2024-${(index + 1).toString().padStart(3, '0')}`,
     ubrn: `N${(1000000 + index).toString().padStart(8, '0')}`,
     created: date.toISOString(),
     status,
     priority,
-    patient: mockPatients[patientIndex],
+    patient: mockPatients[patientIndex], // Use the actual patient object, not a recreation
     referrer: mockPractitioners[practitionerIndex],
     specialty: 'Neurology',
     service: index % 4 === 0 ? 'Stroke Clinic' : 
@@ -178,7 +142,7 @@ const additionalDashboardReferrals: Referral[] = Array.from({ length: 7 }, (_, i
     created,
     status: 'accepted' as const,
     priority,
-    patient: mockPatients[patientIndex],
+    patient: mockPatients[patientIndex], // Use actual patient object
     referrer: mockPractitioners[practitionerIndex],
     specialty: 'Neurology',
     service: index % 4 === 0 ? 'Stroke Clinic' : 
@@ -241,7 +205,7 @@ const additionalWaitingListReferrals: Referral[] = Array.from({ length: 7 }, (_,
     created,
     status: 'accepted' as const,
     priority,
-    patient: mockPatients[patientIndex],
+    patient: mockPatients[patientIndex], // Use actual patient object
     referrer: mockPractitioners[practitionerIndex],
     specialty: 'Neurology',
     service: index % 4 === 0 ? 'General Neurology' : 

@@ -10,9 +10,25 @@ interface ReasonableAdjustmentsFlagProps {
 }
 
 const ReasonableAdjustmentsFlag = ({ adjustmentsFlag }: ReasonableAdjustmentsFlagProps) => {
-  console.log('ReasonableAdjustmentsFlag - Received data:', adjustmentsFlag);
+  // Enhanced data validation logging
+  console.log('=== ReasonableAdjustmentsFlag Component ===');
+  console.log('Received adjustmentsFlag prop:', JSON.stringify(adjustmentsFlag, null, 2));
+  console.log('adjustmentsFlag exists:', !!adjustmentsFlag);
+  console.log('hasAdjustments value:', adjustmentsFlag?.hasAdjustments);
+  console.log('flagLevel value:', adjustmentsFlag?.flagLevel);
+  console.log('adjustments array:', adjustmentsFlag?.adjustments);
+  console.log('adjustments length:', adjustmentsFlag?.adjustments?.length);
   
-  if (!adjustmentsFlag || !adjustmentsFlag.hasAdjustments) {
+  // More specific validation
+  const hasValidAdjustments = adjustmentsFlag && 
+    adjustmentsFlag.hasAdjustments === true && 
+    Array.isArray(adjustmentsFlag.adjustments) && 
+    adjustmentsFlag.adjustments.length > 0;
+  
+  console.log('hasValidAdjustments calculated as:', hasValidAdjustments);
+  console.log('==========================================');
+  
+  if (!hasValidAdjustments) {
     return (
       <HoverCard>
         <HoverCardTrigger asChild>
@@ -24,6 +40,15 @@ const ReasonableAdjustmentsFlag = ({ adjustmentsFlag }: ReasonableAdjustmentsFla
           <div className="space-y-2">
             <h4 className="font-semibold text-sm">Reasonable Adjustments</h4>
             <p className="text-sm text-muted-foreground">No reasonable adjustments recorded</p>
+            {/* Debug info in dev mode */}
+            {process.env.NODE_ENV === 'development' && (
+              <div className="text-xs text-red-500 mt-2 p-2 bg-red-50 rounded">
+                Debug: {!adjustmentsFlag ? 'No adjustmentsFlag prop' : 
+                       !adjustmentsFlag.hasAdjustments ? 'hasAdjustments is false' :
+                       !adjustmentsFlag.adjustments ? 'No adjustments array' :
+                       adjustmentsFlag.adjustments.length === 0 ? 'Empty adjustments array' : 'Unknown issue'}
+              </div>
+            )}
           </div>
         </HoverCardContent>
       </HoverCard>
