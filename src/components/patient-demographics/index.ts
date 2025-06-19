@@ -4,3 +4,8 @@ export { default as PatientDemographicsButton } from './PatientDemographicsButto
 export { default as PatientDemographicsContent } from './PatientDemographicsContent';
 export { default as PatientDemographicsAllergies } from './PatientDemographicsAllergies';
 export { default as PatientDemographicsAdjustments } from './PatientDemographicsAdjustments';
+export { default as PatientSummaryCard } from './PatientSummaryCard';
+export { default as ClinicalAlertsCard } from './ClinicalAlertsCard';
+export { default as GPDetailsCard } from './GPDetailsCard';
+export { default as DemographicDetailsCard } from './DemographicDetailsCard';
+export { default as RecordInformationCard } from './RecordInformationCard';
