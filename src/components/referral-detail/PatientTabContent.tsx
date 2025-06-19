@@ -103,4 +103,4 @@ const PatientTabContent = ({ referral, relatedReferrals }: PatientTabContentProp
   );
 };
 
-export default PatientDemographicsSheet;
+export default PatientTabContent;
