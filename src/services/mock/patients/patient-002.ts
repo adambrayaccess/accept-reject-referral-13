@@ -35,7 +35,7 @@ const medicalHistory: MedicalHistory = {
       status: 'active',
       reactions: [
         {
-          type: 'skin_reaction',
+          type: 'hives',
           description: 'Hives and itching'
         }
       ],
