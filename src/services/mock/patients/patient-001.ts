@@ -19,6 +19,37 @@ export const patient001: Patient = {
       ...createSpecializedTestResults('001', 'Dr. Sarah Johnson', 'cardiac', '2023-01-10T00:00:00Z')
     ],
     medicationHistory: createMedicationHistory('001', 'Dr. Sarah Johnson', ['hypertension', 'diabetes'], '2023-01-01T00:00:00Z'),
+    allergies: [
+      {
+        id: 'ALLERGY001001',
+        allergen: 'Penicillin',
+        reaction: 'Severe skin rash, difficulty breathing',
+        severity: 'severe',
+        recordedDate: '2020-03-15T00:00:00Z',
+        recordedBy: 'Dr. Sarah Johnson',
+        status: 'active',
+        notes: 'Patient experienced anaphylactic reaction in 2020. Carry EpiPen at all times.'
+      },
+      {
+        id: 'ALLERGY001002',
+        allergen: 'Shellfish',
+        reaction: 'Hives, swelling of face and throat',
+        severity: 'life-threatening',
+        recordedDate: '2018-07-22T00:00:00Z',
+        recordedBy: 'Dr. Michael Brown',
+        status: 'active',
+        notes: 'Anaphylactic reaction to prawns. Patient carries emergency medication.'
+      },
+      {
+        id: 'ALLERGY001003',
+        allergen: 'Latex',
+        reaction: 'Contact dermatitis, mild itching',
+        severity: 'mild',
+        recordedDate: '2019-11-08T00:00:00Z',
+        recordedBy: 'Nurse Jane Wilson',
+        status: 'active'
+      }
+    ],
     mhaSections: [
       {
         id: 'MHA001001',

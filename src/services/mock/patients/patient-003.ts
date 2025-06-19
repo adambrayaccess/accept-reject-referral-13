@@ -19,6 +19,18 @@ export const patient003: Patient = {
       ...createSpecializedTestResults('003', 'Dr. Michael Davis', 'renal', '2023-03-15T00:00:00Z')
     ],
     medicationHistory: createMedicationHistory('003', 'Dr. Michael Davis', ['hypertension'], '2023-03-01T00:00:00Z'),
+    allergies: [
+      {
+        id: 'ALLERGY003001',
+        allergen: 'Morphine',
+        reaction: 'Severe nausea, vomiting, respiratory depression',
+        severity: 'severe',
+        recordedDate: '2020-12-18T00:00:00Z',
+        recordedBy: 'Dr. Lisa Thompson',
+        status: 'active',
+        notes: 'Patient required naloxone reversal during post-operative care. Use alternative pain management.'
+      }
+    ],
     mhaSections: [
       {
         id: 'MHA003001',

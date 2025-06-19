@@ -2,6 +2,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { EnhancedTabs, EnhancedTabsContent, EnhancedTabsList, EnhancedTabsTrigger } from '@/components/ui/enhanced-tabs';
 import { Patient } from '@/types/patient';
+import AllergiesTab from './medical-history/AllergiesTab';
 import VitalSignsTab from './medical-history/VitalSignsTab';
 import TestResultsTab from './medical-history/TestResultsTab';
 import MedicationHistoryTab from './medical-history/MedicationHistoryTab';
@@ -31,9 +32,12 @@ const MedicalHistory = ({ patient }: MedicalHistoryProps) => {
         <CardTitle className="text-lg">Medical History</CardTitle>
       </CardHeader>
       <CardContent className="pt-0 overflow-hidden">
-        <EnhancedTabs defaultValue="vitals" className="space-y-3">
+        <EnhancedTabs defaultValue="allergies" className="space-y-3">
           <div className="mb-3">
             <EnhancedTabsList variant="grid" size="md">
+              <EnhancedTabsTrigger value="allergies" variant="grid" size="md">
+                Allergies
+              </EnhancedTabsTrigger>
               <EnhancedTabsTrigger value="vitals" variant="grid" size="md">
                 Vital Signs
               </EnhancedTabsTrigger>
@@ -48,6 +52,10 @@ const MedicalHistory = ({ patient }: MedicalHistoryProps) => {
               </EnhancedTabsTrigger>
             </EnhancedTabsList>
           </div>
+
+          <EnhancedTabsContent value="allergies">
+            <AllergiesTab allergies={patient.medicalHistory.allergies} />
+          </EnhancedTabsContent>
 
           <EnhancedTabsContent value="vitals">
             <VitalSignsTab vitalSigns={patient.medicalHistory.vitalSigns} />
