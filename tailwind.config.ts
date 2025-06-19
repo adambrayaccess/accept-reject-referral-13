@@ -1,4 +1,3 @@
-
 import type { Config } from "tailwindcss";
 
 export default {
@@ -75,6 +74,14 @@ export default {
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
 				}
+			},
+			gridTemplateColumns: {
+				'5': 'repeat(5, minmax(0, 1fr))',
+				'6': 'repeat(6, minmax(0, 1fr))',
+				'7': 'repeat(7, minmax(0, 1fr))',
+				'8': 'repeat(8, minmax(0, 1fr))',
+				'9': 'repeat(9, minmax(0, 1fr))',
+				'10': 'repeat(10, minmax(0, 1fr))',
 			},
 			borderRadius: {
 				lg: 'var(--radius)',

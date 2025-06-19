@@ -26,6 +26,8 @@ const MedicalHistory = ({ patient }: MedicalHistoryProps) => {
     );
   }
 
+  const tabCount = 5; // Allergies, Vital Signs, Test Results, Medication History, MHA
+
   return (
     <Card>
       <CardHeader className="pb-3">
@@ -34,20 +36,50 @@ const MedicalHistory = ({ patient }: MedicalHistoryProps) => {
       <CardContent className="pt-0 overflow-hidden">
         <EnhancedTabs defaultValue="allergies" className="space-y-3">
           <div className="mb-3">
-            <EnhancedTabsList variant="grid" size="md">
-              <EnhancedTabsTrigger value="allergies" variant="grid" size="md">
+            <EnhancedTabsList variant="grid" size="md" enableDynamicSizing={true}>
+              <EnhancedTabsTrigger 
+                value="allergies" 
+                variant="grid" 
+                size="md"
+                enableDynamicSizing={true}
+                tabCount={tabCount}
+              >
                 Allergies
               </EnhancedTabsTrigger>
-              <EnhancedTabsTrigger value="vitals" variant="grid" size="md">
+              <EnhancedTabsTrigger 
+                value="vitals" 
+                variant="grid" 
+                size="md"
+                enableDynamicSizing={true}
+                tabCount={tabCount}
+              >
                 Vital Signs
               </EnhancedTabsTrigger>
-              <EnhancedTabsTrigger value="test-results" variant="grid" size="md">
+              <EnhancedTabsTrigger 
+                value="test-results" 
+                variant="grid" 
+                size="md"
+                enableDynamicSizing={true}
+                tabCount={tabCount}
+              >
                 Test Results
               </EnhancedTabsTrigger>
-              <EnhancedTabsTrigger value="medications" variant="grid" size="md">
+              <EnhancedTabsTrigger 
+                value="medications" 
+                variant="grid" 
+                size="md"
+                enableDynamicSizing={true}
+                tabCount={tabCount}
+              >
                 Medication History
               </EnhancedTabsTrigger>
-              <EnhancedTabsTrigger value="mha" variant="grid" size="md">
+              <EnhancedTabsTrigger 
+                value="mha" 
+                variant="grid" 
+                size="md"
+                enableDynamicSizing={true}
+                tabCount={tabCount}
+              >
                 MHA
               </EnhancedTabsTrigger>
             </EnhancedTabsList>
