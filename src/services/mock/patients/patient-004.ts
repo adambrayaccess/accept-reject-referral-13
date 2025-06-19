@@ -123,6 +123,38 @@ export const patient004: Patient = {
         notes: 'Take with food. Do not exceed 1200mg in 24 hours.'
       }
     ],
+    allergies: [
+      {
+        id: 'ALLERGY004001',
+        allergen: 'Codeine',
+        reaction: 'Severe nausea, vomiting, constipation',
+        severity: 'moderate',
+        recordedDate: '2021-08-14T00:00:00Z',
+        recordedBy: 'Dr. Helen Roberts',
+        status: 'active',
+        notes: 'Patient experienced severe gastrointestinal side effects. Use alternative pain relief.'
+      },
+      {
+        id: 'ALLERGY004002',
+        allergen: 'Nickel',
+        reaction: 'Contact dermatitis, red itchy rash',
+        severity: 'mild',
+        recordedDate: '2019-05-10T00:00:00Z',
+        recordedBy: 'Dr. Sarah Mitchell',
+        status: 'active',
+        notes: 'Reaction to jewelry and belt buckles. Advise to avoid nickel-containing items.'
+      },
+      {
+        id: 'ALLERGY004003',
+        allergen: 'Egg whites',
+        reaction: 'Mild hives, stomach upset',
+        severity: 'mild',
+        recordedDate: '2018-12-03T00:00:00Z',
+        recordedBy: 'Dr. James Wilson',
+        status: 'active',
+        notes: 'Can tolerate well-cooked eggs in baked goods, but raw or lightly cooked eggs cause reaction.'
+      }
+    ],
     mhaSections: [
       {
         id: 'MHA004003',
