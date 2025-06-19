@@ -75,4 +75,5 @@ export interface MedicalHistory {
   medicationHistory?: MedicationPrescription[];
   mhaSections?: MHASection[];
   testResults?: TestResult[];
+  allergies?: import('./allergy').Allergy[];
 }

@@ -1,8 +1,8 @@
-
 import { Patient } from '@/types/patient';
 import { createVitalSignsSequence } from '../shared/vital-signs';
 import { createCommonTestResults, createSpecializedTestResults } from '../shared/test-results';
 import { createMedicationHistory } from '../shared/medications';
+import { createPatientAllergies } from '../shared/allergies';
 
 export const patient001: Patient = {
   id: 'P001',
@@ -19,6 +19,7 @@ export const patient001: Patient = {
       ...createSpecializedTestResults('001', 'Dr. Sarah Johnson', 'cardiac', '2023-01-10T00:00:00Z')
     ],
     medicationHistory: createMedicationHistory('001', 'Dr. Sarah Johnson', ['hypertension', 'diabetes'], '2023-01-01T00:00:00Z'),
+    allergies: createPatientAllergies('P001', 'Dr. Sarah Johnson', '2023-01-01T00:00:00Z'),
     mhaSections: [
       {
         id: 'MHA001001',

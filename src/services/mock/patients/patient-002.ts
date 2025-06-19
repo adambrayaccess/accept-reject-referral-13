@@ -4,6 +4,7 @@ import { patient002VitalSigns } from './patient-002/vital-signs';
 import { patient002TestResults } from './patient-002/test-results';
 import { patient002MedicationHistory } from './patient-002/medication-history';
 import { patient002MHASections } from './patient-002/mha-sections';
+import { createPatientAllergies } from '../shared/allergies';
 
 export const patient002: Patient = {
   id: 'P002',
@@ -17,6 +18,7 @@ export const patient002: Patient = {
     vitalSigns: patient002VitalSigns,
     testResults: patient002TestResults,
     medicationHistory: patient002MedicationHistory,
-    mhaSections: patient002MHASections
+    mhaSections: patient002MHASections,
+    allergies: createPatientAllergies('P002', 'Dr. Emma Wilson', '2023-02-01T00:00:00Z')
   }
 };
