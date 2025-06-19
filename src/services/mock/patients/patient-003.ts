@@ -1,8 +1,8 @@
 
 import { Patient } from '@/types/patient';
 import { ReasonableAdjustmentsFlag } from '@/types/reasonable-adjustments';
-import { createPatientAllergies } from '../shared/allergies';
 import { MedicalHistory } from '@/types/medical';
+import { Allergy } from '@/types/allergy';
 
 const patient003ReasonableAdjustments: ReasonableAdjustmentsFlag = {
   hasAdjustments: true,
@@ -24,9 +24,46 @@ const patient003ReasonableAdjustments: ReasonableAdjustmentsFlag = {
   updatedBy: 'Dr. Michael Thompson'
 };
 
+const patient003Allergies: Allergy[] = [
+  {
+    id: 'ALL003001',
+    allergen: 'Penicillin',
+    type: 'drug',
+    severity: 'severe',
+    status: 'active',
+    reactions: [
+      { type: 'rash', description: 'Widespread skin rash' },
+      { type: 'swelling', description: 'Facial swelling' }
+    ],
+    onsetDate: '2015-08-15T00:00:00Z',
+    lastReactionDate: '2015-08-15T00:00:00Z',
+    notes: 'Patient developed severe allergic reaction to penicillin during treatment for pneumonia. Avoid all penicillin-based antibiotics.',
+    verificationStatus: 'confirmed',
+    recordedBy: 'Dr. Sarah Wilson',
+    recordedDate: '2015-08-16T00:00:00Z'
+  },
+  {
+    id: 'ALL003002',
+    allergen: 'Latex',
+    type: 'contact',
+    severity: 'moderate',
+    status: 'active',
+    reactions: [
+      { type: 'hives', description: 'Localized hives on contact' },
+      { type: 'rash', description: 'Contact dermatitis' }
+    ],
+    onsetDate: '2018-03-20T00:00:00Z',
+    lastReactionDate: '2022-11-05T00:00:00Z',
+    notes: 'Patient experiences contact dermatitis when exposed to latex products. Use latex-free gloves and equipment.',
+    verificationStatus: 'confirmed',
+    recordedBy: 'Dr. Michael Thompson',
+    recordedDate: '2018-03-21T00:00:00Z'
+  }
+];
+
 const patient003MedicalHistory: MedicalHistory = {
   vitalSigns: [],
-  allergies: createPatientAllergies('P003', 'Dr. Michael Thompson', '2023-03-10T00:00:00Z')
+  allergies: patient003Allergies
 };
 
 export const patient003: Patient = {
@@ -38,5 +75,13 @@ export const patient003: Patient = {
   address: '789 King Road, Birmingham, B1 2BB',
   phone: '07700 900456',
   reasonableAdjustments: patient003ReasonableAdjustments,
-  medicalHistory: patient003MedicalHistory
+  medicalHistory: patient003MedicalHistory,
+  gpDetails: {
+    id: 'GP003',
+    name: 'Dr. Robert Chen',
+    practice: 'Birmingham Medical Centre',
+    address: '456 Healthcare Avenue, Birmingham, B1 3CC',
+    phone: '0121 456 7890',
+    email: 'r.chen@birminghammedical.nhs.uk'
+  }
 };
