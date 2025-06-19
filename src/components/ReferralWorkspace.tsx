@@ -92,7 +92,8 @@ const ReferralWorkspace = ({ referral, onStatusChange }: ReferralWorkspaceProps)
         </CardContent>
       </Card>
 
-      {referral.status === 'accepted' && !referral.isSubReferral && (
+      {/* Sub-referrals List - Now shown for all non-sub-referrals regardless of status */}
+      {!referral.isSubReferral && (
         <SubReferralsList 
           parentReferralId={referral.id}
           onRefresh={refreshKey}
