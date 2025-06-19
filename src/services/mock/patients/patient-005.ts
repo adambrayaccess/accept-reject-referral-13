@@ -4,6 +4,15 @@ import { createVitalSignsSequence } from '../shared/vital-signs';
 import { createCommonTestResults, createSpecializedTestResults } from '../shared/test-results';
 import { createMedicationHistory } from '../shared/medications';
 import { createPatientAllergies } from '../shared/allergies';
+import { ReasonableAdjustmentsFlag } from '@/types/reasonable-adjustments';
+
+const patient005ReasonableAdjustments: ReasonableAdjustmentsFlag = {
+  hasAdjustments: false,
+  flagLevel: 'none',
+  adjustments: [],
+  lastUpdated: '2023-08-01T00:00:00Z',
+  updatedBy: 'Dr. Lisa Brown'
+};
 
 export const patient005: Patient = {
   id: 'P005',
@@ -69,5 +78,6 @@ export const patient005: Patient = {
         notes: 'Guardian appointed to ensure medication compliance and attendance at appointments.'
       }
     ]
-  }
+  },
+  reasonableAdjustments: patient005ReasonableAdjustments
 };

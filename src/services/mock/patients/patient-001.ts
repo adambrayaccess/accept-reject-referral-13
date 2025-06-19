@@ -1,51 +1,75 @@
 
 import { Patient } from '@/types/patient';
-import { createVitalSignsSequence } from '../shared/vital-signs';
-import { createCommonTestResults, createSpecializedTestResults } from '../shared/test-results';
-import { createMedicationHistory } from '../shared/medications';
-import { createPatientAllergies } from '../shared/allergies';
+import { patient001VitalSigns } from './patient-001/vital-signs';
+import { patient001TestResults } from './patient-001/test-results';
+import { patient001MedicationHistory } from './patient-001/medication-history';
+import { Allergy } from '@/types/allergy';
+import { ReasonableAdjustmentsFlag } from '@/types/reasonable-adjustments';
+
+const patient001Allergies: Allergy[] = [
+  {
+    id: 'ALG001001',
+    allergen: 'Penicillin',
+    type: 'drug',
+    severity: 'severe',
+    status: 'active',
+    reactions: [
+      { type: 'rash', description: 'Widespread urticaria' },
+      { type: 'swelling', description: 'Facial swelling' }
+    ],
+    onsetDate: '2019-03-15T00:00:00Z',
+    lastReactionDate: '2019-03-15T00:00:00Z',
+    notes: 'Avoid all penicillin-based antibiotics. Patient carries medical alert card.',
+    verificationStatus: 'confirmed',
+    recordedBy: 'Dr. James Wilson',
+    recordedDate: '2023-01-15T00:00:00Z'
+  }
+];
+
+const patient001ReasonableAdjustments: ReasonableAdjustmentsFlag = {
+  hasAdjustments: true,
+  flagLevel: 'standard',
+  adjustments: [
+    {
+      id: 'RA001001',
+      category: 'communication',
+      description: 'Large print appointment letters',
+      specificNeeds: 'Patient has mild visual impairment and prefers large print (14pt minimum) for all written communications.',
+      implementationNotes: 'Use large print templates for appointment letters and information leaflets.',
+      dateRecorded: '2023-01-15T00:00:00Z',
+      recordedBy: 'Dr. James Wilson',
+      reviewDate: '2024-01-15T00:00:00Z',
+      status: 'active'
+    },
+    {
+      id: 'RA001002',
+      category: 'mobility',
+      description: 'Ground floor appointments preferred',
+      specificNeeds: 'Patient has difficulty with stairs due to arthritis. Prefers ground floor locations when possible.',
+      implementationNotes: 'Book ground floor clinic rooms when available. Ensure lift access if upper floors required.',
+      dateRecorded: '2023-01-15T00:00:00Z',
+      recordedBy: 'Dr. James Wilson',
+      reviewDate: '2024-01-15T00:00:00Z',
+      status: 'active'
+    }
+  ],
+  lastUpdated: '2023-01-15T00:00:00Z',
+  updatedBy: 'Dr. James Wilson'
+};
 
 export const patient001: Patient = {
   id: 'P001',
   name: 'John Smith',
-  birthDate: '1980-05-15',
+  birthDate: '1956-05-15',
   gender: 'male',
   nhsNumber: '123 456 7890',
-  address: '123 High Street, London, SW1A 1AA',
+  address: '123 Main Street, London, SW1A 1AA',
   phone: '07700 900123',
   medicalHistory: {
-    vitalSigns: createVitalSignsSequence('2023-01-15T00:00:00Z', 'stable'),
-    testResults: [
-      ...createCommonTestResults('001', 'Dr. Sarah Johnson', '2023-01-10T00:00:00Z'),
-      ...createSpecializedTestResults('001', 'Dr. Sarah Johnson', 'cardiac', '2023-01-10T00:00:00Z')
-    ],
-    medicationHistory: createMedicationHistory('001', 'Dr. Sarah Johnson', ['hypertension', 'diabetes'], '2023-01-01T00:00:00Z'),
-    allergies: createPatientAllergies('P001', 'Dr. Sarah Johnson', '2023-01-01T00:00:00Z'),
-    mhaSections: [
-      {
-        id: 'M HA001001',
-        sectionNumber: '2',
-        sectionTitle: 'Admission for Assessment',
-        appliedDate: '2022-08-15T00:00:00Z',
-        expiryDate: '2022-09-13T00:00:00Z',
-        status: 'expired',
-        consultantResponsible: 'Dr. James Mitchell',
-        hospital: 'St. Thomas Mental Health Unit',
-        reason: 'Patient presented with acute psychotic symptoms and posed risk to self and others. Assessment required.',
-        reviewDate: '2022-08-29T00:00:00Z',
-        notes: 'Patient responded well to treatment. Discharged to community mental health team follow-up.'
-      },
-      {
-        id: 'MHA001002',
-        sectionNumber: '117',
-        sectionTitle: 'Aftercare',
-        appliedDate: '2022-09-13T00:00:00Z',
-        status: 'active',
-        consultantResponsible: 'Dr. James Mitchell',
-        hospital: 'St. Thomas Mental Health Unit',
-        reason: 'Ongoing aftercare support following discharge from Section 2.',
-        notes: 'Community mental health team providing ongoing support and monitoring.'
-      }
-    ]
-  }
+    vitalSigns: patient001VitalSigns,
+    testResults: patient001TestResults,
+    medicationHistory: patient001MedicationHistory,
+    allergies: patient001Allergies
+  },
+  reasonableAdjustments: patient001ReasonableAdjustments
 };
