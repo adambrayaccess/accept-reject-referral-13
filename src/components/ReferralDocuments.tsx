@@ -28,10 +28,19 @@ const formatBytes = (bytes: number, decimals = 2) => {
 };
 
 const getFileIcon = (contentType: string) => {
-  if (contentType.startsWith('image/')) {
+  if (contentType && contentType.startsWith('image/')) {
     return <FileImage className="h-4 w-4" />;
   }
   return <FileText className="h-4 w-4" />;
+};
+
+const getFileTypeDisplay = (contentType: string) => {
+  if (!contentType) return 'UNKNOWN';
+  
+  const parts = contentType.split('/');
+  if (parts.length < 2 || !parts[1]) return 'UNKNOWN';
+  
+  return parts[1].toUpperCase();
 };
 
 const ReferralDocuments = ({ attachments, referralId, onDocumentUploaded }: ReferralDocumentsProps) => {
@@ -118,7 +127,7 @@ const ReferralDocuments = ({ attachments, referralId, onDocumentUploaded }: Refe
                     <div>
                       <div className="text-muted-foreground font-medium">File Type</div>
                       <div className="font-medium">
-                        {attachment.contentType.split('/')[1].toUpperCase()}
+                        {getFileTypeDisplay(attachment.contentType)}
                       </div>
                     </div>
                     

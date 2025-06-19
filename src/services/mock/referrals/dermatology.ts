@@ -34,12 +34,11 @@ export const dermatologyReferrals: Referral[] = [
       allergies: ['Aspirin - LIFE-THREATENING anaphylaxis', 'Latex - contact dermatitis', 'Peanuts - severe reaction with breathing difficulty']
     },
     created: '2024-01-15T09:30:00Z',
-    updated: '2024-01-15T14:20:00Z',
     attachments: [
       {
         id: 'DOC-DERM-001-001',
         title: 'GP Referral Letter',
-        contentType: 'referral_letter',
+        contentType: 'application/pdf',
         url: '#',
         date: '2024-01-15T09:30:00Z',
         size: 156789
@@ -47,7 +46,7 @@ export const dermatologyReferrals: Referral[] = [
       {
         id: 'DOC-DERM-001-002',
         title: 'Skin Lesion Photos',
-        contentType: 'image',
+        contentType: 'image/jpeg',
         url: '#',
         date: '2024-01-15T09:45:00Z',
         size: 2345678
@@ -93,12 +92,11 @@ export const dermatologyReferrals: Referral[] = [
       allergies: ['Penicillin - severe rash and facial swelling', 'Shellfish - hives and nausea']
     },
     created: '2024-02-10T11:15:00Z',
-    updated: '2024-02-10T11:15:00Z',
     attachments: [
       {
         id: 'DOC-AGE-001-001',
         title: 'Age Spot Assessment',
-        contentType: 'clinical_notes',
+        contentType: 'application/pdf',
         url: '#',
         date: '2024-02-10T11:15:00Z',
         size: 89432
@@ -138,12 +136,11 @@ export const dermatologyReferrals: Referral[] = [
       allergies: ['Codeine - severe nausea and confusion', 'Eggs - gastrointestinal upset']
     },
     created: '2024-01-28T14:45:00Z',
-    updated: '2024-02-05T10:30:00Z',
     attachments: [
       {
         id: 'DOC-DERM-003-001',
         title: 'Urgent Referral Letter',
-        contentType: 'referral_letter',
+        contentType: 'application/pdf',
         url: '#',
         date: '2024-01-28T14:45:00Z',
         size: 178234
@@ -151,7 +148,7 @@ export const dermatologyReferrals: Referral[] = [
       {
         id: 'DOC-DERM-003-002',
         title: 'Scalp Lesion Biopsy Results',
-        contentType: 'pathology_report',
+        contentType: 'application/pdf',
         url: '#',
         date: '2024-02-05T10:30:00Z',
         size: 245789

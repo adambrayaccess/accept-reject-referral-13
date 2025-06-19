@@ -33,12 +33,11 @@ export const mentalHealthReferrals: Referral[] = [
       allergies: ['Amoxicillin - severe rash and breathing difficulty', 'Tree Pollen - seasonal rhinitis']
     },
     created: '2024-02-08T16:20:00Z',
-    updated: '2024-02-08T16:20:00Z',
     attachments: [
       {
         id: 'DOC-MH-007-001',
         title: 'Mental Health Referral',
-        contentType: 'referral_letter',
+        contentType: 'application/pdf',
         url: '#',
         date: '2024-02-08T16:20:00Z',
         size: 134567
@@ -78,12 +77,11 @@ export const mentalHealthReferrals: Referral[] = [
       allergies: ['Aspirin - LIFE-THREATENING anaphylaxis, carries EpiPen', 'Latex - contact dermatitis', 'Peanuts - severe breathing difficulty']
     },
     created: '2024-01-20T22:45:00Z',
-    updated: '2024-01-21T08:30:00Z',
     attachments: [
       {
         id: 'DOC-MH-002-001',
         title: 'Emergency Department Assessment',
-        contentType: 'clinical_notes',
+        contentType: 'application/pdf',
         url: '#',
         date: '2024-01-20T22:45:00Z',
         size: 198765
@@ -91,7 +89,7 @@ export const mentalHealthReferrals: Referral[] = [
       {
         id: 'DOC-MH-002-002',
         title: 'Police Section 136 Report',
-        contentType: 'legal_document',
+        contentType: 'application/pdf',
         url: '#',
         date: '2024-01-20T23:00:00Z',
         size: 87654
