@@ -24,7 +24,7 @@ const SpecialtyMultiSelector = ({
   specialties, 
   selectedSpecialties, 
   onSelectionChange,
-  placeholder = "Select specialties",
+  placeholder = "Select services",
   className = ""
 }: SpecialtyMultiSelectorProps) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -84,9 +84,9 @@ const SpecialtyMultiSelector = ({
     } else if (selectedSpecialties.length === 1) {
       return selectedSpecialties[0];
     } else if (selectedSpecialties.length === filteredSpecialties.length) {
-      return 'All Specialties';
+      return 'All Services';
     } else {
-      return `${selectedSpecialties.length} specialties selected`;
+      return `${selectedSpecialties.length} services selected`;
     }
   };
 

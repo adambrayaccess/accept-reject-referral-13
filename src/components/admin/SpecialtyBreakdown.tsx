@@ -13,7 +13,7 @@ const SpecialtyBreakdown = ({ specialtyStats, currentSpecialty }: SpecialtyBreak
     <Card>
       <CardHeader>
         <CardTitle>
-          {currentSpecialty ? `${currentSpecialty} Breakdown` : 'Specialty Breakdown'}
+          {currentSpecialty ? `${currentSpecialty} Breakdown` : 'Service Breakdown'}
         </CardTitle>
       </CardHeader>
       <CardContent>

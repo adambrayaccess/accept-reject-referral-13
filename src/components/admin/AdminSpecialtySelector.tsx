@@ -34,17 +34,17 @@ const AdminSpecialtySelector = ({
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Specialty Filter</CardTitle>
+        <CardTitle>Service Filter</CardTitle>
       </CardHeader>
       <CardContent>
         <div className="flex items-center gap-4">
           <div className="flex-1">
             <Select value={getCurrentValue()} onValueChange={handleSpecialtyChange}>
               <SelectTrigger className="w-full">
-                <SelectValue placeholder="Select specialty" />
+                <SelectValue placeholder="Select service" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">All Specialties</SelectItem>
+                <SelectItem value="all">All Services</SelectItem>
                 {specialties.map((specialty) => (
                   <SelectItem key={specialty} value={specialty}>
                     {specialty}

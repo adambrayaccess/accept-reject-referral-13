@@ -21,8 +21,8 @@ const CohortBuilderHeader = ({ selectedSpecialties, onSpecialtyChange }: CohortB
     if (newSelection.length > 0) {
       localStorage.setItem('selectedSpecialties', JSON.stringify(newSelection));
       toast({
-        title: "Specialties Updated",
-        description: `Now managing waiting list for ${newSelection.length === 1 ? newSelection[0] : `${newSelection.length} specialties`}`,
+        title: "Services Updated",
+        description: `Now managing waiting list for ${newSelection.length === 1 ? newSelection[0] : `${newSelection.length} services`}`,
       });
     } else {
       localStorage.removeItem('selectedSpecialties');

@@ -32,7 +32,7 @@ const CreateSubReferralDialog = ({ parentReferralId, onSubReferralCreated }: Cre
     if (!specialty || !reason) {
       toast({
         title: "Validation Error",
-        description: "Please fill in specialty and reason fields",
+        description: "Please fill in service and reason fields",
         variant: "destructive",
       });
       return;
@@ -92,10 +92,10 @@ const CreateSubReferralDialog = ({ parentReferralId, onSubReferralCreated }: Cre
         </DialogHeader>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="space-y-2">
-            <Label htmlFor="specialty">Specialty *</Label>
+            <Label htmlFor="specialty">Service *</Label>
             <Select value={specialty} onValueChange={setSpecialty}>
               <SelectTrigger>
-                <SelectValue placeholder="Select specialty" />
+                <SelectValue placeholder="Select service" />
               </SelectTrigger>
               <SelectContent>
                 {specialties.map((spec) => (
@@ -108,12 +108,12 @@ const CreateSubReferralDialog = ({ parentReferralId, onSubReferralCreated }: Cre
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="service">Service</Label>
+            <Label htmlFor="service">Sub-service</Label>
             <Input
               id="service"
               value={service}
               onChange={(e) => setService(e.target.value)}
-              placeholder="Optional service within specialty"
+              placeholder="Optional sub-service within service"
             />
           </div>
 

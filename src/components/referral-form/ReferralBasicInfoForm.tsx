@@ -57,10 +57,10 @@ const ReferralBasicInfoForm = ({
 
       <div className="grid grid-cols-2 gap-4">
         <div className="space-y-2">
-          <Label htmlFor="specialty">Specialty</Label>
+          <Label htmlFor="specialty">Service</Label>
           <Select value={specialty} onValueChange={(value: string) => setSpecialty(value)}>
             <SelectTrigger>
-              <SelectValue placeholder="Select specialty" />
+              <SelectValue placeholder="Select service" />
             </SelectTrigger>
             <SelectContent>
               {specialties.map((specialtyOption) => (

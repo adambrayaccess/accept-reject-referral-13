@@ -40,22 +40,22 @@ const SpecialtySelector = ({
   return (
     <div className={`space-y-4 ${isStandalone ? 'p-6 max-w-md mx-auto mt-20 rounded-lg border shadow-md' : ''}`}>
       {isStandalone && (
-        <h2 className="text-2xl font-bold text-center mb-6">Select Your Specialties</h2>
+        <h2 className="text-2xl font-bold text-center mb-6">Select Your Services</h2>
       )}
       
       <div className="space-y-2">
         <label htmlFor="specialty-select" className="block text-sm font-medium">
-          Specialties for Triage
+          Services for Triage
         </label>
         <SpecialtyMultiSelector
           specialties={filteredSpecialties}
           selectedSpecialties={selectedSpecialties}
           onSelectionChange={handleSpecialtyChange}
-          placeholder="Select one or more specialties"
+          placeholder="Select one or more services"
           className="w-full"
         />
         <p className="text-xs text-muted-foreground">
-          You will be shown referrals for the selected specialties only.
+          You will be shown referrals for the selected services only.
         </p>
       </div>
 
