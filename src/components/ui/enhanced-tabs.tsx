@@ -21,14 +21,14 @@ const EnhancedTabsList = React.forwardRef<
     setTabCount(count)
   }, [children])
 
-  const shouldUseDynamicSizing = enableDynamicSizing && tabCount > 4 && variant === "grid"
+  const shouldUseDynamicSizing = enableDynamicSizing && tabCount > 4
 
   const variants = {
     default: "inline-flex items-center justify-start rounded-lg bg-muted/30 p-1 text-muted-foreground border",
     compact: "inline-flex items-center justify-start rounded-md bg-muted/20 p-0.5 text-muted-foreground",
     pills: "inline-flex items-center justify-start gap-1 text-muted-foreground",
     grid: shouldUseDynamicSizing 
-      ? `grid gap-1 p-1 bg-muted/20 rounded-lg text-muted-foreground` 
+      ? "flex items-center justify-start gap-1 p-1 bg-muted/20 rounded-lg text-muted-foreground"
       : "grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-1 p-1 bg-muted/20 rounded-lg text-muted-foreground"
   }
   
@@ -38,26 +38,12 @@ const EnhancedTabsList = React.forwardRef<
     lg: "h-11 text-base"
   }
 
-  // Dynamic grid columns based on tab count
-  const getDynamicGridCols = () => {
-    if (!shouldUseDynamicSizing) return ""
-    
-    if (tabCount <= 6) {
-      return `grid-cols-${Math.min(tabCount, 6)}`
-    } else if (tabCount <= 8) {
-      return "grid-cols-4 md:grid-cols-6 lg:grid-cols-8"
-    } else {
-      return "grid-cols-3 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 xl:grid-cols-10"
-    }
-  }
-
   return (
     <TabsPrimitive.List
       ref={ref}
       className={cn(
         "w-full overflow-x-auto scrollbar-hide",
         variants[variant],
-        shouldUseDynamicSizing && getDynamicGridCols(),
         variant !== "grid" && sizes[size],
         className
       )}
@@ -106,7 +92,7 @@ const EnhancedTabsTrigger = React.forwardRef<
       "hover:bg-muted/60 data-[state=active]:hover:bg-primary/90"
     ),
     grid: cn(
-      "flex items-center justify-center rounded-md font-medium",
+      "flex items-center justify-center rounded-md font-medium flex-shrink-0",
       "ring-offset-background transition-all duration-200",
       "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
       "disabled:pointer-events-none disabled:opacity-50",
@@ -131,26 +117,20 @@ const EnhancedTabsTrigger = React.forwardRef<
     lg: "px-4 py-2.5 text-base"
   }
 
-  // Dynamic sizing for grid variant when many tabs
+  // Dynamic sizing for grid variant when many tabs - optimize for horizontal space
   const getDynamicSizing = () => {
     if (!shouldUseDynamicSizing) {
       return variant === "grid" ? gridSizes[size] : sizes[size]
     }
 
-    // Use CSS clamp for responsive sizing
-    const baseSizes = {
-      sm: "px-1 py-1.5",
-      md: "px-2 py-2", 
-      lg: "px-3 py-2.5"
+    // Compact sizing to fit more tabs on one line
+    const compactSizes = {
+      sm: "px-1.5 py-1.5 text-xs",
+      md: "px-2 py-2 text-xs", 
+      lg: "px-2.5 py-2.5 text-sm"
     }
 
-    const textSizes = {
-      sm: "text-[clamp(0.65rem,2vw,0.75rem)]",
-      md: "text-[clamp(0.7rem,2.2vw,0.875rem)]",
-      lg: "text-[clamp(0.8rem,2.5vw,1rem)]"
-    }
-
-    return `${baseSizes[size]} ${textSizes[size]} min-w-0`
+    return `${compactSizes[size]} min-w-0 max-w-[120px]`
   }
 
   return (
