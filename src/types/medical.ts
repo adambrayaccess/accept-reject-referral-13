@@ -82,6 +82,7 @@ export interface MedicalHistory {
   vitalSigns: VitalSign[];
   cardiograms?: Cardiogram[];
   medicationHistory?: MedicationPrescription[];
+  medications?: MedicationPrescription[];
   mhaSections?: MHASection[];
   testResults?: TestResult[];
   allergies?: import('./allergy').Allergy[];
