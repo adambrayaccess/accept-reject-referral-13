@@ -6,6 +6,7 @@ import { Referral } from '@/types/referral';
 import TriageStatusBadge from '@/components/triage/TriageStatusBadge';
 import ReferralTagsDisplay from '@/components/referral-tagging/ReferralTagsDisplay';
 import AllergyIndicator from '@/components/clinical/AllergyIndicator';
+import ReasonableAdjustmentsFlag from '@/components/clinical/ReasonableAdjustmentsFlag';
 
 interface ReferralViewHeaderProps {
   referral: Referral;
@@ -17,6 +18,7 @@ const ReferralViewHeader = ({ referral, onBack }: ReferralViewHeaderProps) => {
   console.log('ReferralViewHeader - Patient data:', referral.patient);
   console.log('ReferralViewHeader - Medical history:', referral.patient.medicalHistory);
   console.log('ReferralViewHeader - Allergies from medicalHistory:', referral.patient.medicalHistory?.allergies);
+  console.log('ReferralViewHeader - Reasonable adjustments:', referral.patient.reasonableAdjustments);
   
   return (
     <>
@@ -30,6 +32,7 @@ const ReferralViewHeader = ({ referral, onBack }: ReferralViewHeaderProps) => {
           <div className="flex items-center gap-2 flex-wrap">
             <h1 className="text-2xl font-bold">{referral.patient.name}</h1>
             <AllergyIndicator allergies={referral.patient.medicalHistory?.allergies} />
+            <ReasonableAdjustmentsFlag adjustmentsFlag={referral.patient.reasonableAdjustments} />
             {referral.isSubReferral && (
               <Badge variant="outline" className="text-xs">Sub-referral</Badge>
             )}

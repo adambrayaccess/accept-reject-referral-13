@@ -5,6 +5,7 @@ import { patient002TestResults } from './patient-002/test-results';
 import { patient002MedicationHistory } from './patient-002/medication-history';
 import { patient002MHASections } from './patient-002/mha-sections';
 import { Allergy } from '@/types/allergy';
+import { ReasonableAdjustmentsFlag } from '@/types/reasonable-adjustments';
 
 const patient002Allergies: Allergy[] = [
   {
@@ -62,6 +63,48 @@ const patient002Allergies: Allergy[] = [
   }
 ];
 
+const patient002ReasonableAdjustments: ReasonableAdjustmentsFlag = {
+  hasAdjustments: true,
+  flagLevel: 'complex',
+  adjustments: [
+    {
+      id: 'RA002001',
+      category: 'communication',
+      description: 'British Sign Language interpreter required',
+      specificNeeds: 'Patient is profoundly deaf and communicates primarily through BSL. Requires qualified BSL interpreter for all appointments.',
+      implementationNotes: 'Book BSL interpreter minimum 48 hours in advance. Patient prefers face-to-face communication when interpreter present.',
+      dateRecorded: '2023-01-15T00:00:00Z',
+      recordedBy: 'Dr. Emma Wilson',
+      reviewDate: '2024-01-15T00:00:00Z',
+      status: 'active'
+    },
+    {
+      id: 'RA002002',
+      category: 'mobility',
+      description: 'Wheelchair accessible facilities required',
+      specificNeeds: 'Patient uses manual wheelchair. Requires accessible parking, ramp access, and wheelchair-accessible examination room.',
+      implementationNotes: 'Ensure ground floor appointments or lift access. Adjustable height examination table needed.',
+      dateRecorded: '2023-01-15T00:00:00Z',
+      recordedBy: 'Dr. Emma Wilson',
+      reviewDate: '2024-01-15T00:00:00Z',
+      status: 'active'
+    },
+    {
+      id: 'RA002003',
+      category: 'mental-health',
+      description: 'Anxiety support during procedures',
+      specificNeeds: 'Patient experiences severe anxiety during medical procedures. May require additional time and calm environment.',
+      implementationNotes: 'Allow extra appointment time. Offer breaks during procedures. Consider pre-procedure anxiety medication if appropriate.',
+      dateRecorded: '2023-02-20T00:00:00Z',
+      recordedBy: 'Dr. Sarah Collins',
+      reviewDate: '2024-02-20T00:00:00Z',
+      status: 'active'
+    }
+  ],
+  lastUpdated: '2023-02-20T00:00:00Z',
+  updatedBy: 'Dr. Sarah Collins'
+};
+
 export const patient002: Patient = {
   id: 'P002',
   name: 'Sarah Davis',
@@ -76,5 +119,6 @@ export const patient002: Patient = {
     medicationHistory: patient002MedicationHistory,
     mhaSections: patient002MHASections,
     allergies: patient002Allergies
-  }
+  },
+  reasonableAdjustments: patient002ReasonableAdjustments
 };

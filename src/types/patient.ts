@@ -1,5 +1,6 @@
 
 import type { MedicalHistory } from './medical';
+import type { ReasonableAdjustmentsFlag } from './reasonable-adjustments';
 
 export interface GPDetails {
   id: string;
@@ -20,6 +21,7 @@ export interface Patient {
   phone?: string;
   medicalHistory?: MedicalHistory;
   gpDetails?: GPDetails;
+  reasonableAdjustments?: ReasonableAdjustmentsFlag;
 }
 
 export interface Practitioner {
