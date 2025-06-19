@@ -5,14 +5,14 @@ import { mockPractitioners } from '../practitioners';
 
 // Find the correct patient - should be patient004 (Emma Thompson)
 const patient004 = mockPatients.find(p => p.id === 'P004');
-const practitioner = mockPractitioners.find(p => p.id === 'PRACT001');
+const practitioner = mockPractitioners.find(p => p.id === 'DR001');
 
 if (!patient004) {
   throw new Error('Patient P004 not found in mock patients');
 }
 
 if (!practitioner) {
-  throw new Error('Practitioner PRACT001 not found in mock practitioners');
+  throw new Error('Practitioner DR001 not found in mock practitioners');
 }
 
 export const gastroenterologyReferrals: Referral[] = [
@@ -27,17 +27,12 @@ export const gastroenterologyReferrals: Referral[] = [
     specialty: 'Gastroenterology',
     service: 'Upper GI',
     clinicalInfo: {
-      presentingComplaint: 'Recurrent epigastric pain and heartburn for 3 months',
-      historyOfPresentingComplaint: 'Patient reports burning sensation in upper abdomen, worse after meals. Associated with acid reflux symptoms. No weight loss or dysphagia.',
-      relevantHistory: 'Previous H. pylori treatment 2 years ago. Family history of gastric ulcers.',
-      currentMedications: 'Omeprazole 20mg daily, Gaviscon as needed',
-      allergies: 'Penicillin - rash',
-      socialHistory: 'Non-smoker, moderate alcohol consumption (2-3 units/week)',
-      examinationFindings: 'Mild epigastric tenderness on palpation. No masses or organomegaly.',
-      investigations: 'FBC, U&E, LFTs normal. H. pylori stool antigen negative.',
-      workingDiagnosis: 'GERD with possible peptic ulcer disease',
-      questionForSpecialist: 'Please assess for endoscopy and consider PPI optimization',
-      additionalInfo: 'Patient anxious about procedure. Prefers morning appointments.'
+      reason: 'Recurrent epigastric pain and heartburn for 3 months',
+      history: 'Patient reports burning sensation in upper abdomen, worse after meals. Associated with acid reflux symptoms. No weight loss or dysphagia. Previous H. pylori treatment 2 years ago. Family history of gastric ulcers.',
+      diagnosis: 'GERD with possible peptic ulcer disease',
+      medications: ['Omeprazole 20mg daily', 'Gaviscon as needed'],
+      allergies: ['Penicillin - rash'],
+      notes: 'Patient anxious about procedure. Prefers morning appointments. Non-smoker, moderate alcohol consumption (2-3 units/week). Mild epigastric tenderness on palpation. No masses or organomegaly. FBC, U&E, LFTs normal. H. pylori stool antigen negative.'
     },
     attachments: [],
     triageStatus: 'assessed',
@@ -49,7 +44,7 @@ export const gastroenterologyReferrals: Referral[] = [
       currentWeek: 12,
       targetWeeks: 18,
       breachDate: '2024-05-13T10:30:00Z',
-      status: 'on-track',
+      status: 'active',
       milestones: [
         {
           id: 'referral-received',
@@ -89,17 +84,12 @@ export const gastroenterologyReferrals: Referral[] = [
     specialty: 'Gastroenterology',
     service: 'Hepatology',
     clinicalInfo: {
-      presentingComplaint: 'Abnormal liver function tests and fatigue',
-      historyOfPresentingComplaint: 'Patient presents with 6-week history of fatigue and malaise. Incidental finding of deranged LFTs on routine blood work.',
-      relevantHistory: 'No significant past medical history. No alcohol excess. No recent travel.',
-      currentMedications: 'None',
-      allergies: 'NKDA',
-      socialHistory: 'Non-smoker, minimal alcohol consumption',
-      examinationFindings: 'Mild hepatomegaly. No jaundice or stigmata of chronic liver disease.',
-      investigations: 'ALT 120 U/L, AST 95 U/L, ALP 180 U/L, Bilirubin 25 μmol/L',
-      workingDiagnosis: 'Hepatitis - cause unknown',
-      questionForSpecialist: 'Please investigate cause of hepatitis and advise on management',
-      additionalInfo: 'Patient concerned about family history of liver disease in father'
+      reason: 'Abnormal liver function tests and fatigue',
+      history: 'Patient presents with 6-week history of fatigue and malaise. Incidental finding of deranged LFTs on routine blood work. No significant past medical history. No alcohol excess. No recent travel.',
+      diagnosis: 'Hepatitis - cause unknown',
+      medications: [],
+      allergies: [],
+      notes: 'Patient concerned about family history of liver disease in father. Non-smoker, minimal alcohol consumption. Mild hepatomegaly. No jaundice or stigmata of chronic liver disease. ALT 120 U/L, AST 95 U/L, ALP 180 U/L, Bilirubin 25 μmol/L'
     },
     attachments: [],
     triageStatus: 'pre-assessment',
@@ -111,7 +101,7 @@ export const gastroenterologyReferrals: Referral[] = [
       currentWeek: 8,
       targetWeeks: 6,
       breachDate: '2024-04-02T14:15:00Z',
-      status: 'breach-risk',
+      status: 'at-risk',
       milestones: [
         {
           id: 'referral-received',
@@ -139,17 +129,12 @@ export const gastroenterologyReferrals: Referral[] = [
     specialty: 'Gastroenterology',
     service: 'Lower GI',
     clinicalInfo: {
-      presentingComplaint: 'Chronic abdominal pain and altered bowel habits',
-      historyOfPresentingComplaint: 'Patient reports 4-month history of crampy abdominal pain, predominantly left-sided. Associated with alternating constipation and loose stools.',
-      relevantHistory: 'Previous appendectomy 2015. No significant family history of bowel disease.',
-      currentMedications: 'Loperamide as needed, Buscopan 10mg TDS',
-      allergies: 'No known allergies',
-      socialHistory: 'Non-smoker, social drinker',
-      examinationFindings: 'Mild left iliac fossa tenderness. No masses palpable.',
-      investigations: 'FBC normal, CRP <5, Calprotectin 45 μg/g',
-      workingDiagnosis: 'Possible IBS vs inflammatory bowel disease',
-      questionForSpecialist: 'Please assess for colonoscopy and rule out IBD',
-      additionalInfo: 'Patient has hearing difficulties and may need interpreter support'
+      reason: 'Chronic abdominal pain and altered bowel habits',
+      history: 'Patient reports 4-month history of crampy abdominal pain, predominantly left-sided. Associated with alternating constipation and loose stools. Previous appendectomy 2015. No significant family history of bowel disease.',
+      diagnosis: 'Possible IBS vs inflammatory bowel disease',
+      medications: ['Loperamide as needed', 'Buscopan 10mg TDS'],
+      allergies: [],
+      notes: 'Patient has hearing difficulties and may need interpreter support. Non-smoker, social drinker. Mild left iliac fossa tenderness. No masses palpable. FBC normal, CRP <5, Calprotectin 45 μg/g'
     },
     attachments: [],
     triageStatus: 'pre-assessment',
@@ -161,7 +146,7 @@ export const gastroenterologyReferrals: Referral[] = [
       currentWeek: 7,
       targetWeeks: 18,
       breachDate: '2024-07-07T11:45:00Z',
-      status: 'on-track',
+      status: 'active',
       milestones: [
         {
           id: 'referral-received',

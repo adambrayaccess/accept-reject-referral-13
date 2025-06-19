@@ -27,22 +27,17 @@ const testReferral003: Referral = {
     id: 'PRACT999',
     name: 'Test Practitioner',
     role: 'GP',
-    practice: 'Test Practice',
-    email: 'test@test.com'
+    organization: 'Test Practice',
+    contact: 'test@test.com'
   },
   specialty: 'Test Specialty',
   clinicalInfo: {
-    presentingComplaint: 'Test complaint',
-    historyOfPresentingComplaint: 'Test history',
-    relevantHistory: 'Test relevant history',
-    currentMedications: 'None',
-    allergies: 'None',
-    socialHistory: 'Test social history',
-    examinationFindings: 'Test findings',
-    investigations: 'Test investigations',
-    workingDiagnosis: 'Test diagnosis',
-    questionForSpecialist: 'Test question',
-    additionalInfo: 'Test additional info'
+    reason: 'Test complaint',
+    history: 'Test history',
+    diagnosis: 'Test diagnosis',
+    medications: [],
+    allergies: [],
+    notes: 'Test additional info'
   },
   attachments: [],
   calculatedReferralAge: 1,
