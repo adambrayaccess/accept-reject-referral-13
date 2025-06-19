@@ -40,7 +40,7 @@ export const gastroenterologyReferrals: Referral[] = [
       additionalInfo: 'Patient anxious about procedure. Prefers morning appointments.'
     },
     attachments: [],
-    triageStatus: 'triaged',
+    triageStatus: 'assessed',
     calculatedReferralAge: 12,
     calculatedPatientAge: 68,
     calculatedLocation: 'London',
@@ -49,7 +49,7 @@ export const gastroenterologyReferrals: Referral[] = [
       currentWeek: 12,
       targetWeeks: 18,
       breachDate: '2024-05-13T10:30:00Z',
-      status: 'active',
+      status: 'on-track',
       milestones: [
         {
           id: 'referral-received',
@@ -111,7 +111,7 @@ export const gastroenterologyReferrals: Referral[] = [
       currentWeek: 8,
       targetWeeks: 6,
       breachDate: '2024-04-02T14:15:00Z',
-      status: 'breached',
+      status: 'breach-risk',
       milestones: [
         {
           id: 'referral-received',
@@ -161,7 +161,7 @@ export const gastroenterologyReferrals: Referral[] = [
       currentWeek: 7,
       targetWeeks: 18,
       breachDate: '2024-07-07T11:45:00Z',
-      status: 'active',
+      status: 'on-track',
       milestones: [
         {
           id: 'referral-received',

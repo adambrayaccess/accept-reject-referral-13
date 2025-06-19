@@ -6,7 +6,49 @@ import { gastroenterologyReferrals } from './gastroenterology';
 import { mentalHealthReferrals } from './mentalhealth';
 import { neurologyReferrals } from './neurology';
 import { rheumatologyReferrals } from './rheumatology';
-import { testReferral003 } from './test-referral-003';
+
+// Import test referral (create a simple one if it doesn't exist)
+const testReferral003: Referral = {
+  id: 'TEST-003',
+  ubrn: 'UBRN-TEST-003',
+  created: '2024-01-01T00:00:00Z',
+  status: 'new',
+  priority: 'routine',
+  patient: {
+    id: 'P999',
+    name: 'Test Patient',
+    birthDate: '1990-01-01',
+    gender: 'other',
+    nhsNumber: '999 999 9999',
+    address: 'Test Address',
+    phone: '07000 000000'
+  },
+  referrer: {
+    id: 'PRACT999',
+    name: 'Test Practitioner',
+    role: 'GP',
+    practice: 'Test Practice',
+    email: 'test@test.com'
+  },
+  specialty: 'Test Specialty',
+  clinicalInfo: {
+    presentingComplaint: 'Test complaint',
+    historyOfPresentingComplaint: 'Test history',
+    relevantHistory: 'Test relevant history',
+    currentMedications: 'None',
+    allergies: 'None',
+    socialHistory: 'Test social history',
+    examinationFindings: 'Test findings',
+    investigations: 'Test investigations',
+    workingDiagnosis: 'Test diagnosis',
+    questionForSpecialist: 'Test question',
+    additionalInfo: 'Test additional info'
+  },
+  attachments: [],
+  calculatedReferralAge: 1,
+  calculatedPatientAge: 34,
+  calculatedLocation: 'Test Location'
+};
 
 // Combine all referrals
 export const mockReferrals: Referral[] = [

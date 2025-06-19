@@ -1,5 +1,9 @@
+
 import { Referral } from '@/types/referral';
-import { mockReferrals, findReferralById } from './mock/referrals';
+import { mockReferrals } from './mock/referrals';
+
+// Re-export all functions from the modular services
+export * from './referral/index';
 
 // Simulate API delay
 const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
@@ -39,13 +43,17 @@ export const fetchPatientReferrals = async (patientId: string): Promise<Referral
   return mockReferrals.filter(referral => referral.patient.id === patientId);
 };
 
-export const updateReferralStatus = async (id: string, status: string): Promise<Referral | null> => {
+export const fetchParentReferral = async (childReferralId: string): Promise<Referral | null> => {
   await delay(200);
-  const referral = mockReferrals.find(r => r.id === id);
-  if (referral) {
-    referral.status = status as any;
-  }
-  return referral || null;
+  const childReferral = mockReferrals.find(r => r.id === childReferralId);
+  if (!childReferral?.parentReferralId) return null;
+  
+  return mockReferrals.find(r => r.id === childReferral.parentReferralId) || null;
+};
+
+export const fetchChildReferrals = async (parentReferralId: string): Promise<Referral[]> => {
+  await delay(200);
+  return mockReferrals.filter(r => r.parentReferralId === parentReferralId);
 };
 
 export const createReferral = async (referralData: Partial<Referral>): Promise<Referral> => {
@@ -64,4 +72,21 @@ export const createReferral = async (referralData: Partial<Referral>): Promise<R
   
   mockReferrals.push(newReferral);
   return newReferral;
+};
+
+// Helper function to find referral by ID
+export const findReferralById = (id: string): Referral | undefined => {
+  const referral = mockReferrals.find(ref => ref.id === id);
+  
+  if (referral) {
+    console.log('=== findReferralById Debug ===');
+    console.log('Found referral:', referral.id);
+    console.log('Patient ID:', referral.patient.id);
+    console.log('Patient name:', referral.patient.name);
+    console.log('Patient reasonableAdjustments:', referral.patient.reasonableAdjustments);
+    console.log('Patient allergies:', referral.patient.medicalHistory?.allergies);
+    console.log('=============================');
+  }
+  
+  return referral;
 };
