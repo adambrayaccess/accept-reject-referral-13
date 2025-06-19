@@ -1,3 +1,4 @@
+
 import { Referral } from '@/types/referral';
 import { mockPractitioners } from '../practitioners';
 import { mockPatients } from '../patients';
@@ -7,7 +8,7 @@ export const mentalHealthReferrals: Referral[] = [
     "id": "REF-MH-001",
     "ubrn": "2023-MH-001-1234",
     "created": "2023-01-15T14:30:00Z",
-    "status": "pending",
+    "status": "new",
     "priority": "urgent",
     "patient": {
       "id": "P001",
@@ -38,33 +39,18 @@ export const mentalHealthReferrals: Referral[] = [
     "calculatedPatientAge": 38,
     "calculatedLocation": "City Central",
     "rttPathway": {
-      "startDate": "2023-01-15T14:30:00Z",
+      "clockStart": "2023-01-15T14:30:00Z",
       "targetDate": "2023-03-15T14:30:00Z",
+      "status": "incomplete",
       "daysRemaining": 45,
-      "breachRisk": "high",
-      "milestones": [
-        {
-          "name": "Referral Received",
-          "date": "2023-01-15T14:30:00Z",
-          "status": "completed"
-        },
-        {
-          "name": "Triage",
-          "targetDate": "2023-01-22T14:30:00Z",
-          "status": "pending"
-        },
-        {
-          "name": "Assessment",
-          "targetDate": "2023-02-15T14:30:00Z",
-          "status": "pending"
-        }
-      ]
+      "breachRisk": "high"
     },
     "carePathway": {
+      "type": "mental-health-pathway",
       "name": "Crisis Intervention",
-      "stage": "Initial Assessment",
-      "expectedDuration": 7,
-      "nextReviewDate": "2023-01-22T14:30:00Z"
+      "priority": "urgent",
+      "targetTimeframe": "7 days",
+      "status": "active"
     },
     "teamId": "TEAM-MH-001"
   },
@@ -72,7 +58,7 @@ export const mentalHealthReferrals: Referral[] = [
     "id": "REF-MH-002",
     "ubrn": "2023-MH-002-5678",
     "created": "2023-02-20T10:00:00Z",
-    "status": "active",
+    "status": "accepted",
     "priority": "routine",
     "patient": {
       "id": "P002",
@@ -103,33 +89,18 @@ export const mentalHealthReferrals: Referral[] = [
     "calculatedPatientAge": 31,
     "calculatedLocation": "Suburb West",
     "rttPathway": {
-      "startDate": "2023-02-20T10:00:00Z",
+      "clockStart": "2023-02-20T10:00:00Z",
       "targetDate": "2023-04-20T10:00:00Z",
+      "status": "incomplete",
       "daysRemaining": 60,
-      "breachRisk": "medium",
-      "milestones": [
-        {
-          "name": "Referral Received",
-          "date": "2023-02-20T10:00:00Z",
-          "status": "completed"
-        },
-        {
-          "name": "Assessment",
-          "targetDate": "2023-03-10T10:00:00Z",
-          "status": "pending"
-        },
-        {
-          "name": "Therapy",
-          "targetDate": "2023-04-20T10:00:00Z",
-          "status": "pending"
-        }
-      ]
+      "breachRisk": "medium"
     },
     "carePathway": {
+      "type": "mental-health-pathway",
       "name": "Eating Disorder Program",
-      "stage": "Assessment",
-      "expectedDuration": 90,
-      "nextReviewDate": "2023-03-20T10:00:00Z"
+      "priority": "urgent",
+      "targetTimeframe": "90 days",
+      "status": "active"
     },
     "teamId": "TEAM-ED-001"
   },
@@ -168,33 +139,18 @@ export const mentalHealthReferrals: Referral[] = [
     "calculatedPatientAge": 45,
     "calculatedLocation": "Rural Area",
     "rttPathway": {
-      "startDate": "2023-03-10T08:45:00Z",
+      "clockStart": "2023-03-10T08:45:00Z",
       "targetDate": "2023-05-10T08:45:00Z",
+      "status": "stopped",
       "daysRemaining": 50,
-      "breachRisk": "medium",
-      "milestones": [
-        {
-          "name": "Referral Received",
-          "date": "2023-03-10T08:45:00Z",
-          "status": "completed"
-        },
-        {
-          "name": "Assessment",
-          "targetDate": "2023-03-25T08:45:00Z",
-          "status": "pending"
-        },
-        {
-          "name": "Group Therapy",
-          "targetDate": "2023-04-15T08:45:00Z",
-          "status": "pending"
-        }
-      ]
+      "breachRisk": "medium"
     },
     "carePathway": {
+      "type": "mental-health-pathway",
       "name": "Addiction Recovery Program",
-      "stage": "Assessment",
-      "expectedDuration": 120,
-      "nextReviewDate": "2023-04-10T08:45:00Z"
+      "priority": "routine",
+      "targetTimeframe": "120 days",
+      "status": "discontinued"
     },
     "teamId": "TEAM-AS-001"
   },
@@ -202,7 +158,7 @@ export const mentalHealthReferrals: Referral[] = [
     id: 'REF-MH-004',
     ubrn: '2024-MH-004-7892',
     created: '2023-05-15T09:30:00Z',
-    status: 'received',
+    status: 'new',
     priority: 'routine',
     patient: mockPatients.find(p => p.id === 'P004')!,
     referrer: mockPractitioners.find(p => p.id === 'PRAC-003')!,
@@ -222,33 +178,18 @@ export const mentalHealthReferrals: Referral[] = [
     calculatedPatientAge: 33,
     calculatedLocation: 'Leeds',
     rttPathway: {
-      startDate: '2023-05-15T09:30:00Z',
+      clockStart: '2023-05-15T09:30:00Z',
       targetDate: '2023-07-14T09:30:00Z',
+      status: 'incomplete',
       daysRemaining: 25,
-      breachRisk: 'low',
-      milestones: [
-        {
-          name: 'Referral Received',
-          date: '2023-05-15T09:30:00Z',
-          status: 'completed'
-        },
-        {
-          name: 'Triage Complete',
-          targetDate: '2023-05-22T09:30:00Z',
-          status: 'pending'
-        },
-        {
-          name: 'First Appointment',
-          targetDate: '2023-07-14T09:30:00Z',
-          status: 'pending'
-        }
-      ]
+      breachRisk: 'low'
     },
     carePathway: {
+      type: 'mental-health-pathway',
       name: 'Adult Mental Health Assessment',
-      stage: 'Initial Assessment',
-      expectedDuration: 60,
-      nextReviewDate: '2023-06-15T09:30:00Z'
+      priority: 'routine',
+      targetTimeframe: '60 days',
+      status: 'active'
     },
     teamId: 'TEAM-MH-001'
   }

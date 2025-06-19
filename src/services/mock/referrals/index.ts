@@ -17,6 +17,9 @@ export const allMockReferrals: Referral[] = [
   ...rheumatologyReferrals
 ];
 
+// Create alias for backward compatibility
+export const mockReferrals = allMockReferrals;
+
 // Export individual arrays for specialty-specific use
 export {
   cardiologyReferrals,
@@ -26,3 +29,11 @@ export {
   neurologyReferrals,
   rheumatologyReferrals
 };
+
+// Export expanded arrays with aliases for backward compatibility
+export const allCardiologyReferrals = cardiologyReferrals;
+export const allDermatologyReferrals = dermatologyReferrals;
+export const allGastroenterologyReferrals = gastroenterologyReferrals;
+export const allMentalHealthReferrals = mentalHealthReferrals;
+export const allNeurologyReferrals = neurologyReferrals;
+export const allRheumatologyReferrals = rheumatologyReferrals;
