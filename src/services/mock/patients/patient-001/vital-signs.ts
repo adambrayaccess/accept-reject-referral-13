@@ -1,27 +1,25 @@
 
-import { VitalSigns } from '@/types/medical';
+import { VitalSign } from '@/types/medical';
 
-export const patient001VitalSigns: VitalSigns[] = [
+export const patient001VitalSigns: VitalSign[] = [
   {
-    id: 'VS001001',
-    bloodPressure: { systolic: 145, diastolic: 90 },
-    heartRate: 78,
+    timestamp: '2023-12-01T09:30:00Z',
+    news2: 1,
     temperature: 36.8,
-    respirationRate: 16,
+    heartRate: 78,
+    respiration: 16,
     oxygenSaturation: 98,
-    dateRecorded: '2023-12-01T09:30:00Z',
-    recordedBy: 'Dr. James Wilson',
-    location: 'GP Surgery'
+    bloodPressureSystolic: 145,
+    bloodPressureDiastolic: 90
   },
   {
-    id: 'VS001002',
-    bloodPressure: { systolic: 150, diastolic: 95 },
-    heartRate: 82,
+    timestamp: '2023-11-15T14:20:00Z',
+    news2: 2,
     temperature: 37.1,
-    respirationRate: 18,
+    heartRate: 82,
+    respiration: 18,
     oxygenSaturation: 97,
-    dateRecorded: '2023-11-15T14:20:00Z',
-    recordedBy: 'Nurse Sarah Johnson',
-    location: 'GP Surgery'
+    bloodPressureSystolic: 150,
+    bloodPressureDiastolic: 95
   }
 ];
