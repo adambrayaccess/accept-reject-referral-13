@@ -1,8 +1,11 @@
 
+import { useState } from 'react';
 import { Referral } from '@/types/referral';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import { format } from 'date-fns';
+import PatientDemographicsButton from '@/components/patient-demographics/PatientDemographicsButton';
+import PatientDemographicsSheet from '@/components/patient-demographics/PatientDemographicsSheet';
 
 interface PatientTabContentProps {
   referral: Referral;
@@ -14,6 +17,8 @@ interface PatientTabContentProps {
 }
 
 const PatientTabContent = ({ referral, relatedReferrals }: PatientTabContentProps) => {
+  const [isDemographicsOpen, setIsDemographicsOpen] = useState(false);
+
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-x-6 gap-y-3 text-sm">
       <div>
@@ -54,6 +59,11 @@ const PatientTabContent = ({ referral, relatedReferrals }: PatientTabContentProp
         </div>
       )}
       
+      {/* Demographics Button */}
+      <div className="col-span-1 lg:col-span-2 mt-3">
+        <PatientDemographicsButton onClick={() => setIsDemographicsOpen(true)} />
+      </div>
+      
       <div className="col-span-1 lg:col-span-2">
         <div className="flex flex-col gap-3 p-3 bg-muted rounded-lg mt-2">
           <div className="flex gap-4">
@@ -82,8 +92,15 @@ const PatientTabContent = ({ referral, relatedReferrals }: PatientTabContentProp
           )}
         </div>
       </div>
+
+      {/* Demographics Sheet */}
+      <PatientDemographicsSheet
+        patient={referral.patient}
+        isOpen={isDemographicsOpen}
+        onOpenChange={setIsDemographicsOpen}
+      />
     </div>
   );
 };
 
-export default PatientTabContent;
+export default PatientDemographicsSheet;
