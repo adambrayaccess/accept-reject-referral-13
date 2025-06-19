@@ -41,17 +41,20 @@ export const useReferralData = (id: string | undefined) => {
       
       // Enhanced data validation logging
       console.log('=== useReferralData Hook Validation ===');
-      console.log('Fetched referral data:', JSON.stringify(data, null, 2));
-      console.log('Patient object:', data.patient);
-      console.log('Patient reasonable adjustments:', data.patient?.reasonableAdjustments);
+      console.log('Fetched referral ID:', data.id);
+      console.log('Patient ID:', data.patient?.id);
+      console.log('Patient name:', data.patient?.name);
+      console.log('Patient reasonable adjustments exists:', !!data.patient?.reasonableAdjustments);
       
       if (data.patient?.reasonableAdjustments) {
-        console.log('Found reasonable adjustments on patient:');
+        console.log('✅ Found reasonable adjustments on patient:');
         console.log('- hasAdjustments:', data.patient.reasonableAdjustments.hasAdjustments);
         console.log('- flagLevel:', data.patient.reasonableAdjustments.flagLevel);
         console.log('- adjustments count:', data.patient.reasonableAdjustments.adjustments?.length);
+        console.log('- adjustments data:', data.patient.reasonableAdjustments.adjustments);
       } else {
-        console.log('No reasonable adjustments found on patient');
+        console.log('❌ No reasonable adjustments found on patient');
+        console.log('Full patient object keys:', Object.keys(data.patient || {}));
       }
       console.log('=====================================');
       

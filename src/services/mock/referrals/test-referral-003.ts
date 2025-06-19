@@ -1,8 +1,8 @@
 
 import { Referral } from '@/types/referral';
-import { mockPatients } from '../patients';
 import { mockPractitioners } from '../practitioners';
 import { updateUbrnIfSelected } from '../utils/ubrn-randomizer';
+import { patient003 } from '../patients/patient-003'; // Import the patient with adjustments directly
 
 // Create a specific test referral with Patient 003 (Alice Johnson) who has reasonable adjustments
 export const testReferralWithAdjustments: Referral = updateUbrnIfSelected({
@@ -11,7 +11,7 @@ export const testReferralWithAdjustments: Referral = updateUbrnIfSelected({
   created: '2023-06-13T11:05:00Z',
   status: 'accepted',
   priority: 'urgent',
-  patient: mockPatients[2], // This is Patient 003 - Alice Johnson with reasonable adjustments
+  patient: patient003, // Use the specific patient003 with reasonable adjustments
   referrer: mockPractitioners[2],
   specialty: 'Neurology',
   service: 'Stroke Clinic',

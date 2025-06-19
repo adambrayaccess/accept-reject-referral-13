@@ -14,25 +14,30 @@ interface ReferralViewHeaderProps {
 }
 
 const ReferralViewHeader = ({ referral, onBack }: ReferralViewHeaderProps) => {
-  // Enhanced data validation logging
+  // Enhanced data validation logging specifically for NEUR-2024-003
   console.log('=== ReferralViewHeader Data Validation ===');
-  console.log('Full referral object:', JSON.stringify(referral, null, 2));
-  console.log('Patient object exists:', !!referral.patient);
-  console.log('Patient data:', JSON.stringify(referral.patient, null, 2));
-  console.log('ReasonableAdjustments exists on patient:', !!referral.patient?.reasonableAdjustments);
-  console.log('ReasonableAdjustments data:', JSON.stringify(referral.patient?.reasonableAdjustments, null, 2));
+  console.log('Referral ID:', referral.id);
+  console.log('Patient ID:', referral.patient?.id);
+  console.log('Patient name:', referral.patient?.name);
+  console.log('Is this NEUR-2024-003?', referral.id === 'NEUR-2024-003');
+  console.log('Patient reasonable adjustments prop:', referral.patient?.reasonableAdjustments);
   
-  if (referral.patient?.reasonableAdjustments) {
-    console.log('Adjustments flag details:');
-    console.log('- hasAdjustments:', referral.patient.reasonableAdjustments.hasAdjustments);
-    console.log('- flagLevel:', referral.patient.reasonableAdjustments.flagLevel);
-    console.log('- adjustments count:', referral.patient.reasonableAdjustments.adjustments?.length || 0);
-    console.log('- adjustments array:', referral.patient.reasonableAdjustments.adjustments);
-  } else {
-    console.log('No reasonable adjustments found on patient object');
+  if (referral.id === 'NEUR-2024-003') {
+    console.log('🔍 DEBUGGING NEUR-2024-003 specifically:');
+    console.log('- Patient object type:', typeof referral.patient);
+    console.log('- Patient keys:', Object.keys(referral.patient || {}));
+    console.log('- ReasonableAdjustments value:', referral.patient?.reasonableAdjustments);
+    console.log('- Type of reasonableAdjustments:', typeof referral.patient?.reasonableAdjustments);
+    
+    if (referral.patient?.reasonableAdjustments) {
+      console.log('✅ Adjustments data found:');
+      console.log('  - hasAdjustments:', referral.patient.reasonableAdjustments.hasAdjustments);
+      console.log('  - flagLevel:', referral.patient.reasonableAdjustments.flagLevel);
+      console.log('  - adjustments array:', referral.patient.reasonableAdjustments.adjustments);
+    } else {
+      console.log('❌ No adjustments data - this is the bug!');
+    }
   }
-  
-  console.log('Medical history allergies:', referral.patient?.medicalHistory?.allergies);
   console.log('==========================================');
   
   return (
