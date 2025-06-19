@@ -1,39 +1,36 @@
 
+import { cardiologyReferrals as originalCardiologyReferrals, allCardiologyReferrals } from './cardiology';
+import { dermatologyReferrals as originalDermatologyReferrals, allDermatologyReferrals } from './dermatology';
+import { neurologyReferrals as originalNeurologyReferrals, allNeurologyReferrals } from './neurology';
+import { rheumatologyReferrals as originalRheumatologyReferrals, allRheumatologyReferrals } from './rheumatology';
+import { gastroenterologyReferrals as originalGastroenterologyReferrals, allGastroenterologyReferrals } from './gastroenterology';
+import { mentalHealthReferrals as originalMentalHealthReferrals, allMentalHealthReferrals } from './mentalhealth';
 import { Referral } from '@/types/referral';
-import { cardiologyReferrals } from './cardiology';
-import { dermatologyReferrals } from './dermatology';
-import { gastroenterologyReferrals } from './gastroenterology';
-import { mentalHealthReferrals } from './mentalhealth';
-import { neurologyReferrals } from './neurology';
-import { rheumatologyReferrals } from './rheumatology';
 
-// Combine all specialty referrals
-export const allMockReferrals: Referral[] = [
-  ...cardiologyReferrals,
-  ...dermatologyReferrals,
-  ...gastroenterologyReferrals,
-  ...mentalHealthReferrals,
-  ...neurologyReferrals,
-  ...rheumatologyReferrals
+// Export the original referrals to maintain backward compatibility
+export const cardiologyReferrals = originalCardiologyReferrals;
+export const dermatologyReferrals = originalDermatologyReferrals;
+export const neurologyReferrals = originalNeurologyReferrals;
+export const rheumatologyReferrals = originalRheumatologyReferrals;
+export const gastroenterologyReferrals = originalGastroenterologyReferrals;
+export const mentalHealthReferrals = originalMentalHealthReferrals;
+
+// Combine all specialty referrals from the full sets (50 per specialty)
+export const mockReferrals: Referral[] = [
+  ...allCardiologyReferrals,
+  ...allDermatologyReferrals,
+  ...allNeurologyReferrals,
+  ...allRheumatologyReferrals,
+  ...allGastroenterologyReferrals,
+  ...allMentalHealthReferrals
 ];
 
-// Create alias for backward compatibility
-export const mockReferrals = allMockReferrals;
-
-// Export individual arrays for specialty-specific use
+// Export the full sets as well for when more data is needed
 export {
-  cardiologyReferrals,
-  dermatologyReferrals,
-  gastroenterologyReferrals,
-  mentalHealthReferrals,
-  neurologyReferrals,
-  rheumatologyReferrals
+  allCardiologyReferrals,
+  allDermatologyReferrals,
+  allNeurologyReferrals,
+  allRheumatologyReferrals,
+  allGastroenterologyReferrals,
+  allMentalHealthReferrals
 };
-
-// Export expanded arrays with aliases for backward compatibility
-export const allCardiologyReferrals = cardiologyReferrals;
-export const allDermatologyReferrals = dermatologyReferrals;
-export const allGastroenterologyReferrals = gastroenterologyReferrals;
-export const allMentalHealthReferrals = mentalHealthReferrals;
-export const allNeurologyReferrals = neurologyReferrals;
-export const allRheumatologyReferrals = rheumatologyReferrals;

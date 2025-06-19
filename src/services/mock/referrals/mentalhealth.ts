@@ -1,205 +1,286 @@
 
-import { Referral } from '@/types/referral';
+import { Referral, TriageStatus } from '@/types/referral';
+import { mockPatients } from '../patients';
+import { mockPractitioners } from '../practitioners';
+import { generateMockAppointment, generateSubReferralData } from '../appointmentGenerator';
+import { updateUbrnIfSelected } from '../utils/ubrn-randomizer';
 
 export const mentalHealthReferrals: Referral[] = [
-  {
-    "id": "REF-MH-001",
-    "ubrn": "2023-MH-001-1234",
-    "created": "2023-01-15T14:30:00Z",
-    "status": "new",
-    "priority": "urgent",
-    "patient": {
-      "id": "P001",
-      "name": "John Smith",
-      "birthDate": "1985-07-20",
-      "gender": "male",
-      "nhsNumber": "1234567890"
-    },
-    "referrer": {
-      "id": "PRAC-001",
-      "name": "Dr. Alice Johnson",
-      "role": "GP",
-      "organization": "City Medical Practice"
-    },
-    "specialty": "Mental Health",
-    "service": "Adult Mental Health",
-    "clinicalInfo": {
-      "reason": "Severe depression and suicidal ideation",
-      "history": "Previous episodes of depression, family history of mental illness",
-      "diagnosis": "Major Depressive Disorder",
-      "medications": ["Sertraline 100mg"],
-      "allergies": ["None known"],
-      "notes": "Requires immediate psychiatric evaluation"
-    },
-    "attachments": [],
-    "tags": ["depression", "suicidal", "urgent"],
-    "calculatedReferralAge": 15,
-    "calculatedPatientAge": 38,
-    "calculatedLocation": "City Central",
-    "rttPathway": {
-      "clockStart": "2023-01-15T14:30:00Z",
-      "targetDate": "2023-03-15T14:30:00Z",
-      "status": "incomplete",
-      "daysRemaining": 45,
-      "breachRisk": "high"
-    },
-    "carePathway": {
-      "type": "mental-health-pathway",
-      "name": "Crisis Intervention",
-      "priority": "urgent",
-      "targetTimeframe": "7 days",
-      "status": "active"
-    },
-    "teamId": "TEAM-MH-001"
-  },
-  {
-    "id": "REF-MH-002",
-    "ubrn": "2023-MH-002-5678",
-    "created": "2023-02-20T10:00:00Z",
-    "status": "accepted",
-    "priority": "routine",
-    "patient": {
-      "id": "P002",
-      "name": "Emily White",
-      "birthDate": "1992-04-10",
-      "gender": "female",
-      "nhsNumber": "9876543210"
-    },
-    "referrer": {
-      "id": "PRAC-002",
-      "name": "Dr. Ben Carter",
-      "role": "Psychologist",
-      "organization": "Private Therapy Clinic"
-    },
-    "specialty": "Mental Health",
-    "service": "Eating Disorders",
-    "clinicalInfo": {
-      "reason": "Anorexia nervosa, severe weight loss",
-      "history": "Long-standing eating disorder, previous hospitalizations",
-      "diagnosis": "Anorexia Nervosa",
-      "medications": ["None"],
-      "allergies": ["None known"],
-      "notes": "Requires specialized eating disorder treatment"
-    },
-    "attachments": [],
-    "tags": ["eating disorder", "anorexia", "specialized treatment"],
-    "calculatedReferralAge": 20,
-    "calculatedPatientAge": 31,
-    "calculatedLocation": "Suburb West",
-    "rttPathway": {
-      "clockStart": "2023-02-20T10:00:00Z",
-      "targetDate": "2023-04-20T10:00:00Z",
-      "status": "incomplete",
-      "daysRemaining": 60,
-      "breachRisk": "medium"
-    },
-    "carePathway": {
-      "type": "mental-health-pathway",
-      "name": "Eating Disorder Program",
-      "priority": "urgent",
-      "targetTimeframe": "90 days",
-      "status": "active"
-    },
-    "teamId": "TEAM-ED-001"
-  },
-  {
-    "id": "REF-MH-003",
-    "ubrn": "2023-MH-003-9012",
-    "created": "2023-03-10T08:45:00Z",
-    "status": "rejected",
-    "priority": "routine",
-    "patient": {
-      "id": "P003",
-      "name": "David Brown",
-      "birthDate": "1978-11-05",
-      "gender": "male",
-      "nhsNumber": "5432109876"
-    },
-    "referrer": {
-      "id": "PRAC-003",
-      "name": "Dr. Carol Davis",
-      "role": "GP",
-      "organization": "Rural Health Center"
-    },
-    "specialty": "Mental Health",
-    "service": "Addiction Services",
-    "clinicalInfo": {
-      "reason": "Alcohol dependence, relapse after sobriety",
-      "history": "Previous addiction treatment, multiple relapses",
-      "diagnosis": "Alcohol Dependence Syndrome",
-      "medications": ["Acamprosate"],
-      "allergies": ["Sulfa drugs"],
-      "notes": "Requires intensive addiction counseling and support"
-    },
-    "attachments": [],
-    "tags": ["addiction", "alcohol", "relapse"],
-    "calculatedReferralAge": 25,
-    "calculatedPatientAge": 45,
-    "calculatedLocation": "Rural Area",
-    "rttPathway": {
-      "clockStart": "2023-03-10T08:45:00Z",
-      "targetDate": "2023-05-10T08:45:00Z",
-      "status": "stopped",
-      "daysRemaining": 50,
-      "breachRisk": "medium"
-    },
-    "carePathway": {
-      "type": "mental-health-pathway",
-      "name": "Addiction Recovery Program",
-      "priority": "routine",
-      "targetTimeframe": "120 days",
-      "status": "discontinued"
-    },
-    "teamId": "TEAM-AS-001"
-  },
-  {
-    id: 'REF-MH-004',
-    ubrn: '2024-MH-004-7892',
-    created: '2023-05-15T09:30:00Z',
-    status: 'new',
-    priority: 'routine',
-    patient: {
-      id: 'P004',
-      name: 'Emma Thompson',
-      birthDate: '1990-03-15',
-      gender: 'female',
-      nhsNumber: '456 789 0123'
-    },
-    referrer: {
-      id: 'PRAC-003',
-      name: 'Dr. Helen Roberts',
-      role: 'GP',
-      organization: 'Leeds Primary Care'
-    },
+  updateUbrnIfSelected({
+    id: 'MH-2024-001',
+    ubrn: 'MH12345678',
+    created: '2024-05-18T10:45:00Z',
+    status: 'accepted',
+    priority: 'urgent',
+    patient: mockPatients[3],
+    referrer: mockPractitioners[2],
     specialty: 'Mental Health',
-    service: 'Adult Mental Health',
+    service: 'Community Mental Health Team',
+    triageStatus: 'waiting-list',
+    tags: ['depression', 'anxiety', 'self-harm-risk'],
     clinicalInfo: {
-      reason: 'Depression and anxiety symptoms affecting daily functioning. Patient reports low mood, difficulty sleeping, and increased fatigue over the past 6 months.',
-      history: 'Patient has a history of mild depression treated with sertraline. Recent vitamin D deficiency and iron deficiency may be contributing factors. Previous brief contact with mental health services following police section 136.',
-      diagnosis: 'Mixed anxiety and depressive disorder',
-      medications: ['Sertraline 50mg daily', 'Vitamin D3 4000 IU daily', 'Ferrous Fumarate 210mg twice daily'],
-      allergies: ['No known drug allergies'],
-      notes: 'Patient has complex history including recent MHA sections. Requires comprehensive assessment considering both mental health and physical health factors.'
+      reason: 'Severe depression and anxiety',
+      history: 'Patient reports worsening symptoms over the past 3 months. Unable to work or perform daily activities.',
+      diagnosis: 'Major depressive disorder with anxiety',
+      medications: ['Sertraline 50mg OD', 'Diazepam 2mg PRN'],
+      allergies: [],
+      notes: 'Patient has history of self-harm. Lives alone with limited social support network.'
     },
-    attachments: [],
-    tags: ['depression', 'anxiety', 'mha-history', 'vitamin-deficiency'],
-    calculatedReferralAge: 45,
-    calculatedPatientAge: 33,
-    calculatedLocation: 'Leeds',
-    rttPathway: {
-      clockStart: '2023-05-15T09:30:00Z',
-      targetDate: '2023-07-14T09:30:00Z',
-      status: 'incomplete',
-      daysRemaining: 25,
-      breachRisk: 'low'
-    },
-    carePathway: {
-      type: 'mental-health-pathway',
-      name: 'Adult Mental Health Assessment',
-      priority: 'routine',
-      targetTimeframe: '60 days',
-      status: 'active'
-    },
-    teamId: 'TEAM-MH-001'
-  }
+    attachments: [
+      {
+        id: 'MH-ATT-001',
+        title: 'Risk Assessment',
+        contentType: 'application/pdf',
+        url: '/mock-data/risk-assessment.pdf',
+        date: '2024-05-17T15:30:00Z',
+        size: 1856000
+      }
+    ]
+  })
 ];
+
+const additionalMentalHealthReferrals: Referral[] = Array.from({ length: 49 }, (_, i) => {
+  const index = i + 1;
+  const patientIndex = index % mockPatients.length;
+  const practitionerIndex = index % mockPractitioners.length;
+  const priorityOptions: Referral['priority'][] = ['routine', 'urgent', 'emergency'];
+  const priority = priorityOptions[index % 3];
+  
+  // Better distribution: 30% for dashboard, 70% for waiting list
+  let status: Referral['status'];
+  let triageStatus: TriageStatus;
+  
+  if (index <= 15) {
+    // Dashboard referrals
+    if (index % 3 === 0) {
+      status = 'new';
+      triageStatus = 'pre-assessment';
+    } else if (index % 3 === 1) {
+      status = 'accepted';
+      triageStatus = 'assessed';
+    } else {
+      status = 'rejected';
+      triageStatus = 'refer-to-another-specialty';
+    }
+  } else {
+    // Waiting list referrals
+    status = 'accepted';
+    triageStatus = 'waiting-list';
+  }
+  
+  const daysAgo = Math.floor(Math.random() * 365) + 1;
+  const date = new Date();
+  date.setDate(date.getDate() - daysAgo);
+  const created = date.toISOString();
+  
+  // Enhanced tag options for mental health
+  const tagOptions = [
+    ['depression', 'medication-review'],
+    ['anxiety', 'cbt-candidate'],
+    ['bipolar', 'mood-stabilizer'],
+    ['psychosis', 'antipsychotic'],
+    ['ptsd', 'trauma-therapy'],
+    ['eating-disorder', 'specialist-unit'],
+    ['substance-misuse', 'dual-diagnosis'],
+    ['personality-disorder', 'dbt-candidate'],
+    ['self-harm', 'safety-planning'],
+    ['suicidal-ideation', 'crisis-team']
+  ];
+  
+  const attachmentOptions = [
+    { title: 'Risk Assessment', contentType: 'application/pdf', url: '/mock-data/risk-assessment.pdf', size: 1856000 },
+    { title: 'PHQ-9 Questionnaire', contentType: 'application/pdf', url: '/mock-data/phq9.pdf', size: 1234000 },
+    { title: 'Previous Discharge Summary', contentType: 'application/pdf', url: '/mock-data/discharge-summary.pdf', size: 2340000 },
+    { title: 'Care Plan', contentType: 'application/pdf', url: '/mock-data/care-plan.pdf', size: 1789000 },
+    { title: 'Medication Review', contentType: 'application/pdf', url: '/mock-data/med-review.pdf', size: 1456000 }
+  ];
+
+  // Generate appointment and sub-referral data
+  const appointmentDetails = generateMockAppointment(`MH-2024-${(index + 1).toString().padStart(3, '0')}`, created, 'Mental Health');
+  const subReferralData = generateSubReferralData(`MH-2024-${(index + 1).toString().padStart(3, '0')}`);
+  
+  return updateUbrnIfSelected({
+    id: `MH-2024-${(index + 1).toString().padStart(3, '0')}`,
+    ubrn: `MH${(1000000 + index).toString().padStart(8, '0')}`,
+    created,
+    status,
+    priority,
+    patient: mockPatients[patientIndex],
+    referrer: mockPractitioners[practitionerIndex],
+    specialty: 'Mental Health',
+    service: index % 4 === 0 ? 'Community Mental Health Team' : 
+             index % 4 === 1 ? 'Crisis Team' : 
+             index % 4 === 2 ? 'Eating Disorder Service' : 'IAPT',
+    triageStatus,
+    tags: tagOptions[index % tagOptions.length],
+    appointmentDetails,
+    ...subReferralData,
+    clinicalInfo: {
+      reason: index % 5 === 0 ? 'Depression and anxiety' : 
+              index % 5 === 1 ? 'Suicidal ideation' : 
+              index % 5 === 2 ? 'Psychosis' : 
+              index % 5 === 3 ? 'Eating disorder' : 'Substance misuse',
+      history: `Patient with ${index % 2 === 0 ? 'acute' : 'chronic'} symptoms for past ${Math.floor(Math.random() * 12) + 1} months.`,
+      diagnosis: index % 4 === 0 ? 'Major depressive disorder' : 
+                index % 4 === 1 ? 'Bipolar affective disorder' : 
+                index % 4 === 2 ? 'Schizophrenia' : 'Personality disorder',
+      medications: ['Sertraline 50mg OD', 'Olanzapine 5mg ON'],
+      allergies: index % 10 === 0 ? ['Sulfa drugs'] : [],
+      notes: `Patient has ${index % 2 === 0 ? 'no significant' : 'family'} history of mental health conditions.`
+    },
+    attachments: index % 2 === 0 ? [
+      {
+        id: `MH-ATT-${index}-1`,
+        ...attachmentOptions[index % attachmentOptions.length],
+        date: new Date(date.getTime() - 86400000).toISOString(),
+      }
+    ] : index % 5 === 0 ? [
+      {
+        id: `MH-ATT-${index}-1`,
+        ...attachmentOptions[index % attachmentOptions.length],
+        date: new Date(date.getTime() - 86400000).toISOString(),
+      },
+      {
+        id: `MH-ATT-${index}-2`,
+        ...attachmentOptions[(index + 1) % attachmentOptions.length],
+        date: new Date(date.getTime() - 172800000).toISOString(),
+      }
+    ] : []
+  });
+});
+
+// Add 7 additional waiting list test records
+const additionalWaitingListReferrals: Referral[] = Array.from({ length: 7 }, (_, i) => {
+  const index = i + 100;
+  const patientIndex = index % mockPatients.length;
+  const practitionerIndex = index % mockPractitioners.length;
+  const priorityOptions: Referral['priority'][] = ['routine', 'urgent'];
+  const priority = priorityOptions[index % 2];
+  
+  const daysAgo = Math.floor(Math.random() * 180) + 30;
+  const date = new Date();
+  date.setDate(date.getDate() - daysAgo);
+  const created = date.toISOString();
+  
+  const tagOptions = [
+    ['depression', 'stable-medication'],
+    ['anxiety', 'cbt-completed'],
+    ['bipolar', 'lithium-monitoring'],
+    ['adhd', 'titration'],
+    ['ptsd', 'emdr-candidate'],
+    ['ocd', 'exposure-therapy'],
+    ['eating-disorder', 'recovery-phase']
+  ];
+
+  const appointmentDetails = generateMockAppointment(`MH-WL-${(index + 1).toString().padStart(3, '0')}`, created, 'Mental Health');
+  const subReferralData = generateSubReferralData(`MH-WL-${(index + 1).toString().padStart(3, '0')}`);
+  
+  return updateUbrnIfSelected({
+    id: `MH-WL-${(index + 1).toString().padStart(3, '0')}`,
+    ubrn: `MHWL${(2000000 + index).toString().padStart(8, '0')}`,
+    created,
+    status: 'accepted' as const,
+    priority,
+    patient: mockPatients[patientIndex],
+    referrer: mockPractitioners[practitionerIndex],
+    specialty: 'Mental Health',
+    service: index % 4 === 0 ? 'Community Mental Health Team' : 
+             index % 4 === 1 ? 'IAPT' : 
+             index % 4 === 2 ? 'Eating Disorder Service' : 'ADHD Service',
+    triageStatus: 'waiting-list' as const,
+    tags: tagOptions[i % tagOptions.length],
+    appointmentDetails,
+    ...subReferralData,
+    clinicalInfo: {
+      reason: index % 4 === 0 ? 'Depression follow-up' : 
+              index % 4 === 1 ? 'Anxiety management' : 
+              index % 4 === 2 ? 'Bipolar monitoring' : 'ADHD assessment',
+      history: `Patient with stable mental health condition requiring ongoing specialist support.`,
+      diagnosis: index % 3 === 0 ? 'Major depressive disorder' : 
+                index % 3 === 1 ? 'Generalized anxiety disorder' : 'Bipolar affective disorder',
+      medications: ['Sertraline 100mg OD', 'Quetiapine 25mg ON'],
+      allergies: index % 7 === 0 ? ['Sulfa drugs'] : [],
+      notes: `Waiting list patient for routine mental health follow-up.`
+    },
+    attachments: index % 2 === 0 ? [
+      {
+        id: `MH-WL-ATT-${index}-1`,
+        title: 'PHQ-9 Questionnaire',
+        contentType: 'application/pdf',
+        url: '/mock-data/phq9.pdf',
+        date: new Date(date.getTime() - 86400000).toISOString(),
+        size: 1234000
+      }
+    ] : []
+  });
+});
+
+// Add 7 additional test records for Dashboard
+const additionalDashboardReferrals: Referral[] = Array.from({ length: 7 }, (_, i) => {
+  const index = i + 200;
+  const patientIndex = index % mockPatients.length;
+  const practitionerIndex = index % mockPractitioners.length;
+  const priorityOptions: Referral['priority'][] = ['routine', 'urgent', 'emergency'];
+  const priority = priorityOptions[index % 3];
+  
+  const daysAgo = Math.floor(Math.random() * 30) + 1;
+  const date = new Date();
+  date.setDate(date.getDate() - daysAgo);
+  const created = date.toISOString();
+  
+  const tagOptions = [
+    ['depression', 'dashboard-test'],
+    ['anxiety', 'dashboard-test'],
+    ['bipolar', 'dashboard-test'],
+    ['psychosis', 'dashboard-test'],
+    ['ptsd', 'dashboard-test'],
+    ['eating-disorder', 'dashboard-test'],
+    ['substance-misuse', 'dashboard-test']
+  ];
+
+  const appointmentDetails = generateMockAppointment(`MH-DASH-${(index + 1).toString().padStart(3, '0')}`, created, 'Mental Health');
+  const subReferralData = generateSubReferralData(`MH-DASH-${(index + 1).toString().padStart(3, '0')}`);
+  
+  return updateUbrnIfSelected({
+    id: `MH-DASH-${(index + 1).toString().padStart(3, '0')}`,
+    ubrn: `MHDASH${(3000000 + index).toString().padStart(8, '0')}`,
+    created,
+    status: 'accepted' as const,
+    priority,
+    patient: mockPatients[patientIndex],
+    referrer: mockPractitioners[practitionerIndex],
+    specialty: 'Mental Health',
+    service: index % 4 === 0 ? 'Community Mental Health Team' : 
+             index % 4 === 1 ? 'Crisis Team' : 
+             index % 4 === 2 ? 'Eating Disorder Service' : 'IAPT',
+    triageStatus: 'waiting-list' as const,
+    tags: tagOptions[i % tagOptions.length],
+    appointmentDetails,
+    ...subReferralData,
+    clinicalInfo: {
+      reason: index % 5 === 0 ? 'Depression and anxiety' : 
+              index % 5 === 1 ? 'Suicidal ideation' : 
+              index % 5 === 2 ? 'Psychosis' : 
+              index % 5 === 3 ? 'Eating disorder' : 'Substance misuse',
+      history: `Dashboard test patient with mental health symptoms for past ${Math.floor(Math.random() * 6) + 1} months.`,
+      diagnosis: index % 4 === 0 ? 'Major depressive disorder' : 
+                index % 4 === 1 ? 'Bipolar affective disorder' : 
+                index % 4 === 2 ? 'Schizophrenia' : 'Personality disorder',
+      medications: ['Sertraline 50mg OD', 'Olanzapine 5mg ON'],
+      allergies: index % 7 === 0 ? ['Sulfa drugs'] : [],
+      notes: `Dashboard test referral for mental health assessment.`
+    },
+    attachments: index % 2 === 0 ? [
+      {
+        id: `MH-DASH-ATT-${index}-1`,
+        title: 'Risk Assessment',
+        contentType: 'application/pdf',
+        url: '/mock-data/risk-assessment.pdf',
+        date: new Date(date.getTime() - 86400000).toISOString(),
+        size: 1856000
+      }
+    ] : []
+  });
+});
+
+export const allMentalHealthReferrals = [...mentalHealthReferrals, ...additionalMentalHealthReferrals, ...additionalWaitingListReferrals, ...additionalDashboardReferrals];
