@@ -19,6 +19,7 @@ export interface Patient {
   nhsNumber: string;
   address?: string;
   phone?: string;
+  pronouns?: string;
   medicalHistory?: MedicalHistory;
   gpDetails?: GPDetails;
   reasonableAdjustments?: ReasonableAdjustmentsFlag;

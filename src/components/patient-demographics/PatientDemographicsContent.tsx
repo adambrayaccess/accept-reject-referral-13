@@ -1,4 +1,3 @@
-
 import { Patient } from '@/types/patient';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -29,6 +28,11 @@ const PatientDemographicsContent = ({ patient }: PatientDemographicsContentProps
             <User className="h-6 w-6" />
             {patient.name}
           </CardTitle>
+          {patient.pronouns && (
+            <Badge variant="secondary" className="w-fit text-xs font-medium bg-blue-50 text-blue-700 border-blue-200">
+              {patient.pronouns}
+            </Badge>
+          )}
           <div className="flex flex-wrap gap-2 mt-2">
             <Badge variant="outline" className="font-mono">
               NHS: {patient.nhsNumber}
