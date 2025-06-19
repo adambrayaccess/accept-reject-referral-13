@@ -114,6 +114,66 @@ export const patient002: Patient = {
   address: '456 Queen Street, Manchester, M1 1AA',
   phone: '07700 900345',
   pronouns: 'she/her',
+  ethnicity: 'Mixed White and Black Caribbean',
+  accommodationType: 'Rented - Housing Association',
+  gpDetails: {
+    id: 'GP002',
+    name: 'Dr. Michael Brown',
+    practice: 'Manchester Family Medical Centre',
+    address: '123 Care Street, Manchester, M1 2CC',
+    phone: '0161 123 4567',
+    email: 'michael.brown@manchesterfamily.nhs.uk'
+  },
+  pharmacies: [
+    {
+      id: 'PH003',
+      name: 'Well Pharmacy',
+      address: '567 Queen Street, Manchester, M1 3DD',
+      phone: '0161 234 5678',
+      email: 'manchester.queen@well.co.uk',
+      type: 'nominated'
+    }
+  ],
+  relatedPeople: [
+    {
+      id: 'RP003',
+      name: 'James Davis',
+      relationship: 'partner',
+      phone: '07700 900346',
+      email: 'james.davis@email.com',
+      address: '456 Queen Street, Manchester, M1 1AA',
+      isPrimaryContact: true,
+      isNextOfKin: true,
+      isEmergencyContact: true
+    },
+    {
+      id: 'RP004',
+      name: 'Linda Wilson',
+      relationship: 'mother',
+      phone: '07700 900347',
+      isPrimaryContact: false,
+      isNextOfKin: false,
+      isEmergencyContact: true
+    }
+  ],
+  accessRestriction: {
+    isRestricted: true,
+    level: 'standard',
+    reason: 'Previous incident of verbal aggression towards staff when anxious',
+    appliedDate: '2023-03-01T00:00:00Z',
+    appliedBy: 'Dr. Emma Wilson',
+    reviewDate: '2024-03-01T00:00:00Z',
+    notes: 'Patient responds well when approached calmly and given time to process information. Not a safety risk when proper protocols followed.'
+  },
+  historicAddresses: [
+    {
+      id: 'HA003',
+      address: '789 Former Street, Liverpool, L1 1AA',
+      dateFrom: '2018-01-01T00:00:00Z',
+      dateTo: '2022-05-31T00:00:00Z',
+      type: 'residential'
+    }
+  ],
   medicalHistory: {
     vitalSigns: patient002VitalSigns,
     testResults: patient002TestResults,

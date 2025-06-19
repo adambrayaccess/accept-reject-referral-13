@@ -23,6 +23,8 @@ export const patient005: Patient = {
   address: '456 Elm Street, Manchester, M1 1AA',
   phone: '07700 900567',
   pronouns: 'he/him',
+  ethnicity: 'Black British - African',
+  accommodationType: 'Owner Occupied',
   gpDetails: {
     id: 'GP005',
     name: 'Dr. Sarah Thompson',
@@ -31,6 +33,43 @@ export const patient005: Patient = {
     phone: '0161 234 5678',
     email: 'sarah.thompson@manchestermedical.nhs.uk'
   },
+  pharmacies: [
+    {
+      id: 'PH006',
+      name: 'Asda Pharmacy',
+      address: '234 Shopping Centre, Manchester, M1 8HH',
+      phone: '0161 567 8901',
+      type: 'nominated'
+    }
+  ],
+  relatedPeople: [
+    {
+      id: 'RP007',
+      name: 'Helen Wilson',
+      relationship: 'mother',
+      phone: '07700 900568',
+      email: 'helen.wilson@email.com',
+      isPrimaryContact: true,
+      isNextOfKin: true,
+      isEmergencyContact: true
+    }
+  ],
+  historicAddresses: [
+    {
+      id: 'HA006',
+      address: '789 Childhood Home, Birmingham, B2 1AA',
+      dateFrom: '1988-07-22T00:00:00Z',
+      dateTo: '2010-09-01T00:00:00Z',
+      type: 'residential'
+    },
+    {
+      id: 'HA007',
+      address: '123 University Street, Leeds, LS3 1BB',
+      dateFrom: '2010-09-01T00:00:00Z',
+      dateTo: '2014-07-31T00:00:00Z',
+      type: 'temporary'
+    }
+  ],
   medicalHistory: {
     vitalSigns: createVitalSignsSequence('2023-08-10T00:00:00Z', 'stable'),
     testResults: [
