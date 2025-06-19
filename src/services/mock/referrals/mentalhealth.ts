@@ -34,14 +34,14 @@ export const mentalHealthReferrals: Referral[] = [
     },
     created: '2024-02-08T16:20:00Z',
     updated: '2024-02-08T16:20:00Z',
-    documents: [
+    attachments: [
       {
         id: 'DOC-MH-007-001',
-        name: 'Mental Health Referral',
-        type: 'referral_letter',
-        uploadedAt: '2024-02-08T16:20:00Z',
-        size: 134567,
-        analysisStatus: 'completed'
+        title: 'Mental Health Referral',
+        contentType: 'referral_letter',
+        url: '#',
+        date: '2024-02-08T16:20:00Z',
+        size: 134567
       }
     ],
     auditLog: [
@@ -49,7 +49,7 @@ export const mentalHealthReferrals: Referral[] = [
         timestamp: '2024-02-08T16:20:00Z',
         action: 'referral_received',
         user: 'System',
-        details: 'Urgent mental health referral received from Dr. Rachel Green'
+        notes: 'Urgent mental health referral received from Dr. Rachel Green'
       }
     ],
     tags: ['suicide-risk', 'depression', 'urgent-assessment']
@@ -58,8 +58,8 @@ export const mentalHealthReferrals: Referral[] = [
     id: 'MH-2024-002',
     ubrn: 'RFR-2024-MH-002',
     status: 'accepted',
-    triageStatus: 'urgent',
-    priority: 'critical',
+    triageStatus: 'assessed',
+    priority: 'urgent',
     specialty: 'Mental Health',
     service: 'Crisis Intervention Team',
     patient: sarahDavis, // Patient P002 with life-threatening aspirin allergy
@@ -79,22 +79,22 @@ export const mentalHealthReferrals: Referral[] = [
     },
     created: '2024-01-20T22:45:00Z',
     updated: '2024-01-21T08:30:00Z',
-    documents: [
+    attachments: [
       {
         id: 'DOC-MH-002-001',
-        name: 'Emergency Department Assessment',
-        type: 'clinical_notes',
-        uploadedAt: '2024-01-20T22:45:00Z',
-        size: 198765,
-        analysisStatus: 'completed'
+        title: 'Emergency Department Assessment',
+        contentType: 'clinical_notes',
+        url: '#',
+        date: '2024-01-20T22:45:00Z',
+        size: 198765
       },
       {
         id: 'DOC-MH-002-002',
-        name: 'Police Section 136 Report',
-        type: 'legal_document',
-        uploadedAt: '2024-01-20T23:00:00Z',
-        size: 87654,
-        analysisStatus: 'completed'
+        title: 'Police Section 136 Report',
+        contentType: 'legal_document',
+        url: '#',
+        date: '2024-01-20T23:00:00Z',
+        size: 87654
       }
     ],
     auditLog: [
@@ -102,15 +102,18 @@ export const mentalHealthReferrals: Referral[] = [
         timestamp: '2024-01-20T22:45:00Z',
         action: 'referral_received',
         user: 'System',
-        details: 'Critical mental health referral from Emergency Department'
+        notes: 'Critical mental health referral from Emergency Department'
       },
       {
         timestamp: '2024-01-21T08:30:00Z',
         action: 'referral_accepted',
         user: 'Dr. Patricia Moore',
-        details: 'Critical referral accepted by Crisis Intervention Team'
+        notes: 'Critical referral accepted by Crisis Intervention Team'
       }
     ],
     tags: ['crisis', 'psychosis', 'police-involvement', 'life-threatening-allergies']
   }
 ];
+
+// Export as allMentalHealthReferrals for consistency with index file
+export const allMentalHealthReferrals = mentalHealthReferrals;

@@ -14,7 +14,7 @@ export const dermatologyReferrals: Referral[] = [
     id: 'DERM-2024-001',
     ubrn: 'RFR-2024-DERM-001',
     status: 'accepted',
-    triageStatus: 'routine',
+    triageStatus: 'assessed',
     priority: 'routine',
     specialty: 'Dermatology',
     service: 'General Dermatology',
@@ -35,22 +35,22 @@ export const dermatologyReferrals: Referral[] = [
     },
     created: '2024-01-15T09:30:00Z',
     updated: '2024-01-15T14:20:00Z',
-    documents: [
+    attachments: [
       {
         id: 'DOC-DERM-001-001',
-        name: 'GP Referral Letter',
-        type: 'referral_letter',
-        uploadedAt: '2024-01-15T09:30:00Z',
-        size: 156789,
-        analysisStatus: 'completed'
+        title: 'GP Referral Letter',
+        contentType: 'referral_letter',
+        url: '#',
+        date: '2024-01-15T09:30:00Z',
+        size: 156789
       },
       {
         id: 'DOC-DERM-001-002',
-        name: 'Skin Lesion Photos',
-        type: 'image',
-        uploadedAt: '2024-01-15T09:45:00Z',
-        size: 2345678,
-        analysisStatus: 'completed'
+        title: 'Skin Lesion Photos',
+        contentType: 'image',
+        url: '#',
+        date: '2024-01-15T09:45:00Z',
+        size: 2345678
       }
     ],
     auditLog: [
@@ -58,13 +58,13 @@ export const dermatologyReferrals: Referral[] = [
         timestamp: '2024-01-15T09:30:00Z',
         action: 'referral_received',
         user: 'System',
-        details: 'Referral received from Dr. Michael Brown'
+        notes: 'Referral received from Dr. Michael Brown'
       },
       {
         timestamp: '2024-01-15T14:20:00Z',
         action: 'referral_accepted',
         user: 'Dr. Sarah Wilson',
-        details: 'Referral accepted for General Dermatology'
+        notes: 'Referral accepted for General Dermatology'
       }
     ],
     tags: ['urgent-review', 'potential-cancer', 'photo-documentation']
@@ -94,14 +94,14 @@ export const dermatologyReferrals: Referral[] = [
     },
     created: '2024-02-10T11:15:00Z',
     updated: '2024-02-10T11:15:00Z',
-    documents: [
+    attachments: [
       {
         id: 'DOC-AGE-001-001',
-        name: 'Age Spot Assessment',
-        type: 'clinical_notes',
-        uploadedAt: '2024-02-10T11:15:00Z',
-        size: 89432,
-        analysisStatus: 'pending'
+        title: 'Age Spot Assessment',
+        contentType: 'clinical_notes',
+        url: '#',
+        date: '2024-02-10T11:15:00Z',
+        size: 89432
       }
     ],
     auditLog: [
@@ -109,7 +109,7 @@ export const dermatologyReferrals: Referral[] = [
         timestamp: '2024-02-10T11:15:00Z',
         action: 'referral_received',
         user: 'System',
-        details: 'Referral received from Dr. Lisa Anderson'
+        notes: 'Referral received from Dr. Lisa Anderson'
       }
     ],
     tags: ['cosmetic', 'elective']
@@ -117,8 +117,8 @@ export const dermatologyReferrals: Referral[] = [
   {
     id: 'DERM-2024-003',
     ubrn: 'RFR-2024-DERM-003',
-    status: 'in_progress',
-    triageStatus: 'urgent',
+    status: 'accepted',
+    triageStatus: 'assessed',
     priority: 'urgent',
     specialty: 'Dermatology',
     service: 'Dermatology Oncology',
@@ -139,22 +139,22 @@ export const dermatologyReferrals: Referral[] = [
     },
     created: '2024-01-28T14:45:00Z',
     updated: '2024-02-05T10:30:00Z',
-    documents: [
+    attachments: [
       {
         id: 'DOC-DERM-003-001',
-        name: 'Urgent Referral Letter',
-        type: 'referral_letter',
-        uploadedAt: '2024-01-28T14:45:00Z',
-        size: 178234,
-        analysisStatus: 'completed'
+        title: 'Urgent Referral Letter',
+        contentType: 'referral_letter',
+        url: '#',
+        date: '2024-01-28T14:45:00Z',
+        size: 178234
       },
       {
         id: 'DOC-DERM-003-002',
-        name: 'Scalp Lesion Biopsy Results',
-        type: 'pathology_report',
-        uploadedAt: '2024-02-05T10:30:00Z',
-        size: 245789,
-        analysisStatus: 'completed'
+        title: 'Scalp Lesion Biopsy Results',
+        contentType: 'pathology_report',
+        url: '#',
+        date: '2024-02-05T10:30:00Z',
+        size: 245789
       }
     ],
     auditLog: [
@@ -162,21 +162,24 @@ export const dermatologyReferrals: Referral[] = [
         timestamp: '2024-01-28T14:45:00Z',
         action: 'referral_received',
         user: 'System',
-        details: 'Urgent referral received from Dr. James Wilson'
+        notes: 'Urgent referral received from Dr. James Wilson'
       },
       {
         timestamp: '2024-01-29T08:15:00Z',
         action: 'referral_accepted',
         user: 'Dr. Sarah Wilson',
-        details: 'Urgent referral accepted for Dermatology Oncology'
+        notes: 'Urgent referral accepted for Dermatology Oncology'
       },
       {
         timestamp: '2024-02-05T10:30:00Z',
         action: 'biopsy_completed',
         user: 'Dr. Sarah Wilson',
-        details: 'Scalp lesion biopsy completed and results uploaded'
+        notes: 'Scalp lesion biopsy completed and results uploaded'
       }
     ],
     tags: ['cancer-pathway', 'biopsy-required', 'urgent-oncology']
   }
 ];
+
+// Export as allDermatologyReferrals for consistency with index file
+export const allDermatologyReferrals = dermatologyReferrals;
