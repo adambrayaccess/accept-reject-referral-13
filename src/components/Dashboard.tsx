@@ -1,3 +1,4 @@
+
 import { Button } from '@/components/ui/button';
 import { Users, Shield, ChevronDown } from 'lucide-react';
 import SearchBar from './dashboard/SearchBar';
@@ -183,32 +184,16 @@ const Dashboard = () => {
             </div>
           </div>
 
-          <EnhancedTabs defaultValue="all" className="w-full">
+          <EnhancedTabs defaultValue="new" className="w-full">
             <div className="flex justify-center mb-3">
               <div className="w-full max-w-2xl">
                 <EnhancedTabsList variant="grid" size="md">
-                  <EnhancedTabsTrigger value="all" variant="grid" size="md">All Referrals</EnhancedTabsTrigger>
-                  <EnhancedTabsTrigger value="new" variant="grid" size="md">Pending ({referrals.filter(r => r.status === 'new').length})</EnhancedTabsTrigger>
+                  <EnhancedTabsTrigger value="new" variant="grid" size="md">Awaiting Triage ({referrals.filter(r => r.status === 'new').length})</EnhancedTabsTrigger>
                   <EnhancedTabsTrigger value="processed" variant="grid" size="md">Processed ({referrals.filter(r => r.status !== 'new').length})</EnhancedTabsTrigger>
+                  <EnhancedTabsTrigger value="all" variant="grid" size="md">All Referrals</EnhancedTabsTrigger>
                 </EnhancedTabsList>
               </div>
             </div>
-
-            <EnhancedTabsContent value="all">
-              <ReferralGrid 
-                referrals={filteredReferrals} 
-                isLoading={isLoading} 
-                isReordering={isReordering}
-                view={view} 
-                onReorder={handleReorderReferrals}
-                selectedIds={selectedIds}
-                onToggleSelection={toggleSelection}
-                onSelectAll={handleSelectAll}
-                onClearSelection={clearSelection}
-                isAllSelected={isAllSelected(filteredReferrals)}
-                isIndeterminate={isIndeterminate(filteredReferrals)}
-              />
-            </EnhancedTabsContent>
 
             <EnhancedTabsContent value="new">
               <ReferralGrid 
@@ -241,6 +226,22 @@ const Dashboard = () => {
                 onClearSelection={clearSelection}
                 isAllSelected={isAllSelected(filteredReferrals.filter(r => r.status !== 'new'))}
                 isIndeterminate={isIndeterminate(filteredReferrals.filter(r => r.status !== 'new'))}
+              />
+            </EnhancedTabsContent>
+
+            <EnhancedTabsContent value="all">
+              <ReferralGrid 
+                referrals={filteredReferrals} 
+                isLoading={isLoading} 
+                isReordering={isReordering}
+                view={view} 
+                onReorder={handleReorderReferrals}
+                selectedIds={selectedIds}
+                onToggleSelection={toggleSelection}
+                onSelectAll={handleSelectAll}
+                onClearSelection={clearSelection}
+                isAllSelected={isAllSelected(filteredReferrals)}
+                isIndeterminate={isIndeterminate(filteredReferrals)}
               />
             </EnhancedTabsContent>
           </EnhancedTabs>
