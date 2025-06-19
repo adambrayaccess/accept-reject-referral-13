@@ -17,27 +17,6 @@ export const patient002: Patient = {
     vitalSigns: patient002VitalSigns,
     testResults: patient002TestResults,
     medicationHistory: patient002MedicationHistory,
-    mhaSections: patient002MHASections,
-    allergies: [
-      {
-        id: 'ALLERGY002001',
-        allergen: 'Aspirin',
-        reaction: 'Gastrointestinal bleeding, stomach pain',
-        severity: 'moderate',
-        recordedDate: '2021-05-12T00:00:00Z',
-        recordedBy: 'Dr. Emma Thompson',
-        status: 'active',
-        notes: 'Patient experienced severe stomach upset and minor bleeding. Avoid all NSAIDs.'
-      },
-      {
-        id: 'ALLERGY002002',
-        allergen: 'Peanuts',
-        reaction: 'Mild hives, no respiratory symptoms',
-        severity: 'mild',
-        recordedDate: '2019-09-03T00:00:00Z',
-        recordedBy: 'Dr. James Parker',
-        status: 'active'
-      }
-    ]
+    mhaSections: patient002MHASections
   }
 };

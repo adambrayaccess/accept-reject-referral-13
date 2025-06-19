@@ -10,26 +10,13 @@ const EnhancedTabsList = React.forwardRef<
   React.ComponentPropsWithoutRef<typeof TabsPrimitive.List> & {
     variant?: "default" | "compact" | "pills" | "grid"
     size?: "sm" | "md" | "lg"
-    enableDynamicSizing?: boolean
   }
->(({ className, variant = "default", size = "md", enableDynamicSizing = false, children, ...props }, ref) => {
-  const [tabCount, setTabCount] = React.useState(0)
-
-  // Count tabs on mount and when children change
-  React.useEffect(() => {
-    const count = React.Children.count(children)
-    setTabCount(count)
-  }, [children])
-
-  const shouldUseDynamicSizing = enableDynamicSizing && tabCount > 4
-
+>(({ className, variant = "default", size = "md", ...props }, ref) => {
   const variants = {
     default: "inline-flex items-center justify-start rounded-lg bg-muted/30 p-1 text-muted-foreground border",
     compact: "inline-flex items-center justify-start rounded-md bg-muted/20 p-0.5 text-muted-foreground",
     pills: "inline-flex items-center justify-start gap-1 text-muted-foreground",
-    grid: shouldUseDynamicSizing 
-      ? "flex items-center justify-start gap-1 p-1 bg-muted/20 rounded-lg text-muted-foreground"
-      : "grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-1 p-1 bg-muted/20 rounded-lg text-muted-foreground"
+    grid: "grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-1 p-1 bg-muted/20 rounded-lg text-muted-foreground"
   }
   
   const sizes = {
@@ -48,9 +35,7 @@ const EnhancedTabsList = React.forwardRef<
         className
       )}
       {...props}
-    >
-      {children}
-    </TabsPrimitive.List>
+    />
   )
 })
 EnhancedTabsList.displayName = TabsPrimitive.List.displayName
@@ -60,12 +45,8 @@ const EnhancedTabsTrigger = React.forwardRef<
   React.ComponentPropsWithoutRef<typeof TabsPrimitive.Trigger> & {
     variant?: "default" | "compact" | "pills" | "grid"
     size?: "sm" | "md" | "lg"
-    enableDynamicSizing?: boolean
-    tabCount?: number
   }
->(({ className, variant = "default", size = "md", enableDynamicSizing = false, tabCount = 0, ...props }, ref) => {
-  const shouldUseDynamicSizing = enableDynamicSizing && tabCount > 4 && variant === "grid"
-
+>(({ className, variant = "default", size = "md", ...props }, ref) => {
   const variants = {
     default: cn(
       "inline-flex items-center justify-center whitespace-nowrap rounded-md font-medium",
@@ -92,16 +73,13 @@ const EnhancedTabsTrigger = React.forwardRef<
       "hover:bg-muted/60 data-[state=active]:hover:bg-primary/90"
     ),
     grid: cn(
-      "flex items-center justify-center rounded-md font-medium flex-shrink-0",
+      "flex items-center justify-center whitespace-nowrap rounded-md font-medium",
       "ring-offset-background transition-all duration-200",
       "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
       "disabled:pointer-events-none disabled:opacity-50",
       "data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-sm",
       "hover:bg-muted/60 data-[state=active]:hover:bg-primary/90",
-      "min-h-[2.5rem] text-center",
-      shouldUseDynamicSizing 
-        ? "whitespace-nowrap text-ellipsis overflow-hidden" 
-        : "whitespace-nowrap"
+      "min-h-[2.5rem] text-center"
     )
   }
   
@@ -117,28 +95,12 @@ const EnhancedTabsTrigger = React.forwardRef<
     lg: "px-4 py-2.5 text-base"
   }
 
-  // Dynamic sizing for grid variant when many tabs - optimize for horizontal space
-  const getDynamicSizing = () => {
-    if (!shouldUseDynamicSizing) {
-      return variant === "grid" ? gridSizes[size] : sizes[size]
-    }
-
-    // Compact sizing to fit more tabs on one line
-    const compactSizes = {
-      sm: "px-1.5 py-1.5 text-xs",
-      md: "px-2 py-2 text-xs", 
-      lg: "px-2.5 py-2.5 text-sm"
-    }
-
-    return `${compactSizes[size]} min-w-0 max-w-[120px]`
-  }
-
   return (
     <TabsPrimitive.Trigger
       ref={ref}
       className={cn(
         variants[variant],
-        getDynamicSizing(),
+        variant === "grid" ? gridSizes[size] : sizes[size],
         className
       )}
       {...props}

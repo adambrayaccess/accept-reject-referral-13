@@ -69,22 +69,10 @@ export interface TestResult {
   notes?: string;
 }
 
-export interface Allergy {
-  id: string;
-  allergen: string;
-  reaction: string;
-  severity: 'mild' | 'moderate' | 'severe' | 'life-threatening';
-  recordedDate: string;
-  recordedBy: string;
-  status: 'active' | 'resolved' | 'unverified';
-  notes?: string;
-}
-
 export interface MedicalHistory {
   vitalSigns: VitalSign[];
   cardiograms?: Cardiogram[];
   medicationHistory?: MedicationPrescription[];
   mhaSections?: MHASection[];
   testResults?: TestResult[];
-  allergies?: Allergy[];
 }

@@ -5,7 +5,6 @@ import { ArrowLeft } from 'lucide-react';
 import { Referral } from '@/types/referral';
 import TriageStatusBadge from '@/components/triage/TriageStatusBadge';
 import ReferralTagsDisplay from '@/components/referral-tagging/ReferralTagsDisplay';
-import AllergyFlag from '@/components/patient/AllergyFlag';
 
 interface ReferralViewHeaderProps {
   referral: Referral;
@@ -13,9 +12,6 @@ interface ReferralViewHeaderProps {
 }
 
 const ReferralViewHeader = ({ referral, onBack }: ReferralViewHeaderProps) => {
-  console.log('ReferralViewHeader: Patient medical history:', referral.patient.medicalHistory);
-  console.log('ReferralViewHeader: Patient allergies:', referral.patient.medicalHistory?.allergies);
-  
   return (
     <>
       <Button variant="ghost" onClick={onBack} className="mb-3">
@@ -27,7 +23,6 @@ const ReferralViewHeader = ({ referral, onBack }: ReferralViewHeaderProps) => {
         <div className="space-y-2">
           <div className="flex items-center gap-2 flex-wrap">
             <h1 className="text-2xl font-bold">{referral.patient.name}</h1>
-            <AllergyFlag allergies={referral.patient.medicalHistory?.allergies} />
             {referral.isSubReferral && (
               <Badge variant="outline" className="text-xs">Sub-referral</Badge>
             )}

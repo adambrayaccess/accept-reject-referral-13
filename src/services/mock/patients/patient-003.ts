@@ -6,64 +6,56 @@ import { createMedicationHistory } from '../shared/medications';
 
 export const patient003: Patient = {
   id: 'P003',
-  name: 'Michael Johnson',
-  birthDate: '1978-11-03',
-  gender: 'male',
+  name: 'Alice Johnson',
+  birthDate: '1975-12-03',
+  gender: 'female',
   nhsNumber: '345 678 9012',
-  address: '789 Oak Avenue, Birmingham, B1 1DB',
+  address: '789 Oak Avenue, Birmingham, B1 1AA',
   phone: '07700 900456',
-  gpDetails: {
-    id: 'GP003',
-    name: 'Dr. Rachel Green',
-    practice: 'Birmingham Health Clinic',
-    address: '321 Church Street, Birmingham, B1 2CC',
-    phone: '0121 496 0000',
-    email: 'rachel.green@birmingham.nhs.uk'
-  },
   medicalHistory: {
-    vitalSigns: createVitalSignsSequence('2023-06-12T00:00:00Z', 'monitoring'),
-    cardiograms: [
-      {
-        timestamp: '2023-06-12T09:00:00Z',
-        data: [],
-        interpretation: 'Sinus tachycardia. ST segment depression in leads V4-V6, suggestive of myocardial ischemia.'
-      },
-      {
-        timestamp: '2023-06-12T21:00:00Z',
-        data: [],
-        interpretation: 'Improved ST segments. Persisting sinus tachycardia.'
-      },
-      {
-        timestamp: '2023-06-13T09:00:00Z',
-        data: [],
-        interpretation: 'Resolution of ST changes. Normal sinus rhythm.'
-      }
-    ],
+    vitalSigns: createVitalSignsSequence('2023-03-20T00:00:00Z', 'monitoring'),
     testResults: [
-      ...createCommonTestResults('003', 'Dr. Rachel Green', '2023-06-10T00:00:00Z'),
-      ...createSpecializedTestResults('003', 'Dr. Rachel Green', 'cardiac', '2023-06-12T00:00:00Z')
+      ...createCommonTestResults('003', 'Dr. Michael Davis', '2023-03-15T00:00:00Z'),
+      ...createSpecializedTestResults('003', 'Dr. Michael Davis', 'renal', '2023-03-15T00:00:00Z')
     ],
-    medicationHistory: createMedicationHistory('003', 'Dr. Rachel Green', ['hypertension'], '2023-06-01T00:00:00Z'),
-    allergies: [
+    medicationHistory: createMedicationHistory('003', 'Dr. Michael Davis', ['hypertension'], '2023-03-01T00:00:00Z'),
+    mhaSections: [
       {
-        id: 'ALLERGY003001',
-        allergen: 'Morphine',
-        reaction: 'Severe nausea, vomiting, hallucinations',
-        severity: 'severe',
-        recordedDate: '2021-02-10T00:00:00Z',
-        recordedBy: 'Dr. Rachel Green',
-        status: 'active',
-        notes: 'Patient experienced severe adverse reaction during post-operative care. Use alternative pain management.'
+        id: 'MHA003001',
+        sectionNumber: '136',
+        sectionTitle: 'Police Powers',
+        appliedDate: '2023-02-20T00:00:00Z',
+        expiryDate: '2023-02-21T00:00:00Z',
+        status: 'expired',
+        consultantResponsible: 'Dr. Lisa Thompson',
+        hospital: 'Birmingham Mental Health Trust',
+        reason: 'Police found patient in distressed state in public place, expressing suicidal ideation.',
+        notes: 'Patient assessed and admitted voluntarily. Section 136 discharged after 16 hours.'
       },
       {
-        id: 'ALLERGY003002',
-        allergen: 'Latex',
-        reaction: 'Contact dermatitis, respiratory symptoms',
-        severity: 'moderate',
-        recordedDate: '2019-11-18T00:00:00Z',
-        recordedBy: 'Nurse Sarah Adams',
+        id: 'MHA003002',
+        sectionNumber: '5(4)',
+        sectionTitle: "Nurse's Holding Power",
+        appliedDate: '2023-03-10T00:00:00Z',
+        expiryDate: '2023-03-10T00:00:00Z',
+        status: 'discharged',
+        consultantResponsible: 'Dr. Lisa Thompson',
+        hospital: 'Birmingham Mental Health Trust',
+        reason: 'Patient attempted to leave ward during voluntary admission while acutely unwell.',
+        notes: 'Holding power used for 4 hours until doctor assessment completed. Patient agreed to remain voluntary.'
+      },
+      {
+        id: 'MHA003003',
+        sectionNumber: '3',
+        sectionTitle: 'Admission for Treatment',
+        appliedDate: '2023-03-15T00:00:00Z',
+        expiryDate: '2023-09-15T00:00:00Z',
         status: 'active',
-        notes: 'Reaction to latex gloves during examination. Use nitrile gloves for all procedures.'
+        consultantResponsible: 'Dr. Lisa Thompson',
+        hospital: 'Birmingham Mental Health Trust',
+        reason: 'Severe bipolar disorder with psychotic features. Patient lacks capacity and refuses necessary treatment.',
+        reviewDate: '2023-06-15T00:00:00Z',
+        notes: 'Patient showing gradual improvement with mood stabilizers and antipsychotic medication.'
       }
     ]
   }
