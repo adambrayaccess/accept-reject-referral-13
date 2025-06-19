@@ -10,7 +10,11 @@ interface AllergyIndicatorProps {
 }
 
 const AllergyIndicator = ({ allergies }: AllergyIndicatorProps) => {
+  console.log('AllergyIndicator - Received allergies:', allergies);
+  
   const activeAllergies = allergies?.filter(allergy => allergy.status === 'active') || [];
+  
+  console.log('AllergyIndicator - Active allergies:', activeAllergies);
   
   const getAllergyStatus = () => {
     if (activeAllergies.length === 0) {
@@ -41,6 +45,8 @@ const AllergyIndicator = ({ allergies }: AllergyIndicatorProps) => {
 
   const allergyStatus = getAllergyStatus();
   const iconColor = getIconColor(allergyStatus);
+
+  console.log('AllergyIndicator - Status and color:', { allergyStatus, iconColor });
 
   return (
     <HoverCard>
