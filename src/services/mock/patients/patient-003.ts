@@ -21,7 +21,7 @@ export const patient003: Patient = {
     email: 'rachel.green@birmingham.nhs.uk'
   },
   medicalHistory: {
-    vitalSigns: createVitalSignsSequence('2023-06-12T00:00:00Z', 'concerning'),
+    vitalSigns: createVitalSignsSequence('2023-06-12T00:00:00Z', 'monitoring'),
     cardiograms: [
       {
         timestamp: '2023-06-12T09:00:00Z',
@@ -41,9 +41,9 @@ export const patient003: Patient = {
     ],
     testResults: [
       ...createCommonTestResults('003', 'Dr. Rachel Green', '2023-06-10T00:00:00Z'),
-      ...createSpecializedTestResults('003', 'Dr. Rachel Green', 'cardiac', '2023-06-12T00:00:00Z')
+      ...createSpecializedTestResults('003', 'Dr. Rachel Green', 'cholesterol', '2023-06-12T00:00:00Z')
     ],
-    medicationHistory: createMedicationHistory('003', 'Dr. Rachel Green', ['cardiac'], '2023-06-01T00:00:00Z'),
+    medicationHistory: createMedicationHistory('003', 'Dr. Rachel Green', ['cholesterol'], '2023-06-01T00:00:00Z'),
     allergies: [
       {
         id: 'ALLERGY003001',
