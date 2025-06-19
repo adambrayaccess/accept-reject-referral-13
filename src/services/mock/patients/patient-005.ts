@@ -22,6 +22,7 @@ export const patient005: Patient = {
   nhsNumber: '567 890 1234',
   address: '456 Elm Street, Manchester, M1 1AA',
   phone: '07700 900567',
+  pronouns: 'he/him',
   gpDetails: {
     id: 'GP005',
     name: 'Dr. Sarah Thompson',

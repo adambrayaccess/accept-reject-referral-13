@@ -65,6 +65,7 @@ export const patient001: Patient = {
   nhsNumber: '123 456 7890',
   address: '123 Main Street, London, SW1A 1AA',
   phone: '07700 900123',
+  pronouns: 'he/him',
   medicalHistory: {
     vitalSigns: patient001VitalSigns,
     testResults: patient001TestResults,

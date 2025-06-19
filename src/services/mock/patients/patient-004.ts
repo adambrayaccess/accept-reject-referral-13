@@ -56,6 +56,7 @@ export const patient004: Patient = {
   nhsNumber: '456 789 0123',
   address: '25 High Street, Leeds, LS1 4HG',
   phone: '07700 900234',
+  pronouns: 'she/her',
   medicalHistory: {
     vitalSigns: createVitalSignsSequence('2023-06-07T00:00:00Z', 'healthy'),
     testResults: [
