@@ -1,254 +1,181 @@
 
-import { Referral, TriageStatus } from '@/types/referral';
+import { Referral } from '@/types/referral';
 import { mockPatients } from '../patients';
 import { mockPractitioners } from '../practitioners';
-import { updateUbrnIfSelected } from '../utils/ubrn-randomizer';
+
+// Find the correct patient - should be patient004 (Emma Thompson)
+const patient004 = mockPatients.find(p => p.id === 'P004');
+const practitioner = mockPractitioners.find(p => p.id === 'PRACT001');
+
+if (!patient004) {
+  throw new Error('Patient P004 not found in mock patients');
+}
+
+if (!practitioner) {
+  throw new Error('Practitioner PRACT001 not found in mock practitioners');
+}
 
 export const gastroenterologyReferrals: Referral[] = [
-  updateUbrnIfSelected({
-    id: 'REF-2023-005',
-    ubrn: '567890123456',
-    created: '2023-06-11T09:15:00Z',
-    status: 'rejected',
-    priority: 'urgent',
-    patient: mockPatients[4],
-    referrer: mockPractitioners[4],
+  {
+    id: 'GAST-2024-001',
+    ubrn: 'UBRN2024GAST001',
+    created: '2024-01-15T10:30:00Z',
+    status: 'accepted',
+    priority: 'routine',
+    patient: mockPatients[0], // P001 - John Smith
+    referrer: practitioner,
     specialty: 'Gastroenterology',
-    service: 'Rapid Access',
-    triageStatus: 'refer-to-another-specialty',
-    tags: ['colorectal-cancer', 'two-week-wait', 'refer-surgery'],
+    service: 'Upper GI',
     clinicalInfo: {
-      reason: 'Weight loss and change in bowel habits',
-      history: 'Unintentional weight loss of 5kg over 2 months. Change in bowel habits with occasional blood in stool.',
-      diagnosis: 'Suspected colorectal cancer',
-      medications: ['Omeprazole 20mg OD'],
-      allergies: ['Penicillin'],
-      notes: 'Colonoscopy urgently required'
+      presentingComplaint: 'Recurrent epigastric pain and heartburn for 3 months',
+      historyOfPresentingComplaint: 'Patient reports burning sensation in upper abdomen, worse after meals. Associated with acid reflux symptoms. No weight loss or dysphagia.',
+      relevantHistory: 'Previous H. pylori treatment 2 years ago. Family history of gastric ulcers.',
+      currentMedications: 'Omeprazole 20mg daily, Gaviscon as needed',
+      allergies: 'Penicillin - rash',
+      socialHistory: 'Non-smoker, moderate alcohol consumption (2-3 units/week)',
+      examinationFindings: 'Mild epigastric tenderness on palpation. No masses or organomegaly.',
+      investigations: 'FBC, U&E, LFTs normal. H. pylori stool antigen negative.',
+      workingDiagnosis: 'GERD with possible peptic ulcer disease',
+      questionForSpecialist: 'Please assess for endoscopy and consider PPI optimization',
+      additionalInfo: 'Patient anxious about procedure. Prefers morning appointments.'
     },
-    attachments: [
-      {
-        id: 'ATT-007',
-        title: 'FIT Test Result',
-        contentType: 'application/pdf',
-        url: '/mock-data/fit-test.pdf',
-        date: '2023-06-10T15:45:00Z',
-        size: 985000
-      }
-    ]
-  })
-];
-
-const additionalGastroenterologyReferrals: Referral[] = Array.from({ length: 49 }, (_, i) => {
-  const index = i + 1;
-  const patientIndex = index % mockPatients.length;
-  const practitionerIndex = index % mockPractitioners.length;
-  const priorityOptions: Referral['priority'][] = ['routine', 'urgent', 'emergency'];
-  const priority = priorityOptions[index % 3];
-  
-  // Better distribution: 30% for dashboard, 70% for waiting list
-  let status: Referral['status'];
-  let triageStatus: TriageStatus;
-  
-  if (index <= 15) {
-    // Dashboard referrals
-    if (index % 3 === 0) {
-      status = 'new';
-      triageStatus = 'pre-assessment';
-    } else if (index % 3 === 1) {
-      status = 'accepted';
-      triageStatus = 'assessed';
-    } else {
-      status = 'rejected';
-      triageStatus = 'refer-to-another-specialty';
+    attachments: [],
+    triageStatus: 'triaged',
+    calculatedReferralAge: 12,
+    calculatedPatientAge: 68,
+    calculatedLocation: 'London',
+    rttPathway: {
+      clockStart: '2024-01-15T10:30:00Z',
+      currentWeek: 12,
+      targetWeeks: 18,
+      breachDate: '2024-05-13T10:30:00Z',
+      status: 'active',
+      milestones: [
+        {
+          id: 'referral-received',
+          name: 'Referral Received',
+          date: '2024-01-15T10:30:00Z',
+          status: 'completed'
+        },
+        {
+          id: 'triage-completed',
+          name: 'Triage Completed',
+          date: '2024-01-18T14:20:00Z',
+          status: 'completed'
+        },
+        {
+          id: 'appointment-booked',
+          name: 'Appointment Booked',
+          date: '2024-01-20T09:15:00Z',
+          status: 'completed'
+        },
+        {
+          id: 'first-appointment',
+          name: 'First Appointment',
+          targetDate: '2024-04-15T10:00:00Z',
+          status: 'scheduled'
+        }
+      ]
     }
-  } else {
-    // Waiting list referrals
-    status = 'accepted';
-    triageStatus = 'waiting-list';
+  },
+  {
+    id: 'GAST-2024-002',
+    ubrn: 'UBRN2024GAST002',
+    created: '2024-02-20T14:15:00Z',
+    status: 'new',
+    priority: 'urgent',
+    patient: mockPatients[1], // P002 - Sarah Davis
+    referrer: practitioner,
+    specialty: 'Gastroenterology',
+    service: 'Hepatology',
+    clinicalInfo: {
+      presentingComplaint: 'Abnormal liver function tests and fatigue',
+      historyOfPresentingComplaint: 'Patient presents with 6-week history of fatigue and malaise. Incidental finding of deranged LFTs on routine blood work.',
+      relevantHistory: 'No significant past medical history. No alcohol excess. No recent travel.',
+      currentMedications: 'None',
+      allergies: 'NKDA',
+      socialHistory: 'Non-smoker, minimal alcohol consumption',
+      examinationFindings: 'Mild hepatomegaly. No jaundice or stigmata of chronic liver disease.',
+      investigations: 'ALT 120 U/L, AST 95 U/L, ALP 180 U/L, Bilirubin 25 μmol/L',
+      workingDiagnosis: 'Hepatitis - cause unknown',
+      questionForSpecialist: 'Please investigate cause of hepatitis and advise on management',
+      additionalInfo: 'Patient concerned about family history of liver disease in father'
+    },
+    attachments: [],
+    triageStatus: 'pre-assessment',
+    calculatedReferralAge: 8,
+    calculatedPatientAge: 32,
+    calculatedLocation: 'Manchester',
+    rttPathway: {
+      clockStart: '2024-02-20T14:15:00Z',
+      currentWeek: 8,
+      targetWeeks: 6,
+      breachDate: '2024-04-02T14:15:00Z',
+      status: 'breached',
+      milestones: [
+        {
+          id: 'referral-received',
+          name: 'Referral Received',
+          date: '2024-02-20T14:15:00Z',
+          status: 'completed'
+        },
+        {
+          id: 'triage-completed',
+          name: 'Triage Completed',
+          targetDate: '2024-02-22T14:15:00Z',
+          status: 'pending'
+        }
+      ]
+    }
+  },
+  {
+    id: 'GAST-2024-003',
+    ubrn: 'UBRN2024GAST003',
+    created: '2024-03-10T11:45:00Z',
+    status: 'new',
+    priority: 'routine',
+    patient: patient004, // P004 - Emma Thompson (with reasonable adjustments)
+    referrer: practitioner,
+    specialty: 'Gastroenterology',
+    service: 'Lower GI',
+    clinicalInfo: {
+      presentingComplaint: 'Chronic abdominal pain and altered bowel habits',
+      historyOfPresentingComplaint: 'Patient reports 4-month history of crampy abdominal pain, predominantly left-sided. Associated with alternating constipation and loose stools.',
+      relevantHistory: 'Previous appendectomy 2015. No significant family history of bowel disease.',
+      currentMedications: 'Loperamide as needed, Buscopan 10mg TDS',
+      allergies: 'No known allergies',
+      socialHistory: 'Non-smoker, social drinker',
+      examinationFindings: 'Mild left iliac fossa tenderness. No masses palpable.',
+      investigations: 'FBC normal, CRP <5, Calprotectin 45 μg/g',
+      workingDiagnosis: 'Possible IBS vs inflammatory bowel disease',
+      questionForSpecialist: 'Please assess for colonoscopy and rule out IBD',
+      additionalInfo: 'Patient has hearing difficulties and may need interpreter support'
+    },
+    attachments: [],
+    triageStatus: 'pre-assessment',
+    calculatedReferralAge: 7,
+    calculatedPatientAge: 34,
+    calculatedLocation: 'Leeds',
+    rttPathway: {
+      clockStart: '2024-03-10T11:45:00Z',
+      currentWeek: 7,
+      targetWeeks: 18,
+      breachDate: '2024-07-07T11:45:00Z',
+      status: 'active',
+      milestones: [
+        {
+          id: 'referral-received',
+          name: 'Referral Received',
+          date: '2024-03-10T11:45:00Z',
+          status: 'completed'
+        },
+        {
+          id: 'triage-completed',
+          name: 'Triage Completed',
+          targetDate: '2024-03-12T11:45:00Z',
+          status: 'pending'
+        }
+      ]
+    }
   }
-  
-  const daysAgo = Math.floor(Math.random() * 365) + 1;
-  const date = new Date();
-  date.setDate(date.getDate() - daysAgo);
-  
-  // Enhanced tag options for gastroenterology
-  const tagOptions = [
-    ['ibd', 'crohns-suspected'],
-    ['colorectal-cancer', 'screening'],
-    ['peptic-ulcer', 'h-pylori'],
-    ['liver-disease', 'abnormal-lfts'],
-    ['gerd', 'endoscopy-required'],
-    ['gallstones', 'surgery-candidate'],
-    ['pancreatitis', 'alcohol-related'],
-    ['celiac-disease', 'gluten-sensitivity'],
-    ['ibs', 'functional-disorder'],
-    ['hepatitis', 'viral-screening']
-  ];
-  
-  const attachmentOptions = [
-    { title: 'FIT Test Result', contentType: 'application/pdf', url: '/mock-data/fit-test.pdf', size: 985000 },
-    { title: 'Endoscopy Report', contentType: 'application/pdf', url: '/mock-data/endoscopy.pdf', size: 2340000 },
-    { title: 'CT Abdomen Report', contentType: 'application/pdf', url: '/mock-data/ct-abdomen.pdf', size: 4567000 },
-    { title: 'Liver Function Tests', contentType: 'application/pdf', url: '/mock-data/lfts.pdf', size: 1234000 },
-    { title: 'Stool Sample Results', contentType: 'application/pdf', url: '/mock-data/stool-culture.pdf', size: 1567000 }
-  ];
-  
-  return updateUbrnIfSelected({
-    id: `GAST-2024-${index.toString().padStart(3, '0')}`,
-    ubrn: `G${(1000000 + index).toString().padStart(8, '0')}`,
-    created: date.toISOString(),
-    status,
-    priority,
-    patient: mockPatients[patientIndex],
-    referrer: mockPractitioners[practitionerIndex],
-    specialty: 'Gastroenterology',
-    service: index % 3 === 0 ? 'Rapid Access' : 
-             index % 3 === 1 ? 'IBD Service' : 'Hepatology',
-    triageStatus,
-    tags: tagOptions[index % tagOptions.length],
-    clinicalInfo: {
-      reason: index % 5 === 0 ? 'Weight loss and change in bowel habits' : 
-              index % 5 === 1 ? 'Abdominal pain' : 
-              index % 5 === 2 ? 'Dyspepsia' : 
-              index % 5 === 3 ? 'Abnormal LFTs' : 'Diarrhea',
-      history: `Patient with ${index % 2 === 0 ? 'acute' : 'chronic'} symptoms for past ${Math.floor(Math.random() * 12) + 1} months.`,
-      diagnosis: index % 4 === 0 ? 'Suspected colorectal cancer' : 
-                index % 4 === 1 ? 'Suspected IBD' : 
-                index % 4 === 2 ? 'Suspected peptic ulcer disease' : 'Suspected liver disease',
-      medications: ['Omeprazole 20mg OD', 'Buscopan 10mg TDS'],
-      allergies: index % 5 === 0 ? ['Penicillin'] : [],
-      notes: `Patient has ${index % 2 === 0 ? 'no significant' : 'family'} history of GI conditions.`
-    },
-    attachments: index % 3 !== 2 ? [
-      {
-        id: `GAST-ATT-${index}-1`,
-        ...attachmentOptions[index % attachmentOptions.length],
-        date: new Date(date.getTime() - 86400000).toISOString(),
-      }
-    ] : []
-  });
-});
-
-// Add 7 additional waiting list test records
-const additionalWaitingListReferrals: Referral[] = Array.from({ length: 7 }, (_, i) => {
-  const index = i + 100;
-  const patientIndex = index % mockPatients.length;
-  const practitionerIndex = index % mockPractitioners.length;
-  const priorityOptions: Referral['priority'][] = ['routine', 'urgent'];
-  const priority = priorityOptions[index % 2];
-  
-  const daysAgo = Math.floor(Math.random() * 180) + 30;
-  const date = new Date();
-  date.setDate(date.getDate() - daysAgo);
-  const created = date.toISOString();
-  
-  const tagOptions = [
-    ['ibd', 'monitoring'],
-    ['endoscopy', 'surveillance'],
-    ['liver-disease', 'follow-up'],
-    ['gerd', 'medication-review'],
-    ['ibs', 'dietary-advice'],
-    ['coeliac', 'annual-review'],
-    ['hepatitis', 'treatment-monitoring']
-  ];
-  
-  return updateUbrnIfSelected({
-    id: `GAST-WL-${(index + 1).toString().padStart(3, '0')}`,
-    ubrn: `GWL${(2000000 + index).toString().padStart(8, '0')}`,
-    created,
-    status: 'accepted' as const,
-    priority,
-    patient: mockPatients[patientIndex],
-    referrer: mockPractitioners[practitionerIndex],
-    specialty: 'Gastroenterology',
-    service: index % 3 === 0 ? 'General Gastroenterology' : 
-             index % 3 === 1 ? 'IBD Service' : 'Hepatology',
-    triageStatus: 'waiting-list' as const,
-    tags: tagOptions[i % tagOptions.length],
-    clinicalInfo: {
-      reason: index % 4 === 0 ? 'IBD monitoring' : 
-              index % 4 === 1 ? 'Endoscopy surveillance' : 
-              index % 4 === 2 ? 'Liver function review' : 'GERD management',
-      history: `Patient with established GI condition requiring ongoing specialist care.`,
-      diagnosis: index % 3 === 0 ? 'Crohns disease' : 
-                index % 3 === 1 ? 'Chronic hepatitis' : 'GERD',
-      medications: ['Omeprazole 20mg OD', 'Azathioprine 100mg OD'],
-      allergies: index % 7 === 0 ? ['Penicillin'] : [],
-      notes: `Waiting list patient for routine gastroenterology follow-up.`
-    },
-    attachments: index % 2 === 0 ? [
-      {
-        id: `GAST-WL-ATT-${index}-1`,
-        title: 'Endoscopy Report',
-        contentType: 'application/pdf',
-        url: '/mock-data/endoscopy.pdf',
-        date: new Date(date.getTime() - 86400000).toISOString(),
-        size: 2340000
-      }
-    ] : []
-  });
-});
-
-// Add 7 additional test records for Dashboard
-const additionalDashboardReferrals: Referral[] = Array.from({ length: 7 }, (_, i) => {
-  const index = i + 200;
-  const patientIndex = index % mockPatients.length;
-  const practitionerIndex = index % mockPractitioners.length;
-  const priorityOptions: Referral['priority'][] = ['routine', 'urgent', 'emergency'];
-  const priority = priorityOptions[index % 3];
-  
-  const daysAgo = Math.floor(Math.random() * 30) + 1;
-  const date = new Date();
-  date.setDate(date.getDate() - daysAgo);
-  const created = date.toISOString();
-  
-  const tagOptions = [
-    ['abdominal-pain', 'dashboard-test'],
-    ['ibd', 'dashboard-test'],
-    ['colorectal-cancer', 'dashboard-test'],
-    ['peptic-ulcer', 'dashboard-test'],
-    ['liver-disease', 'dashboard-test'],
-    ['gerd', 'dashboard-test'],
-    ['gallstones', 'dashboard-test']
-  ];
-  
-  return updateUbrnIfSelected({
-    id: `GAST-DASH-${(index + 1).toString().padStart(3, '0')}`,
-    ubrn: `GDASH${(3000000 + index).toString().padStart(8, '0')}`,
-    created,
-    status: 'accepted' as const,
-    priority,
-    patient: mockPatients[patientIndex],
-    referrer: mockPractitioners[practitionerIndex],
-    specialty: 'Gastroenterology',
-    service: index % 3 === 0 ? 'Rapid Access' : 
-             index % 3 === 1 ? 'IBD Service' : 'Hepatology',
-    triageStatus: 'waiting-list' as const,
-    tags: tagOptions[i % tagOptions.length],
-    clinicalInfo: {
-      reason: index % 5 === 0 ? 'Weight loss and change in bowel habits' : 
-              index % 5 === 1 ? 'Abdominal pain' : 
-              index % 5 === 2 ? 'Dyspepsia' : 
-              index % 5 === 3 ? 'Abnormal LFTs' : 'Diarrhea',
-      history: `Dashboard test patient with GI symptoms for past ${Math.floor(Math.random() * 6) + 1} months.`,
-      diagnosis: index % 4 === 0 ? 'Suspected colorectal cancer' : 
-                index % 4 === 1 ? 'Suspected IBD' : 
-                index % 4 === 2 ? 'Suspected peptic ulcer disease' : 'Suspected liver disease',
-      medications: ['Omeprazole 20mg OD', 'Buscopan 10mg TDS'],
-      allergies: index % 7 === 0 ? ['Penicillin'] : [],
-      notes: `Dashboard test referral for gastroenterology assessment.`
-    },
-    attachments: index % 2 === 0 ? [
-      {
-        id: `GAST-DASH-ATT-${index}-1`,
-        title: 'FIT Test Result',
-        contentType: 'application/pdf',
-        url: '/mock-data/fit-test.pdf',
-        date: new Date(date.getTime() - 86400000).toISOString(),
-        size: 985000
-      }
-    ] : []
-  });
-});
-
-export const allGastroenterologyReferrals = [...gastroenterologyReferrals, ...additionalGastroenterologyReferrals, ...additionalWaitingListReferrals, ...additionalDashboardReferrals];
+];
