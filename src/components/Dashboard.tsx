@@ -1,24 +1,18 @@
 
-import { Button } from '@/components/ui/button';
-import { Users, Shield, ChevronDown } from 'lucide-react';
-import SearchBar from './dashboard/SearchBar';
-import SortAndFilterControls from './dashboard/SortAndFilterControls';
-import ViewToggle from './dashboard/ViewToggle';
-import ReferralGrid from './dashboard/ReferralGrid';
-import StatisticsBar from './dashboard/StatisticsBar';
-import Titlebar from './Titlebar';
-import PageHeader from './PageHeader';
-import AIAssistantActions from './dashboard/AIAssistantActions';
-import CreateReferralDropdown from './dashboard/CreateReferralDropdown';
-import InlineSpecialtySelector from './InlineSpecialtySelector';
-import { useDashboardData } from '@/hooks/useDashboardData';
-import { useReferralSelection } from '@/hooks/useReferralSelection';
 import { useState, useEffect } from 'react';
 import { useToast } from '@/hooks/use-toast';
-import { Referral } from '@/types/referral';
 import { useNavigate } from 'react-router-dom';
+import { Referral } from '@/types/referral';
 import { specialties } from '@/data/specialtyOptions';
-import { EnhancedTabs, EnhancedTabsContent, EnhancedTabsList, EnhancedTabsTrigger } from '@/components/ui/enhanced-tabs';
+import { useDashboardData } from '@/hooks/useDashboardData';
+import { useReferralSelection } from '@/hooks/useReferralSelection';
+import Titlebar from './Titlebar';
+import PageHeader from './PageHeader';
+import StatisticsBar from './dashboard/StatisticsBar';
+import DashboardHeader from './dashboard/DashboardHeader';
+import DashboardControls from './dashboard/DashboardControls';
+import SelectionBanner from './dashboard/SelectionBanner';
+import DashboardTabs from './dashboard/DashboardTabs';
 
 const Dashboard = () => {
   const [view, setView] = useState<'card' | 'list'>('card');
@@ -97,14 +91,6 @@ const Dashboard = () => {
     }
   };
 
-  const handleSelectAll = () => {
-    if (isAllSelected(filteredReferrals)) {
-      clearSelection();
-    } else {
-      selectAll(filteredReferrals);
-    }
-  };
-
   const selectedReferrals = getSelectedReferrals(filteredReferrals);
   const specialtyNames = specialties.map(s => s.name);
 
@@ -114,137 +100,54 @@ const Dashboard = () => {
       <PageHeader searchValue={searchTerm} onSearchChange={setSearchTerm} />
       
       <div className="space-y-6">
-        <div className="px-6 py-6">
-          <div className="flex flex-col sm:flex-row justify-between gap-4">
-            <div>
-              <h1 className="text-2xl font-bold">Referral Dashboard</h1>
-              <div className="flex items-center mt-1">
-                <span className="text-sm text-muted-foreground mr-2">Triaging for:</span>
-                <InlineSpecialtySelector
-                  specialties={specialtyNames}
-                  selectedSpecialties={selectedSpecialties}
-                  onSelectionChange={handleSpecialtySelectionChange}
-                />
-              </div>
-            </div>
-            <div className="flex gap-2 w-full sm:w-auto">
-              <CreateReferralDropdown onReferralCreated={handleCreateReferral} />
-            </div>
-          </div>
-        </div>
+        <DashboardHeader
+          selectedSpecialties={selectedSpecialties}
+          specialtyNames={specialtyNames}
+          onSpecialtySelectionChange={handleSpecialtySelectionChange}
+          onReferralCreated={handleCreateReferral}
+        />
 
         <div className="px-6">
           <StatisticsBar />
         </div>
 
         <div className="px-6 space-y-6">
-          {selectedCount > 0 && (
-            <div className="flex items-center justify-between bg-blue-50 border border-blue-200 rounded-lg p-3">
-              <div className="flex items-center gap-2">
-                <Users className="h-4 w-4 text-blue-600" />
-                <span className="text-sm font-medium text-blue-800">
-                  {selectedCount} referral{selectedCount > 1 ? 's' : ''} selected
-                </span>
-              </div>
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={clearSelection}
-                className="text-blue-600 hover:text-blue-800"
-              >
-                Clear selection
-              </Button>
-            </div>
-          )}
+          <SelectionBanner
+            selectedCount={selectedCount}
+            onClearSelection={clearSelection}
+          />
 
-          <div className="flex flex-col gap-4">
-            <div className="flex flex-col lg:flex-row gap-4 items-start lg:items-center">
-              <div className="w-full lg:flex-1">
-                <SearchBar searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
-              </div>
-              
-              <div className="flex gap-2 w-full lg:w-auto items-center lg:flex-shrink-0">
-                <SortAndFilterControls
-                  sortField={sortField}
-                  setSortField={setSortField}
-                  sortDirection={sortDirection}
-                  setSortDirection={setSortDirection}
-                  statusFilter={statusFilter}
-                  setStatusFilter={setStatusFilter}
-                  priorityFilter={priorityFilter}
-                  setPriorityFilter={setPriorityFilter}
-                />
-                <ViewToggle view={view} onViewChange={setView} />
-                <AIAssistantActions 
-                  selectedReferrals={selectedReferrals}
-                  onClearSelection={clearSelection}
-                  context="dashboard"
-                />
-              </div>
-            </div>
-          </div>
+          <DashboardControls
+            searchTerm={searchTerm}
+            setSearchTerm={setSearchTerm}
+            sortField={sortField}
+            setSortField={setSortField}
+            sortDirection={sortDirection}
+            setSortDirection={setSortDirection}
+            statusFilter={statusFilter}
+            setStatusFilter={setStatusFilter}
+            priorityFilter={priorityFilter}
+            setPriorityFilter={setPriorityFilter}
+            view={view}
+            onViewChange={setView}
+            selectedReferrals={selectedReferrals}
+            onClearSelection={clearSelection}
+          />
 
-          <EnhancedTabs defaultValue="new" className="w-full">
-            <div className="flex justify-center mb-3">
-              <div className="w-full max-w-2xl">
-                <EnhancedTabsList variant="grid" size="md">
-                  <EnhancedTabsTrigger value="new" variant="grid" size="md">Awaiting Triage ({referrals.filter(r => r.status === 'new').length})</EnhancedTabsTrigger>
-                  <EnhancedTabsTrigger value="processed" variant="grid" size="md">Processed ({referrals.filter(r => r.status !== 'new').length})</EnhancedTabsTrigger>
-                  <EnhancedTabsTrigger value="all" variant="grid" size="md">All Referrals</EnhancedTabsTrigger>
-                </EnhancedTabsList>
-              </div>
-            </div>
-
-            <EnhancedTabsContent value="new">
-              <ReferralGrid 
-                referrals={filteredReferrals} 
-                isLoading={isLoading} 
-                isReordering={isReordering}
-                filter={(r) => r.status === 'new'}
-                view={view}
-                onReorder={handleReorderReferrals}
-                selectedIds={selectedIds}
-                onToggleSelection={toggleSelection}
-                onSelectAll={handleSelectAll}
-                onClearSelection={clearSelection}
-                isAllSelected={isAllSelected(filteredReferrals.filter(r => r.status === 'new'))}
-                isIndeterminate={isIndeterminate(filteredReferrals.filter(r => r.status === 'new'))}
-              />
-            </EnhancedTabsContent>
-
-            <EnhancedTabsContent value="processed">
-              <ReferralGrid 
-                referrals={filteredReferrals} 
-                isLoading={isLoading} 
-                isReordering={isReordering}
-                filter={(r) => r.status !== 'new'}
-                view={view}
-                onReorder={handleReorderReferrals}
-                selectedIds={selectedIds}
-                onToggleSelection={toggleSelection}
-                onSelectAll={handleSelectAll}
-                onClearSelection={clearSelection}
-                isAllSelected={isAllSelected(filteredReferrals.filter(r => r.status !== 'new'))}
-                isIndeterminate={isIndeterminate(filteredReferrals.filter(r => r.status !== 'new'))}
-              />
-            </EnhancedTabsContent>
-
-            <EnhancedTabsContent value="all">
-              <ReferralGrid 
-                referrals={filteredReferrals} 
-                isLoading={isLoading} 
-                isReordering={isReordering}
-                view={view} 
-                onReorder={handleReorderReferrals}
-                selectedIds={selectedIds}
-                onToggleSelection={toggleSelection}
-                onSelectAll={handleSelectAll}
-                onClearSelection={clearSelection}
-                isAllSelected={isAllSelected(filteredReferrals)}
-                isIndeterminate={isIndeterminate(filteredReferrals)}
-              />
-            </EnhancedTabsContent>
-          </EnhancedTabs>
+          <DashboardTabs
+            referrals={referrals}
+            filteredReferrals={filteredReferrals}
+            isLoading={isLoading}
+            isReordering={isReordering}
+            view={view}
+            onReorder={handleReorderReferrals}
+            selectedIds={selectedIds}
+            onToggleSelection={toggleSelection}
+            onSelectAll={() => selectAll(filteredReferrals)}
+            onClearSelection={clearSelection}
+            isAllSelected={isAllSelected}
+            isIndeterminate={isIndeterminate}
+          />
         </div>
       </div>
     </div>
