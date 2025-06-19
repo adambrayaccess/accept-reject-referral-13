@@ -13,12 +13,12 @@ export const patient003: Patient = {
   address: '789 Oak Avenue, Birmingham, B1 1AA',
   phone: '07700 900456',
   medicalHistory: {
-    vitalSigns: createVitalSignsSequence('2023-03-20T00:00:00Z', 'critical'),
+    vitalSigns: createVitalSignsSequence('2023-03-20T00:00:00Z', 'monitoring'),
     testResults: [
       ...createCommonTestResults('003', 'Dr. Michael Davis', '2023-03-15T00:00:00Z'),
       ...createSpecializedTestResults('003', 'Dr. Michael Davis', 'renal', '2023-03-15T00:00:00Z')
     ],
-    medicationHistory: createMedicationHistory('003', 'Dr. Michael Davis', ['kidney_disease', 'hypertension'], '2023-03-01T00:00:00Z'),
+    medicationHistory: createMedicationHistory('003', 'Dr. Michael Davis', ['hypertension'], '2023-03-01T00:00:00Z'),
     mhaSections: [
       {
         id: 'MHA003001',

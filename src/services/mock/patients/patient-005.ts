@@ -16,9 +16,9 @@ export const patient005: Patient = {
     vitalSigns: createVitalSignsSequence('2023-08-10T00:00:00Z', 'stable'),
     testResults: [
       ...createCommonTestResults('005', 'Dr. Lisa Brown', '2023-08-05T00:00:00Z'),
-      ...createSpecializedTestResults('005', 'Dr. Lisa Brown', 'neurological', '2023-08-05T00:00:00Z')
+      ...createSpecializedTestResults('005', 'Dr. Lisa Brown', 'cardiac', '2023-08-05T00:00:00Z')
     ],
-    medicationHistory: createMedicationHistory('005', 'Dr. Lisa Brown', ['epilepsy', 'anxiety'], '2023-08-01T00:00:00Z'),
+    medicationHistory: createMedicationHistory('005', 'Dr. Lisa Brown', ['depression'], '2023-08-01T00:00:00Z'),
     mhaSections: [
       {
         id: 'MHA005001',
