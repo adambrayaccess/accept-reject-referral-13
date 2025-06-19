@@ -69,6 +69,15 @@ export interface TestResult {
   notes?: string;
 }
 
+export interface MedicalCondition {
+  id: string;
+  name: string;
+  status: 'active' | 'inactive' | 'resolved';
+  diagnosedDate: string;
+  severity: 'mild' | 'moderate' | 'severe';
+  notes?: string;
+}
+
 export interface MedicalHistory {
   vitalSigns: VitalSign[];
   cardiograms?: Cardiogram[];
@@ -76,4 +85,5 @@ export interface MedicalHistory {
   mhaSections?: MHASection[];
   testResults?: TestResult[];
   allergies?: import('./allergy').Allergy[];
+  conditions?: MedicalCondition[];
 }
