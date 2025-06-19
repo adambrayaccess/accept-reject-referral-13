@@ -1,297 +1,182 @@
-import { Referral, TriageStatus } from '@/types/referral';
+
+import { Referral } from '@/types/referral';
 import { mockPatients } from '../patients';
-import { mockPractitioners } from '../practitioners';
-import { generateMockAppointment, generateSubReferralData } from '../appointmentGenerator';
+
+// Find patients for dermatology referrals
+const johnSmith = mockPatients.find(p => p.id === 'P001')!;
+const sarahDavis = mockPatients.find(p => p.id === 'P002')!;
+const aliceJohnson = mockPatients.find(p => p.id === 'P003')!;
+const emmaThompson = mockPatients.find(p => p.id === 'P004')!;
+const davidWilson = mockPatients.find(p => p.id === 'P005')!;
 
 export const dermatologyReferrals: Referral[] = [
   {
-    id: 'AGE-2024-001',
-    ubrn: 'AGE001',
-    created: '2024-04-27T14:20:00Z',
-    status: 'new',
+    id: 'DERM-2024-001',
+    ubrn: 'RFR-2024-DERM-001',
+    status: 'accepted',
+    triageStatus: 'routine',
     priority: 'routine',
-    patient: mockPatients[1],
-    referrer: mockPractitioners[3],
     specialty: 'Dermatology',
     service: 'General Dermatology',
-    triageStatus: 'pre-assessment',
-    tags: ['eczema', 'chronic-condition', 'steroid-trial'],
-    clinicalInfo: {
-      reason: 'Persistent rash on trunk and limbs',
-      history: 'Patient presents with pruritic rash present for 3 months. Not responding to OTC treatments.',
-      diagnosis: 'Suspected eczema/dermatitis',
-      medications: ['Cetirizine 10mg OD', 'Hydrocortisone 1% cream BD'],
-      allergies: [],
-      notes: 'Referral from Access Group Elemental GP'
+    patient: sarahDavis, // Patient P002 with severe allergies
+    referrer: {
+      id: 'REF003',
+      name: 'Dr. Michael Brown',
+      role: 'GP',
+      organization: 'Hillside Medical Practice',
+      contact: 'michael.brown@hillsidemedical.nhs.uk'
     },
-    attachments: [
+    clinicalInfo: {
+      reason: 'Suspicious skin lesion on back, irregular borders, changing appearance over 3 months',
+      history: 'Patient noticed a new mole on upper back 6 months ago. Initially small and regular, but has grown in size and developed irregular borders. No family history of melanoma. Patient works outdoors and has history of sunburn.',
+      diagnosis: 'Suspicious melanocytic lesion - ?malignant melanoma',
+      medications: ['Aspirin 75mg OD (CONTRAINDICATED - LIFE-THREATENING ALLERGY)', 'Moisturizer for dry skin'],
+      allergies: ['Aspirin - LIFE-THREATENING anaphylaxis', 'Latex - contact dermatitis', 'Peanuts - severe reaction with breathing difficulty']
+    },
+    created: '2024-01-15T09:30:00Z',
+    updated: '2024-01-15T14:20:00Z',
+    documents: [
       {
-        id: 'AGE-ATT-001-1',
-        title: 'Clinical Photos - Torso',
-        contentType: 'image/jpeg',
-        url: '/mock-data/rash-photos-torso.jpg',
-        date: '2024-04-26T15:30:00Z',
-        size: 2845000
+        id: 'DOC-DERM-001-001',
+        name: 'GP Referral Letter',
+        type: 'referral_letter',
+        uploadedAt: '2024-01-15T09:30:00Z',
+        size: 156789,
+        analysisStatus: 'completed'
+      },
+      {
+        id: 'DOC-DERM-001-002',
+        name: 'Skin Lesion Photos',
+        type: 'image',
+        uploadedAt: '2024-01-15T09:45:00Z',
+        size: 2345678,
+        analysisStatus: 'completed'
       }
-    ]
+    ],
+    auditLog: [
+      {
+        timestamp: '2024-01-15T09:30:00Z',
+        action: 'referral_received',
+        user: 'System',
+        details: 'Referral received from Dr. Michael Brown'
+      },
+      {
+        timestamp: '2024-01-15T14:20:00Z',
+        action: 'referral_accepted',
+        user: 'Dr. Sarah Wilson',
+        details: 'Referral accepted for General Dermatology'
+      }
+    ],
+    tags: ['urgent-review', 'potential-cancer', 'photo-documentation']
   },
   {
-    id: 'REF-2023-002',
-    ubrn: '234567890123',
-    created: '2023-06-14T14:20:00Z',
-    status: 'accepted',
-    priority: 'routine',
-    patient: mockPatients[1],
-    referrer: mockPractitioners[1],
+    id: 'AGE-2024-001',
+    ubrn: 'RFR-2024-AGE-001',
+    status: 'new',
+    triageStatus: 'pre-assessment',
+    priority: 'urgent',
     specialty: 'Dermatology',
-    service: 'General Dermatology',
-    triageStatus: 'waiting-list',
-    tags: ['eczema', 'photos-attached', 'gp-managed'],
-    clinicalInfo: {
-      reason: 'Persistent rash on trunk and limbs',
-      history: 'Patient presents with pruritic rash present for 3 months. Not responding to OTC treatments.',
-      diagnosis: 'Suspected eczema/dermatitis',
-      medications: ['Cetirizine 10mg OD', 'Hydrocortisone 1% cream BD'],
-      allergies: [],
-      notes: 'No known history of skin conditions.'
+    service: 'Age Spot Removal',
+    patient: johnSmith, // Patient P001 with penicillin and shellfish allergies
+    referrer: {
+      id: 'REF004',
+      name: 'Dr. Lisa Anderson',
+      role: 'GP',
+      organization: 'Central Health Clinic',
+      contact: 'lisa.anderson@centralhealth.nhs.uk'
     },
-    attachments: [
+    clinicalInfo: {
+      reason: 'Multiple age spots on face and hands, patient requesting cosmetic removal',
+      history: 'Patient has developed multiple brown spots on face and hands over past 5 years. No pain or irritation, purely cosmetic concern. Patient is otherwise healthy.',
+      diagnosis: 'Solar lentigines (age spots)',
+      medications: ['Penicillin 500mg - CONTRAINDICATED due to severe allergy', 'Multivitamin daily'],
+      allergies: ['Penicillin - severe rash and facial swelling', 'Shellfish - hives and nausea']
+    },
+    created: '2024-02-10T11:15:00Z',
+    updated: '2024-02-10T11:15:00Z',
+    documents: [
       {
-        id: 'ATT-003',
-        title: 'Photographs of Rash',
-        contentType: 'image/jpeg',
-        url: '/mock-data/rash-photos.jpg',
-        date: '2023-06-13T09:45:00Z',
-        size: 3568000
+        id: 'DOC-AGE-001-001',
+        name: 'Age Spot Assessment',
+        type: 'clinical_notes',
+        uploadedAt: '2024-02-10T11:15:00Z',
+        size: 89432,
+        analysisStatus: 'pending'
       }
-    ]
+    ],
+    auditLog: [
+      {
+        timestamp: '2024-02-10T11:15:00Z',
+        action: 'referral_received',
+        user: 'System',
+        details: 'Referral received from Dr. Lisa Anderson'
+      }
+    ],
+    tags: ['cosmetic', 'elective']
+  },
+  {
+    id: 'DERM-2024-003',
+    ubrn: 'RFR-2024-DERM-003',
+    status: 'in_progress',
+    triageStatus: 'urgent',
+    priority: 'urgent',
+    specialty: 'Dermatology',
+    service: 'Dermatology Oncology',
+    patient: emmaThompson, // Patient P004 with codeine and egg allergies
+    referrer: {
+      id: 'REF005',
+      name: 'Dr. James Wilson',
+      role: 'GP',
+      organization: 'Riverside Practice',
+      contact: 'james.wilson@riverside.nhs.uk'
+    },
+    clinicalInfo: {
+      reason: 'Rapidly growing nodular lesion on scalp, bleeding and ulceration',
+      history: 'Patient developed a small bump on scalp 4 months ago. Has grown rapidly and now bleeds easily with minor trauma. Patient reports occasional pain and tenderness.',
+      diagnosis: 'Squamous cell carcinoma - suspected',
+      medications: ['Codeine - CONTRAINDICATED due to nausea/vomiting', 'Paracetamol 1g QDS', 'Topical antiseptic'],
+      allergies: ['Codeine - severe nausea and confusion', 'Eggs - gastrointestinal upset']
+    },
+    created: '2024-01-28T14:45:00Z',
+    updated: '2024-02-05T10:30:00Z',
+    documents: [
+      {
+        id: 'DOC-DERM-003-001',
+        name: 'Urgent Referral Letter',
+        type: 'referral_letter',
+        uploadedAt: '2024-01-28T14:45:00Z',
+        size: 178234,
+        analysisStatus: 'completed'
+      },
+      {
+        id: 'DOC-DERM-003-002',
+        name: 'Scalp Lesion Biopsy Results',
+        type: 'pathology_report',
+        uploadedAt: '2024-02-05T10:30:00Z',
+        size: 245789,
+        analysisStatus: 'completed'
+      }
+    ],
+    auditLog: [
+      {
+        timestamp: '2024-01-28T14:45:00Z',
+        action: 'referral_received',
+        user: 'System',
+        details: 'Urgent referral received from Dr. James Wilson'
+      },
+      {
+        timestamp: '2024-01-29T08:15:00Z',
+        action: 'referral_accepted',
+        user: 'Dr. Sarah Wilson',
+        details: 'Urgent referral accepted for Dermatology Oncology'
+      },
+      {
+        timestamp: '2024-02-05T10:30:00Z',
+        action: 'biopsy_completed',
+        user: 'Dr. Sarah Wilson',
+        details: 'Scalp lesion biopsy completed and results uploaded'
+      }
+    ],
+    tags: ['cancer-pathway', 'biopsy-required', 'urgent-oncology']
   }
 ];
-
-const additionalDermatologyReferrals: Referral[] = Array.from({ length: 48 }, (_, i) => {
-  const index = i + 2;
-  const patientIndex = index % mockPatients.length;
-  const practitionerIndex = index % mockPractitioners.length;
-  const priorityOptions: Referral['priority'][] = ['routine', 'urgent', 'emergency'];
-  const priority = priorityOptions[index % 3];
-  
-  // Better distribution: 30% for dashboard, 70% for waiting list
-  let status: Referral['status'];
-  let triageStatus: TriageStatus;
-  
-  if (index <= 15) {
-    // Dashboard referrals
-    if (index % 3 === 0) {
-      status = 'new';
-      triageStatus = 'pre-assessment';
-    } else if (index % 3 === 1) {
-      status = 'accepted';
-      triageStatus = 'assessed';
-    } else {
-      status = 'rejected';
-      triageStatus = 'refer-to-another-specialty';
-    }
-  } else {
-    // Waiting list referrals
-    status = 'accepted';
-    triageStatus = 'waiting-list';
-  }
-  
-  const daysAgo = Math.floor(Math.random() * 365) + 1;
-  const date = new Date();
-  date.setDate(date.getDate() - daysAgo);
-  const created = date.toISOString();
-  
-  // Enhanced tag options for dermatology
-  const tagOptions = [
-    ['suspicious-lesion', 'two-week-wait'],
-    ['acne', 'scarring', 'isotretinoin-candidate'],
-    ['psoriasis', 'biologic-candidate'],
-    ['eczema', 'atopic-dermatitis'],
-    ['melanoma-concern', 'dermoscopy-required'],
-    ['rosacea', 'laser-candidate'],
-    ['hidradenitis', 'surgery-required'],
-    ['hair-loss', 'alopecia'],
-    ['skin-cancer', 'excision-required'],
-    ['birthmark', 'cosmetic-concern']
-  ];
-  
-  const attachmentOptions = [
-    { title: 'Clinical Photographs', contentType: 'image/jpeg', url: '/mock-data/rash-photos.jpg', size: 3568000 },
-    { title: 'Dermoscopy Images', contentType: 'image/jpeg', url: '/mock-data/dermoscopy.jpg', size: 4120000 },
-    { title: 'Biopsy Report', contentType: 'application/pdf', url: '/mock-data/biopsy-report.pdf', size: 1890000 },
-    { title: 'Allergy Test Results', contentType: 'application/pdf', url: '/mock-data/allergy-tests.pdf', size: 2340000 },
-    { title: 'Previous Treatment Records', contentType: 'application/pdf', url: '/mock-data/treatment-history.pdf', size: 1567000 }
-  ];
-
-  // Generate appointment and sub-referral data
-  const appointmentDetails = generateMockAppointment(`DERM-2024-${index.toString().padStart(3, '0')}`, created, 'Dermatology');
-  const subReferralData = generateSubReferralData(`DERM-2024-${index.toString().padStart(3, '0')}`);
-  
-  return {
-    id: `DERM-2024-${index.toString().padStart(3, '0')}`,
-    ubrn: `D${(1000000 + index).toString().padStart(8, '0')}`,
-    created,
-    status,
-    priority,
-    patient: mockPatients[patientIndex],
-    referrer: mockPractitioners[practitionerIndex],
-    specialty: 'Dermatology',
-    service: index % 3 === 0 ? 'General Dermatology' : 
-             index % 3 === 1 ? 'Skin Cancer Service' : 'Pediatric Dermatology',
-    triageStatus,
-    tags: tagOptions[index % tagOptions.length],
-    appointmentDetails,
-    ...subReferralData,
-    clinicalInfo: {
-      reason: index % 4 === 0 ? 'Persistent rash' : 
-              index % 4 === 1 ? 'Suspicious mole' : 
-              index % 4 === 2 ? 'Severe acne' : 'Chronic urticaria',
-      history: `Patient with ${index % 2 === 0 ? 'new onset' : 'chronic'} symptoms for past ${Math.floor(Math.random() * 12) + 1} months.`,
-      diagnosis: index % 3 === 0 ? 'Suspected eczema' : 
-                index % 3 === 1 ? 'Suspected melanoma' : 'Suspected psoriasis',
-      medications: ['Cetirizine 10mg OD', 'Hydrocortisone 1% cream BD'],
-      allergies: index % 5 === 0 ? ['Latex'] : [],
-      notes: `Patient has ${index % 2 === 0 ? 'no significant' : 'family'} history of skin conditions.`
-    },
-    attachments: index % 3 !== 2 ? [
-      {
-        id: `DERM-ATT-${index}-1`,
-        ...attachmentOptions[index % attachmentOptions.length],
-        date: new Date(date.getTime() - 86400000).toISOString(),
-      }
-    ] : []
-  };
-});
-
-// Add 7 additional waiting list test records
-const additionalWaitingListReferrals: Referral[] = Array.from({ length: 7 }, (_, i) => {
-  const index = i + 100;
-  const patientIndex = index % mockPatients.length;
-  const practitionerIndex = index % mockPractitioners.length;
-  const priorityOptions: Referral['priority'][] = ['routine', 'urgent'];
-  const priority = priorityOptions[index % 2];
-  
-  const daysAgo = Math.floor(Math.random() * 180) + 30;
-  const date = new Date();
-  date.setDate(date.getDate() - daysAgo);
-  const created = date.toISOString();
-  
-  const tagOptions = [
-    ['eczema', 'chronic-management'],
-    ['psoriasis', 'biologic-assessment'],
-    ['acne', 'isotretinoin-review'],
-    ['mole-check', 'routine-screening'],
-    ['rosacea', 'laser-consultation'],
-    ['skin-cancer', 'follow-up'],
-    ['dermatitis', 'patch-testing']
-  ];
-
-  const appointmentDetails = generateMockAppointment(`DERM-WL-${(index + 1).toString().padStart(3, '0')}`, created, 'Dermatology');
-  const subReferralData = generateSubReferralData(`DERM-WL-${(index + 1).toString().padStart(3, '0')}`);
-  
-  return {
-    id: `DERM-WL-${(index + 1).toString().padStart(3, '0')}`,
-    ubrn: `DWL${(2000000 + index).toString().padStart(8, '0')}`,
-    created,
-    status: 'accepted' as const,
-    priority,
-    patient: mockPatients[patientIndex],
-    referrer: mockPractitioners[practitionerIndex],
-    specialty: 'Dermatology',
-    service: index % 3 === 0 ? 'General Dermatology' : 
-             index % 3 === 1 ? 'Skin Cancer Service' : 'Pediatric Dermatology',
-    triageStatus: 'waiting-list' as const,
-    tags: tagOptions[i % tagOptions.length],
-    appointmentDetails,
-    ...subReferralData,
-    clinicalInfo: {
-      reason: index % 4 === 0 ? 'Chronic eczema management' : 
-              index % 4 === 1 ? 'Mole surveillance' : 
-              index % 4 === 2 ? 'Acne treatment' : 'Skin lesion review',
-      history: `Patient with stable skin condition requiring specialist review.`,
-      diagnosis: index % 3 === 0 ? 'Atopic eczema' : 
-                index % 3 === 1 ? 'Dysplastic nevus' : 'Chronic plaque psoriasis',
-      medications: ['Cetirizine 10mg OD', 'Emollients BD'],
-      allergies: index % 7 === 0 ? ['Latex'] : [],
-      notes: `Waiting list patient for routine dermatology assessment.`
-    },
-    attachments: index % 2 === 0 ? [
-      {
-        id: `DERM-WL-ATT-${index}-1`,
-        title: 'Clinical Photographs',
-        contentType: 'image/jpeg',
-        url: '/mock-data/rash-photos.jpg',
-        date: new Date(date.getTime() - 86400000).toISOString(),
-        size: 3568000
-      }
-    ] : []
-  };
-});
-
-// Add 7 additional test records for Dashboard
-const additionalDashboardReferrals: Referral[] = Array.from({ length: 7 }, (_, i) => {
-  const index = i + 200;
-  const patientIndex = index % mockPatients.length;
-  const practitionerIndex = index % mockPractitioners.length;
-  const priorityOptions: Referral['priority'][] = ['routine', 'urgent', 'emergency'];
-  const priority = priorityOptions[index % 3];
-  
-  const daysAgo = Math.floor(Math.random() * 30) + 1;
-  const date = new Date();
-  date.setDate(date.getDate() - daysAgo);
-  const created = date.toISOString();
-  
-  const tagOptions = [
-    ['rash', 'dashboard-test'],
-    ['suspicious-lesion', 'dashboard-test'],
-    ['acne', 'dashboard-test'],
-    ['psoriasis', 'dashboard-test'],
-    ['eczema', 'dashboard-test'],
-    ['skin-cancer', 'dashboard-test'],
-    ['birthmark', 'dashboard-test']
-  ];
-
-  const appointmentDetails = generateMockAppointment(`DERM-DASH-${(index + 1).toString().padStart(3, '0')}`, created, 'Dermatology');
-  const subReferralData = generateSubReferralData(`DERM-DASH-${(index + 1).toString().padStart(3, '0')}`);
-  
-  return {
-    id: `DERM-DASH-${(index + 1).toString().padStart(3, '0')}`,
-    ubrn: `DDASH${(3000000 + index).toString().padStart(8, '0')}`,
-    created,
-    status: 'accepted' as const,
-    priority,
-    patient: mockPatients[patientIndex],
-    referrer: mockPractitioners[practitionerIndex],
-    specialty: 'Dermatology',
-    service: index % 3 === 0 ? 'General Dermatology' : 
-             index % 3 === 1 ? 'Skin Cancer Service' : 'Pediatric Dermatology',
-    triageStatus: 'waiting-list' as const,
-    tags: tagOptions[i % tagOptions.length],
-    appointmentDetails,
-    ...subReferralData,
-    clinicalInfo: {
-      reason: index % 4 === 0 ? 'Persistent rash' : 
-              index % 4 === 1 ? 'Suspicious mole' : 
-              index % 4 === 2 ? 'Severe acne' : 'Skin lesion review',
-      history: `Dashboard test patient with skin condition for past ${Math.floor(Math.random() * 6) + 1} months.`,
-      diagnosis: index % 3 === 0 ? 'Suspected eczema' : 
-                index % 3 === 1 ? 'Suspected melanoma' : 'Suspected psoriasis',
-      medications: ['Cetirizine 10mg OD', 'Hydrocortisone 1% cream BD'],
-      allergies: index % 7 === 0 ? ['Latex'] : [],
-      notes: `Dashboard test referral for dermatology assessment.`
-    },
-    attachments: index % 2 === 0 ? [
-      {
-        id: `DERM-DASH-ATT-${index}-1`,
-        title: 'Clinical Photographs',
-        contentType: 'image/jpeg',
-        url: '/mock-data/rash-photos.jpg',
-        date: new Date(date.getTime() - 86400000).toISOString(),
-        size: 3568000
-      }
-    ] : []
-  };
-});
-
-export const allDermatologyReferrals = [...dermatologyReferrals, ...additionalDermatologyReferrals, ...additionalWaitingListReferrals, ...additionalDashboardReferrals];

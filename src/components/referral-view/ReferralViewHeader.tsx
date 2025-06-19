@@ -13,6 +13,11 @@ interface ReferralViewHeaderProps {
 }
 
 const ReferralViewHeader = ({ referral, onBack }: ReferralViewHeaderProps) => {
+  console.log('ReferralViewHeader - Full referral data:', referral);
+  console.log('ReferralViewHeader - Patient data:', referral.patient);
+  console.log('ReferralViewHeader - Medical history:', referral.patient.medicalHistory);
+  console.log('ReferralViewHeader - Allergies from medicalHistory:', referral.patient.medicalHistory?.allergies);
+  
   return (
     <>
       <Button variant="ghost" onClick={onBack} className="mb-3">
