@@ -1,7 +1,5 @@
 
 import { Referral } from '@/types/referral';
-import { mockPractitioners } from '../practitioners';
-import { mockPatients } from '../patients';
 
 export const mentalHealthReferrals: Referral[] = [
   {
@@ -160,8 +158,19 @@ export const mentalHealthReferrals: Referral[] = [
     created: '2023-05-15T09:30:00Z',
     status: 'new',
     priority: 'routine',
-    patient: mockPatients.find(p => p.id === 'P004')!,
-    referrer: mockPractitioners.find(p => p.id === 'PRAC-003')!,
+    patient: {
+      id: 'P004',
+      name: 'Emma Thompson',
+      birthDate: '1990-03-15',
+      gender: 'female',
+      nhsNumber: '456 789 0123'
+    },
+    referrer: {
+      id: 'PRAC-003',
+      name: 'Dr. Helen Roberts',
+      role: 'GP',
+      organization: 'Leeds Primary Care'
+    },
     specialty: 'Mental Health',
     service: 'Adult Mental Health',
     clinicalInfo: {
