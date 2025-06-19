@@ -1,4 +1,3 @@
-
 import { Allergy } from '@/types/medical';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
@@ -10,6 +9,8 @@ interface AllergiesTabProps {
 }
 
 const AllergiesTab = ({ allergies }: AllergiesTabProps) => {
+  console.log('AllergiesTab: Received allergies data:', allergies);
+  
   const hasAllergies = allergies && allergies.length > 0;
 
   if (!hasAllergies) {

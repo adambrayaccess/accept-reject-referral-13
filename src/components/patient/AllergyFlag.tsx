@@ -9,7 +9,11 @@ interface AllergyFlagProps {
 }
 
 const AllergyFlag = ({ allergies }: AllergyFlagProps) => {
+  console.log('AllergyFlag: Received allergies data:', allergies);
+  
   const activeAllergies = allergies?.filter(allergy => allergy.status === 'active') || [];
+  
+  console.log('AllergyFlag: Active allergies:', activeAllergies);
   
   if (activeAllergies.length === 0) {
     return null;
