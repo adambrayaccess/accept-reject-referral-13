@@ -1,4 +1,5 @@
-import { useState } from 'react';
+
+import { useState, useEffect } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -9,8 +10,11 @@ import { mockPractitioners } from '@/services/mock/practitioners';
 import { Referral, ReferralPriority, Patient } from '@/types/referral';
 import { EnhancedTabs, EnhancedTabsContent, EnhancedTabsList, EnhancedTabsTrigger } from '@/components/ui/enhanced-tabs';
 import PatientDetailsForm from './referral-form/PatientDetailsForm';
+import GPDetailsForm from './referral-form/GPDetailsForm';
 import ClinicalDetailsForm from './referral-form/ClinicalDetailsForm';
+import ReferralDocumentsTab, { DocumentFile } from './referral-form/ReferralDocumentsTab';
 import { specialties } from '@/data/specialtyOptions';
+import { generateReferralId } from '@/utils/referralIdGenerator';
 
 interface CreateReferralModalProps {
   isOpen: boolean;
@@ -24,6 +28,7 @@ const CreateReferralModal = ({ isOpen, onClose, onSubmit }: CreateReferralModalP
   const [specialty, setSpecialty] = useState('');
   const [practitionerId, setPractitionerId] = useState('');
   
+  // Patient fields
   const [selectedPatient, setSelectedPatient] = useState<Patient | undefined>();
   const [patientName, setPatientName] = useState('');
   const [birthDate, setBirthDate] = useState('');
@@ -32,6 +37,14 @@ const CreateReferralModal = ({ isOpen, onClose, onSubmit }: CreateReferralModalP
   const [address, setAddress] = useState('');
   const [phone, setPhone] = useState('');
 
+  // GP fields
+  const [gpName, setGpName] = useState('');
+  const [gpPractice, setGpPractice] = useState('');
+  const [gpAddress, setGpAddress] = useState('');
+  const [gpPhone, setGpPhone] = useState('');
+  const [gpEmail, setGpEmail] = useState('');
+
+  // Clinical fields
   const [reason, setReason] = useState('');
   const [history, setHistory] = useState('');
   const [diagnosis, setDiagnosis] = useState('');
@@ -39,13 +52,23 @@ const CreateReferralModal = ({ isOpen, onClose, onSubmit }: CreateReferralModalP
   const [allergies, setAllergies] = useState('');
   const [notes, setNotes] = useState('');
 
+  // Documents
+  const [documents, setDocuments] = useState<DocumentFile[]>([]);
+
   const { toast } = useToast();
+
+  // Auto-generate referral ID when modal opens
+  useEffect(() => {
+    if (isOpen && !referralId) {
+      setReferralId(generateReferralId());
+    }
+  }, [isOpen, referralId]);
 
   const handlePatientSelect = (patient: Patient | undefined) => {
     setSelectedPatient(patient);
     
     if (patient) {
-      // Auto-fill all patient fields
+      // Auto-fill patient fields
       setPatientName(patient.name);
       setBirthDate(patient.birthDate);
       setGender(patient.gender);
@@ -53,18 +76,32 @@ const CreateReferralModal = ({ isOpen, onClose, onSubmit }: CreateReferralModalP
       setAddress(patient.address || '');
       setPhone(patient.phone || '');
       
+      // Auto-fill GP fields if available
+      if (patient.gpDetails) {
+        setGpName(patient.gpDetails.name);
+        setGpPractice(patient.gpDetails.practice);
+        setGpAddress(patient.gpDetails.address);
+        setGpPhone(patient.gpDetails.phone);
+        setGpEmail(patient.gpDetails.email || '');
+      }
+      
       toast({
         title: "Patient Selected",
         description: `${patient.name} has been selected and fields auto-filled.`,
       });
     } else {
-      // Clear all fields when patient is deselected
+      // Clear all fields
       setPatientName('');
       setBirthDate('');
       setGender('');
       setNhsNumber('');
       setAddress('');
       setPhone('');
+      setGpName('');
+      setGpPractice('');
+      setGpAddress('');
+      setGpPhone('');
+      setGpEmail('');
     }
   };
 
@@ -91,6 +128,16 @@ const CreateReferralModal = ({ isOpen, onClose, onSubmit }: CreateReferralModalP
       return;
     }
 
+    // Create attachments from documents
+    const attachments = documents.map(doc => ({
+      id: doc.id,
+      title: doc.title,
+      contentType: doc.file.type,
+      size: doc.file.size,
+      date: new Date().toISOString(),
+      url: URL.createObjectURL(doc.file) // Temporary URL for demo
+    }));
+
     const newReferral: Partial<Referral> = {
       id: `REF-${referralId}`,
       created: new Date().toISOString(),
@@ -106,6 +153,14 @@ const CreateReferralModal = ({ isOpen, onClose, onSubmit }: CreateReferralModalP
         nhsNumber,
         address,
         phone,
+        gpDetails: gpName ? {
+          id: `GP-${referralId}`,
+          name: gpName,
+          practice: gpPractice,
+          address: gpAddress,
+          phone: gpPhone,
+          email: gpEmail
+        } : undefined,
       },
       clinicalInfo: {
         reason,
@@ -115,13 +170,15 @@ const CreateReferralModal = ({ isOpen, onClose, onSubmit }: CreateReferralModalP
         allergies: allergies.split('\n').filter(allergy => allergy.trim()),
         notes,
       },
-      attachments: [],
+      attachments,
     };
 
     onSubmit(newReferral);
     onClose();
-    
-    // Reset form
+    resetForm();
+  };
+
+  const resetForm = () => {
     setSelectedPatient(undefined);
     setReferralId('');
     setPriority('routine');
@@ -133,17 +190,23 @@ const CreateReferralModal = ({ isOpen, onClose, onSubmit }: CreateReferralModalP
     setNhsNumber('');
     setAddress('');
     setPhone('');
+    setGpName('');
+    setGpPractice('');
+    setGpAddress('');
+    setGpPhone('');
+    setGpEmail('');
     setReason('');
     setHistory('');
     setDiagnosis('');
     setMedications('');
     setAllergies('');
     setNotes('');
+    setDocuments([]);
   };
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+      <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle>Create Manual Referral</DialogTitle>
         </DialogHeader>
@@ -156,7 +219,7 @@ const CreateReferralModal = ({ isOpen, onClose, onSubmit }: CreateReferralModalP
                   id="referralId"
                   value={referralId}
                   onChange={(e) => setReferralId(e.target.value)}
-                  placeholder="Enter referral ID"
+                  placeholder="Auto-generated"
                   required
                 />
               </div>
@@ -212,8 +275,11 @@ const CreateReferralModal = ({ isOpen, onClose, onSubmit }: CreateReferralModalP
           <EnhancedTabs defaultValue="patient" className="w-full">
             <EnhancedTabsList variant="grid" size="md">
               <EnhancedTabsTrigger value="patient" variant="grid" size="md">Patient Details</EnhancedTabsTrigger>
+              <EnhancedTabsTrigger value="gp" variant="grid" size="md">GP Details</EnhancedTabsTrigger>
               <EnhancedTabsTrigger value="clinical" variant="grid" size="md">Clinical Information</EnhancedTabsTrigger>
+              <EnhancedTabsTrigger value="documents" variant="grid" size="md">Documents</EnhancedTabsTrigger>
             </EnhancedTabsList>
+            
             <EnhancedTabsContent value="patient" className="mt-4">
               <PatientDetailsForm
                 selectedPatient={selectedPatient}
@@ -232,6 +298,23 @@ const CreateReferralModal = ({ isOpen, onClose, onSubmit }: CreateReferralModalP
                 setPhone={setPhone}
               />
             </EnhancedTabsContent>
+            
+            <EnhancedTabsContent value="gp" className="mt-4">
+              <GPDetailsForm
+                gpName={gpName}
+                setGpName={setGpName}
+                gpPractice={gpPractice}
+                setGpPractice={setGpPractice}
+                gpAddress={gpAddress}
+                setGpAddress={setGpAddress}
+                gpPhone={gpPhone}
+                setGpPhone={setGpPhone}
+                gpEmail={gpEmail}
+                setGpEmail={setGpEmail}
+                selectedPatientGP={selectedPatient?.gpDetails}
+              />
+            </EnhancedTabsContent>
+            
             <EnhancedTabsContent value="clinical" className="mt-4">
               <ClinicalDetailsForm
                 reason={reason}
@@ -246,6 +329,13 @@ const CreateReferralModal = ({ isOpen, onClose, onSubmit }: CreateReferralModalP
                 setAllergies={setAllergies}
                 notes={notes}
                 setNotes={setNotes}
+              />
+            </EnhancedTabsContent>
+            
+            <EnhancedTabsContent value="documents" className="mt-4">
+              <ReferralDocumentsTab
+                documents={documents}
+                setDocuments={setDocuments}
               />
             </EnhancedTabsContent>
           </EnhancedTabs>

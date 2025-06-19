@@ -12,6 +12,14 @@ export const patient005: Patient = {
   nhsNumber: '567 890 1234',
   address: '456 Elm Street, Manchester, M1 1AA',
   phone: '07700 900567',
+  gpDetails: {
+    id: 'GP005',
+    name: 'Dr. Sarah Thompson',
+    practice: 'Manchester Medical Centre',
+    address: '789 High Street, Manchester, M1 2BB',
+    phone: '0161 234 5678',
+    email: 'sarah.thompson@manchestermedical.nhs.uk'
+  },
   medicalHistory: {
     vitalSigns: createVitalSignsSequence('2023-08-10T00:00:00Z', 'stable'),
     testResults: [
