@@ -43,7 +43,7 @@ export const patient003: Patient = {
       ...createCommonTestResults('003', 'Dr. Rachel Green', '2023-06-10T00:00:00Z'),
       ...createSpecializedTestResults('003', 'Dr. Rachel Green', 'cardiac', '2023-06-12T00:00:00Z')
     ],
-    medicationHistory: createMedicationHistory('003', 'Dr. Rachel Green', ['cardiac'], '2023-06-01T00:00:00Z'),
+    medicationHistory: createMedicationHistory('003', 'Dr. Rachel Green', ['hypertension'], '2023-06-01T00:00:00Z'),
     allergies: [
       {
         id: 'ALLERGY003001',
