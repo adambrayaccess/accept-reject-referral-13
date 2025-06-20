@@ -41,10 +41,36 @@ export const gastroenterologyReferrals: Referral[] = [
     calculatedLocation: 'London',
     rttPathway: {
       clockStart: '2024-01-15T10:30:00Z',
-      targetDate: '2024-05-13T10:30:00Z',
-      status: 'incomplete',
-      daysRemaining: 14,
-      breachRisk: 'medium'
+      currentWeek: 12,
+      targetWeeks: 18,
+      breachDate: '2024-05-13T10:30:00Z',
+      status: 'active',
+      milestones: [
+        {
+          id: 'referral-received',
+          name: 'Referral Received',
+          date: '2024-01-15T10:30:00Z',
+          status: 'completed'
+        },
+        {
+          id: 'triage-completed',
+          name: 'Triage Completed',
+          date: '2024-01-18T14:20:00Z',
+          status: 'completed'
+        },
+        {
+          id: 'appointment-booked',
+          name: 'Appointment Booked',
+          date: '2024-01-20T09:15:00Z',
+          status: 'completed'
+        },
+        {
+          id: 'first-appointment',
+          name: 'First Appointment',
+          targetDate: '2024-04-15T10:00:00Z',
+          status: 'scheduled'
+        }
+      ]
     }
   },
   {
@@ -72,10 +98,24 @@ export const gastroenterologyReferrals: Referral[] = [
     calculatedLocation: 'Manchester',
     rttPathway: {
       clockStart: '2024-02-20T14:15:00Z',
-      targetDate: '2024-04-02T14:15:00Z',
-      status: 'incomplete',
-      daysRemaining: 5,
-      breachRisk: 'high'
+      currentWeek: 8,
+      targetWeeks: 6,
+      breachDate: '2024-04-02T14:15:00Z',
+      status: 'at-risk',
+      milestones: [
+        {
+          id: 'referral-received',
+          name: 'Referral Received',
+          date: '2024-02-20T14:15:00Z',
+          status: 'completed'
+        },
+        {
+          id: 'triage-completed',
+          name: 'Triage Completed',
+          targetDate: '2024-02-22T14:15:00Z',
+          status: 'pending'
+        }
+      ]
     }
   },
   {
@@ -103,10 +143,24 @@ export const gastroenterologyReferrals: Referral[] = [
     calculatedLocation: 'Leeds',
     rttPathway: {
       clockStart: '2024-03-10T11:45:00Z',
-      targetDate: '2024-07-07T11:45:00Z',
-      status: 'incomplete',
-      daysRemaining: 95,
-      breachRisk: 'low'
+      currentWeek: 7,
+      targetWeeks: 18,
+      breachDate: '2024-07-07T11:45:00Z',
+      status: 'active',
+      milestones: [
+        {
+          id: 'referral-received',
+          name: 'Referral Received',
+          date: '2024-03-10T11:45:00Z',
+          status: 'completed'
+        },
+        {
+          id: 'triage-completed',
+          name: 'Triage Completed',
+          targetDate: '2024-03-12T11:45:00Z',
+          status: 'pending'
+        }
+      ]
     }
   }
 ];
