@@ -7,12 +7,5 @@ export {
   neurologyReferrals,
   rheumatologyReferrals,
   gastroenterologyReferrals,
-  mentalHealthReferrals,
-  // Export the full sets as well
-  allCardiologyReferrals,
-  allDermatologyReferrals,
-  allNeurologyReferrals,
-  allRheumatologyReferrals,
-  allGastroenterologyReferrals,
-  allMentalHealthReferrals
+  mentalHealthReferrals
 } from './referrals/index';
