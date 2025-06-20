@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { RefreshCw } from 'lucide-react';
@@ -12,6 +11,7 @@ import AdminPageSkeleton from '@/components/admin/AdminPageSkeleton';
 import AdminAICopilot from '@/components/admin/AdminAICopilot';
 import Titlebar from '@/components/Titlebar';
 import PageHeader from '@/components/PageHeader';
+import ServiceBreakdown from '@/components/admin/ServiceBreakdown';
 
 const AdminPage = () => {
   const [referrals, setReferrals] = useState<Referral[]>([]);
@@ -97,6 +97,12 @@ const AdminPage = () => {
         <SpecialtyBreakdown 
           specialtyStats={specialtyStats} 
           currentSpecialty={null}
+        />
+
+        {/* Service Breakdown */}
+        <ServiceBreakdown 
+          serviceStats={specialtyStats} 
+          currentService={null}
         />
       </div>
     </div>

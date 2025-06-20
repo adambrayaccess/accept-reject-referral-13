@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { EnhancedTabs, EnhancedTabsContent, EnhancedTabsList, EnhancedTabsTrigger } from '@/components/ui/enhanced-tabs';
@@ -11,7 +10,7 @@ import Titlebar from '@/components/Titlebar';
 import PageHeader from '@/components/PageHeader';
 
 const CohortBuilder = () => {
-  const [selectedSpecialties, setSelectedSpecialties] = useState<string[]>([]);
+  const [selectedServices, setSelectedServices] = useState<string[]>([]);
   const navigate = useNavigate();
   
   // Use waiting list data for all tabs (including tagged patients)
@@ -34,7 +33,7 @@ const CohortBuilder = () => {
     isIndeterminate,
     handleRefresh: refreshWaitingList,
     reorderReferrals
-  } = useWaitingListData(selectedSpecialties);
+  } = useWaitingListData(selectedServices);
 
   useEffect(() => {
     // Check if specialties are selected
@@ -43,7 +42,7 @@ const CohortBuilder = () => {
       try {
         const parsed = JSON.parse(storedSpecialties);
         if (Array.isArray(parsed) && parsed.length > 0) {
-          setSelectedSpecialties(parsed);
+          setSelectedServices(parsed);
         } else {
           navigate('/select-specialty');
         }
@@ -56,8 +55,8 @@ const CohortBuilder = () => {
     }
   }, [navigate]);
 
-  const handleSpecialtyChange = (newSpecialties: string[]) => {
-    setSelectedSpecialties(newSpecialties);
+  const handleServiceChange = (newServices: string[]) => {
+    setSelectedServices(newServices);
   };
 
   const handleBack = () => {
@@ -71,8 +70,8 @@ const CohortBuilder = () => {
       
       <div className="px-6 py-6 space-y-6">
         <CohortBuilderHeader 
-          selectedSpecialties={selectedSpecialties}
-          onSpecialtyChange={handleSpecialtyChange}
+          selectedServices={selectedServices} 
+          onServiceChange={handleServiceChange} 
         />
 
         <EnhancedTabs defaultValue="waitingList" className="w-full">
