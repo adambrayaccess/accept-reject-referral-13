@@ -1,6 +1,6 @@
 
 import { Referral } from '@/types/referral';
-import { SpecialtyStats, OverallStats } from '@/hooks/useAdminStatistics';
+import { ServiceStats, OverallStats } from '@/hooks/useAdminStatistics';
 
 export interface AdminAISuggestion {
   id: string;
@@ -25,7 +25,7 @@ export interface AdminAIResponse {
 
 const generatePerformanceSuggestions = (
   overallStats: OverallStats,
-  specialtyStats: SpecialtyStats[]
+  serviceStats: ServiceStats[]
 ): AdminAISuggestion[] => {
   const suggestions: AdminAISuggestion[] = [];
 
@@ -51,13 +51,13 @@ const generatePerformanceSuggestions = (
   }
 
   // Check for specialties with long wait times
-  const longWaitSpecialties = specialtyStats.filter(s => s.averageWaitDays > 28);
-  if (longWaitSpecialties.length > 0) {
+  const longWaitServices = serviceStats.filter(s => s.averageWaitDays > 28);
+  if (longWaitServices.length > 0) {
     suggestions.push({
       id: 'long-wait-times',
       type: 'bottleneck',
-      title: 'Extended Wait Times in Multiple Specialties',
-      description: `${longWaitSpecialties.length} specialties have average wait times exceeding 4 weeks.`,
+      title: 'Extended Wait Times in Multiple Services',
+      description: `${longWaitServices.length} services have average wait times exceeding 4 weeks.`,
       priority: 'high',
       confidence: 0.90,
       actionable: true,
@@ -67,7 +67,7 @@ const generatePerformanceSuggestions = (
         'Consider additional appointment slots'
       ],
       reportType: 'wait-time-analysis',
-      metrics: { affectedSpecialties: longWaitSpecialties.length, threshold: 28 }
+      metrics: { affectedServices: longWaitServices.length, threshold: 28 }
     });
   }
 
@@ -95,11 +95,11 @@ const generatePerformanceSuggestions = (
   return suggestions;
 };
 
-const generateOptimizationSuggestions = (specialtyStats: SpecialtyStats[]): AdminAISuggestion[] => {
+const generateOptimizationSuggestions = (serviceStats: ServiceStats[]): AdminAISuggestion[] => {
   const suggestions: AdminAISuggestion[] = [];
 
-  // Find top performing specialties
-  const topPerformers = specialtyStats
+  // Find top performing services
+  const topPerformers = serviceStats
     .filter(s => s.total >= 10)
     .sort((a, b) => (b.accepted / b.total) - (a.accepted / a.total))
     .slice(0, 2);
@@ -109,7 +109,7 @@ const generateOptimizationSuggestions = (specialtyStats: SpecialtyStats[]): Admi
       id: 'best-practices',
       type: 'optimization',
       title: 'Best Practice Opportunities Identified',
-      description: `${topPerformers[0].specialty} shows excellent performance metrics that could be replicated.`,
+      description: `${topPerformers[0].service} shows excellent performance metrics that could be replicated.`,
       priority: 'medium',
       confidence: 0.75,
       actionable: true,
@@ -119,7 +119,7 @@ const generateOptimizationSuggestions = (specialtyStats: SpecialtyStats[]): Admi
         'Share successful processes across teams'
       ],
       reportType: 'best-practices-analysis',
-      metrics: { topPerformer: topPerformers[0].specialty }
+      metrics: { topPerformer: topPerformers[0].service }
     });
   }
 
@@ -129,7 +129,7 @@ const generateOptimizationSuggestions = (specialtyStats: SpecialtyStats[]): Admi
 export const generateAdminAISuggestions = async (
   referrals: Referral[],
   overallStats: OverallStats,
-  specialtyStats: SpecialtyStats[]
+  serviceStats: ServiceStats[]
 ): Promise<AdminAIResponse> => {
   const startTime = Date.now();
 
@@ -137,12 +137,12 @@ export const generateAdminAISuggestions = async (
   await new Promise(resolve => setTimeout(resolve, 1500));
 
   const suggestions: AdminAISuggestion[] = [
-    ...generatePerformanceSuggestions(overallStats, specialtyStats),
-    ...generateOptimizationSuggestions(specialtyStats)
+    ...generatePerformanceSuggestions(overallStats, serviceStats),
+    ...generateOptimizationSuggestions(serviceStats)
   ];
 
   // Add critical alerts for extreme cases
-  const criticalWaitTime = Math.max(...specialtyStats.map(s => s.longestWaitDays));
+  const criticalWaitTime = Math.max(...serviceStats.map(s => s.longestWaitDays));
   if (criticalWaitTime > 90) {
     suggestions.unshift({
       id: 'critical-wait-time',
@@ -171,6 +171,6 @@ export const generateAdminAISuggestions = async (
     generatedAt: new Date().toISOString(),
     processingTime,
     confidence,
-    summary: `Analyzed ${referrals.length} referrals across ${specialtyStats.length} specialties`
+    summary: `Analyzed ${referrals.length} referrals across ${serviceStats.length} services`
   };
 };

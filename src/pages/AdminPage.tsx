@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { RefreshCw } from 'lucide-react';
@@ -20,7 +21,7 @@ const AdminPage = () => {
   const { toast } = useToast();
 
   // Calculate statistics from all referrals (no filtering)
-  const { specialtyStats, overallStats } = useAdminStatistics(referrals);
+  const { serviceStats, overallStats } = useAdminStatistics(referrals);
 
   // Load all referrals data for comprehensive admin view
   const loadReferrals = async () => {
@@ -87,7 +88,7 @@ const AdminPage = () => {
         <AdminAICopilot 
           referrals={referrals}
           overallStats={overallStats}
-          specialtyStats={specialtyStats}
+          specialtyStats={serviceStats}
         />
 
         {/* Overall Statistics */}
@@ -95,13 +96,13 @@ const AdminPage = () => {
 
         {/* Specialty Breakdown */}
         <SpecialtyBreakdown 
-          specialtyStats={specialtyStats} 
-          currentSpecialty={null}
+          serviceStats={serviceStats} 
+          currentService={null}
         />
 
         {/* Service Breakdown */}
         <ServiceBreakdown 
-          serviceStats={specialtyStats} 
+          serviceStats={serviceStats} 
           currentService={null}
         />
       </div>
