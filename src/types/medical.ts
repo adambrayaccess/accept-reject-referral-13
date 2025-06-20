@@ -69,22 +69,11 @@ export interface TestResult {
   notes?: string;
 }
 
-export interface MedicalCondition {
-  id: string;
-  name: string;
-  status: 'active' | 'inactive' | 'resolved';
-  diagnosedDate: string;
-  severity: 'mild' | 'moderate' | 'severe';
-  notes?: string;
-}
-
 export interface MedicalHistory {
   vitalSigns: VitalSign[];
   cardiograms?: Cardiogram[];
   medicationHistory?: MedicationPrescription[];
-  medications?: MedicationPrescription[];
   mhaSections?: MHASection[];
   testResults?: TestResult[];
   allergies?: import('./allergy').Allergy[];
-  conditions?: MedicalCondition[];
 }

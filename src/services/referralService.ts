@@ -1,6 +1,6 @@
 
 import { Referral } from '@/types/referral';
-import { mockReferrals, findReferralById } from './mock/referrals';
+import { mockReferrals } from './mock/referrals';
 
 // Re-export all functions from the modular services
 export * from './referral/index';
@@ -10,10 +10,6 @@ const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
 export const fetchReferrals = async (): Promise<Referral[]> => {
   await delay(500);
-  console.log('=== fetchReferrals Service ===');
-  console.log('Total referrals loaded:', mockReferrals.length);
-  console.log('Referral IDs:', mockReferrals.map(r => r.id));
-  console.log('==============================');
   return mockReferrals;
 };
 
@@ -79,4 +75,18 @@ export const createReferral = async (referralData: Partial<Referral>): Promise<R
 };
 
 // Helper function to find referral by ID
-export { findReferralById };
+export const findReferralById = (id: string): Referral | undefined => {
+  const referral = mockReferrals.find(ref => ref.id === id);
+  
+  if (referral) {
+    console.log('=== findReferralById Debug ===');
+    console.log('Found referral:', referral.id);
+    console.log('Patient ID:', referral.patient.id);
+    console.log('Patient name:', referral.patient.name);
+    console.log('Patient reasonableAdjustments:', referral.patient.reasonableAdjustments);
+    console.log('Patient allergies:', referral.patient.medicalHistory?.allergies);
+    console.log('=============================');
+  }
+  
+  return referral;
+};

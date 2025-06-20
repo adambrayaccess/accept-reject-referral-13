@@ -56,17 +56,6 @@ export const mockReferrals: Referral[] = [
   testReferral003
 ];
 
-console.log('=== Mock Referrals Loading ===');
-console.log('Cardiology:', cardiologyReferrals.length);
-console.log('Dermatology:', dermatologyReferrals.length);
-console.log('Gastroenterology:', gastroenterologyReferrals.length);
-console.log('Mental Health:', mentalHealthReferrals.length);
-console.log('Neurology:', neurologyReferrals.length);
-console.log('Rheumatology:', rheumatologyReferrals.length);
-console.log('Test referrals:', 1);
-console.log('Total referrals:', mockReferrals.length);
-console.log('=============================');
-
 // Export individual specialty referrals for easier access
 export {
   cardiologyReferrals,
