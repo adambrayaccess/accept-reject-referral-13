@@ -61,37 +61,47 @@ export const useAdminStatistics = (referrals: Referral[]) => {
       const stats = statsMap.get(service)!;
       stats.total++;
       
+      // Handle main referral status
       switch (referral.status) {
         case 'new':
           stats.new++;
           break;
         case 'accepted':
           stats.accepted++;
+          // Handle triage status for accepted referrals
+          if (referral.triageStatus) {
+            switch (referral.triageStatus) {
+              case 'pre-assessment':
+                stats.preAssessment++;
+                break;
+              case 'assessed':
+                stats.assessed++;
+                break;
+              case 'waiting-list':
+                stats.waitingList++;
+                break;
+              case 'pre-admission-assessment':
+                stats.preAdmission++;
+                break;
+              case 'refer-to-another-specialty':
+                stats.referToOther++;
+                break;
+            }
+          }
           break;
         case 'rejected':
           stats.rejected++;
-          break;
-        case 'pre-assessment':
-          stats.preAssessment++;
-          break;
-        case 'assessed':
-          stats.assessed++;
-          break;
-        case 'waiting-list':
-          stats.waitingList++;
-          break;
-        case 'pre-admission':
-          stats.preAdmission++;
-          break;
-        case 'refer-to-other':
-          stats.referToOther++;
           break;
       }
     });
     
     // Calculate wait times for each service
     Array.from(statsMap.values()).forEach(stats => {
-      const serviceReferrals = referrals.filter(r => (r.specialty || 'Unknown') === stats.service && r.status === 'waiting-list');
+      const serviceReferrals = referrals.filter(r => 
+        (r.specialty || 'Unknown') === stats.service && 
+        r.status === 'accepted' && 
+        r.triageStatus === 'waiting-list'
+      );
       if (serviceReferrals.length > 0) {
         const waitDays = serviceReferrals.map(r => {
           const created = new Date(r.created);
@@ -125,6 +135,7 @@ export const useAdminStatistics = (referrals: Referral[]) => {
     };
     
     referrals.forEach(referral => {
+      // Handle main referral status
       switch (referral.status) {
         case 'new':
           stats.newReferrals++;
@@ -133,25 +144,30 @@ export const useAdminStatistics = (referrals: Referral[]) => {
         case 'accepted':
           stats.acceptedReferrals++;
           stats.accepted++;
+          // Handle triage status for accepted referrals
+          if (referral.triageStatus) {
+            switch (referral.triageStatus) {
+              case 'pre-assessment':
+                stats.preAssessment++;
+                break;
+              case 'assessed':
+                stats.assessed++;
+                break;
+              case 'waiting-list':
+                stats.waitingList++;
+                break;
+              case 'pre-admission-assessment':
+                stats.preAdmission++;
+                break;
+              case 'refer-to-another-specialty':
+                stats.referToOther++;
+                break;
+            }
+          }
           break;
         case 'rejected':
           stats.rejectedReferrals++;
           stats.rejected++;
-          break;
-        case 'pre-assessment':
-          stats.preAssessment++;
-          break;
-        case 'assessed':
-          stats.assessed++;
-          break;
-        case 'waiting-list':
-          stats.waitingList++;
-          break;
-        case 'pre-admission':
-          stats.preAdmission++;
-          break;
-        case 'refer-to-other':
-          stats.referToOther++;
           break;
       }
     });
