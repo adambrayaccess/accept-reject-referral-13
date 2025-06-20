@@ -1,11 +1,12 @@
 
 // Re-export all referrals from the structured directory
-export { mockReferrals } from './referrals/index';
-export {
+export { 
+  mockReferrals,
   cardiologyReferrals,
   dermatologyReferrals,
   neurologyReferrals,
   rheumatologyReferrals,
   gastroenterologyReferrals,
-  mentalHealthReferrals
+  mentalHealthReferrals,
+  findReferralById
 } from './referrals/index';
