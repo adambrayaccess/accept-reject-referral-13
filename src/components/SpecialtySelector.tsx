@@ -2,40 +2,40 @@
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { useNavigate } from 'react-router-dom';
-import ServiceMultiSelector from './ServiceMultiSelector';
+import SpecialtyMultiSelector from './SpecialtyMultiSelector';
 
-interface ServiceSelectorProps {
-  onServiceSelect?: (service: string) => void;
-  services: string[];
+interface SpecialtySelectorProps {
+  onSpecialtySelect?: (specialty: string) => void;
+  specialties: string[];
   isStandalone?: boolean;
 }
 
-const ServiceSelector = ({ 
-  onServiceSelect, 
-  services,
+const SpecialtySelector = ({ 
+  onSpecialtySelect, 
+  specialties,
   isStandalone = false 
-}: ServiceSelectorProps) => {
-  const [selectedServices, setSelectedServices] = useState<string[]>([]);
+}: SpecialtySelectorProps) => {
+  const [selectedSpecialties, setSelectedSpecialties] = useState<string[]>([]);
   const navigate = useNavigate();
 
-  const handleServiceChange = (servicesArray: string[]) => {
-    setSelectedServices(servicesArray);
+  const handleSpecialtyChange = (specialtiesArray: string[]) => {
+    setSelectedSpecialties(specialtiesArray);
     
-    if (onServiceSelect && servicesArray.length > 0) {
-      // For backward compatibility, call with first selected service
-      onServiceSelect(servicesArray[0]);
+    if (onSpecialtySelect && specialtiesArray.length > 0) {
+      // For backward compatibility, call with first selected specialty
+      onSpecialtySelect(specialtiesArray[0]);
     }
   };
 
   const handleContinue = () => {
-    // Store the selected services in local storage for persistence
-    if (selectedServices.length > 0) {
-      localStorage.setItem('selectedServices', JSON.stringify(selectedServices));
+    // Store the selected specialties in local storage for persistence
+    if (selectedSpecialties.length > 0) {
+      localStorage.setItem('selectedSpecialties', JSON.stringify(selectedSpecialties));
       navigate('/');
     }
   };
 
-  const filteredServices = services.filter(service => service !== 'all');
+  const filteredSpecialties = specialties.filter(specialty => specialty !== 'all');
 
   return (
     <div className={`space-y-4 ${isStandalone ? 'p-6 max-w-md mx-auto mt-20 rounded-lg border shadow-md' : ''}`}>
@@ -44,13 +44,13 @@ const ServiceSelector = ({
       )}
       
       <div className="space-y-2">
-        <label htmlFor="service-select" className="block text-sm font-medium">
+        <label htmlFor="specialty-select" className="block text-sm font-medium">
           Services for Triage
         </label>
-        <ServiceMultiSelector
-          services={filteredServices}
-          selectedServices={selectedServices}
-          onSelectionChange={handleServiceChange}
+        <SpecialtyMultiSelector
+          specialties={filteredSpecialties}
+          selectedSpecialties={selectedSpecialties}
+          onSelectionChange={handleSpecialtyChange}
           placeholder="Select one or more services"
           className="w-full"
         />
@@ -62,7 +62,7 @@ const ServiceSelector = ({
       {isStandalone && (
         <Button 
           onClick={handleContinue}
-          disabled={selectedServices.length === 0}
+          disabled={selectedSpecialties.length === 0}
           className="w-full mt-4"
         >
           Continue
@@ -72,4 +72,4 @@ const ServiceSelector = ({
   );
 };
 
-export default ServiceSelector;
+export default SpecialtySelector;

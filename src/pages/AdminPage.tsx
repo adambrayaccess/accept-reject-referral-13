@@ -12,7 +12,6 @@ import AdminPageSkeleton from '@/components/admin/AdminPageSkeleton';
 import AdminAICopilot from '@/components/admin/AdminAICopilot';
 import Titlebar from '@/components/Titlebar';
 import PageHeader from '@/components/PageHeader';
-import ServiceBreakdown from '@/components/admin/ServiceBreakdown';
 
 const AdminPage = () => {
   const [referrals, setReferrals] = useState<Referral[]>([]);
@@ -21,7 +20,7 @@ const AdminPage = () => {
   const { toast } = useToast();
 
   // Calculate statistics from all referrals (no filtering)
-  const { serviceStats, overallStats } = useAdminStatistics(referrals);
+  const { specialtyStats, overallStats } = useAdminStatistics(referrals);
 
   // Load all referrals data for comprehensive admin view
   const loadReferrals = async () => {
@@ -88,7 +87,7 @@ const AdminPage = () => {
         <AdminAICopilot 
           referrals={referrals}
           overallStats={overallStats}
-          specialtyStats={serviceStats}
+          specialtyStats={specialtyStats}
         />
 
         {/* Overall Statistics */}
@@ -96,14 +95,8 @@ const AdminPage = () => {
 
         {/* Specialty Breakdown */}
         <SpecialtyBreakdown 
-          serviceStats={serviceStats} 
-          currentService={null}
-        />
-
-        {/* Service Breakdown */}
-        <ServiceBreakdown 
-          serviceStats={serviceStats} 
-          currentService={null}
+          specialtyStats={specialtyStats} 
+          currentSpecialty={null}
         />
       </div>
     </div>

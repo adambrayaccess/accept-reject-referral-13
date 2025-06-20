@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import { useToast } from '@/hooks/use-toast';
 import { useNavigate } from 'react-router-dom';
 import { Referral } from '@/types/referral';
-import { services } from '@/data/serviceOptions';
+import { specialties } from '@/data/specialtyOptions';
 import { useDashboardData } from '@/hooks/useDashboardData';
 import { useReferralSelection } from '@/hooks/useReferralSelection';
 import Titlebar from './Titlebar';
@@ -18,7 +18,7 @@ const Dashboard = () => {
   const [view, setView] = useState<'card' | 'list'>('card');
   const { toast } = useToast();
   const navigate = useNavigate();
-  const [selectedServices, setSelectedServices] = useState<string[]>([]);
+  const [selectedSpecialties, setSelectedSpecialties] = useState<string[]>([]);
   
   const {
     filteredReferrals,
@@ -37,7 +37,7 @@ const Dashboard = () => {
     setSortField,
     sortDirection,
     setSortDirection
-  } = useDashboardData(selectedServices);
+  } = useDashboardData(selectedSpecialties);
 
   const {
     selectedIds,
@@ -52,20 +52,20 @@ const Dashboard = () => {
   } = useReferralSelection();
 
   useEffect(() => {
-    const storedServices = localStorage.getItem('selectedServices');
-    if (storedServices) {
+    const storedSpecialties = localStorage.getItem('selectedSpecialties');
+    if (storedSpecialties) {
       try {
-        const parsed = JSON.parse(storedServices);
+        const parsed = JSON.parse(storedSpecialties);
         if (Array.isArray(parsed) && parsed.length > 0) {
-          setSelectedServices(parsed);
+          setSelectedSpecialties(parsed);
         } else {
-          navigate('/select-service');
+          navigate('/select-specialty');
         }
       } catch {
-        navigate('/select-service');
+        navigate('/select-specialty');
       }
     } else {
-      navigate('/select-service');
+      navigate('/select-specialty');
     }
   }, [navigate]);
 
@@ -78,21 +78,21 @@ const Dashboard = () => {
     handleRefresh();
   };
 
-  const handleServiceSelectionChange = (newSelection: string[]) => {
-    setSelectedServices(newSelection);
+  const handleSpecialtySelectionChange = (newSelection: string[]) => {
+    setSelectedSpecialties(newSelection);
     if (newSelection.length > 0) {
-      localStorage.setItem('selectedServices', JSON.stringify(newSelection));
+      localStorage.setItem('selectedSpecialties', JSON.stringify(newSelection));
       toast({
-        title: "Services Updated",
-        description: `Now triaging for ${newSelection.length === 1 ? newSelection[0] : `${newSelection.length} services`}`,
+        title: "Specialties Updated",
+        description: `Now triaging for ${newSelection.length === 1 ? newSelection[0] : `${newSelection.length} specialties`}`,
       });
     } else {
-      localStorage.removeItem('selectedServices');
+      localStorage.removeItem('selectedSpecialties');
     }
   };
 
   const selectedReferrals = getSelectedReferrals(filteredReferrals);
-  const serviceNames = services.map(s => s.name);
+  const specialtyNames = specialties.map(s => s.name);
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -101,9 +101,9 @@ const Dashboard = () => {
       
       <div className="space-y-6">
         <DashboardHeader
-          selectedServices={selectedServices}
-          serviceNames={serviceNames}
-          onServiceSelectionChange={handleServiceSelectionChange}
+          selectedSpecialties={selectedSpecialties}
+          specialtyNames={specialtyNames}
+          onSpecialtySelectionChange={handleSpecialtySelectionChange}
           onReferralCreated={handleCreateReferral}
         />
 

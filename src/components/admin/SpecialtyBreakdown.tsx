@@ -1,27 +1,27 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { ServiceStats } from '@/hooks/useAdminStatistics';
+import { SpecialtyStats } from '@/hooks/useAdminStatistics';
 
-interface ServiceBreakdownProps {
-  serviceStats: ServiceStats[];
-  currentService: string | null;
+interface SpecialtyBreakdownProps {
+  specialtyStats: SpecialtyStats[];
+  currentSpecialty: string | null;
 }
 
-const ServiceBreakdown = ({ serviceStats, currentService }: ServiceBreakdownProps) => {
+const SpecialtyBreakdown = ({ specialtyStats, currentSpecialty }: SpecialtyBreakdownProps) => {
   return (
     <Card>
       <CardHeader>
         <CardTitle>
-          {currentService ? `${currentService} Breakdown` : 'Service Breakdown'}
+          {currentSpecialty ? `${currentSpecialty} Breakdown` : 'Service Breakdown'}
         </CardTitle>
       </CardHeader>
       <CardContent>
         <div className="space-y-4">
-          {serviceStats.map((stats) => (
-            <div key={stats.service} className="border rounded-lg p-4">
+          {specialtyStats.map((stats) => (
+            <div key={stats.specialty} className="border rounded-lg p-4">
               <div className="flex justify-between items-center mb-3">
-                <h3 className="text-lg font-semibold">{stats.service}</h3>
+                <h3 className="text-lg font-semibold">{stats.specialty}</h3>
                 <div className="flex items-center gap-3">
                   {stats.waitingList > 0 && (
                     <div className="text-sm text-muted-foreground">
@@ -91,4 +91,4 @@ const ServiceBreakdown = ({ serviceStats, currentService }: ServiceBreakdownProp
   );
 };
 
-export default ServiceBreakdown;
+export default SpecialtyBreakdown;

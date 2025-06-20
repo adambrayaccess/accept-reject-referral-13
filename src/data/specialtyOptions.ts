@@ -1,8 +1,8 @@
 
-import { ServiceOption, HealthcareProfessional } from '@/types/referral';
+import { SpecialtyOption, HealthcareProfessional } from '@/types/referral';
 
-// Centralized service configuration - all services available in the system
-export const services: ServiceOption[] = [
+// Centralized specialty configuration - all specialties available in the system
+export const specialties: SpecialtyOption[] = [
   { id: 'card', name: 'Cardiology' },
   { id: 'derm', name: 'Dermatology' },
   { id: 'endo', name: 'Endocrinology' },
@@ -16,26 +16,26 @@ export const services: ServiceOption[] = [
   { id: 'mhea', name: 'Mental Health' },
 ];
 
-// Helper function to get service name by ID
-export const getServiceNameById = (id: string): string => {
-  const service = services.find(s => s.id === id);
-  return service ? service.name : id;
+// Helper function to get specialty name by ID
+export const getSpecialtyNameById = (id: string): string => {
+  const specialty = specialties.find(s => s.id === id);
+  return specialty ? specialty.name : id;
 };
 
-// Helper function to get service ID by name
-export const getServiceIdByName = (name: string): string => {
-  const service = services.find(s => s.name === name);
-  return service ? service.id : name.toLowerCase().substring(0, 4);
+// Helper function to get specialty ID by name
+export const getSpecialtyIdByName = (name: string): string => {
+  const specialty = specialties.find(s => s.name === name);
+  return specialty ? specialty.id : name.toLowerCase().substring(0, 4);
 };
 
-// Get all service names as an array
-export const getAllServiceNames = (): string[] => {
-  return services.map(s => s.name);
+// Get all specialty names as an array
+export const getAllSpecialtyNames = (): string[] => {
+  return specialties.map(s => s.name);
 };
 
-// Validate if a service exists
-export const isValidService = (serviceId: string): boolean => {
-  return services.some(s => s.id === serviceId);
+// Validate if a specialty exists
+export const isValidSpecialty = (specialtyId: string): boolean => {
+  return specialties.some(s => s.id === specialtyId);
 };
 
 export const healthcareProfessionals: HealthcareProfessional[] = [
@@ -83,10 +83,3 @@ export const healthcareProfessionals: HealthcareProfessional[] = [
   { id: 'hp21', name: 'Dr. Steven Clark', role: 'Consultant', specialty: 'pulm' },
   { id: 'hp22', name: 'Dr. Laura Martinez', role: 'Specialist', specialty: 'pulm' },
 ];
-
-// Legacy exports for backward compatibility
-export const specialties = services;
-export const getSpecialtyNameById = getServiceNameById;
-export const getSpecialtyIdByName = getServiceIdByName;
-export const getAllSpecialtyNames = getAllServiceNames;
-export const isValidSpecialty = isValidService;

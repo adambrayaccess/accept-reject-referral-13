@@ -4,7 +4,7 @@ import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { ReferralPriority } from "@/types/referral";
 import { mockPractitioners } from "@/services/mock/practitioners";
-import { services } from "@/data/serviceOptions";
+import { specialties } from "@/data/specialtyOptions";
 
 interface ReferralBasicInfoFormProps {
   referralId: string;
@@ -63,9 +63,9 @@ const ReferralBasicInfoForm = ({
               <SelectValue placeholder="Select service" />
             </SelectTrigger>
             <SelectContent>
-              {services.map((serviceOption) => (
-                <SelectItem key={serviceOption.id} value={serviceOption.name}>
-                  {serviceOption.name}
+              {specialties.map((specialtyOption) => (
+                <SelectItem key={specialtyOption.id} value={specialtyOption.name}>
+                  {specialtyOption.name}
                 </SelectItem>
               ))}
             </SelectContent>

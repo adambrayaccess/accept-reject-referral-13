@@ -12,39 +12,39 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 
-interface InlineServiceSelectorProps {
-  services: string[];
-  selectedServices: string[];
-  onSelectionChange: (services: string[]) => void;
+interface InlineSpecialtySelectorProps {
+  specialties: string[];
+  selectedSpecialties: string[];
+  onSelectionChange: (specialties: string[]) => void;
 }
 
-const InlineServiceSelector = ({ 
-  services, 
-  selectedServices, 
+const InlineSpecialtySelector = ({ 
+  specialties, 
+  selectedSpecialties, 
   onSelectionChange
-}: InlineServiceSelectorProps) => {
+}: InlineSpecialtySelectorProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const [pendingSelection, setPendingSelection] = useState<string[]>([]);
 
   // Initialize pending selection when dropdown opens
   useEffect(() => {
     if (isOpen) {
-      setPendingSelection([...selectedServices]);
+      setPendingSelection([...selectedSpecialties]);
     }
-  }, [isOpen, selectedServices]);
+  }, [isOpen, selectedSpecialties]);
 
-  const filteredServices = services.filter(service => service !== 'all');
-  const isAllSelected = pendingSelection.length === filteredServices.length;
-  const hasPendingChanges = JSON.stringify(pendingSelection.sort()) !== JSON.stringify(selectedServices.sort());
+  const filteredSpecialties = specialties.filter(specialty => specialty !== 'all');
+  const isAllSelected = pendingSelection.length === filteredSpecialties.length;
+  const hasPendingChanges = JSON.stringify(pendingSelection.sort()) !== JSON.stringify(selectedSpecialties.sort());
 
-  const handleToggleService = (service: string, e: React.MouseEvent) => {
+  const handleToggleSpecialty = (specialty: string, e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
     
-    if (pendingSelection.includes(service)) {
-      setPendingSelection(pendingSelection.filter(s => s !== service));
+    if (pendingSelection.includes(specialty)) {
+      setPendingSelection(pendingSelection.filter(s => s !== specialty));
     } else {
-      setPendingSelection([...pendingSelection, service]);
+      setPendingSelection([...pendingSelection, specialty]);
     }
   };
 
@@ -55,7 +55,7 @@ const InlineServiceSelector = ({
     if (isAllSelected) {
       setPendingSelection([]);
     } else {
-      setPendingSelection([...filteredServices]);
+      setPendingSelection([...filteredSpecialties]);
     }
   };
 
@@ -65,17 +65,17 @@ const InlineServiceSelector = ({
   };
 
   const handleCancel = () => {
-    setPendingSelection([...selectedServices]);
+    setPendingSelection([...selectedSpecialties]);
     setIsOpen(false);
   };
 
   const getDisplayText = () => {
-    if (selectedServices.length === 0) {
+    if (selectedSpecialties.length === 0) {
       return 'No services selected';
-    } else if (selectedServices.length === filteredServices.length) {
+    } else if (selectedSpecialties.length === filteredSpecialties.length) {
       return 'All services';
     } else {
-      return selectedServices.join(', ');
+      return selectedSpecialties.join(', ');
     }
   };
 
@@ -111,24 +111,24 @@ const InlineServiceSelector = ({
         <DropdownMenuSeparator />
         
         <div className="max-h-48 overflow-y-auto">
-          {filteredServices.map((service) => (
+          {filteredSpecialties.map((specialty) => (
             <DropdownMenuItem
-              key={service}
-              onClick={(e) => handleToggleService(service, e)}
+              key={specialty}
+              onClick={(e) => handleToggleSpecialty(specialty, e)}
               onSelect={(e) => e.preventDefault()}
               className="flex items-center space-x-2 cursor-pointer"
             >
               <Checkbox 
-                checked={pendingSelection.includes(service)}
+                checked={pendingSelection.includes(specialty)}
                 onChange={() => {}}
               />
-              <span className="flex-1">{service}</span>
-              {pendingSelection.includes(service) && !selectedServices.includes(service) && (
+              <span className="flex-1">{specialty}</span>
+              {pendingSelection.includes(specialty) && !selectedSpecialties.includes(specialty) && (
                 <Badge variant="outline" className="text-xs bg-blue-50 text-blue-600 border-blue-200">
                   New
                 </Badge>
               )}
-              {!pendingSelection.includes(service) && selectedServices.includes(service) && (
+              {!pendingSelection.includes(specialty) && selectedSpecialties.includes(specialty) && (
                 <Badge variant="outline" className="text-xs bg-red-50 text-red-600 border-red-200">
                   Remove
                 </Badge>
@@ -162,4 +162,4 @@ const InlineServiceSelector = ({
   );
 };
 
-export default InlineServiceSelector;
+export default InlineSpecialtySelector;

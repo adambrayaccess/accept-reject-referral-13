@@ -1,19 +1,19 @@
 
-import ServiceSelector from '@/components/ServiceSelector';
-import { getAllServiceNames } from '@/data/serviceOptions';
+import SpecialtySelector from '@/components/SpecialtySelector';
+import { getAllSpecialtyNames } from '@/data/specialtyOptions';
 
-const ServiceSelection = () => {
-  // Use centralized service data instead of hardcoded list
-  const services = getAllServiceNames();
+const SpecialtySelection = () => {
+  // Use centralized specialty data instead of hardcoded list
+  const specialties = getAllSpecialtyNames();
 
   return (
     <div className="container mx-auto">
-      <ServiceSelector 
-        services={services} 
+      <SpecialtySelector 
+        specialties={specialties} 
         isStandalone={true} 
       />
     </div>
   );
 };
 
-export default ServiceSelection;
+export default SpecialtySelection;

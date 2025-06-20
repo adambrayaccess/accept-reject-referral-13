@@ -1,19 +1,19 @@
 
-import InlineServiceSelector from '../InlineServiceSelector';
+import InlineSpecialtySelector from '../InlineSpecialtySelector';
 import CreateReferralDropdown from './CreateReferralDropdown';
 import { Referral } from '@/types/referral';
 
 interface DashboardHeaderProps {
-  selectedServices: string[];
-  serviceNames: string[];
-  onServiceSelectionChange: (newSelection: string[]) => void;
+  selectedSpecialties: string[];
+  specialtyNames: string[];
+  onSpecialtySelectionChange: (newSelection: string[]) => void;
   onReferralCreated: (newReferral: Partial<Referral>) => void;
 }
 
 const DashboardHeader = ({
-  selectedServices,
-  serviceNames,
-  onServiceSelectionChange,
+  selectedSpecialties,
+  specialtyNames,
+  onSpecialtySelectionChange,
   onReferralCreated
 }: DashboardHeaderProps) => {
   return (
@@ -23,10 +23,10 @@ const DashboardHeader = ({
           <h1 className="text-2xl font-bold">Referral Dashboard</h1>
           <div className="flex items-center mt-1">
             <span className="text-sm text-muted-foreground mr-2">Triaging for:</span>
-            <InlineServiceSelector
-              services={serviceNames}
-              selectedServices={selectedServices}
-              onSelectionChange={onServiceSelectionChange}
+            <InlineSpecialtySelector
+              specialties={specialtyNames}
+              selectedSpecialties={selectedSpecialties}
+              onSelectionChange={onSpecialtySelectionChange}
             />
           </div>
         </div>

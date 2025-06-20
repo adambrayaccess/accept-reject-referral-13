@@ -45,7 +45,7 @@ export interface AppointmentDetails {
   notes?: string;
 }
 
-export interface ServiceOption {
+export interface SpecialtyOption {
   id: string;
   name: string;
 }
