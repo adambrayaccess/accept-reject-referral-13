@@ -2,33 +2,33 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { getAllServiceNames } from '@/data/serviceOptions';
+import { getAllSpecialtyNames } from '@/data/specialtyOptions';
 
-interface AdminServiceSelectorProps {
-  currentService: string | null;
-  onServiceSelect: (service: string) => void;
+interface AdminSpecialtySelectorProps {
+  currentSpecialty: string | null;
+  onSpecialtySelect: (specialty: string) => void;
   onShowAll: () => void;
 }
 
-const AdminServiceSelector = ({ 
-  currentService, 
-  onServiceSelect, 
+const AdminSpecialtySelector = ({ 
+  currentSpecialty, 
+  onSpecialtySelect, 
   onShowAll 
-}: AdminServiceSelectorProps) => {
-  // Use centralized service data
-  const services = getAllServiceNames();
+}: AdminSpecialtySelectorProps) => {
+  // Use centralized specialty data
+  const specialties = getAllSpecialtyNames();
 
-  const handleServiceChange = (value: string) => {
+  const handleSpecialtyChange = (value: string) => {
     if (value === 'all') {
       onShowAll();
     } else {
-      onServiceSelect(value);
+      onSpecialtySelect(value);
     }
   };
 
   const getCurrentValue = () => {
-    if (!currentService) return 'all';
-    return currentService;
+    if (!currentSpecialty) return 'all';
+    return currentSpecialty;
   };
 
   return (
@@ -39,21 +39,21 @@ const AdminServiceSelector = ({
       <CardContent>
         <div className="flex items-center gap-4">
           <div className="flex-1">
-            <Select value={getCurrentValue()} onValueChange={handleServiceChange}>
+            <Select value={getCurrentValue()} onValueChange={handleSpecialtyChange}>
               <SelectTrigger className="w-full">
                 <SelectValue placeholder="Select service" />
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="all">All Services</SelectItem>
-                {services.map((service) => (
-                  <SelectItem key={service} value={service}>
-                    {service}
+                {specialties.map((specialty) => (
+                  <SelectItem key={specialty} value={specialty}>
+                    {specialty}
                   </SelectItem>
                 ))}
               </SelectContent>
             </Select>
           </div>
-          {currentService && (
+          {currentSpecialty && (
             <Button variant="outline" onClick={onShowAll}>
               Show All
             </Button>
@@ -64,4 +64,4 @@ const AdminServiceSelector = ({
   );
 };
 
-export default AdminServiceSelector;
+export default AdminSpecialtySelector;
