@@ -1,6 +1,5 @@
-
 // Updated referral service that uses Supabase instead of mock data
-export { referralService as fetchReferrals, referralService as fetchReferralById, referralService as fetchPatientReferrals } from './supabase/referralService'
+export { referralService } from './supabase/referralService'
 
 // Keep the existing update functions for backward compatibility
 export { 
@@ -9,6 +8,22 @@ export {
   updateReferralTags,
   setReferralsData 
 } from './referral/referralUpdateService'
+
+// Export individual functions for backward compatibility
+export const fetchReferrals = async () => {
+  const { referralService } = await import('./supabase/referralService');
+  return referralService.getAll();
+};
+
+export const fetchReferralById = async (id: string) => {
+  const { referralService } = await import('./supabase/referralService');
+  return referralService.getById(id);
+};
+
+export const fetchPatientReferrals = async (patientId: string) => {
+  const { referralService } = await import('./supabase/referralService');
+  return referralService.getByPatientId(patientId);
+};
 
 // Export additional functions for backward compatibility
 export const sendHL7Message = async (referralId: string, messageType: string) => {

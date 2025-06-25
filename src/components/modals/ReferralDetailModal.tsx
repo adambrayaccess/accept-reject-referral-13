@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { Referral } from '@/types/referral';
 import { fetchReferralById, fetchPatientReferrals } from '@/services/referralService';
@@ -59,7 +60,7 @@ const ReferralDetailModal = ({ referralId, isOpen, onClose }: ReferralDetailModa
       setRelatedReferrals({
         serviceTotal: serviceReferrals.length,
         activeTotal: activeReferrals.length,
-        activeSpecialties
+        activeSpecialties: activeSpecialties
       });
     } catch (error) {
       console.error('Error fetching referral:', error);

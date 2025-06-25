@@ -9,6 +9,26 @@ type PatientInsert = Database['public']['Tables']['patients']['Insert']
 type PractitionerInsert = Database['public']['Tables']['practitioners']['Insert']
 type ReferralInsert = Database['public']['Tables']['referrals']['Insert']
 
+// Map application triage status to database triage status
+const mapTriageStatus = (triageStatus?: string): Database['public']['Enums']['triage_status'] | null => {
+  if (!triageStatus) return null;
+  
+  switch (triageStatus) {
+    case 'pre-assessment':
+      return 'pending';
+    case 'assessed':
+      return 'in-progress';
+    case 'pre-admission-assessment':
+      return 'in-progress';
+    case 'waiting-list':
+      return 'waiting-list';
+    case 'refer-to-another-specialty':
+      return 'completed';
+    default:
+      return 'pending';
+  }
+};
+
 export const dataMigration = {
   async migratePatients(): Promise<void> {
     console.log('Migrating patients...')
@@ -71,7 +91,7 @@ export const dataMigration = {
       service: referral.service,
       status: referral.status,
       priority: referral.priority,
-      triage_status: referral.triageStatus,
+      triage_status: mapTriageStatus(referral.triageStatus),
       reason: referral.clinicalInfo.reason,
       history: referral.clinicalInfo.history,
       diagnosis: referral.clinicalInfo.diagnosis,

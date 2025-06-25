@@ -8,6 +8,42 @@ import { practitionerService } from './practitionerService'
 type ReferralRow = Database['public']['Tables']['referrals']['Row']
 type ReferralInsert = Database['public']['Tables']['referrals']['Insert']
 
+// Map database triage status to application triage status
+const mapTriageStatusFromDB = (dbTriageStatus: Database['public']['Enums']['triage_status'] | null): TriageStatus | undefined => {
+  if (!dbTriageStatus) return undefined;
+  
+  switch (dbTriageStatus) {
+    case 'pending':
+      return 'pre-assessment';
+    case 'in-progress':
+      return 'assessed';
+    case 'waiting-list':
+      return 'waiting-list';
+    case 'completed':
+      return 'refer-to-another-specialty';
+    default:
+      return 'pre-assessment';
+  }
+};
+
+// Map application triage status to database triage status
+const mapTriageStatusToDB = (triageStatus: TriageStatus): Database['public']['Enums']['triage_status'] => {
+  switch (triageStatus) {
+    case 'pre-assessment':
+      return 'pending';
+    case 'assessed':
+      return 'in-progress';
+    case 'pre-admission-assessment':
+      return 'in-progress';
+    case 'waiting-list':
+      return 'waiting-list';
+    case 'refer-to-another-specialty':
+      return 'completed';
+    default:
+      return 'pending';
+  }
+};
+
 // Convert database row to Referral type
 const mapReferralFromDB = async (row: ReferralRow): Promise<Referral> => {
   // Fetch related data
@@ -39,7 +75,7 @@ const mapReferralFromDB = async (row: ReferralRow): Promise<Referral> => {
       notes: row.notes || undefined
     },
     attachments: [], // Will be loaded separately
-    triageStatus: row.triage_status as TriageStatus,
+    triageStatus: mapTriageStatusFromDB(row.triage_status),
     tags: [], // Will be loaded separately
     parentReferralId: row.parent_referral_id || undefined,
     isSubReferral: row.is_sub_referral || false,
@@ -118,7 +154,7 @@ export const referralService = {
   async updateTriageStatus(id: string, triageStatus: TriageStatus): Promise<void> {
     const { error } = await supabase
       .from('referrals')
-      .update({ triage_status: triageStatus })
+      .update({ triage_status: mapTriageStatusToDB(triageStatus) })
       .eq('id', id)
 
     if (error) {

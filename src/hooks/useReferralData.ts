@@ -51,11 +51,28 @@ export const useReferralData = (referralId?: string) => {
     loadReferralData();
   };
 
+  // Calculate related referrals for backward compatibility
+  const relatedReferrals = {
+    serviceTotal: patientReferrals.filter(ref => 
+      ref.specialty === referral?.specialty && ref.id !== referral?.id
+    ).length,
+    activeTotal: patientReferrals.filter(ref => 
+      ref.status !== 'rejected' && ref.id !== referral?.id
+    ).length,
+    activeSpecialties: Array.from(new Set(
+      patientReferrals
+        .filter(ref => ref.status !== 'rejected' && ref.id !== referral?.id)
+        .map(ref => ref.specialty)
+    ))
+  };
+
   return {
     referral,
     patientReferrals,
+    relatedReferrals,
     isLoading,
     error,
-    refreshReferralData
+    refreshReferralData,
+    loadReferral: loadReferralData // Add backward compatibility alias
   };
 };

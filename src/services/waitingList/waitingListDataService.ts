@@ -1,12 +1,12 @@
 
 import { Referral } from '@/types/referral';
-import { fetchReferrals } from '@/services/referralService';
+import { referralService } from '@/services/supabase/referralService';
 import { differenceInDays } from 'date-fns';
 import { calculateRTTPathway } from '@/utils/rttPathwayUtils';
 import { generateCarePathway } from '@/utils/carePathwayUtils';
 
 export const loadWaitingListReferrals = async (selectedSpecialties: string[] = []): Promise<Referral[]> => {
-  let data = await fetchReferrals();
+  let data = await referralService.getAll();
   
   console.log('Raw referrals loaded:', data.length);
   console.log('Sample raw referral:', data[0]);
