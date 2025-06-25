@@ -1,9 +1,11 @@
 
-import React from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import ReferralViewContent from '@/components/referral-view/ReferralViewContent';
-import ReferralViewNotFound from '@/components/referral-view/ReferralViewNotFound';
+import Titlebar from '@/components/Titlebar';
+import PageHeader from '@/components/PageHeader';
+import ReferralViewHeader from '@/components/referral-view/ReferralViewHeader';
 import ReferralViewSkeleton from '@/components/referral-view/ReferralViewSkeleton';
+import ReferralViewNotFound from '@/components/referral-view/ReferralViewNotFound';
+import ReferralViewContent from '@/components/referral-view/ReferralViewContent';
 import { useReferralData } from '@/hooks/useReferralData';
 
 const ReferralView = () => {
@@ -20,7 +22,7 @@ const ReferralView = () => {
   };
 
   const handleDocumentUploaded = () => {
-    loadReferral();
+    loadReferral(); // Refresh to show new documents
   };
 
   if (isLoading) {
@@ -32,13 +34,20 @@ const ReferralView = () => {
   }
 
   return (
-    <div className="pt-0">
-      <ReferralViewContent 
-        referral={referral}
-        relatedReferrals={relatedReferrals}
-        onStatusChange={handleStatusChange}
-        onDocumentUploaded={handleDocumentUploaded}
-      />
+    <div className="min-h-screen bg-gray-50">
+      <Titlebar />
+      <PageHeader showSearch={false} />
+      
+      <div className="container py-3 max-w-none" style={{ paddingTop: '1.5rem' }}>
+        <ReferralViewHeader referral={referral} onBack={handleBack} />
+        
+        <ReferralViewContent
+          referral={referral}
+          relatedReferrals={relatedReferrals}
+          onStatusChange={handleStatusChange}
+          onDocumentUploaded={handleDocumentUploaded}
+        />
+      </div>
     </div>
   );
 };
