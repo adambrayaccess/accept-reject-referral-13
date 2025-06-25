@@ -29,6 +29,7 @@ const AppContent: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-gray-50">
+      {/* Only render Titlebar once globally */}
       <Titlebar />
       {user ? (
         <Routes>
