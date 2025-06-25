@@ -1,11 +1,10 @@
+// Updated referral service that uses Supabase instead of mock data
+export { referralService as fetchReferrals, referralService as fetchReferralById, referralService as fetchPatientReferrals } from './supabase/referralService'
 
-// Legacy file - re-export everything from the new modular services
-// This maintains backward compatibility while we transition to the new structure
-export * from './referral';
-
+// Keep the existing update functions for backward compatibility
 export { 
   updateReferralStatus,
   updateTriageStatus,
   updateReferralTags,
   setReferralsData 
-} from './referral/referralUpdateService';
+} from './referral/referralUpdateService'
