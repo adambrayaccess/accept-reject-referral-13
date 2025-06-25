@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import Titlebar from '@/components/Titlebar';
@@ -9,46 +10,71 @@ import { useDashboardFilters } from '@/hooks/dashboard/useDashboardFilters';
 import { useDashboardSorting } from '@/hooks/dashboard/useDashboardSorting';
 import { useReferralSelection } from '@/hooks/useReferralSelection';
 import { Referral } from '@/types/referral';
+import { getAllSpecialtyNames } from '@/data/specialtyOptions';
+import { referralService } from '@/services/supabase/referralService';
 import DataMigration from '@/components/DataMigration';
+import { toast } from 'sonner';
 
 const Dashboard = () => {
-  const {
-    referrals,
-    isLoading,
-    specialtyNames,
-    reloadData
-  } = useDashboardData();
+  const [selectedSpecialties, setSelectedSpecialties] = useState<string[]>([]);
+  
+  // Load selected specialties from localStorage
+  useEffect(() => {
+    const saved = localStorage.getItem('selectedSpecialties');
+    if (saved) {
+      setSelectedSpecialties(JSON.parse(saved));
+    }
+  }, []);
 
   const {
-    selectedSpecialties,
+    referrals,
+    filteredReferrals,
+    isLoading,
+    isReordering,
+    handleRefresh,
+    handleReorderReferrals
+  } = useDashboardData(selectedSpecialties);
+
+  const {
+    searchTerm,
+    setSearchTerm,
     statusFilter,
+    setStatusFilter,
     priorityFilter,
-    searchQuery,
-    handleSpecialtySelectionChange,
-    handleStatusFilterChange,
-    handlePriorityFilterChange,
-    handleSearchChange,
+    setPriorityFilter,
     applyFilters
   } = useDashboardFilters();
 
   const {
     sortField,
+    setSortField,
     sortDirection,
-    handleSortChange
+    setSortDirection
   } = useDashboardSorting();
 
   const {
     selectedIds,
+    toggleSelection,
+    selectAll,
+    clearSelection,
     isAllSelected,
-    isIndeterminate,
-    handleToggleSelection,
-    handleSelectAll,
-    handleClearSelection
-  } = useReferralSelection(referrals);
+    isIndeterminate
+  } = useReferralSelection();
 
-  const handleReferralCreated = (newReferral: Partial<Referral>) => {
-    reloadData();
+  const specialtyNames = getAllSpecialtyNames();
+
+  const handleSpecialtySelectionChange = (newSelection: string[]) => {
+    setSelectedSpecialties(newSelection);
+    localStorage.setItem('selectedSpecialties', JSON.stringify(newSelection));
   };
+
+  const handleReferralCreated = async (newReferral: Partial<Referral>) => {
+    handleRefresh();
+    toast.success('Referral created successfully');
+  };
+
+  // Apply filters to get the current filtered referrals
+  const currentFilteredReferrals = applyFilters(referrals);
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -70,23 +96,17 @@ const Dashboard = () => {
 
         <DashboardTabs
           referrals={referrals}
+          filteredReferrals={currentFilteredReferrals}
           isLoading={isLoading}
-          statusFilter={statusFilter}
-          priorityFilter={priorityFilter}
-          searchQuery={searchQuery}
-          sortField={sortField}
-          sortDirection={sortDirection}
+          isReordering={isReordering}
+          view="card"
+          onReorder={handleReorderReferrals}
           selectedIds={selectedIds}
+          onToggleSelection={toggleSelection}
+          onSelectAll={() => selectAll(currentFilteredReferrals)}
+          onClearSelection={clearSelection}
           isAllSelected={isAllSelected}
           isIndeterminate={isIndeterminate}
-          onStatusFilterChange={handleStatusFilterChange}
-          onPriorityFilterChange={handlePriorityFilterChange}
-          onSearchChange={handleSearchChange}
-          onSortChange={handleSortChange}
-          onToggleSelection={handleToggleSelection}
-          onSelectAll={handleSelectAll}
-          onClearSelection={handleClearSelection}
-          filteredReferrals={applyFilters(referrals)}
         />
       </div>
     </div>
