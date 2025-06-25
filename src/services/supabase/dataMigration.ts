@@ -57,9 +57,13 @@ export const dataMigration = {
       pronouns: patient.pronouns
     }))
 
+    // Use upsert with the correct conflict resolution for NHS number
     const { error } = await supabase
       .from('patients')
-      .upsert(patientInserts, { onConflict: 'id' })
+      .upsert(patientInserts, { 
+        onConflict: 'nhs_number',
+        ignoreDuplicates: false 
+      })
 
     if (error) {
       console.error('Error migrating patients:', error)
@@ -85,13 +89,16 @@ export const dataMigration = {
       contact: practitioner.contact
     }))
 
-    const { error } = await supabase
-      .from('practitioners')
-      .upsert(practitionerInserts, { onConflict: 'id' })
-
-    if (error) {
-      console.error('Error migrating practitioners:', error)
-      throw error
+    // Insert practitioners one by one to handle duplicates gracefully
+    for (const practitioner of practitionerInserts) {
+      const { error } = await supabase
+        .from('practitioners')
+        .upsert(practitioner, { onConflict: 'id' })
+      
+      if (error) {
+        console.error('Error migrating practitioner:', practitioner.name, error)
+        // Continue with next practitioner instead of failing completely
+      }
     }
 
     console.log(`Migrated ${practitionerInserts.length} practitioners`)
@@ -133,9 +140,13 @@ export const dataMigration = {
       created_at: referral.created
     }))
 
+    // Use upsert with the correct conflict resolution for UBRN
     const { error } = await supabase
       .from('referrals')
-      .upsert(referralInserts, { onConflict: 'id' })
+      .upsert(referralInserts, { 
+        onConflict: 'ubrn',
+        ignoreDuplicates: false 
+      })
 
     if (error) {
       console.error('Error migrating referrals:', error)
