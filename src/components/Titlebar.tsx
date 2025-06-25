@@ -42,12 +42,6 @@ const Titlebar = () => {
           <Plus className="w-4 h-4 text-gray-600" />
         </Button>
         
-        <Button variant="ghost" size="icon" className="w-8 h-8 rounded-full">
-          <div className="w-6 h-6 bg-gray-300 rounded-full flex items-center justify-center">
-            <span className="text-xs text-gray-600">?</span>
-          </div>
-        </Button>
-        
         <Button variant="ghost" size="icon" className="w-8 h-8">
           <HelpCircle className="w-4 h-4 text-gray-600" />
         </Button>
