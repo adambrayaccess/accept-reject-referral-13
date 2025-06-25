@@ -38,6 +38,19 @@ const mapTriageStatus = (triageStatus?: string): Database['public']['Enums']['tr
   }
 };
 
+// Remove duplicates from an array based on a key function
+const removeDuplicates = <T>(array: T[], keyFn: (item: T) => string): T[] => {
+  const seen = new Set<string>();
+  return array.filter(item => {
+    const key = keyFn(item);
+    if (seen.has(key)) {
+      return false;
+    }
+    seen.add(key);
+    return true;
+  });
+};
+
 export const dataMigration = {
   async migratePatients(): Promise<Record<string, string>> {
     console.log('Migrating patients...')
@@ -46,7 +59,11 @@ export const dataMigration = {
     const patientIds = mockPatients.map(p => p.id)
     const patientIdMapping = createIdMapping(patientIds)
     
-    const patientInserts: PatientInsert[] = mockPatients.map(patient => ({
+    // Remove duplicates by NHS number
+    const uniquePatients = removeDuplicates(mockPatients, patient => patient.nhsNumber);
+    console.log(`Filtered ${mockPatients.length} patients to ${uniquePatients.length} unique patients by NHS number`);
+    
+    const patientInserts: PatientInsert[] = uniquePatients.map(patient => ({
       id: patientIdMapping[patient.id],
       name: patient.name,
       birth_date: patient.birthDate,
@@ -57,20 +74,25 @@ export const dataMigration = {
       pronouns: patient.pronouns
     }))
 
-    // Use upsert with the correct conflict resolution for NHS number
-    const { error } = await supabase
-      .from('patients')
-      .upsert(patientInserts, { 
-        onConflict: 'nhs_number',
-        ignoreDuplicates: false 
-      })
-
-    if (error) {
-      console.error('Error migrating patients:', error)
-      throw error
+    // Insert patients one by one to handle any remaining conflicts gracefully
+    let successCount = 0;
+    for (const patient of patientInserts) {
+      const { error } = await supabase
+        .from('patients')
+        .upsert(patient, { 
+          onConflict: 'nhs_number',
+          ignoreDuplicates: false 
+        })
+      
+      if (error) {
+        console.error('Error migrating patient:', patient.name, error)
+        // Continue with next patient instead of failing completely
+      } else {
+        successCount++;
+      }
     }
 
-    console.log(`Migrated ${patientInserts.length} patients`)
+    console.log(`Migrated ${successCount} patients successfully`)
     return patientIdMapping
   },
 
@@ -90,6 +112,7 @@ export const dataMigration = {
     }))
 
     // Insert practitioners one by one to handle duplicates gracefully
+    let successCount = 0;
     for (const practitioner of practitionerInserts) {
       const { error } = await supabase
         .from('practitioners')
@@ -98,10 +121,12 @@ export const dataMigration = {
       if (error) {
         console.error('Error migrating practitioner:', practitioner.name, error)
         // Continue with next practitioner instead of failing completely
+      } else {
+        successCount++;
       }
     }
 
-    console.log(`Migrated ${practitionerInserts.length} practitioners`)
+    console.log(`Migrated ${successCount} practitioners successfully`)
     return practitionerIdMapping
   },
 
@@ -112,7 +137,11 @@ export const dataMigration = {
     const referralIds = mockReferrals.map(r => r.id)
     const referralIdMapping = createIdMapping(referralIds)
     
-    const referralInserts: ReferralInsert[] = mockReferrals.map(referral => ({
+    // Remove duplicates by UBRN to prevent the conflict error
+    const uniqueReferrals = removeDuplicates(mockReferrals, referral => referral.ubrn);
+    console.log(`Filtered ${mockReferrals.length} referrals to ${uniqueReferrals.length} unique referrals by UBRN`);
+    
+    const referralInserts: ReferralInsert[] = uniqueReferrals.map(referral => ({
       id: referralIdMapping[referral.id],
       ubrn: referral.ubrn,
       patient_id: patientIdMapping[referral.patient.id],
@@ -140,20 +169,25 @@ export const dataMigration = {
       created_at: referral.created
     }))
 
-    // Use upsert with the correct conflict resolution for UBRN
-    const { error } = await supabase
-      .from('referrals')
-      .upsert(referralInserts, { 
-        onConflict: 'ubrn',
-        ignoreDuplicates: false 
-      })
-
-    if (error) {
-      console.error('Error migrating referrals:', error)
-      throw error
+    // Insert referrals one by one to handle any remaining conflicts gracefully
+    let successCount = 0;
+    for (const referral of referralInserts) {
+      const { error } = await supabase
+        .from('referrals')
+        .upsert(referral, { 
+          onConflict: 'ubrn',
+          ignoreDuplicates: false 
+        })
+      
+      if (error) {
+        console.error('Error migrating referral:', referral.ubrn, error)
+        // Continue with next referral instead of failing completely
+      } else {
+        successCount++;
+      }
     }
 
-    console.log(`Migrated ${referralInserts.length} referrals`)
+    console.log(`Migrated ${successCount} referrals successfully`)
   },
 
   async migrateAll(): Promise<void> {
