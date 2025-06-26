@@ -1,3 +1,4 @@
+
 import { supabase } from '@/integrations/supabase/client'
 import { mockPatients } from '@/services/mock/patients'
 import { mockPractitioners } from '@/services/mock/practitioners'
@@ -322,7 +323,7 @@ export const dataMigration = {
             type: mapAllergyType(allergy.type),
             severity: mapAllergySeverity(allergy.severity),
             status: mapAllergyStatus(allergy.status),
-            reactions: allergy.reactions,
+            reactions: JSON.parse(JSON.stringify(allergy.reactions)), // Convert to plain JSON
             onset_date: allergy.onsetDate,
             last_reaction_date: allergy.lastReactionDate,
             notes: allergy.notes,
@@ -412,7 +413,7 @@ export const dataMigration = {
             requested_by: testResult.requestedBy,
             performed_by: testResult.performedBy,
             status: mapTestStatus(testResult.status),
-            results: testResult.results,
+            results: testResult.results ? JSON.parse(JSON.stringify(testResult.results)) : null, // Convert to plain JSON
             interpretation: testResult.interpretation,
             notes: testResult.notes
           })
