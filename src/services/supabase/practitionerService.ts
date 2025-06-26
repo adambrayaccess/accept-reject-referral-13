@@ -4,32 +4,20 @@ import type { Database } from '@/integrations/supabase/types'
 import type { Practitioner } from '@/types/patient'
 
 type PractitionerRow = Database['public']['Tables']['practitioners']['Row']
-type PractitionerInsert = Database['public']['Tables']['practitioners']['Insert']
-
-// Convert database row to Practitioner type
-const mapPractitionerFromDB = (row: PractitionerRow): Practitioner => {
-  return {
-    id: row.id,
-    name: row.name,
-    role: row.role || undefined,
-    organization: row.organization || undefined,
-    contact: row.contact || undefined
-  }
-}
 
 export const practitionerService = {
   async getAll(): Promise<Practitioner[]> {
     const { data, error } = await supabase
       .from('practitioners')
       .select('*')
-      .order('name')
+      .order('name', { ascending: true })
 
     if (error) {
       console.error('Error fetching practitioners:', error)
       throw error
     }
 
-    return data.map(mapPractitionerFromDB)
+    return data.map(this.mapFromDB)
   },
 
   async getById(id: string): Promise<Practitioner | null> {
@@ -41,34 +29,23 @@ export const practitionerService = {
 
     if (error) {
       if (error.code === 'PGRST116') {
+        console.warn(`Practitioner ${id} not found`)
         return null // Not found
       }
       console.error('Error fetching practitioner:', error)
       throw error
     }
 
-    return mapPractitionerFromDB(data)
+    return this.mapFromDB(data)
   },
 
-  async create(practitioner: Omit<Practitioner, 'id'>): Promise<Practitioner> {
-    const practitionerInsert: PractitionerInsert = {
-      name: practitioner.name,
-      role: practitioner.role,
-      organization: practitioner.organization,
-      contact: practitioner.contact
+  mapFromDB(row: PractitionerRow): Practitioner {
+    return {
+      id: row.id,
+      name: row.name,
+      role: row.role || 'GP',
+      organization: row.organization || 'Unknown',
+      contact: row.contact || undefined
     }
-
-    const { data, error } = await supabase
-      .from('practitioners')
-      .insert(practitionerInsert)
-      .select()
-      .single()
-
-    if (error) {
-      console.error('Error creating practitioner:', error)
-      throw error
-    }
-
-    return mapPractitionerFromDB(data)
   }
 }

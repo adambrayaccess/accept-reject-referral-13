@@ -11,20 +11,29 @@ export const useDashboardData = (selectedSpecialties: string[] = []) => {
   const [isReordering, setIsReordering] = useState(false);
 
   const loadReferrals = async () => {
+    console.log('Loading referrals with selected specialties:', selectedSpecialties);
     setIsLoading(true);
     try {
       const data = await referralService.getAll();
+      console.log('Raw referral data loaded:', data.length);
       
       // Filter by selected specialties if any are selected
       const filtered = selectedSpecialties.length > 0 
         ? data.filter(ref => selectedSpecialties.includes(ref.specialty))
         : data;
       
+      console.log('Filtered referrals:', filtered.length);
       setReferrals(filtered);
       setFilteredReferrals(filtered);
+      
+      if (filtered.length === 0 && selectedSpecialties.length === 0) {
+        toast.info('No referrals found. Try running the data migration if you haven\'t already.');
+      }
     } catch (error) {
       console.error('Error fetching referrals:', error);
-      toast.error('Failed to load referrals. Please try again.');
+      toast.error('Failed to load referrals. Please check the console for details and try refreshing.');
+      setReferrals([]);
+      setFilteredReferrals([]);
     } finally {
       setIsLoading(false);
     }
