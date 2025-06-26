@@ -1,10 +1,10 @@
 
 import { Referral } from '@/types/referral';
-import { referralService } from '@/services/supabase/referralService';
+import { fetchReferrals } from '@/services/referralService';
 import { differenceInDays } from 'date-fns';
 
 export const loadAllAdminReferrals = async (): Promise<Referral[]> => {
-  let data = await referralService.getAll();
+  let data = await fetchReferrals();
   
   // Include ALL referrals for admin view - no filtering like dashboard or waiting list
   // This gives the admin a complete view across all statuses and triage stages

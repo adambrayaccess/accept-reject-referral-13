@@ -1,113 +1,154 @@
 
-import React, { useState, useEffect } from 'react';
-import { useQuery } from '@tanstack/react-query';
-import Titlebar from '@/components/Titlebar';
-import PageHeader from '@/components/PageHeader';
-import DashboardHeader from '@/components/dashboard/DashboardHeader';
-import DashboardTabs from '@/components/dashboard/DashboardTabs';
-import { useDashboardData } from '@/hooks/useDashboardData';
-import { useDashboardFilters } from '@/hooks/dashboard/useDashboardFilters';
-import { useDashboardSorting } from '@/hooks/dashboard/useDashboardSorting';
-import { useReferralSelection } from '@/hooks/useReferralSelection';
+import { useState, useEffect } from 'react';
+import { useToast } from '@/hooks/use-toast';
+import { useNavigate } from 'react-router-dom';
 import { Referral } from '@/types/referral';
-import { getAllSpecialtyNames } from '@/data/specialtyOptions';
-import { referralService } from '@/services/supabase/referralService';
-import DataMigration from '@/components/DataMigration';
-import { toast } from 'sonner';
+import { specialties } from '@/data/specialtyOptions';
+import { useDashboardData } from '@/hooks/useDashboardData';
+import { useReferralSelection } from '@/hooks/useReferralSelection';
+import Titlebar from './Titlebar';
+import PageHeader from './PageHeader';
+import StatisticsBar from './dashboard/StatisticsBar';
+import DashboardHeader from './dashboard/DashboardHeader';
+import DashboardControls from './dashboard/DashboardControls';
+import SelectionBanner from './dashboard/SelectionBanner';
+import DashboardTabs from './dashboard/DashboardTabs';
 
 const Dashboard = () => {
+  const [view, setView] = useState<'card' | 'list'>('card');
+  const { toast } = useToast();
+  const navigate = useNavigate();
   const [selectedSpecialties, setSelectedSpecialties] = useState<string[]>([]);
   
-  // Load selected specialties from localStorage
-  useEffect(() => {
-    const saved = localStorage.getItem('selectedSpecialties');
-    if (saved) {
-      setSelectedSpecialties(JSON.parse(saved));
-    }
-  }, []);
-
   const {
-    referrals,
     filteredReferrals,
     isLoading,
     isReordering,
-    handleRefresh,
-    handleReorderReferrals
-  } = useDashboardData(selectedSpecialties);
-
-  const {
     searchTerm,
     setSearchTerm,
     statusFilter,
     setStatusFilter,
     priorityFilter,
     setPriorityFilter,
-    applyFilters
-  } = useDashboardFilters();
-
-  const {
+    handleRefresh,
+    handleReorderReferrals,
+    referrals,
     sortField,
     setSortField,
     sortDirection,
     setSortDirection
-  } = useDashboardSorting();
+  } = useDashboardData(selectedSpecialties);
 
   const {
     selectedIds,
+    selectedCount,
     toggleSelection,
     selectAll,
     clearSelection,
+    isSelected,
+    getSelectedReferrals,
     isAllSelected,
     isIndeterminate
   } = useReferralSelection();
 
-  const specialtyNames = getAllSpecialtyNames();
+  useEffect(() => {
+    const storedSpecialties = localStorage.getItem('selectedSpecialties');
+    if (storedSpecialties) {
+      try {
+        const parsed = JSON.parse(storedSpecialties);
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          setSelectedSpecialties(parsed);
+        } else {
+          navigate('/select-specialty');
+        }
+      } catch {
+        navigate('/select-specialty');
+      }
+    } else {
+      navigate('/select-specialty');
+    }
+  }, [navigate]);
+
+  const handleCreateReferral = (newReferral: Partial<Referral>) => {
+    const referralType = newReferral.aiGenerated ? 'Auto' : 'Manual';
+    toast({
+      title: "Referral Created",
+      description: `${referralType} referral ${newReferral.id} has been created`,
+    });
+    handleRefresh();
+  };
 
   const handleSpecialtySelectionChange = (newSelection: string[]) => {
     setSelectedSpecialties(newSelection);
-    localStorage.setItem('selectedSpecialties', JSON.stringify(newSelection));
+    if (newSelection.length > 0) {
+      localStorage.setItem('selectedSpecialties', JSON.stringify(newSelection));
+      toast({
+        title: "Specialties Updated",
+        description: `Now triaging for ${newSelection.length === 1 ? newSelection[0] : `${newSelection.length} specialties`}`,
+      });
+    } else {
+      localStorage.removeItem('selectedSpecialties');
+    }
   };
 
-  const handleReferralCreated = async (newReferral: Partial<Referral>) => {
-    handleRefresh();
-    toast.success('Referral created successfully');
-  };
-
-  // Apply filters to get the current filtered referrals
-  const currentFilteredReferrals = applyFilters(referrals);
+  const selectedReferrals = getSelectedReferrals(filteredReferrals);
+  const specialtyNames = specialties.map(s => s.name);
 
   return (
     <div className="min-h-screen bg-gray-50">
       <Titlebar />
-      <PageHeader />
+      <PageHeader searchValue={searchTerm} onSearchChange={setSearchTerm} />
       
-      <div className="container mx-auto max-w-none">
+      <div className="space-y-6">
         <DashboardHeader
           selectedSpecialties={selectedSpecialties}
           specialtyNames={specialtyNames}
           onSpecialtySelectionChange={handleSpecialtySelectionChange}
-          onReferralCreated={handleReferralCreated}
+          onReferralCreated={handleCreateReferral}
         />
 
-        {/* Add Data Migration Component */}
-        <div className="px-6 pb-4">
-          <DataMigration />
+        <div className="px-6">
+          <StatisticsBar />
         </div>
 
-        <DashboardTabs
-          referrals={referrals}
-          filteredReferrals={currentFilteredReferrals}
-          isLoading={isLoading}
-          isReordering={isReordering}
-          view="card"
-          onReorder={handleReorderReferrals}
-          selectedIds={selectedIds}
-          onToggleSelection={toggleSelection}
-          onSelectAll={() => selectAll(currentFilteredReferrals)}
-          onClearSelection={clearSelection}
-          isAllSelected={isAllSelected}
-          isIndeterminate={isIndeterminate}
-        />
+        <div className="px-6 space-y-6">
+          <SelectionBanner
+            selectedCount={selectedCount}
+            onClearSelection={clearSelection}
+          />
+
+          <DashboardControls
+            searchTerm={searchTerm}
+            setSearchTerm={setSearchTerm}
+            sortField={sortField}
+            setSortField={setSortField}
+            sortDirection={sortDirection}
+            setSortDirection={setSortDirection}
+            statusFilter={statusFilter}
+            setStatusFilter={setStatusFilter}
+            priorityFilter={priorityFilter}
+            setPriorityFilter={setPriorityFilter}
+            view={view}
+            onViewChange={setView}
+            selectedReferrals={selectedReferrals}
+            onClearSelection={clearSelection}
+          />
+
+          <DashboardTabs
+            referrals={referrals}
+            filteredReferrals={filteredReferrals}
+            isLoading={isLoading}
+            isReordering={isReordering}
+            view={view}
+            onReorder={handleReorderReferrals}
+            selectedIds={selectedIds}
+            onToggleSelection={toggleSelection}
+            onSelectAll={() => selectAll(filteredReferrals)}
+            onClearSelection={clearSelection}
+            isAllSelected={isAllSelected}
+            isIndeterminate={isIndeterminate}
+          />
+        </div>
       </div>
     </div>
   );
