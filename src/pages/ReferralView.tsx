@@ -38,8 +38,10 @@ const ReferralView = () => {
       <Titlebar />
       <PageHeader showSearch={false} />
       
-      <div className="container mx-auto px-6 py-4 max-w-none">
-        <ReferralViewHeader referral={referral} onBack={handleBack} />
+      <div className="container mx-auto px-6 max-w-none">
+        <div className="sticky top-0 bg-gray-50 z-10 pb-4 pt-4">
+          <ReferralViewHeader referral={referral} onBack={handleBack} />
+        </div>
         
         <ReferralViewContent
           referral={referral}
