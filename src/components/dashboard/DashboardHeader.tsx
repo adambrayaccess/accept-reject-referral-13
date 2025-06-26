@@ -19,10 +19,10 @@ const DashboardHeader = ({
   return (
     <div className="px-6 py-6">
       <div className="flex flex-col sm:flex-row justify-between gap-4">
-        <div>
-          <h1 className="text-2xl font-bold">Referral Dashboard</h1>
-          <div className="flex items-center mt-1">
-            <span className="text-sm text-muted-foreground mr-2">Triaging for:</span>
+        <div className="flex-1">
+          <h1 className="text-2xl font-bold mb-2">Referral Dashboard</h1>
+          <div className="flex items-center gap-2 flex-wrap">
+            <span className="text-sm text-muted-foreground whitespace-nowrap">Triaging for:</span>
             <InlineSpecialtySelector
               specialties={specialtyNames}
               selectedSpecialties={selectedSpecialties}
@@ -30,7 +30,7 @@ const DashboardHeader = ({
             />
           </div>
         </div>
-        <div className="flex gap-2 w-full sm:w-auto">
+        <div className="flex gap-2 w-full sm:w-auto sm:flex-shrink-0">
           <CreateReferralDropdown onReferralCreated={onReferralCreated} />
         </div>
       </div>
