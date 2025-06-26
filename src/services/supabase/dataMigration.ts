@@ -1,4 +1,3 @@
-
 import { supabase } from '@/integrations/supabase/client'
 import { mockPatients } from '@/services/mock/patients'
 import { mockPractitioners } from '@/services/mock/practitioners'
@@ -8,6 +7,11 @@ import type { Database } from '@/integrations/supabase/types'
 type PatientInsert = Database['public']['Tables']['patients']['Insert']
 type PractitionerInsert = Database['public']['Tables']['practitioners']['Insert']
 type ReferralInsert = Database['public']['Tables']['referrals']['Insert']
+type AllergyInsert = Database['public']['Tables']['allergies']['Insert']
+type MedicationInsert = Database['public']['Tables']['medications']['Insert']
+type TestResultInsert = Database['public']['Tables']['test_results']['Insert']
+type VitalSignInsert = Database['public']['Tables']['vital_signs']['Insert']
+type MHASectionInsert = Database['public']['Tables']['mha_sections']['Insert']
 
 // Create UUID mapping for mock IDs
 const createIdMapping = (mockIds: string[]): Record<string, string> => {
@@ -35,6 +39,118 @@ const mapTriageStatus = (triageStatus?: string): Database['public']['Enums']['tr
       return 'completed';
     default:
       return 'pending';
+  }
+};
+
+// Map allergy severity to database enum
+const mapAllergySeverity = (severity: string): Database['public']['Enums']['allergy_severity'] => {
+  switch (severity) {
+    case 'mild':
+      return 'mild';
+    case 'moderate':
+      return 'moderate';
+    case 'severe':
+      return 'severe';
+    case 'life-threatening':
+      return 'life-threatening';
+    default:
+      return 'mild';
+  }
+};
+
+// Map allergy type to database enum
+const mapAllergyType = (type: string): Database['public']['Enums']['allergy_type'] => {
+  switch (type) {
+    case 'drug':
+      return 'drug';
+    case 'food':
+      return 'food';
+    case 'environmental':
+      return 'environmental';
+    case 'contact':
+      return 'contact';
+    case 'other':
+      return 'other';
+    default:
+      return 'other';
+  }
+};
+
+// Map allergy status to database enum
+const mapAllergyStatus = (status: string): Database['public']['Enums']['allergy_status'] => {
+  switch (status) {
+    case 'active':
+      return 'active';
+    case 'inactive':
+      return 'inactive';
+    case 'resolved':
+      return 'resolved';
+    default:
+      return 'active';
+  }
+};
+
+// Map verification status to database enum
+const mapVerificationStatus = (status: string): Database['public']['Enums']['verification_status'] => {
+  switch (status) {
+    case 'confirmed':
+      return 'confirmed';
+    case 'suspected':
+      return 'suspected';
+    case 'unlikely':
+      return 'unconfirmed';
+    case 'refuted':
+      return 'unconfirmed';
+    default:
+      return 'unconfirmed';
+  }
+};
+
+// Map medication status to database enum
+const mapMedicationStatus = (status: string): Database['public']['Enums']['medication_status'] => {
+  switch (status) {
+    case 'active':
+      return 'active';
+    case 'discontinued':
+      return 'discontinued';
+    case 'completed':
+      return 'completed';
+    case 'paused':
+      return 'paused';
+    default:
+      return 'active';
+  }
+};
+
+// Map test status to database enum
+const mapTestStatus = (status: string): Database['public']['Enums']['test_status'] => {
+  switch (status) {
+    case 'pending':
+      return 'requested';
+    case 'in-progress':
+      return 'in-progress';
+    case 'completed':
+      return 'completed';
+    case 'cancelled':
+      return 'cancelled';
+    default:
+      return 'requested';
+  }
+};
+
+// Map MHA status to database enum
+const mapMHAStatus = (status: string): Database['public']['Enums']['mha_status'] => {
+  switch (status) {
+    case 'active':
+      return 'active';
+    case 'expired':
+      return 'expired';
+    case 'discharged':
+      return 'discharged';
+    case 'appealed':
+      return 'appealed';
+    default:
+      return 'active';
   }
 };
 
@@ -190,6 +306,220 @@ export const dataMigration = {
     console.log(`Migrated ${successCount} referrals successfully`)
   },
 
+  async migrateAllergies(patientIdMapping: Record<string, string>): Promise<void> {
+    console.log('Migrating allergies...')
+    
+    const allergyInserts: AllergyInsert[] = []
+    
+    // Extract allergies from all patients
+    for (const patient of mockPatients) {
+      if (patient.medicalHistory?.allergies) {
+        for (const allergy of patient.medicalHistory.allergies) {
+          allergyInserts.push({
+            id: crypto.randomUUID(),
+            patient_id: patientIdMapping[patient.id],
+            allergen: allergy.allergen,
+            type: mapAllergyType(allergy.type),
+            severity: mapAllergySeverity(allergy.severity),
+            status: mapAllergyStatus(allergy.status),
+            reactions: allergy.reactions,
+            onset_date: allergy.onsetDate,
+            last_reaction_date: allergy.lastReactionDate,
+            notes: allergy.notes,
+            verification_status: mapVerificationStatus(allergy.verificationStatus),
+            recorded_by: allergy.recordedBy,
+            recorded_date: allergy.recordedDate
+          })
+        }
+      }
+    }
+
+    let successCount = 0
+    for (const allergy of allergyInserts) {
+      const { error } = await supabase
+        .from('allergies')
+        .insert(allergy)
+      
+      if (error) {
+        console.error('Error migrating allergy:', allergy.allergen, error)
+      } else {
+        successCount++
+      }
+    }
+
+    console.log(`Migrated ${successCount} allergies successfully`)
+  },
+
+  async migrateMedications(patientIdMapping: Record<string, string>): Promise<void> {
+    console.log('Migrating medications...')
+    
+    const medicationInserts: MedicationInsert[] = []
+    
+    // Extract medications from all patients
+    for (const patient of mockPatients) {
+      if (patient.medicalHistory?.medicationHistory) {
+        for (const medication of patient.medicalHistory.medicationHistory) {
+          medicationInserts.push({
+            id: crypto.randomUUID(),
+            patient_id: patientIdMapping[patient.id],
+            name: medication.name,
+            dosage: medication.dosage,
+            frequency: medication.frequency,
+            indication: medication.indication,
+            status: mapMedicationStatus(medication.status),
+            prescribed_date: medication.prescribedDate,
+            end_date: medication.endDate,
+            prescribed_by: medication.prescribedBy,
+            notes: medication.notes
+          })
+        }
+      }
+    }
+
+    let successCount = 0
+    for (const medication of medicationInserts) {
+      const { error } = await supabase
+        .from('medications')
+        .insert(medication)
+      
+      if (error) {
+        console.error('Error migrating medication:', medication.name, error)
+      } else {
+        successCount++
+      }
+    }
+
+    console.log(`Migrated ${successCount} medications successfully`)
+  },
+
+  async migrateTestResults(patientIdMapping: Record<string, string>): Promise<void> {
+    console.log('Migrating test results...')
+    
+    const testResultInserts: TestResultInsert[] = []
+    
+    // Extract test results from all patients
+    for (const patient of mockPatients) {
+      if (patient.medicalHistory?.testResults) {
+        for (const testResult of patient.medicalHistory.testResults) {
+          testResultInserts.push({
+            id: crypto.randomUUID(),
+            patient_id: patientIdMapping[patient.id],
+            test_name: testResult.testName,
+            test_type: testResult.testType,
+            requested_date: testResult.requestedDate,
+            sample_date: testResult.sampleDate,
+            report_date: testResult.reportDate,
+            requested_by: testResult.requestedBy,
+            performed_by: testResult.performedBy,
+            status: mapTestStatus(testResult.status),
+            results: testResult.results,
+            interpretation: testResult.interpretation,
+            notes: testResult.notes
+          })
+        }
+      }
+    }
+
+    let successCount = 0
+    for (const testResult of testResultInserts) {
+      const { error } = await supabase
+        .from('test_results')
+        .insert(testResult)
+      
+      if (error) {
+        console.error('Error migrating test result:', testResult.test_name, error)
+      } else {
+        successCount++
+      }
+    }
+
+    console.log(`Migrated ${successCount} test results successfully`)
+  },
+
+  async migrateVitalSigns(patientIdMapping: Record<string, string>): Promise<void> {
+    console.log('Migrating vital signs...')
+    
+    const vitalSignInserts: VitalSignInsert[] = []
+    
+    // Extract vital signs from all patients
+    for (const patient of mockPatients) {
+      if (patient.medicalHistory?.vitalSigns) {
+        for (const vitalSign of patient.medicalHistory.vitalSigns) {
+          vitalSignInserts.push({
+            id: crypto.randomUUID(),
+            patient_id: patientIdMapping[patient.id],
+            timestamp: vitalSign.timestamp,
+            news2: vitalSign.news2,
+            temperature: vitalSign.temperature,
+            heart_rate: vitalSign.heartRate,
+            respiration: vitalSign.respiration,
+            oxygen_saturation: vitalSign.oxygenSaturation,
+            blood_pressure_systolic: vitalSign.bloodPressureSystolic,
+            blood_pressure_diastolic: vitalSign.bloodPressureDiastolic
+          })
+        }
+      }
+    }
+
+    let successCount = 0
+    for (const vitalSign of vitalSignInserts) {
+      const { error } = await supabase
+        .from('vital_signs')
+        .insert(vitalSign)
+      
+      if (error) {
+        console.error('Error migrating vital sign:', vitalSign.timestamp, error)
+      } else {
+        successCount++
+      }
+    }
+
+    console.log(`Migrated ${successCount} vital signs successfully`)
+  },
+
+  async migrateMHASections(patientIdMapping: Record<string, string>): Promise<void> {
+    console.log('Migrating MHA sections...')
+    
+    const mhaSectionInserts: MHASectionInsert[] = []
+    
+    // Extract MHA sections from all patients
+    for (const patient of mockPatients) {
+      if (patient.medicalHistory?.mhaSections) {
+        for (const mhaSection of patient.medicalHistory.mhaSections) {
+          mhaSectionInserts.push({
+            id: crypto.randomUUID(),
+            patient_id: patientIdMapping[patient.id],
+            section_number: mhaSection.sectionNumber,
+            section_title: mhaSection.sectionTitle,
+            applied_date: mhaSection.appliedDate,
+            expiry_date: mhaSection.expiryDate,
+            status: mapMHAStatus(mhaSection.status),
+            consultant_responsible: mhaSection.consultantResponsible,
+            hospital: mhaSection.hospital,
+            reason: mhaSection.reason,
+            review_date: mhaSection.reviewDate,
+            notes: mhaSection.notes
+          })
+        }
+      }
+    }
+
+    let successCount = 0
+    for (const mhaSection of mhaSectionInserts) {
+      const { error } = await supabase
+        .from('mha_sections')
+        .insert(mhaSection)
+      
+      if (error) {
+        console.error('Error migrating MHA section:', mhaSection.section_title, error)
+      } else {
+        successCount++
+      }
+    }
+
+    console.log(`Migrated ${successCount} MHA sections successfully`)
+  },
+
   async migrateAll(): Promise<void> {
     try {
       // Migrate in order due to foreign key dependencies
@@ -197,8 +527,15 @@ export const dataMigration = {
       const practitionerIdMapping = await this.migratePractitioners()
       await this.migrateReferrals(patientIdMapping, practitionerIdMapping)
       
-      console.log('Data migration completed successfully!')
-      console.log('ID mappings created for proper UUID handling')
+      // Migrate medical data
+      await this.migrateAllergies(patientIdMapping)
+      await this.migrateMedications(patientIdMapping)
+      await this.migrateTestResults(patientIdMapping)
+      await this.migrateVitalSigns(patientIdMapping)
+      await this.migrateMHASections(patientIdMapping)
+      
+      console.log('Complete data migration finished successfully!')
+      console.log('All patient medical data has been migrated to Supabase')
     } catch (error) {
       console.error('Data migration failed:', error)
       throw error
@@ -209,6 +546,11 @@ export const dataMigration = {
     console.log('Clearing all data...')
     
     // Delete in reverse order due to foreign key constraints
+    await supabase.from('mha_sections').delete().neq('id', '00000000-0000-0000-0000-000000000000')
+    await supabase.from('vital_signs').delete().neq('id', '00000000-0000-0000-0000-000000000000')
+    await supabase.from('test_results').delete().neq('id', '00000000-0000-0000-0000-000000000000')
+    await supabase.from('medications').delete().neq('id', '00000000-0000-0000-0000-000000000000')
+    await supabase.from('allergies').delete().neq('id', '00000000-0000-0000-0000-000000000000')
     await supabase.from('referrals').delete().neq('id', '00000000-0000-0000-0000-000000000000')
     await supabase.from('practitioners').delete().neq('id', '00000000-0000-0000-0000-000000000000')
     await supabase.from('patients').delete().neq('id', '00000000-0000-0000-0000-000000000000')
