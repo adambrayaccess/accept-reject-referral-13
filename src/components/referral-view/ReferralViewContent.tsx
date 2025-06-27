@@ -24,11 +24,11 @@ const ReferralViewContent = ({
   onDocumentUploaded 
 }: ReferralViewContentProps) => {
   return (
-    <div className="grid grid-cols-1 md:grid-cols-5 gap-6 h-full">
+    <div className="flex flex-col md:flex-row gap-6 h-full min-h-0">
       {/* Left column - Main content (60% width) */}
-      <div className="md:col-span-3 h-full">
+      <div className="flex-1 md:w-[60%] h-full min-h-0 border border-blue-200 bg-blue-50/20">
         <ScrollArea className="h-full w-full">
-          <div className="space-y-6 pr-4 pb-6">
+          <div className="space-y-6 p-4 pb-8">
             <ReferralDetail 
               referral={referral} 
               relatedReferrals={relatedReferrals}
@@ -44,9 +44,9 @@ const ReferralViewContent = ({
       </div>
       
       {/* Right column - Workspace (40% width) */}
-      <div className="md:col-span-2 h-full">
+      <div className="flex-1 md:w-[40%] h-full min-h-0 border border-green-200 bg-green-50/20">
         <ScrollArea className="h-full w-full">
-          <div className="space-y-3 pr-4 pb-6">
+          <div className="space-y-3 p-4 pb-8">
             <ReferralWorkspace 
               referral={referral}
               onStatusChange={onStatusChange}

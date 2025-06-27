@@ -38,18 +38,23 @@ const ReferralView = () => {
       <Titlebar />
       <PageHeader showSearch={false} />
       
-      <div className="flex-1 container mx-auto px-6 max-w-none flex flex-col min-h-0">
-        <div className="flex-shrink-0 pb-4 pt-4">
-          <ReferralViewHeader referral={referral} onBack={handleBack} />
-        </div>
-        
-        <div className="flex-1 min-h-0">
-          <ReferralViewContent
-            referral={referral}
-            relatedReferrals={relatedReferrals}
-            onStatusChange={handleStatusChange}
-            onDocumentUploaded={handleDocumentUploaded}
-          />
+      {/* Main container with proper height constraints */}
+      <div className="flex-1 min-h-0 flex flex-col">
+        <div className="container mx-auto px-6 max-w-none flex-1 min-h-0 flex flex-col">
+          {/* Fixed header */}
+          <div className="flex-shrink-0 py-4">
+            <ReferralViewHeader referral={referral} onBack={handleBack} />
+          </div>
+          
+          {/* Scrollable content area */}
+          <div className="flex-1 min-h-0 border border-red-200 bg-red-50/20">
+            <ReferralViewContent
+              referral={referral}
+              relatedReferrals={relatedReferrals}
+              onStatusChange={handleStatusChange}
+              onDocumentUploaded={handleDocumentUploaded}
+            />
+          </div>
         </div>
       </div>
     </div>
