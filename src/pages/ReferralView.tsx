@@ -34,16 +34,16 @@ const ReferralView = () => {
   }
 
   return (
-    <div className="h-screen bg-gray-50 flex flex-col overflow-hidden">
+    <div className="h-screen bg-gray-50 flex flex-col">
       <Titlebar />
       <PageHeader showSearch={false} />
       
-      <div className="flex-1 container mx-auto px-6 max-w-none flex flex-col overflow-hidden">
-        <div className="sticky top-0 bg-gray-50 z-10 pb-4 pt-4 flex-shrink-0">
+      <div className="flex-1 container mx-auto px-6 max-w-none flex flex-col min-h-0">
+        <div className="flex-shrink-0 pb-4 pt-4">
           <ReferralViewHeader referral={referral} onBack={handleBack} />
         </div>
         
-        <div className="flex-1 overflow-hidden">
+        <div className="flex-1 min-h-0">
           <ReferralViewContent
             referral={referral}
             relatedReferrals={relatedReferrals}

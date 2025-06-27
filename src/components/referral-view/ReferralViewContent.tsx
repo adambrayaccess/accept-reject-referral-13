@@ -27,8 +27,8 @@ const ReferralViewContent = ({
     <div className="grid grid-cols-1 md:grid-cols-5 gap-6 h-full">
       {/* Left column - Main content (60% width) */}
       <div className="md:col-span-3 h-full">
-        <ScrollArea className="h-full">
-          <div className="space-y-6 pr-4">
+        <ScrollArea className="h-full w-full">
+          <div className="space-y-6 pr-4 pb-6">
             <ReferralDetail 
               referral={referral} 
               relatedReferrals={relatedReferrals}
@@ -45,8 +45,8 @@ const ReferralViewContent = ({
       
       {/* Right column - Workspace (40% width) */}
       <div className="md:col-span-2 h-full">
-        <ScrollArea className="h-full">
-          <div className="space-y-3 pr-4">
+        <ScrollArea className="h-full w-full">
+          <div className="space-y-3 pr-4 pb-6">
             <ReferralWorkspace 
               referral={referral}
               onStatusChange={onStatusChange}
