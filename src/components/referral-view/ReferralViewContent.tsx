@@ -24,7 +24,7 @@ const ReferralViewContent = ({
   onDocumentUploaded 
 }: ReferralViewContentProps) => {
   return (
-    <div className="grid grid-cols-1 md:grid-cols-5 gap-6 h-[calc(100vh-180px)]">
+    <div className="grid grid-cols-1 md:grid-cols-5 gap-6 h-full">
       {/* Left column - Main content (60% width) */}
       <div className="md:col-span-3 h-full">
         <ScrollArea className="h-full">
