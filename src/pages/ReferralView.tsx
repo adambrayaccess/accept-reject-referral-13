@@ -47,7 +47,7 @@ const ReferralView = () => {
           </div>
           
           {/* Scrollable content area */}
-          <div className="flex-1 min-h-0 border border-red-200 bg-red-50/20">
+          <div className="flex-1 min-h-0">
             <ReferralViewContent
               referral={referral}
               relatedReferrals={relatedReferrals}

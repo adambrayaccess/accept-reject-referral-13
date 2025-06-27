@@ -26,7 +26,7 @@ const ReferralViewContent = ({
   return (
     <div className="flex flex-col md:flex-row gap-6 h-full min-h-0">
       {/* Left column - Main content (60% width) */}
-      <div className="flex-1 md:flex-none md:basis-[60%] h-full min-h-0 border border-blue-200 bg-blue-50/20">
+      <div className="flex-1 md:flex-none md:basis-[60%] h-full min-h-0">
         <ScrollArea className="h-full w-full">
           <div className="space-y-6 p-4 pb-8">
             <ReferralDetail 
@@ -44,7 +44,7 @@ const ReferralViewContent = ({
       </div>
       
       {/* Right column - Workspace (40% width) */}
-      <div className="flex-1 md:flex-none md:basis-[40%] h-full min-h-0 border border-green-200 bg-green-50/20">
+      <div className="flex-1 md:flex-none md:basis-[40%] h-full min-h-0">
         <ScrollArea className="h-full w-full">
           <div className="space-y-3 p-4 pb-8">
             <ReferralWorkspace 
