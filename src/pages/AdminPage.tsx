@@ -10,7 +10,6 @@ import OverallStatsCards from '@/components/admin/OverallStatsCards';
 import SpecialtyBreakdown from '@/components/admin/SpecialtyBreakdown';
 import AdminPageSkeleton from '@/components/admin/AdminPageSkeleton';
 import AdminAICopilot from '@/components/admin/AdminAICopilot';
-import Titlebar from '@/components/Titlebar';
 import PageHeader from '@/components/PageHeader';
 
 const AdminPage = () => {
@@ -60,7 +59,6 @@ const AdminPage = () => {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <Titlebar />
       <PageHeader showSearch={false} />
       
       <div className="px-6 py-6 space-y-6">

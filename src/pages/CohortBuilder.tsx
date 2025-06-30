@@ -7,7 +7,6 @@ import WaitingListTab from '@/components/cohort/WaitingListTab';
 import WaitingListStatsTab from '@/components/cohort/WaitingListStatsTab';
 import TaggedPatientsTab from '@/components/cohort/TaggedPatientsTab';
 import { useWaitingListData } from '@/hooks/useWaitingListData';
-import Titlebar from '@/components/Titlebar';
 import PageHeader from '@/components/PageHeader';
 
 const CohortBuilder = () => {
@@ -66,7 +65,6 @@ const CohortBuilder = () => {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <Titlebar />
       <PageHeader showSearch={false} />
       
       <div className="px-6 py-6 space-y-6">

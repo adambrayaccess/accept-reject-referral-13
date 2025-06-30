@@ -6,7 +6,6 @@ import { Referral } from '@/types/referral';
 import { specialties } from '@/data/specialtyOptions';
 import { useDashboardData } from '@/hooks/useDashboardData';
 import { useReferralSelection } from '@/hooks/useReferralSelection';
-import Titlebar from './Titlebar';
 import PageHeader from './PageHeader';
 import StatisticsBar from './dashboard/StatisticsBar';
 import DashboardHeader from './dashboard/DashboardHeader';
@@ -96,7 +95,6 @@ const Dashboard = () => {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <Titlebar />
       <PageHeader searchValue={searchTerm} onSearchChange={setSearchTerm} />
       
       <div className="space-y-6">

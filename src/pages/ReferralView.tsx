@@ -1,6 +1,5 @@
 
 import { useParams, useNavigate } from 'react-router-dom';
-import Titlebar from '@/components/Titlebar';
 import PageHeader from '@/components/PageHeader';
 import ReferralViewHeader from '@/components/referral-view/ReferralViewHeader';
 import ReferralViewSkeleton from '@/components/referral-view/ReferralViewSkeleton';
@@ -35,7 +34,6 @@ const ReferralView = () => {
 
   return (
     <div className="h-screen bg-gray-50 flex flex-col">
-      <Titlebar />
       <PageHeader showSearch={false} />
       
       {/* Main container with proper height constraints */}
