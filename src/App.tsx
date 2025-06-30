@@ -12,21 +12,32 @@ import SpecialtySelection from "./pages/SpecialtySelection";
 import CohortBuilder from "./pages/CohortBuilder";
 import AdminPage from "./pages/AdminPage";
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 5 * 60 * 1000, // 5 minutes
+      retry: 1,
+    },
+  },
+});
 
 const App: React.FC = () => {
+  console.log('App component rendering');
+
   return (
     <QueryClientProvider client={queryClient}>
       <BrowserRouter>
         <TooltipProvider>
-          <Routes>
-            <Route path="/" element={<Index />} />
-            <Route path="/referral/:id" element={<ReferralView />} />
-            <Route path="/select-specialty" element={<SpecialtySelection />} />
-            <Route path="/cohort-builder" element={<CohortBuilder />} />
-            <Route path="/admin" element={<AdminPage />} />
-            <Route path="*" element={<NotFound />} />
-          </Routes>
+          <div className="min-h-screen bg-background">
+            <Routes>
+              <Route path="/" element={<Index />} />
+              <Route path="/referral/:id" element={<ReferralView />} />
+              <Route path="/select-specialty" element={<SpecialtySelection />} />
+              <Route path="/cohort-builder" element={<CohortBuilder />} />
+              <Route path="/admin" element={<AdminPage />} />
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </div>
           <Toaster />
           <Sonner />
         </TooltipProvider>
