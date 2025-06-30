@@ -32,38 +32,34 @@ const Dashboard = () => {
 
   const {
     referrals,
+    filteredReferrals,
     isLoading,
-    error,
-    refreshReferrals,
-    updateReferralOrder
-  } = useDashboardData(selectedSpecialties);
-
-  const {
+    isReordering: hookIsReordering,
     searchTerm,
     setSearchTerm,
     statusFilter,
     setStatusFilter,
     priorityFilter,
     setPriorityFilter,
-    filteredReferrals
-  } = useDashboardFilters(referrals);
-
-  const {
+    handleRefresh,
+    handleReorderReferrals,
     sortField,
     setSortField,
     sortDirection,
     setSortDirection
-  } = useDashboardSorting();
+  } = useDashboardData(selectedSpecialties);
 
   const {
     selectedIds,
-    selectedReferrals,
     toggleSelection,
     selectAll,
     clearSelection,
+    getSelectedReferrals,
     isAllSelected,
     isIndeterminate
-  } = useReferralSelection(filteredReferrals);
+  } = useReferralSelection();
+
+  const selectedReferrals = getSelectedReferrals(filteredReferrals);
 
   const handleSpecialtySelectionChange = (newSelection: string[]) => {
     setSelectedSpecialties(newSelection);
@@ -72,43 +68,20 @@ const Dashboard = () => {
 
   const handleReferralCreated = (newReferral: Partial<Referral>) => {
     toast.success('Referral created successfully');
-    refreshReferrals();
+    handleRefresh();
   };
 
   const handleReorder = async (sourceIndex: number, destinationIndex: number) => {
-    if (isReordering) return;
+    if (hookIsReordering) return;
     
-    setIsReordering(true);
     try {
-      await updateReferralOrder(sourceIndex, destinationIndex);
+      await handleReorderReferrals(sourceIndex, destinationIndex);
       toast.success('Referral order updated');
     } catch (error) {
       console.error('Failed to reorder referrals:', error);
       toast.error('Failed to update referral order');
-    } finally {
-      setIsReordering(false);
     }
   };
-
-  if (error) {
-    return (
-      <div className="min-h-screen bg-background">
-        <Titlebar />
-        <div className="container mx-auto px-4 py-8">
-          <div className="text-center">
-            <h2 className="text-2xl font-bold text-destructive mb-2">Error Loading Dashboard</h2>
-            <p className="text-muted-foreground mb-4">{error}</p>
-            <button 
-              onClick={refreshReferrals}
-              className="px-4 py-2 bg-primary text-primary-foreground rounded-md hover:bg-primary/90"
-            >
-              Try Again
-            </button>
-          </div>
-        </div>
-      </div>
-    );
-  }
 
   return (
     <div className="min-h-screen bg-background">
@@ -146,15 +119,15 @@ const Dashboard = () => {
             referrals={referrals}
             filteredReferrals={filteredReferrals}
             isLoading={isLoading}
-            isReordering={isReordering}
+            isReordering={hookIsReordering}
             view={view}
             onReorder={handleReorder}
             selectedIds={selectedIds}
             onToggleSelection={toggleSelection}
-            onSelectAll={selectAll}
+            onSelectAll={() => selectAll(filteredReferrals)}
             onClearSelection={clearSelection}
-            isAllSelected={isAllSelected}
-            isIndeterminate={isIndeterminate}
+            isAllSelected={(referrals: Referral[]) => isAllSelected(referrals)}
+            isIndeterminate={(referrals: Referral[]) => isIndeterminate(referrals)}
           />
         </div>
       </div>

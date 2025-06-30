@@ -1,4 +1,4 @@
-```
+
 import React from 'react';
 import { Bell, Plus, HelpCircle, User, ChevronDown } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -67,4 +67,3 @@ const Titlebar = () => {
 };
 
 export default Titlebar;
-```
