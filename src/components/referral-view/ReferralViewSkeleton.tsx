@@ -2,7 +2,6 @@
 import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
 import { ArrowLeft } from 'lucide-react';
-import Titlebar from '@/components/Titlebar';
 import PageHeader from '@/components/PageHeader';
 
 interface ReferralViewSkeletonProps {
@@ -12,7 +11,6 @@ interface ReferralViewSkeletonProps {
 const ReferralViewSkeleton = ({ onBack }: ReferralViewSkeletonProps) => {
   return (
     <div className="min-h-screen bg-gray-50">
-      <Titlebar />
       <PageHeader showSearch={false} />
       <div className="container py-3 space-y-4">
         <Button variant="ghost" onClick={onBack} className="mb-2">

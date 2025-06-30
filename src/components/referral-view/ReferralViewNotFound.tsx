@@ -1,7 +1,6 @@
 
 import { Button } from '@/components/ui/button';
 import { ArrowLeft } from 'lucide-react';
-import Titlebar from '@/components/Titlebar';
 import PageHeader from '@/components/PageHeader';
 
 interface ReferralViewNotFoundProps {
@@ -11,7 +10,6 @@ interface ReferralViewNotFoundProps {
 const ReferralViewNotFound = ({ onBack }: ReferralViewNotFoundProps) => {
   return (
     <div className="min-h-screen bg-gray-50">
-      <Titlebar />
       <PageHeader showSearch={false} />
       <div className="container py-3">
         <Button variant="ghost" onClick={onBack} className="mb-2">
