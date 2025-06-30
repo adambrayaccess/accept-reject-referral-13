@@ -1,40 +1,29 @@
 
-import React, { useState, useEffect } from 'react';
-import { mockReferrals } from '@/services/mock/referrals';
-import { getAllSpecialtyNames } from '@/data/specialtyOptions';
+import { useState, useEffect } from 'react';
+import { useToast } from '@/hooks/use-toast';
+import { useNavigate } from 'react-router-dom';
 import { Referral } from '@/types/referral';
-import { toast } from 'sonner';
+import { specialties } from '@/data/specialtyOptions';
+import { useDashboardData } from '@/hooks/useDashboardData';
+import { useReferralSelection } from '@/hooks/useReferralSelection';
 import Titlebar from './Titlebar';
+import PageHeader from './PageHeader';
+import StatisticsBar from './dashboard/StatisticsBar';
 import DashboardHeader from './dashboard/DashboardHeader';
 import DashboardControls from './dashboard/DashboardControls';
+import SelectionBanner from './dashboard/SelectionBanner';
 import DashboardTabs from './dashboard/DashboardTabs';
-import { useDashboardData } from '@/hooks/useDashboardData';
-import { useDashboardFilters } from '@/hooks/dashboard/useDashboardFilters';
-import { useDashboardSorting } from '@/hooks/dashboard/useDashboardSorting';
-import { useReferralSelection } from '@/hooks/useReferralSelection';
 
 const Dashboard = () => {
-  const [selectedSpecialties, setSelectedSpecialties] = useState<string[]>(() => {
-    const saved = localStorage.getItem('selectedSpecialties');
-    if (saved) {
-      try {
-        return JSON.parse(saved);
-      } catch {
-        return ['Cardiology'];
-      }
-    }
-    return ['Cardiology'];
-  });
-
   const [view, setView] = useState<'card' | 'list'>('card');
-  const [isReordering, setIsReordering] = useState(false);
-  const specialtyNames = getAllSpecialtyNames();
-
+  const { toast } = useToast();
+  const navigate = useNavigate();
+  const [selectedSpecialties, setSelectedSpecialties] = useState<string[]>([]);
+  
   const {
-    referrals,
     filteredReferrals,
     isLoading,
-    isReordering: hookIsReordering,
+    isReordering,
     searchTerm,
     setSearchTerm,
     statusFilter,
@@ -43,6 +32,7 @@ const Dashboard = () => {
     setPriorityFilter,
     handleRefresh,
     handleReorderReferrals,
+    referrals,
     sortField,
     setSortField,
     sortDirection,
@@ -51,51 +41,82 @@ const Dashboard = () => {
 
   const {
     selectedIds,
+    selectedCount,
     toggleSelection,
     selectAll,
     clearSelection,
+    isSelected,
     getSelectedReferrals,
     isAllSelected,
     isIndeterminate
   } = useReferralSelection();
 
-  const selectedReferrals = getSelectedReferrals(filteredReferrals);
+  useEffect(() => {
+    const storedSpecialties = localStorage.getItem('selectedSpecialties');
+    if (storedSpecialties) {
+      try {
+        const parsed = JSON.parse(storedSpecialties);
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          setSelectedSpecialties(parsed);
+        } else {
+          navigate('/select-specialty');
+        }
+      } catch {
+        navigate('/select-specialty');
+      }
+    } else {
+      navigate('/select-specialty');
+    }
+  }, [navigate]);
 
-  const handleSpecialtySelectionChange = (newSelection: string[]) => {
-    setSelectedSpecialties(newSelection);
-    localStorage.setItem('selectedSpecialties', JSON.stringify(newSelection));
-  };
-
-  const handleReferralCreated = (newReferral: Partial<Referral>) => {
-    toast.success('Referral created successfully');
+  const handleCreateReferral = (newReferral: Partial<Referral>) => {
+    const referralType = newReferral.aiGenerated ? 'Auto' : 'Manual';
+    toast({
+      title: "Referral Created",
+      description: `${referralType} referral ${newReferral.id} has been created`,
+    });
     handleRefresh();
   };
 
-  const handleReorder = async (sourceIndex: number, destinationIndex: number) => {
-    if (hookIsReordering) return;
-    
-    try {
-      await handleReorderReferrals(sourceIndex, destinationIndex);
-      toast.success('Referral order updated');
-    } catch (error) {
-      console.error('Failed to reorder referrals:', error);
-      toast.error('Failed to update referral order');
+  const handleSpecialtySelectionChange = (newSelection: string[]) => {
+    setSelectedSpecialties(newSelection);
+    if (newSelection.length > 0) {
+      localStorage.setItem('selectedSpecialties', JSON.stringify(newSelection));
+      toast({
+        title: "Specialties Updated",
+        description: `Now triaging for ${newSelection.length === 1 ? newSelection[0] : `${newSelection.length} specialties`}`,
+      });
+    } else {
+      localStorage.removeItem('selectedSpecialties');
     }
   };
 
+  const selectedReferrals = getSelectedReferrals(filteredReferrals);
+  const specialtyNames = specialties.map(s => s.name);
+
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-gray-50">
       <Titlebar />
+      <PageHeader searchValue={searchTerm} onSearchChange={setSearchTerm} />
       
-      <div className="flex flex-col h-[calc(100vh-3rem)]">
+      <div className="space-y-6">
         <DashboardHeader
           selectedSpecialties={selectedSpecialties}
           specialtyNames={specialtyNames}
           onSpecialtySelectionChange={handleSpecialtySelectionChange}
-          onReferralCreated={handleReferralCreated}
+          onReferralCreated={handleCreateReferral}
         />
 
-        <div className="px-6 pb-2">
+        <div className="px-6">
+          <StatisticsBar />
+        </div>
+
+        <div className="px-6 space-y-6">
+          <SelectionBanner
+            selectedCount={selectedCount}
+            onClearSelection={clearSelection}
+          />
+
           <DashboardControls
             searchTerm={searchTerm}
             setSearchTerm={setSearchTerm}
@@ -112,22 +133,20 @@ const Dashboard = () => {
             selectedReferrals={selectedReferrals}
             onClearSelection={clearSelection}
           />
-        </div>
 
-        <div className="flex-1 px-6 pb-6">
           <DashboardTabs
             referrals={referrals}
             filteredReferrals={filteredReferrals}
             isLoading={isLoading}
-            isReordering={hookIsReordering}
+            isReordering={isReordering}
             view={view}
-            onReorder={handleReorder}
+            onReorder={handleReorderReferrals}
             selectedIds={selectedIds}
             onToggleSelection={toggleSelection}
             onSelectAll={() => selectAll(filteredReferrals)}
             onClearSelection={clearSelection}
-            isAllSelected={(referrals: Referral[]) => isAllSelected(referrals)}
-            isIndeterminate={(referrals: Referral[]) => isIndeterminate(referrals)}
+            isAllSelected={isAllSelected}
+            isIndeterminate={isIndeterminate}
           />
         </div>
       </div>
