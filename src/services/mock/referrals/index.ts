@@ -5,6 +5,7 @@ import { neurologyReferrals as originalNeurologyReferrals, allNeurologyReferrals
 import { rheumatologyReferrals as originalRheumatologyReferrals, allRheumatologyReferrals } from './rheumatology';
 import { gastroenterologyReferrals as originalGastroenterologyReferrals, allGastroenterologyReferrals } from './gastroenterology';
 import { mentalHealthReferrals as originalMentalHealthReferrals, allMentalHealthReferrals } from './mentalhealth';
+import { psychiatryReferrals as originalPsychiatryReferrals, allPsychiatryReferrals } from './psychiatry';
 import { Referral } from '@/types/referral';
 
 // Export the original referrals to maintain backward compatibility
@@ -14,15 +15,17 @@ export const neurologyReferrals = originalNeurologyReferrals;
 export const rheumatologyReferrals = originalRheumatologyReferrals;
 export const gastroenterologyReferrals = originalGastroenterologyReferrals;
 export const mentalHealthReferrals = originalMentalHealthReferrals;
+export const psychiatryReferrals = originalPsychiatryReferrals;
 
-// Combine all specialty referrals from the full sets (50 per specialty)
+// Combine all specialty referrals from the full sets
 export const mockReferrals: Referral[] = [
   ...allCardiologyReferrals,
   ...allDermatologyReferrals,
   ...allNeurologyReferrals,
   ...allRheumatologyReferrals,
   ...allGastroenterologyReferrals,
-  ...allMentalHealthReferrals
+  ...allMentalHealthReferrals,
+  ...allPsychiatryReferrals
 ];
 
 // Export the full sets as well for when more data is needed
@@ -32,5 +35,6 @@ export {
   allNeurologyReferrals,
   allRheumatologyReferrals,
   allGastroenterologyReferrals,
-  allMentalHealthReferrals
+  allMentalHealthReferrals,
+  allPsychiatryReferrals
 };

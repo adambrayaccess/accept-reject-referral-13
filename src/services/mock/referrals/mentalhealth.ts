@@ -7,6 +7,7 @@ const johnSmith = mockPatients.find(p => p.id === 'P001')!;
 const sarahDavis = mockPatients.find(p => p.id === 'P002')!;
 const aliceJohnson = mockPatients.find(p => p.id === 'P003')!;
 const davidWilson = mockPatients.find(p => p.id === 'P005')!;
+const emmaThompson = mockPatients.find(p => p.id === 'P004')!;
 
 export const mentalHealthReferrals: Referral[] = [
   {
@@ -17,7 +18,7 @@ export const mentalHealthReferrals: Referral[] = [
     priority: 'urgent',
     specialty: 'Mental Health',
     service: 'Adult Mental Health Services',
-    patient: davidWilson, // Patient P005 with amoxicillin and pollen allergies
+    patient: davidWilson,
     referrer: {
       id: 'REF010',
       name: 'Dr. Rachel Green',
@@ -61,7 +62,7 @@ export const mentalHealthReferrals: Referral[] = [
     priority: 'urgent',
     specialty: 'Mental Health',
     service: 'Crisis Intervention Team',
-    patient: sarahDavis, // Patient P002 with life-threatening aspirin allergy
+    patient: sarahDavis,
     referrer: {
       id: 'REF006',
       name: 'Dr. Thomas Clark',
@@ -110,6 +111,144 @@ export const mentalHealthReferrals: Referral[] = [
       }
     ],
     tags: ['crisis', 'psychosis', 'police-involvement', 'life-threatening-allergies']
+  },
+  {
+    id: 'MH-2024-008',
+    ubrn: 'RFR-2024-MH-008',
+    status: 'new',
+    triageStatus: 'pre-assessment',
+    priority: 'routine',
+    specialty: 'Mental Health',
+    service: 'ADHD Assessment Service',
+    patient: emmaThompson,
+    referrer: {
+      id: 'REF011',
+      name: 'Dr. Sarah Mitchell',
+      role: 'GP',
+      organization: 'Leeds Medical Centre',
+      contact: 'sarah.mitchell@leeds.nhs.uk'
+    },
+    clinicalInfo: {
+      reason: 'Suspected ADHD - difficulty concentrating at work, impulsivity, restlessness',
+      history: 'Patient reports lifelong difficulties with attention and concentration. Problems at work with meeting deadlines, frequent job changes. Impulsive spending habits. Sleep difficulties. No previous psychiatric history.',
+      diagnosis: 'Query ADHD',
+      medications: ['Microgynon 30 - contraceptive'],
+      allergies: []
+    },
+    created: '2024-02-15T10:30:00Z',
+    attachments: [
+      {
+        id: 'DOC-MH-008-001',
+        title: 'ADHD Screening Questionnaire',
+        contentType: 'application/pdf',
+        url: '#',
+        date: '2024-02-15T10:30:00Z',
+        size: 89432
+      }
+    ],
+    auditLog: [
+      {
+        timestamp: '2024-02-15T10:30:00Z',
+        action: 'referral_received',
+        user: 'System',
+        notes: 'ADHD assessment referral received from Dr. Sarah Mitchell'
+      }
+    ],
+    tags: ['adhd', 'assessment', 'attention-deficit']
+  },
+  {
+    id: 'MH-2024-009',
+    ubrn: 'RFR-2024-MH-009',
+    status: 'accepted',
+    triageStatus: 'waiting-list',
+    priority: 'routine',
+    specialty: 'Mental Health',
+    service: 'Anxiety and Depression Service',
+    patient: johnSmith,
+    referrer: {
+      id: 'REF012',
+      name: 'Dr. Michael Brown',
+      role: 'GP',
+      organization: 'Manchester Family Practice',
+      contact: 'michael.brown@manchester.nhs.uk'
+    },
+    clinicalInfo: {
+      reason: 'Generalized anxiety disorder with panic attacks affecting daily functioning',
+      history: 'Patient experiencing increasing anxiety over past 6 months. Daily panic attacks, avoidance behaviors, affecting work performance. Sleep disturbance. Previous episode 5 years ago responded well to CBT.',
+      diagnosis: 'Generalized Anxiety Disorder with Panic Disorder',
+      medications: ['Lisinopril 10mg OD - hypertension', 'Metformin 500mg BD - diabetes', 'Propranolol 40mg PRN - anxiety'],
+      allergies: []
+    },
+    created: '2024-01-25T14:20:00Z',
+    attachments: [
+      {
+        id: 'DOC-MH-009-001',
+        title: 'GAD-7 Assessment',
+        contentType: 'application/pdf',
+        url: '#',
+        date: '2024-01-25T14:20:00Z',
+        size: 67890
+      }
+    ],
+    auditLog: [
+      {
+        timestamp: '2024-01-25T14:20:00Z',
+        action: 'referral_received',
+        user: 'System',
+        notes: 'Anxiety assessment referral received'
+      },
+      {
+        timestamp: '2024-01-30T09:15:00Z',
+        action: 'referral_accepted',
+        user: 'Dr. Jennifer White',
+        notes: 'Accepted for CBT assessment'
+      }
+    ],
+    tags: ['anxiety', 'panic-attacks', 'cbt']
+  },
+  {
+    id: 'MH-2024-010',
+    ubrn: 'RFR-2024-MH-010',
+    status: 'new',
+    triageStatus: 'pre-assessment',
+    priority: 'urgent',
+    specialty: 'Mental Health',
+    service: 'Eating Disorders Service',
+    patient: aliceJohnson,
+    referrer: {
+      id: 'REF013',
+      name: 'Dr. Lisa Anderson',
+      role: 'GP',
+      organization: 'Liverpool Central Practice',
+      contact: 'lisa.anderson@liverpool.nhs.uk'
+    },
+    clinicalInfo: {
+      reason: 'Suspected anorexia nervosa - significant weight loss, restrictive eating',
+      history: 'Patient has lost 15kg over past 4 months. Restrictive eating patterns, excessive exercise, body dysmorphia. Family concerned about rapid weight loss. Previous history of anxiety.',
+      diagnosis: 'Query Anorexia Nervosa',
+      medications: [],
+      allergies: ['Latex - contact dermatitis']
+    },
+    created: '2024-02-20T11:45:00Z',
+    attachments: [
+      {
+        id: 'DOC-MH-010-001',
+        title: 'Eating Disorder Assessment',
+        contentType: 'application/pdf',
+        url: '#',
+        date: '2024-02-20T11:45:00Z',
+        size: 123456
+      }
+    ],
+    auditLog: [
+      {
+        timestamp: '2024-02-20T11:45:00Z',
+        action: 'referral_received',
+        user: 'System',
+        notes: 'Urgent eating disorder referral received'
+      }
+    ],
+    tags: ['eating-disorder', 'anorexia', 'weight-loss', 'urgent']
   }
 ];
 

@@ -55,6 +55,10 @@ export const healthcareProfessionals: HealthcareProfessional[] = [
   { id: 'hp7', name: 'Dr. Robert Taylor', role: 'Consultant', specialty: 'mhea' },
   { id: 'hp8', name: 'Dr. Maria Lopez', role: 'Specialist', specialty: 'mhea' },
   
+  // Psychiatry
+  { id: 'hp23', name: 'Dr. Amanda Wilson', role: 'Consultant', specialty: 'psyc' },
+  { id: 'hp24', name: 'Dr. Sarah Mitchell', role: 'Senior Registrar', specialty: 'psyc' },
+  
   // Rheumatology
   { id: 'hp9', name: 'Dr. Helen Davies', role: 'Consultant', specialty: 'rheu' },
   { id: 'hp10', name: 'Dr. Peter Evans', role: 'Senior Registrar', specialty: 'rheu' },
@@ -74,10 +78,6 @@ export const healthcareProfessionals: HealthcareProfessional[] = [
   // Orthopedics
   { id: 'hp17', name: 'Dr. Christopher Lee', role: 'Consultant', specialty: 'orth' },
   { id: 'hp18', name: 'Dr. Jennifer White', role: 'Specialist', specialty: 'orth' },
-  
-  // Psychiatry
-  { id: 'hp19', name: 'Dr. Paul Anderson', role: 'Consultant', specialty: 'psyc' },
-  { id: 'hp20', name: 'Dr. Karen Davis', role: 'Senior Registrar', specialty: 'psyc' },
   
   // Pulmonology
   { id: 'hp21', name: 'Dr. Steven Clark', role: 'Consultant', specialty: 'pulm' },
