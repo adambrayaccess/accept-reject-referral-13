@@ -2,7 +2,7 @@
 import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { X, ChevronDown, Check } from 'lucide-react';
+import { X, ChevronDown, Check, CheckSquare, Square } from 'lucide-react';
 import { 
   DropdownMenu,
   DropdownMenuContent,
@@ -78,6 +78,14 @@ const SpecialtyMultiSelector = ({
     onSelectionChange(selectedSpecialties.filter(s => s !== specialtyToRemove));
   };
 
+  const handleSelectAllQuick = () => {
+    onSelectionChange([...filteredSpecialties]);
+  };
+
+  const handleDeselectAllQuick = () => {
+    onSelectionChange([]);
+  };
+
   const getDisplayText = () => {
     if (selectedSpecialties.length === 0) {
       return placeholder;
@@ -92,84 +100,110 @@ const SpecialtyMultiSelector = ({
 
   return (
     <div className={`space-y-2 ${className}`}>
-      <DropdownMenu open={isOpen} onOpenChange={setIsOpen}>
-        <DropdownMenuTrigger asChild>
-          <Button 
-            variant="outline" 
-            className="w-full justify-between text-left font-normal"
-          >
-            <span className="truncate">{getDisplayText()}</span>
-            <ChevronDown className="h-4 w-4 opacity-50" />
-          </Button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent 
-          className="w-80 bg-white border shadow-lg z-50" 
-          onCloseAutoFocus={(e) => e.preventDefault()}
-        >
-          <DropdownMenuItem 
-            onClick={handleSelectAll}
-            onSelect={(e) => e.preventDefault()}
-            className="flex items-center space-x-2 cursor-pointer"
-          >
-            <Checkbox 
-              checked={isAllSelected}
-              onChange={() => {}}
-            />
-            <span className="font-medium">
-              {isAllSelected ? 'Deselect All' : 'Select All'}
-            </span>
-          </DropdownMenuItem>
-          <DropdownMenuSeparator />
-          
-          <div className="max-h-48 overflow-y-auto">
-            {filteredSpecialties.map((specialty) => (
-              <DropdownMenuItem
-                key={specialty}
-                onClick={(e) => handleToggleSpecialty(specialty, e)}
-                onSelect={(e) => e.preventDefault()}
-                className="flex items-center space-x-2 cursor-pointer"
-              >
-                <Checkbox 
-                  checked={pendingSelection.includes(specialty)}
-                  onChange={() => {}}
-                />
-                <span className="flex-1">{specialty}</span>
-                {pendingSelection.includes(specialty) && !selectedSpecialties.includes(specialty) && (
-                  <Badge variant="outline" className="text-xs bg-blue-50 text-blue-600 border-blue-200">
-                    New
-                  </Badge>
-                )}
-                {!pendingSelection.includes(specialty) && selectedSpecialties.includes(specialty) && (
-                  <Badge variant="outline" className="text-xs bg-red-50 text-red-600 border-red-200">
-                    Remove
-                  </Badge>
-                )}
-              </DropdownMenuItem>
-            ))}
-          </div>
-          
-          <DropdownMenuSeparator />
-          <div className="flex gap-2 p-2">
+      <div className="flex items-center gap-2">
+        <DropdownMenu open={isOpen} onOpenChange={setIsOpen}>
+          <DropdownMenuTrigger asChild>
             <Button 
-              size="sm" 
-              onClick={handleApply}
-              disabled={!hasPendingChanges}
-              className="flex-1"
-            >
-              <Check className="h-3 w-3 mr-1" />
-              Apply ({pendingSelection.length})
-            </Button>
-            <Button 
-              size="sm" 
               variant="outline" 
-              onClick={handleCancel}
-              className="flex-1"
+              className="flex-1 justify-between text-left font-normal"
             >
-              Cancel
+              <span className="truncate">{getDisplayText()}</span>
+              <ChevronDown className="h-4 w-4 opacity-50" />
             </Button>
-          </div>
-        </DropdownMenuContent>
-      </DropdownMenu>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent 
+            className="w-80 bg-white border shadow-lg z-50" 
+            onCloseAutoFocus={(e) => e.preventDefault()}
+          >
+            <DropdownMenuItem 
+              onClick={handleSelectAll}
+              onSelect={(e) => e.preventDefault()}
+              className="flex items-center space-x-2 cursor-pointer"
+            >
+              <Checkbox 
+                checked={isAllSelected}
+                onChange={() => {}}
+              />
+              <span className="font-medium">
+                {isAllSelected ? 'Deselect All' : 'Select All'}
+              </span>
+            </DropdownMenuItem>
+            <DropdownMenuSeparator />
+            
+            <div className="max-h-48 overflow-y-auto">
+              {filteredSpecialties.map((specialty) => (
+                <DropdownMenuItem
+                  key={specialty}
+                  onClick={(e) => handleToggleSpecialty(specialty, e)}
+                  onSelect={(e) => e.preventDefault()}
+                  className="flex items-center space-x-2 cursor-pointer"
+                >
+                  <Checkbox 
+                    checked={pendingSelection.includes(specialty)}
+                    onChange={() => {}}
+                  />
+                  <span className="flex-1">{specialty}</span>
+                  {pendingSelection.includes(specialty) && !selectedSpecialties.includes(specialty) && (
+                    <Badge variant="outline" className="text-xs bg-blue-50 text-blue-600 border-blue-200">
+                      New
+                    </Badge>
+                  )}
+                  {!pendingSelection.includes(specialty) && selectedSpecialties.includes(specialty) && (
+                    <Badge variant="outline" className="text-xs bg-red-50 text-red-600 border-red-200">
+                      Remove
+                    </Badge>
+                  )}
+                </DropdownMenuItem>
+              ))}
+            </div>
+            
+            <DropdownMenuSeparator />
+            <div className="flex gap-2 p-2">
+              <Button 
+                size="sm" 
+                onClick={handleApply}
+                disabled={!hasPendingChanges}
+                className="flex-1"
+              >
+                <Check className="h-3 w-3 mr-1" />
+                Apply ({pendingSelection.length})
+              </Button>
+              <Button 
+                size="sm" 
+                variant="outline" 
+                onClick={handleCancel}
+                className="flex-1"
+              >
+                Cancel
+              </Button>
+            </div>
+          </DropdownMenuContent>
+        </DropdownMenu>
+
+        {/* Quick Select/Deselect All buttons */}
+        <div className="flex gap-1">
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={handleSelectAllQuick}
+            disabled={selectedSpecialties.length === filteredSpecialties.length}
+            className="px-2"
+            title="Select All"
+          >
+            <CheckSquare className="h-3 w-3" />
+          </Button>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={handleDeselectAllQuick}
+            disabled={selectedSpecialties.length === 0}
+            className="px-2"
+            title="Deselect All"
+          >
+            <Square className="h-3 w-3" />
+          </Button>
+        </div>
+      </div>
 
       {hasSelections && (
         <div className="flex flex-wrap gap-1">
