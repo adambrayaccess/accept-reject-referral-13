@@ -1,6 +1,6 @@
 # Welcome to your Lovable project
 
-Change in ADO
+Change in ADO2
 
 ## Project info
 
