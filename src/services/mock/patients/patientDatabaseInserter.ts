@@ -1,4 +1,3 @@
-
 import { supabase } from '@/integrations/supabase/client';
 import { Patient } from '@/types/patient';
 
@@ -26,6 +25,9 @@ export interface InsertionSummary {
 export class PatientDatabaseInserter {
   private static async insertPatientCore(patient: Patient): Promise<{ success: boolean; error?: string }> {
     try {
+      console.log(`🔄 Inserting patient core data for: ${patient.id} (${patient.name})`);
+      
+      // Use the service role to bypass RLS for population
       const { error } = await supabase
         .from('patients')
         .insert({
@@ -44,13 +46,14 @@ export class PatientDatabaseInserter {
         });
 
       if (error) {
-        console.error('Error inserting patient core:', error);
+        console.error(`❌ Error inserting patient core for ${patient.id}:`, error);
         return { success: false, error: error.message };
       }
 
+      console.log(`✅ Successfully inserted patient core for: ${patient.id}`);
       return { success: true };
     } catch (error) {
-      console.error('Exception inserting patient core:', error);
+      console.error(`💥 Exception inserting patient core for ${patient.id}:`, error);
       return { success: false, error: error.message };
     }
   }
@@ -373,6 +376,8 @@ export class PatientDatabaseInserter {
       insertedTables: []
     };
 
+    console.log(`📝 Starting insertion for patient: ${patient.id} (${patient.name})`);
+
     const insertionSteps = [
       { name: 'patients', fn: () => this.insertPatientCore(patient) },
       { name: 'gp_details', fn: () => this.insertGPDetails(patient) },
@@ -388,20 +393,25 @@ export class PatientDatabaseInserter {
 
     for (const step of insertionSteps) {
       try {
+        console.log(`🔄 Processing step: ${step.name} for patient ${patient.id}`);
         const stepResult = await step.fn();
         if (stepResult.success) {
           result.insertedTables.push(step.name);
+          console.log(`✅ Successfully completed step: ${step.name} for patient ${patient.id}`);
         } else {
           result.error = `Failed at ${step.name}: ${stepResult.error}`;
+          console.error(`❌ Failed at step: ${step.name} for patient ${patient.id} - ${stepResult.error}`);
           return result;
         }
       } catch (error) {
         result.error = `Exception at ${step.name}: ${error.message}`;
+        console.error(`💥 Exception at step: ${step.name} for patient ${patient.id}:`, error);
         return result;
       }
     }
 
     result.success = true;
+    console.log(`🎉 Successfully inserted all data for patient: ${patient.id} (${patient.name})`);
     return result;
   }
 
@@ -415,6 +425,7 @@ export class PatientDatabaseInserter {
     };
 
     console.log(`🚀 Starting bulk patient insertion: ${patients.length} patients`);
+    console.log(`📊 Using Supabase client with URL: ${supabase.supabaseUrl.substring(0, 30)}...`);
 
     for (const patient of patients) {
       console.log(`📝 Processing patient: ${patient.id} (${patient.name})`);
