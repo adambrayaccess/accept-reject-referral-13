@@ -15,6 +15,7 @@ jobs:
     
     - name: Mirror to Azure DevOps
       run: |
-        git remote add ado https://matthew.newboult@theaccessgroup.com:${{ secrets.ADO_PAT }}@dev.azure.com/access-devops/Access%20HSC%20-%20Shared%20Micro%20Services/_git/ReferralLovableMirror
+        git remote add ado https://${{ secrets.ADO_PAT }}@dev.azure.com/access-devops/Access%20HSC%20-%20Shared%20Micro%20Services/_git/ReferralLovableMirror
         git push ado --mirror
+
         
