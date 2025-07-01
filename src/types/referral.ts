@@ -54,9 +54,28 @@ export interface Referral {
   rttPathway?: RTTPathway;
   // Care Pathway information
   carePathway?: CarePathway;
-  // Team allocation - NEW
+  // Team allocation
   teamId?: string;
-  assignedHCPId?: string; // Individual HCP within the team
+  assignedHCPId?: string;
   allocatedDate?: string;
   allocatedBy?: string;
+  // FHIR-related fields
+  fhirId?: string;
+  intent?: string;
+  authoredOn?: string;
+  supportingInfo?: string[];
+}
+
+// Update Practitioner interface to include FHIR fields
+export interface Practitioner {
+  id: string;
+  name: string;
+  role?: string;
+  organization?: string;
+  contact?: string;
+  // FHIR-related fields
+  fhirId?: string;
+  active?: boolean;
+  gender?: string;
+  birthDate?: string;
 }

@@ -291,6 +291,267 @@ export type Database = {
           },
         ]
       }
+      fhir_addresses: {
+        Row: {
+          city: string | null
+          country: string | null
+          created_at: string | null
+          district: string | null
+          id: string
+          line: string[] | null
+          period_end: string | null
+          period_start: string | null
+          postal_code: string | null
+          resource_id: string
+          resource_type: Database["public"]["Enums"]["fhir_resource_type"]
+          state: string | null
+          text: string | null
+          type: string | null
+          use: Database["public"]["Enums"]["address_use"] | null
+        }
+        Insert: {
+          city?: string | null
+          country?: string | null
+          created_at?: string | null
+          district?: string | null
+          id?: string
+          line?: string[] | null
+          period_end?: string | null
+          period_start?: string | null
+          postal_code?: string | null
+          resource_id: string
+          resource_type: Database["public"]["Enums"]["fhir_resource_type"]
+          state?: string | null
+          text?: string | null
+          type?: string | null
+          use?: Database["public"]["Enums"]["address_use"] | null
+        }
+        Update: {
+          city?: string | null
+          country?: string | null
+          created_at?: string | null
+          district?: string | null
+          id?: string
+          line?: string[] | null
+          period_end?: string | null
+          period_start?: string | null
+          postal_code?: string | null
+          resource_id?: string
+          resource_type?: Database["public"]["Enums"]["fhir_resource_type"]
+          state?: string | null
+          text?: string | null
+          type?: string | null
+          use?: Database["public"]["Enums"]["address_use"] | null
+        }
+        Relationships: []
+      }
+      fhir_codings: {
+        Row: {
+          code: string | null
+          created_at: string | null
+          display: string | null
+          field_name: string
+          id: string
+          resource_id: string
+          resource_type: Database["public"]["Enums"]["fhir_resource_type"]
+          system: string | null
+          user_selected: boolean | null
+          version: string | null
+        }
+        Insert: {
+          code?: string | null
+          created_at?: string | null
+          display?: string | null
+          field_name: string
+          id?: string
+          resource_id: string
+          resource_type: Database["public"]["Enums"]["fhir_resource_type"]
+          system?: string | null
+          user_selected?: boolean | null
+          version?: string | null
+        }
+        Update: {
+          code?: string | null
+          created_at?: string | null
+          display?: string | null
+          field_name?: string
+          id?: string
+          resource_id?: string
+          resource_type?: Database["public"]["Enums"]["fhir_resource_type"]
+          system?: string | null
+          user_selected?: boolean | null
+          version?: string | null
+        }
+        Relationships: []
+      }
+      fhir_contact_points: {
+        Row: {
+          created_at: string | null
+          id: string
+          period_end: string | null
+          period_start: string | null
+          rank: number | null
+          resource_id: string
+          resource_type: Database["public"]["Enums"]["fhir_resource_type"]
+          system: Database["public"]["Enums"]["contact_point_system"]
+          use: Database["public"]["Enums"]["contact_point_use"] | null
+          value: string
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          period_end?: string | null
+          period_start?: string | null
+          rank?: number | null
+          resource_id: string
+          resource_type: Database["public"]["Enums"]["fhir_resource_type"]
+          system: Database["public"]["Enums"]["contact_point_system"]
+          use?: Database["public"]["Enums"]["contact_point_use"] | null
+          value: string
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          period_end?: string | null
+          period_start?: string | null
+          rank?: number | null
+          resource_id?: string
+          resource_type?: Database["public"]["Enums"]["fhir_resource_type"]
+          system?: Database["public"]["Enums"]["contact_point_system"]
+          use?: Database["public"]["Enums"]["contact_point_use"] | null
+          value?: string
+        }
+        Relationships: []
+      }
+      fhir_human_names: {
+        Row: {
+          created_at: string | null
+          family: string | null
+          given: string[] | null
+          id: string
+          period_end: string | null
+          period_start: string | null
+          prefix: string[] | null
+          resource_id: string
+          resource_type: Database["public"]["Enums"]["fhir_resource_type"]
+          suffix: string[] | null
+          text: string | null
+          use: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          family?: string | null
+          given?: string[] | null
+          id?: string
+          period_end?: string | null
+          period_start?: string | null
+          prefix?: string[] | null
+          resource_id: string
+          resource_type: Database["public"]["Enums"]["fhir_resource_type"]
+          suffix?: string[] | null
+          text?: string | null
+          use?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          family?: string | null
+          given?: string[] | null
+          id?: string
+          period_end?: string | null
+          period_start?: string | null
+          prefix?: string[] | null
+          resource_id?: string
+          resource_type?: Database["public"]["Enums"]["fhir_resource_type"]
+          suffix?: string[] | null
+          text?: string | null
+          use?: string | null
+        }
+        Relationships: []
+      }
+      fhir_identifiers: {
+        Row: {
+          assigner_reference: string | null
+          created_at: string | null
+          id: string
+          period_end: string | null
+          period_start: string | null
+          resource_id: string
+          resource_type: Database["public"]["Enums"]["fhir_resource_type"]
+          system: string | null
+          type_code: string | null
+          type_display: string | null
+          use: string | null
+          value: string
+        }
+        Insert: {
+          assigner_reference?: string | null
+          created_at?: string | null
+          id?: string
+          period_end?: string | null
+          period_start?: string | null
+          resource_id: string
+          resource_type: Database["public"]["Enums"]["fhir_resource_type"]
+          system?: string | null
+          type_code?: string | null
+          type_display?: string | null
+          use?: string | null
+          value: string
+        }
+        Update: {
+          assigner_reference?: string | null
+          created_at?: string | null
+          id?: string
+          period_end?: string | null
+          period_start?: string | null
+          resource_id?: string
+          resource_type?: Database["public"]["Enums"]["fhir_resource_type"]
+          system?: string | null
+          type_code?: string | null
+          type_display?: string | null
+          use?: string | null
+          value?: string
+        }
+        Relationships: []
+      }
+      fhir_resources: {
+        Row: {
+          created_at: string | null
+          fhir_id: string
+          id: string
+          last_updated: string | null
+          legacy_table_id: string | null
+          legacy_table_name: string | null
+          resource_data: Json
+          resource_type: Database["public"]["Enums"]["fhir_resource_type"]
+          updated_at: string | null
+          version_id: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          fhir_id: string
+          id?: string
+          last_updated?: string | null
+          legacy_table_id?: string | null
+          legacy_table_name?: string | null
+          resource_data: Json
+          resource_type: Database["public"]["Enums"]["fhir_resource_type"]
+          updated_at?: string | null
+          version_id?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          fhir_id?: string
+          id?: string
+          last_updated?: string | null
+          legacy_table_id?: string | null
+          legacy_table_name?: string | null
+          resource_data?: Json
+          resource_type?: Database["public"]["Enums"]["fhir_resource_type"]
+          updated_at?: string | null
+          version_id?: string | null
+        }
+        Relationships: []
+      }
       gp_details: {
         Row: {
           address: string
@@ -489,12 +750,23 @@ export type Database = {
           access_restriction_reason: string | null
           access_restriction_review_date: string | null
           accommodation_type: string | null
+          active: boolean | null
           address: string | null
           birth_date: string
+          communication_language_code: string | null
           created_at: string | null
+          deceased_boolean: boolean | null
+          deceased_datetime: string | null
           ethnicity: string | null
+          fhir_id: string | null
           gender: string | null
+          general_practitioner_reference: string | null
           id: string
+          managing_organization_reference: string | null
+          marital_status_code: string | null
+          marital_status_display: string | null
+          multiple_birth_boolean: boolean | null
+          multiple_birth_integer: number | null
           name: string
           nhs_number: string
           phone: string | null
@@ -510,12 +782,23 @@ export type Database = {
           access_restriction_reason?: string | null
           access_restriction_review_date?: string | null
           accommodation_type?: string | null
+          active?: boolean | null
           address?: string | null
           birth_date: string
+          communication_language_code?: string | null
           created_at?: string | null
+          deceased_boolean?: boolean | null
+          deceased_datetime?: string | null
           ethnicity?: string | null
+          fhir_id?: string | null
           gender?: string | null
+          general_practitioner_reference?: string | null
           id?: string
+          managing_organization_reference?: string | null
+          marital_status_code?: string | null
+          marital_status_display?: string | null
+          multiple_birth_boolean?: boolean | null
+          multiple_birth_integer?: number | null
           name: string
           nhs_number: string
           phone?: string | null
@@ -531,12 +814,23 @@ export type Database = {
           access_restriction_reason?: string | null
           access_restriction_review_date?: string | null
           accommodation_type?: string | null
+          active?: boolean | null
           address?: string | null
           birth_date?: string
+          communication_language_code?: string | null
           created_at?: string | null
+          deceased_boolean?: boolean | null
+          deceased_datetime?: string | null
           ethnicity?: string | null
+          fhir_id?: string | null
           gender?: string | null
+          general_practitioner_reference?: string | null
           id?: string
+          managing_organization_reference?: string | null
+          marital_status_code?: string | null
+          marital_status_display?: string | null
+          multiple_birth_boolean?: boolean | null
+          multiple_birth_integer?: number | null
           name?: string
           nhs_number?: string
           phone?: string | null
@@ -588,27 +882,48 @@ export type Database = {
       }
       practitioners: {
         Row: {
+          active: boolean | null
+          birth_date: string | null
           contact: string | null
           created_at: string | null
+          fhir_id: string | null
+          gender: Database["public"]["Enums"]["administrative_gender"] | null
           id: string
           name: string
           organization: string | null
+          qualification_code: string | null
+          qualification_display: string | null
+          qualification_issuer: string | null
           role: string | null
         }
         Insert: {
+          active?: boolean | null
+          birth_date?: string | null
           contact?: string | null
           created_at?: string | null
+          fhir_id?: string | null
+          gender?: Database["public"]["Enums"]["administrative_gender"] | null
           id?: string
           name: string
           organization?: string | null
+          qualification_code?: string | null
+          qualification_display?: string | null
+          qualification_issuer?: string | null
           role?: string | null
         }
         Update: {
+          active?: boolean | null
+          birth_date?: string | null
           contact?: string | null
           created_at?: string | null
+          fhir_id?: string | null
+          gender?: Database["public"]["Enums"]["administrative_gender"] | null
           id?: string
           name?: string
           organization?: string | null
+          qualification_code?: string | null
+          qualification_display?: string | null
+          qualification_issuer?: string | null
           role?: string | null
         }
         Relationships: []
@@ -708,23 +1023,38 @@ export type Database = {
           allocated_by: string | null
           allocated_date: string | null
           assigned_hcp_id: string | null
+          authored_on: string | null
+          category_code: string | null
+          category_display: string | null
+          code_code: string | null
+          code_display: string | null
           confidence: number | null
           created_at: string | null
           diagnosis: string | null
           display_order: number | null
+          fhir_id: string | null
           history: string | null
           id: string
+          intent: string | null
           is_sub_referral: boolean | null
           medications: string | null
           notes: string | null
+          occurrence_datetime: string | null
+          occurrence_period_end: string | null
+          occurrence_period_start: string | null
           parent_referral_id: string | null
           patient_id: string
+          performer_reference: string | null
           priority: Database["public"]["Enums"]["referral_priority"] | null
           reason: string
+          reasonable_code_code: string | null
+          reasonable_code_display: string | null
           referrer_id: string
+          requester_reference: string | null
           service: string | null
           specialty: string
           status: Database["public"]["Enums"]["referral_status"] | null
+          supporting_info: string[] | null
           team_id: string | null
           triage_status: Database["public"]["Enums"]["triage_status"] | null
           ubrn: string
@@ -736,23 +1066,38 @@ export type Database = {
           allocated_by?: string | null
           allocated_date?: string | null
           assigned_hcp_id?: string | null
+          authored_on?: string | null
+          category_code?: string | null
+          category_display?: string | null
+          code_code?: string | null
+          code_display?: string | null
           confidence?: number | null
           created_at?: string | null
           diagnosis?: string | null
           display_order?: number | null
+          fhir_id?: string | null
           history?: string | null
           id?: string
+          intent?: string | null
           is_sub_referral?: boolean | null
           medications?: string | null
           notes?: string | null
+          occurrence_datetime?: string | null
+          occurrence_period_end?: string | null
+          occurrence_period_start?: string | null
           parent_referral_id?: string | null
           patient_id: string
+          performer_reference?: string | null
           priority?: Database["public"]["Enums"]["referral_priority"] | null
           reason: string
+          reasonable_code_code?: string | null
+          reasonable_code_display?: string | null
           referrer_id: string
+          requester_reference?: string | null
           service?: string | null
           specialty: string
           status?: Database["public"]["Enums"]["referral_status"] | null
+          supporting_info?: string[] | null
           team_id?: string | null
           triage_status?: Database["public"]["Enums"]["triage_status"] | null
           ubrn: string
@@ -764,23 +1109,38 @@ export type Database = {
           allocated_by?: string | null
           allocated_date?: string | null
           assigned_hcp_id?: string | null
+          authored_on?: string | null
+          category_code?: string | null
+          category_display?: string | null
+          code_code?: string | null
+          code_display?: string | null
           confidence?: number | null
           created_at?: string | null
           diagnosis?: string | null
           display_order?: number | null
+          fhir_id?: string | null
           history?: string | null
           id?: string
+          intent?: string | null
           is_sub_referral?: boolean | null
           medications?: string | null
           notes?: string | null
+          occurrence_datetime?: string | null
+          occurrence_period_end?: string | null
+          occurrence_period_start?: string | null
           parent_referral_id?: string | null
           patient_id?: string
+          performer_reference?: string | null
           priority?: Database["public"]["Enums"]["referral_priority"] | null
           reason?: string
+          reasonable_code_code?: string | null
+          reasonable_code_display?: string | null
           referrer_id?: string
+          requester_reference?: string | null
           service?: string | null
           specialty?: string
           status?: Database["public"]["Enums"]["referral_status"] | null
+          supporting_info?: string[] | null
           team_id?: string | null
           triage_status?: Database["public"]["Enums"]["triage_status"] | null
           ubrn?: string
@@ -977,9 +1337,13 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      generate_fhir_patient_resource: {
+        Args: { patient_row: Database["public"]["Tables"]["patients"]["Row"] }
+        Returns: Json
+      }
     }
     Enums: {
+      address_use: "home" | "work" | "temp" | "old" | "billing"
       adjustment_category:
         | "communication"
         | "mobility"
@@ -989,6 +1353,7 @@ export type Database = {
         | "physical"
         | "other"
       adjustment_status: "active" | "inactive" | "under-review"
+      administrative_gender: "male" | "female" | "other" | "unknown"
       allergy_severity: "mild" | "moderate" | "severe" | "life-threatening"
       allergy_status: "active" | "inactive" | "resolved"
       allergy_type: "drug" | "food" | "environmental" | "contact" | "other"
@@ -1004,6 +1369,33 @@ export type Database = {
         | "follow-up"
         | "procedure"
         | "virtual"
+      contact_point_system:
+        | "phone"
+        | "fax"
+        | "email"
+        | "pager"
+        | "url"
+        | "sms"
+        | "other"
+      contact_point_use: "home" | "work" | "temp" | "old" | "mobile"
+      fhir_resource_type:
+        | "Patient"
+        | "Practitioner"
+        | "Organization"
+        | "ServiceRequest"
+        | "Observation"
+        | "Condition"
+        | "MedicationStatement"
+        | "AllergyIntolerance"
+        | "Appointment"
+        | "DocumentReference"
+        | "DiagnosticReport"
+      fhir_status:
+        | "active"
+        | "inactive"
+        | "suspended"
+        | "unknown"
+        | "entered-in-error"
       flag_level: "none" | "standard" | "complex" | "high-risk"
       medication_status: "active" | "discontinued" | "completed" | "paused"
       mha_status: "active" | "expired" | "discharged" | "appealed"
@@ -1137,6 +1529,7 @@ export type CompositeTypes<
 export const Constants = {
   public: {
     Enums: {
+      address_use: ["home", "work", "temp", "old", "billing"],
       adjustment_category: [
         "communication",
         "mobility",
@@ -1147,6 +1540,7 @@ export const Constants = {
         "other",
       ],
       adjustment_status: ["active", "inactive", "under-review"],
+      administrative_gender: ["male", "female", "other", "unknown"],
       allergy_severity: ["mild", "moderate", "severe", "life-threatening"],
       allergy_status: ["active", "inactive", "resolved"],
       allergy_type: ["drug", "food", "environmental", "contact", "other"],
@@ -1163,6 +1557,36 @@ export const Constants = {
         "follow-up",
         "procedure",
         "virtual",
+      ],
+      contact_point_system: [
+        "phone",
+        "fax",
+        "email",
+        "pager",
+        "url",
+        "sms",
+        "other",
+      ],
+      contact_point_use: ["home", "work", "temp", "old", "mobile"],
+      fhir_resource_type: [
+        "Patient",
+        "Practitioner",
+        "Organization",
+        "ServiceRequest",
+        "Observation",
+        "Condition",
+        "MedicationStatement",
+        "AllergyIntolerance",
+        "Appointment",
+        "DocumentReference",
+        "DiagnosticReport",
+      ],
+      fhir_status: [
+        "active",
+        "inactive",
+        "suspended",
+        "unknown",
+        "entered-in-error",
       ],
       flag_level: ["none", "standard", "complex", "high-risk"],
       medication_status: ["active", "discontinued", "completed", "paused"],

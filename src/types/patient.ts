@@ -1,4 +1,3 @@
-
 import type { MedicalHistory } from './medical';
 import type { ReasonableAdjustmentsFlag } from './reasonable-adjustments';
 
@@ -42,10 +41,10 @@ export interface HistoricAddress {
 
 export interface AccessRestriction {
   isRestricted: boolean;
-  level?: 'standard' | 'high' | 'maximum';
+  level?: string;
   reason?: string;
-  appliedDate?: string;
   appliedBy?: string;
+  appliedDate?: string;
   reviewDate?: string;
   notes?: string;
 }
@@ -54,20 +53,31 @@ export interface Patient {
   id: string;
   name: string;
   birthDate: string;
-  gender: string;
+  gender?: string;
   nhsNumber: string;
   address?: string;
   phone?: string;
-  pronouns?: string;
+  // FHIR-related fields
+  fhirId?: string;
+  active?: boolean;
+  maritalStatus?: string;
   ethnicity?: string;
+  pronouns?: string;
   accommodationType?: string;
+  // Medical history
   medicalHistory?: MedicalHistory;
+  // GP details
   gpDetails?: GPDetails;
-  pharmacies?: PharmacyDetails[];
+  // Related people
   relatedPeople?: RelatedPerson[];
-  accessRestriction?: AccessRestriction;
-  historicAddresses?: HistoricAddress[];
+  // Pharmacies
+  pharmacies?: PharmacyDetails[];
+  // Reasonable adjustments
   reasonableAdjustments?: ReasonableAdjustmentsFlag;
+  // Access restriction
+  accessRestriction?: AccessRestriction;
+  // Historic addresses
+  historicAddresses?: HistoricAddress[];
 }
 
 export interface Practitioner {

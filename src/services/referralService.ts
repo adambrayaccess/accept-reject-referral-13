@@ -17,3 +17,14 @@ export {
   fetchChildReferrals,
   fetchParentReferral
 } from './referral/referralFetchService';
+
+// Export FHIR services
+export {
+  FhirResourceService,
+  FhirPatientService,
+  FhirServiceRequestService,
+  FhirPractitionerService,
+  FhirSyncService
+} from './fhir';
+
+export { FhirIntegrationService } from './referral/fhirIntegrationService';
