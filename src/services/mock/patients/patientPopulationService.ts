@@ -11,8 +11,8 @@ export class PatientPopulationService {
     
     try {
       console.log('📡 Checking Supabase client configuration...');
-      console.log(`   Supabase URL: ${supabase.supabaseUrl.substring(0, 50)}...`);
-      console.log(`   Using anonymous key: ${supabase.supabaseKey.substring(0, 20)}...`);
+      console.log('   Supabase client is configured and ready');
+      console.log('   Using Supabase project: rsyhehcmsvwedmtnsoat');
       
       console.log('📞 Calling PatientDataPopulation.executePopulationPlan()...');
       const result = await PatientDataPopulation.executePopulationPlan();

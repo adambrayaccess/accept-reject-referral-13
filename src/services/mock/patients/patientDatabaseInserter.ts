@@ -425,7 +425,7 @@ export class PatientDatabaseInserter {
     };
 
     console.log(`🚀 Starting bulk patient insertion: ${patients.length} patients`);
-    console.log(`📊 Using Supabase client with URL: ${supabase.supabaseUrl.substring(0, 30)}...`);
+    console.log(`📊 Using Supabase client for database operations`);
 
     for (const patient of patients) {
       console.log(`📝 Processing patient: ${patient.id} (${patient.name})`);
