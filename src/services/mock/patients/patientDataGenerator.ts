@@ -1,9 +1,8 @@
-
 import { Patient } from '@/types/patient';
 import { createVitalSignsSequence } from '../shared/vital-signs';
 import { createMedicationHistory } from '../shared/medications';
 import { createCommonTestResults, createSpecializedTestResults } from '../shared/test-results';
-import { createAllergies } from '../shared/allergies';
+import { createPatientAllergies } from '../shared/allergies';
 
 export interface PatientProfile {
   demographics: {
@@ -354,7 +353,7 @@ export class PatientDataGenerator {
       ...createCommonTestResults(patientId, gp?.name || 'Dr. Unknown', baseDate),
       ...(profile.clinical.specialtyTests ? createSpecializedTestResults(patientId, gp?.name || 'Dr. Unknown', profile.clinical.specialtyTests, baseDate) : [])
     ];
-    const allergies = Math.random() > 0.7 ? createAllergies(patientId) : undefined;
+    const allergies = Math.random() > 0.7 ? createPatientAllergies(patientId, gp?.name || 'Dr. Unknown', baseDate) : undefined;
 
     const patient: Patient = {
       id: patientId,
