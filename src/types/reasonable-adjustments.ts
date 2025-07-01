@@ -1,20 +1,20 @@
 
 export interface ReasonableAdjustment {
   id: string;
-  category: 'communication' | 'mobility' | 'sensory' | 'cognitive' | 'mental-health' | 'other';
+  category: string;
   description: string;
-  specificNeeds: string;
+  specificNeeds?: string;
   implementationNotes?: string;
-  dateRecorded: string;
-  recordedBy: string;
+  status: 'active' | 'inactive' | 'completed';
+  dateRecorded?: string;
+  recordedBy?: string;
   reviewDate?: string;
-  status: 'active' | 'inactive' | 'under-review';
 }
 
 export interface ReasonableAdjustmentsFlag {
   hasAdjustments: boolean;
-  flagLevel: 'none' | 'standard' | 'complex';
+  flagLevel?: 'none' | 'low' | 'medium' | 'high';
+  lastUpdated?: string;
+  updatedBy?: string;
   adjustments: ReasonableAdjustment[];
-  lastUpdated: string;
-  updatedBy: string;
 }

@@ -31,14 +31,14 @@ const AppointmentStatus = ({ referral, variant = 'default' }: AppointmentStatusP
     if (referral.appointmentDetails) {
       const appointment = referral.appointmentDetails;
       
-      // Safety check for date field
-      if (!appointment.date) {
-        console.warn('Appointment details missing date field:', appointment);
+      // Safety check for appointmentDate field
+      if (!appointment.appointmentDate) {
+        console.warn('Appointment details missing appointmentDate field:', appointment);
         return getFallbackStatus(age);
       }
       
       try {
-        const appointmentDate = parseISO(appointment.date);
+        const appointmentDate = parseISO(appointment.appointmentDate);
         
         switch (appointment.status) {
           case 'scheduled':
@@ -75,7 +75,7 @@ const AppointmentStatus = ({ referral, variant = 'default' }: AppointmentStatusP
                     `Appointment ${format(appointmentDate, 'MMM dd')}`,
               icon: Calendar,
               variant: 'default',
-              details: `${appointment.time} - ${appointment.location}`,
+              details: `${appointment.appointmentTime} - ${appointment.location}`,
               canBook: false,
               appointmentInfo: appointment
             };
@@ -87,7 +87,7 @@ const AppointmentStatus = ({ referral, variant = 'default' }: AppointmentStatusP
                     `Confirmed ${format(appointmentDate, 'MMM dd')}`,
               icon: CheckCircle,
               variant: 'default',
-              details: `${appointment.time} - ${appointment.location}`,
+              details: `${appointment.appointmentTime} - ${appointment.location}`,
               canBook: false,
               appointmentInfo: appointment
             };

@@ -1,7 +1,7 @@
 
 export type ReferralStatus = 'new' | 'triaged' | 'accepted' | 'rejected' | 'completed' | 'cancelled';
 export type ReferralPriority = 'routine' | 'urgent' | 'emergency';
-export type TriageStatus = 'pending' | 'in_progress' | 'completed';
+export type TriageStatus = 'pre-assessment' | 'assessed' | 'pre-admission-assessment' | 'waiting-list' | 'refer-to-another-specialty';
 
 export interface AuditLogEntry {
   timestamp: string;
@@ -45,4 +45,9 @@ export interface AppointmentDetails {
   location: string;
   consultant: string;
   notes?: string;
+}
+
+export interface SpecialtyOption {
+  id: string;
+  name: string;
 }

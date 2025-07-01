@@ -1,4 +1,3 @@
-
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
@@ -163,12 +162,12 @@ const PatientJourney = ({ referral }: PatientJourneyProps) => {
 
     // Letter sent with appointment details
     if (referral.appointmentDetails) {
-      const letterDate = new Date(referral.appointmentDetails.date);
+      const letterDate = new Date(referral.appointmentDetails.appointmentDate);
       letterDate.setDate(letterDate.getDate() - 14); // 2 weeks before appointment
       events.push({
         id: 'appointment-letter',
         title: 'Letter Sent: Appointment Details',
-        description: `Appointment letter sent for ${referral.appointmentDetails.type} on ${format(new Date(referral.appointmentDetails.date), 'dd/MM/yyyy')}`,
+        description: `Appointment letter sent for ${referral.appointmentDetails.type} on ${format(new Date(referral.appointmentDetails.appointmentDate), 'dd/MM/yyyy')}`,
         date: letterDate.toISOString(),
         type: 'letter',
         status: 'completed',
@@ -296,7 +295,7 @@ const PatientJourney = ({ referral }: PatientJourneyProps) => {
 
     // Appointment reminder call
     if (referral.appointmentDetails) {
-      const reminderDate = new Date(referral.appointmentDetails.date);
+      const reminderDate = new Date(referral.appointmentDetails.appointmentDate);
       reminderDate.setDate(reminderDate.getDate() - 2); // 2 days before
       events.push({
         id: 'appointment-reminder',
@@ -339,11 +338,11 @@ const PatientJourney = ({ referral }: PatientJourneyProps) => {
         id: 'appointment',
         title: `${referral.appointmentDetails.type.charAt(0).toUpperCase() + referral.appointmentDetails.type.slice(1)} Appointment`,
         description: `${referral.appointmentDetails.location}${referral.appointmentDetails.consultant ? ` with ${referral.appointmentDetails.consultant}` : ''}`,
-        date: `${referral.appointmentDetails.date}T${referral.appointmentDetails.time}`,
+        date: `${referral.appointmentDetails.appointmentDate}T${referral.appointmentDetails.appointmentTime}`,
         type: 'appointment',
         status: referral.appointmentDetails.status === 'scheduled' ? 'scheduled' : 
                referral.appointmentDetails.status === 'confirmed' ? 'active' : 
-               referral.appointmentDetails.status
+               referral.appointmentDetails.status as any
       });
     }
 
