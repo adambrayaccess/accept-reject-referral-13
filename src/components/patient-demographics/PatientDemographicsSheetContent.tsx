@@ -15,6 +15,7 @@ import HistoricAddressesCard from './HistoricAddressesCard';
 import RecordInformationCard from './RecordInformationCard';
 import PatientDemographicsAllergies from './PatientDemographicsAllergies';
 import PatientDemographicsAdjustments from './PatientDemographicsAdjustments';
+import MedicalHistoryCard from './MedicalHistoryCard';
 
 interface PatientDemographicsSheetContentProps {
   patientId: string;
@@ -50,6 +51,10 @@ const PatientDemographicsSheetContent = ({ patientId }: PatientDemographicsSheet
   const hasAllergies = patient.medicalHistory?.allergies && patient.medicalHistory.allergies.length > 0;
   const hasAdjustments = patient.reasonableAdjustments?.hasAdjustments;
   const hasAccessRestriction = patient.accessRestriction?.isRestricted;
+  const hasMedicalHistory = patient.medicalHistory?.vitalSigns?.length > 0 || 
+                           patient.medications?.length > 0 || 
+                           patient.testResults?.length > 0 ||
+                           patient.mhaSections?.length > 0;
 
   return (
     <div className="space-y-6 pb-6">
@@ -59,6 +64,11 @@ const PatientDemographicsSheetContent = ({ patientId }: PatientDemographicsSheet
       
       {hasAccessRestriction && (
         <AccessRestrictionCard patient={patient} />
+      )}
+      
+      {/* Phase 2: Enhanced Medical History Integration */}
+      {hasMedicalHistory && (
+        <MedicalHistoryCard patient={patient} />
       )}
       
       <GPDetailsCard patient={patient} />
