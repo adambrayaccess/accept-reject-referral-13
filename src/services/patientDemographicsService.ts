@@ -127,11 +127,14 @@ export const fetchPatientDemographics = async (patientId: string): Promise<Patie
           recordedBy: allergy.recorded_by || undefined,
           notes: allergy.notes || undefined,
           status: allergy.status || 'active'
-        }))
+        })),
+        vitalSigns: [] // Add empty array to satisfy interface requirement
       } : undefined,
       reasonableAdjustments: reasonableAdjustments ? {
         hasAdjustments: reasonableAdjustments.has_adjustments || false,
         flagLevel: reasonableAdjustments.flag_level || 'none',
+        lastUpdated: reasonableAdjustments.last_updated || new Date().toISOString(),
+        updatedBy: reasonableAdjustments.updated_by || 'System',
         adjustments: reasonableAdjustments.adjustment_details ? 
           reasonableAdjustments.adjustment_details.map((detail: any) => ({
             id: detail.id,
