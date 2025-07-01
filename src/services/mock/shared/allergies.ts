@@ -18,7 +18,7 @@ export const createPatientAllergies = (patientId: string, recordedBy: string, ba
         {
           id: `ALG001001`,
           allergen: 'Penicillin',
-          type: 'drug',
+          type: 'medication',
           severity: 'severe',
           status: 'active',
           reactions: [
@@ -59,7 +59,7 @@ export const createPatientAllergies = (patientId: string, recordedBy: string, ba
         {
           id: `ALG002001`,
           allergen: 'Aspirin',
-          type: 'drug',
+          type: 'medication',
           severity: 'life-threatening',
           status: 'active',
           reactions: [
@@ -77,7 +77,7 @@ export const createPatientAllergies = (patientId: string, recordedBy: string, ba
         {
           id: `ALG002002`,
           allergen: 'Latex',
-          type: 'contact',
+          type: 'other',
           severity: 'moderate',
           status: 'active',
           reactions: [
@@ -117,7 +117,7 @@ export const createPatientAllergies = (patientId: string, recordedBy: string, ba
         {
           id: `ALG003001`,
           allergen: 'Morphine',
-          type: 'drug',
+          type: 'medication',
           severity: 'moderate',
           status: 'active',
           reactions: [
@@ -135,7 +135,7 @@ export const createPatientAllergies = (patientId: string, recordedBy: string, ba
         {
           id: `ALG003002`,
           allergen: 'Iodine Contrast',
-          type: 'drug',
+          type: 'medication',
           severity: 'moderate',
           status: 'active',
           reactions: [
@@ -157,7 +157,7 @@ export const createPatientAllergies = (patientId: string, recordedBy: string, ba
         {
           id: `ALG004001`,
           allergen: 'Codeine',
-          type: 'drug',
+          type: 'medication',
           severity: 'moderate',
           status: 'active',
           reactions: [
@@ -196,7 +196,7 @@ export const createPatientAllergies = (patientId: string, recordedBy: string, ba
         {
           id: `ALG005001`,
           allergen: 'Amoxicillin',
-          type: 'drug',
+          type: 'medication',
           severity: 'severe',
           status: 'active',
           reactions: [
@@ -249,7 +249,7 @@ export const createPatientAllergies = (patientId: string, recordedBy: string, ba
         },
         {
           allergen: 'Ibuprofen',
-          type: 'drug' as const,
+          type: 'medication' as const,
           severity: 'moderate' as const,
           reactions: [{ type: 'nausea' as const }, { type: 'other' as const, description: 'Stomach upset' }],
           notes: 'Use paracetamol as alternative. Avoid all NSAIDs.'
@@ -270,14 +270,14 @@ export const createPatientAllergies = (patientId: string, recordedBy: string, ba
         },
         {
           allergen: 'Trimethoprim',
-          type: 'drug' as const,
+          type: 'medication' as const,
           severity: 'moderate' as const,
           reactions: [{ type: 'rash' as const, description: 'Skin rash' }],
           notes: 'Alternative antibiotics should be used for UTI treatment.'
         },
         {
           allergen: 'Plasters/Adhesive',
-          type: 'contact' as const,
+          type: 'other' as const,
           severity: 'mild' as const,
           reactions: [{ type: 'rash' as const, description: 'Contact dermatitis' }],
           notes: 'Use hypoallergenic adhesive products in healthcare settings.'

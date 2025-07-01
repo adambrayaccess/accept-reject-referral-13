@@ -1,74 +1,39 @@
+import { AppointmentDetails } from '@/types/workflow';
 
-import { AppointmentDetails } from '@/types/referral';
+const appointmentTypes = ['Initial Consultation', 'Follow-up', 'Review', 'Assessment'];
+const appointmentStatuses = ['scheduled', 'confirmed', 'completed', 'cancelled'];
+const locations = ['Clinic A', 'Clinic B', 'Virtual'];
+const consultants = ['Dr. Smith', 'Dr. Jones', 'Dr. Williams'];
 
-export const generateMockAppointment = (referralId: string, createdDate: string, specialty: string): AppointmentDetails | undefined => {
-  // 70% chance of having an appointment
-  if (Math.random() > 0.7) return undefined;
-
-  const appointmentTypes: AppointmentDetails['type'][] = ['consultation', 'pre-admission', 'follow-up', 'procedure'];
-  const locations = [
-    'Clinic Room 1',
-    'Clinic Room 2', 
-    'Outpatient Suite A',
-    'Outpatient Suite B',
-    'Day Surgery Unit',
-    'Assessment Room',
-    'Virtual Consultation'
-  ];
-
-  const consultants = [
-    'Dr. Sarah Johnson',
-    'Dr. Michael Chen',
-    'Dr. Emily Watson',
-    'Dr. James Thompson',
-    'Dr. Lisa Anderson',
-    'Dr. Robert Williams'
-  ];
-
-  const statuses: AppointmentDetails['status'][] = ['scheduled', 'confirmed', 'cancelled', 'completed'];
-
-  // Generate appointment date (5-60 days from referral creation)
-  const referralDate = new Date(createdDate);
-  const daysFromReferral = Math.floor(Math.random() * 55) + 5;
-  const appointmentDate = new Date(referralDate);
-  appointmentDate.setDate(appointmentDate.getDate() + daysFromReferral);
-
-  // Generate time slot
-  const hours = Math.floor(Math.random() * 8) + 9; // 9 AM to 5 PM
-  const minutes = Math.random() > 0.5 ? '00' : '30';
-  const time = `${hours.toString().padStart(2, '0')}:${minutes}`;
-
-  return {
-    id: `APT-${referralId}-001`,
-    date: appointmentDate.toISOString().split('T')[0],
-    time,
-    type: appointmentTypes[Math.floor(Math.random() * appointmentTypes.length)],
-    location: locations[Math.floor(Math.random() * locations.length)],
-    consultant: consultants[Math.floor(Math.random() * consultants.length)],
-    status: statuses[Math.floor(Math.random() * statuses.length)],
-    notes: Math.random() > 0.7 ? 'Patient confirmed attendance' : undefined
-  };
+// Function to generate a random date within a reasonable range
+const getRandomDate = (start: Date, end: Date) => {
+  return new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()));
 };
 
-export const generateSubReferralData = (parentId: string): { parentReferralId?: string; childReferralIds?: string[]; isSubReferral?: boolean } => {
-  // 50% chance of being involved in sub-referral relationships
-  if (Math.random() > 0.5) return {};
+// Function to generate a random time
+const getRandomTime = () => {
+  const hour = String(Math.floor(Math.random() * 24)).padStart(2, '0');
+  const minute = String(Math.floor(Math.random() * 60)).padStart(2, '0');
+  return `${hour}:${minute}`;
+};
 
-  // 30% chance of being a sub-referral, 70% chance of having sub-referrals
-  const isSubReferral = Math.random() < 0.3;
+export const generateAppointmentDetails = (referral: any): AppointmentDetails => {
+  const appointmentDate = getRandomDate(new Date(), new Date(new Date().setDate(new Date().getDate() + 60)));
+  const appointmentTime = getRandomTime();
+  const appointmentType = appointmentTypes[Math.floor(Math.random() * appointmentTypes.length)];
+  const status = appointmentStatuses[Math.floor(Math.random() * appointmentStatuses.length)];
+  const location = locations[Math.floor(Math.random() * locations.length)];
+  const consultant = consultants[Math.floor(Math.random() * consultants.length)];
+  const notes = `Appointment for ${referral.patient.name} - ${appointmentType} at ${location}`;
   
-  if (isSubReferral) {
-    return {
-      parentReferralId: `PARENT-${Math.floor(Math.random() * 1000)}`,
-      isSubReferral: true
-    };
-  } else {
-    const numSubReferrals = Math.floor(Math.random() * 3) + 1;
-    const childReferralIds = Array.from({ length: numSubReferrals }, (_, i) => 
-      `SUB-${parentId}-${i + 1}`
-    );
-    return {
-      childReferralIds
-    };
-  }
+  return {
+    id: `APT-${referral.id.slice(-8)}`,
+    appointmentDate: appointmentDate.toISOString().split('T')[0],
+    appointmentTime: appointmentTime,
+    type: appointmentType,
+    status: status,
+    location: location,
+    consultant: consultant,
+    notes: notes
+  };
 };

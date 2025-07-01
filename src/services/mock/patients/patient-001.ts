@@ -10,7 +10,7 @@ const patient001Allergies: Allergy[] = [
   {
     id: 'ALG001001',
     allergen: 'Penicillin',
-    type: 'drug',
+    type: 'medication',
     severity: 'severe',
     status: 'active',
     reactions: [
@@ -28,7 +28,7 @@ const patient001Allergies: Allergy[] = [
 
 const patient001ReasonableAdjustments: ReasonableAdjustmentsFlag = {
   hasAdjustments: true,
-  flagLevel: 'standard',
+  flagLevel: 'medium',
   adjustments: [
     {
       id: 'RA001001',
