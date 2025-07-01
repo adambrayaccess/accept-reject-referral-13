@@ -1,0 +1,19 @@
+name: Mirror to Azure DevOps
+
+on:
+  push:
+    branches: [ main ] # Adjust branch names as needed
+
+jobs:
+  mirror:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+    
+    - name: Mirror to Azure DevOps
+      run: |
+        git remote add ado https://your-ado-username:${{ secrets.ADO_PAT }}@dev.azure.com/your-organization/your-project/_git/your-repo
+        git push ado --mirror
