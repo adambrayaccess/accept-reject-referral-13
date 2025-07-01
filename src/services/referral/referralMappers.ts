@@ -237,6 +237,8 @@ export const mapReferralData = (referral: any): Referral => {
     intent: referral.intent,
     authoredOn: referral.authored_on,
     supportingInfo: referral.supporting_info,
+    // Add display order
+    displayOrder: referral.display_order,
     // Calculate child referral IDs - this would need a separate query in practice
     childReferralIds: []
   };

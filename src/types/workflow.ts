@@ -1,28 +1,30 @@
 
-export type ReferralStatus = 'new' | 'accepted' | 'rejected';
+export type ReferralStatus = 'new' | 'triaged' | 'accepted' | 'rejected' | 'completed' | 'cancelled';
 export type ReferralPriority = 'routine' | 'urgent' | 'emergency';
-export type TriageStatus = 'pre-assessment' | 'assessed' | 'pre-admission-assessment' | 'waiting-list' | 'refer-to-another-specialty';
+export type TriageStatus = 'pending' | 'in_progress' | 'completed';
 
 export interface AuditLogEntry {
   timestamp: string;
-  user: string;
   action: string;
+  user: string;
   notes?: string;
 }
 
 export interface CollaborationNote {
+  id: string;
   timestamp: string;
   author: string;
   content: string;
+  isInternal: boolean;
 }
 
 export interface Attachment {
   id: string;
   title: string;
   contentType: string;
-  url: string;
+  size: number;
   date: string;
-  size?: number;
+  url?: string;
 }
 
 export interface ClinicalInfo {
@@ -36,16 +38,11 @@ export interface ClinicalInfo {
 
 export interface AppointmentDetails {
   id: string;
-  date: string;
-  time: string;
-  type: 'consultation' | 'pre-admission' | 'follow-up' | 'procedure';
+  appointmentDate: string;
+  appointmentTime: string;
+  type: string;
+  status: string;
   location: string;
-  consultant?: string;
-  status: 'scheduled' | 'confirmed' | 'cancelled' | 'completed';
+  consultant: string;
   notes?: string;
-}
-
-export interface SpecialtyOption {
-  id: string;
-  name: string;
 }

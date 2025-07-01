@@ -1,6 +1,7 @@
 
 import type { MedicalHistory } from './medical';
 import type { ReasonableAdjustmentsFlag } from './reasonable-adjustments';
+import type { Allergy } from './allergy';
 
 export interface GPDetails {
   id: string;
@@ -79,6 +80,16 @@ export interface Patient {
   accessRestriction?: AccessRestriction;
   // Historic addresses
   historicAddresses?: HistoricAddress[];
+  // Allergies
+  allergies?: Allergy[];
+  // Medications
+  medications?: MedicationPrescription[];
+  // Vital signs
+  vitalSigns?: VitalSign[];
+  // Test results
+  testResults?: TestResult[];
+  // MHA sections
+  mhaSections?: MHASection[];
 }
 
 export interface HealthcareProfessional {
@@ -89,3 +100,6 @@ export interface HealthcareProfessional {
   teamIds?: string[]; // NEW - Teams this HCP belongs to
   isTeamLead?: boolean; // NEW - Whether this HCP leads any teams
 }
+
+// Import additional types needed for Patient interface
+import type { MedicationPrescription, VitalSign, TestResult, MHASection } from './medical';

@@ -63,6 +63,8 @@ export interface Referral {
   intent?: string;
   authoredOn?: string;
   supportingInfo?: string[];
+  // Display order for manual sorting
+  displayOrder?: number;
 }
 
 // FHIR-compliant Practitioner interface
