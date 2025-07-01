@@ -1,19 +1,13 @@
 
 import { Patient } from '@/types/patient';
-import { isValidUUID } from './uuidValidator';
-import { getMockPatientData } from './mockPatientData';
 import { fetchPatientFromDatabase, fetchRelatedPatientData } from './patientDataFetcher';
 import { transformPatientData } from './patientDataTransformer';
 
 export const fetchPatientDemographics = async (patientId: string): Promise<Patient | null> => {
   try {
-    // If the patientId is not a valid UUID, fall back to mock data
-    if (!isValidUUID(patientId)) {
-      console.log(`Patient ID ${patientId} is not a valid UUID, using mock data`);
-      return getMockPatientData(patientId);
-    }
-
-    // Fetch patient with all related data
+    console.log(`Fetching patient demographics for ID: ${patientId}`);
+    
+    // Fetch patient with all related data from database
     const patient = await fetchPatientFromDatabase(patientId);
     const relatedData = await fetchRelatedPatientData(patientId);
 
@@ -31,13 +25,10 @@ export const fetchPatientDemographics = async (patientId: string): Promise<Patie
     return transformedPatient;
   } catch (error) {
     console.error('Error in fetchPatientDemographics:', error);
-    console.log(`Falling back to mock data for patient ${patientId}`);
-    return getMockPatientData(patientId);
+    return null;
   }
 };
 
 // Re-export individual functions for direct use if needed
-export { getMockPatientData } from './mockPatientData';
-export { isValidUUID } from './uuidValidator';
 export { fetchPatientFromDatabase, fetchRelatedPatientData } from './patientDataFetcher';
 export { transformPatientData } from './patientDataTransformer';
