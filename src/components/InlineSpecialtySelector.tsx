@@ -36,6 +36,14 @@ const InlineSpecialtySelector = ({
     onSelectionChange(newSelection);
   };
 
+  const handleSelectAll = () => {
+    onSelectionChange(specialties);
+  };
+
+  const handleDeselectAll = () => {
+    onSelectionChange([]);
+  };
+
   const getDisplayText = () => {
     if (selectedSpecialties.length === 0) return 'No specialties selected';
     if (selectedSpecialties.length === 1) return selectedSpecialties[0];
@@ -57,7 +65,27 @@ const InlineSpecialtySelector = ({
         </PopoverTrigger>
         <PopoverContent className="w-80 p-3" align="start">
           <div className="space-y-2">
-            <h4 className="font-medium text-sm">Select Specialties</h4>
+            <div className="flex items-center justify-between">
+              <h4 className="font-medium text-sm">Select Specialties</h4>
+              <div className="flex gap-1">
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={handleSelectAll}
+                  className="h-6 px-2 text-xs"
+                >
+                  Select All
+                </Button>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={handleDeselectAll}
+                  className="h-6 px-2 text-xs"
+                >
+                  Deselect All
+                </Button>
+              </div>
+            </div>
             <div className="space-y-2 max-h-60 overflow-y-auto">
               {specialties.map((specialty) => (
                 <div key={specialty} className="flex items-center space-x-2">
