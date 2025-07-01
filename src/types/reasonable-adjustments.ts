@@ -13,7 +13,7 @@ export interface ReasonableAdjustment {
 
 export interface ReasonableAdjustmentsFlag {
   hasAdjustments: boolean;
-  flagLevel?: 'none' | 'low' | 'medium' | 'high';
+  flagLevel?: 'none' | 'low' | 'medium' | 'high' | 'standard' | 'complex';
   lastUpdated?: string;
   updatedBy?: string;
   adjustments: ReasonableAdjustment[];

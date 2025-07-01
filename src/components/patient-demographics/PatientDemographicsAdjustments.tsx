@@ -19,7 +19,7 @@ const PatientDemographicsAdjustments = ({ adjustmentsFlag }: PatientDemographics
         <CardTitle className="flex items-center gap-2">
           <Accessibility className="h-5 w-5 text-blue-500" />
           Reasonable Adjustments
-          <Badge variant={adjustmentsFlag.flagLevel === 'complex' ? 'destructive' : 'secondary'}>
+          <Badge variant={adjustmentsFlag.flagLevel === 'complex' || adjustmentsFlag.flagLevel === 'high' ? 'destructive' : 'secondary'}>
             {adjustmentsFlag.flagLevel} level
           </Badge>
         </CardTitle>

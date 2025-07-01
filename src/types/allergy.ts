@@ -1,6 +1,6 @@
 
 export type AllergySeverity = 'mild' | 'moderate' | 'severe' | 'life-threatening';
-export type AllergyType = 'medication' | 'food' | 'environmental' | 'other';
+export type AllergyType = 'medication' | 'drug' | 'food' | 'environmental' | 'contact' | 'other';
 export type AllergyStatus = 'active' | 'inactive' | 'resolved';
 export type VerificationStatus = 'unconfirmed' | 'confirmed' | 'refuted' | 'entered-in-error';
 
