@@ -5,3 +5,10 @@ export * from './referralUpdateService';
 export * from './referralReorderService';
 export * from './subReferralService';
 export * from './hl7Service';
+
+// Export individual modules for direct access
+export * from './singleReferralService';
+export * from './bulkReferralService';
+export * from './patientReferralService';
+export * from './hierarchicalReferralService';
+export * from './referralMappers';
