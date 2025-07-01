@@ -88,15 +88,14 @@ export const transformPatientData = (
       })) : [],
       
       vitalSigns: vitalSigns ? vitalSigns.map(vital => ({
-        id: vital.id,
         timestamp: vital.timestamp,
-        bloodPressureSystolic: vital.blood_pressure_systolic,
-        bloodPressureDiastolic: vital.blood_pressure_diastolic,
+        news2: vital.news2,
+        temperature: vital.temperature ? parseFloat(vital.temperature) : vital.temperature,
         heartRate: vital.heart_rate,
-        temperature: vital.temperature ? parseFloat(vital.temperature) : undefined,
-        respirationRate: vital.respiration,
+        respiration: vital.respiration,
         oxygenSaturation: vital.oxygen_saturation,
-        news2Score: vital.news2
+        bloodPressureSystolic: vital.blood_pressure_systolic,
+        bloodPressureDiastolic: vital.blood_pressure_diastolic
       })) : []
     },
     

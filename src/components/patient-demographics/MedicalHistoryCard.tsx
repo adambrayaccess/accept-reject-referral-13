@@ -66,17 +66,17 @@ const MedicalHistoryCard = ({ patient }: MedicalHistoryCardProps) => {
                   <div className="font-medium">{latestVitals.oxygenSaturation}%</div>
                 </div>
               )}
-              {latestVitals.respirationRate && (
+              {latestVitals.respiration && (
                 <div>
                   <div className="text-muted-foreground">Respiration</div>
-                  <div className="font-medium">{latestVitals.respirationRate}/min</div>
+                  <div className="font-medium">{latestVitals.respiration}/min</div>
                 </div>
               )}
-              {latestVitals.news2Score && (
+              {latestVitals.news2 && (
                 <div>
                   <div className="text-muted-foreground">NEWS2 Score</div>
-                  <Badge variant={latestVitals.news2Score >= 7 ? 'destructive' : latestVitals.news2Score >= 5 ? 'default' : 'secondary'}>
-                    {latestVitals.news2Score}
+                  <Badge variant={latestVitals.news2 >= 7 ? 'destructive' : latestVitals.news2 >= 5 ? 'default' : 'secondary'}>
+                    {latestVitals.news2}
                   </Badge>
                 </div>
               )}
