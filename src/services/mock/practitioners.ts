@@ -1,7 +1,7 @@
 
-import { Practitioner } from '@/types/referral';
+import { FhirPractitioner } from '@/types/referral';
 
-export const mockPractitioners: Practitioner[] = [
+export const mockPractitioners: FhirPractitioner[] = [
   {
     id: 'DR001',
     name: 'Dr. Emily Johnson',
