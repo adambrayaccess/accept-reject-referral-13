@@ -11,18 +11,23 @@ export async function executePatientPopulation() {
   console.log('🔄 This will populate all database tables with realistic data');
   
   try {
+    console.log('✅ Function called successfully - starting execution...');
+    
     // Step 1: Validate prerequisites
     console.log('\n🔍 Step 1: Validating prerequisites...');
     const prerequisites = await PatientPopulationService.validatePrerequisites();
+    console.log('Prerequisites result:', prerequisites);
     
     if (!prerequisites.allPassed) {
       console.error('❌ Prerequisites not met. Cannot proceed.');
+      console.error('Failed checks:', prerequisites.results.filter(r => r.status === 'FAILED'));
       return { success: false, error: 'Prerequisites validation failed' };
     }
 
     // Step 2: Check current database state
     console.log('\n📊 Step 2: Checking current database state...');
     const dbState = await PatientPopulationService.checkDatabaseState();
+    console.log('Database state result:', dbState);
     
     if (dbState.error) {
       console.error('❌ Cannot check database state:', dbState.error);
@@ -32,6 +37,7 @@ export async function executePatientPopulation() {
     // Step 3: Execute population plan
     console.log('\n🚀 Step 3: Executing population plan...');
     const result = await PatientPopulationService.executePopulationPlan();
+    console.log('Population plan result:', result);
     
     if (result.success) {
       console.log('\n🎉 SUCCESS! Patient population completed.');
@@ -51,6 +57,11 @@ export async function executePatientPopulation() {
     
   } catch (error) {
     console.error('\n💥 EXCEPTION during patient population:', error);
+    console.error('Error details:', {
+      message: error.message,
+      stack: error.stack,
+      name: error.name
+    });
     return { success: false, error: error.message };
   }
 }
@@ -60,4 +71,8 @@ if (typeof window !== 'undefined') {
   // Browser environment - expose to global scope for console usage
   (window as any).executePatientPopulation = executePatientPopulation;
   console.log('📋 Patient Population Plan loaded. Run executePatientPopulation() to start.');
+  console.log('🔧 Function is available in global scope');
+  console.log('💡 Try typing: executePatientPopulation()');
+} else {
+  console.log('🖥️ Server environment detected - function not exposed to global scope');
 }

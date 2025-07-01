@@ -10,7 +10,9 @@ export class PatientPopulationService {
     console.log('🚀 Patient Population Service: Starting execution');
     
     try {
+      console.log('📞 Calling PatientDataPopulation.executePopulationPlan()...');
       const result = await PatientDataPopulation.executePopulationPlan();
+      console.log('✅ PatientDataPopulation.executePopulationPlan() completed');
       
       if (result.success) {
         console.log('✅ Patient population plan completed successfully!');
@@ -26,6 +28,11 @@ export class PatientPopulationService {
       return result;
     } catch (error) {
       console.error('💥 Patient Population Service error:', error);
+      console.error('Error details:', {
+        message: error.message,
+        stack: error.stack,
+        name: error.name
+      });
       throw error;
     }
   }
@@ -34,14 +41,17 @@ export class PatientPopulationService {
    * Check current database state
    */
   static async checkDatabaseState() {
+    console.log('🔍 Checking database state...');
+    
     try {
+      console.log('📡 Querying patients table...');
       const { data: patients, error } = await supabase
         .from('patients')
         .select('id, name, created_at')
         .order('created_at', { ascending: false });
 
       if (error) {
-        console.error('Error checking database state:', error);
+        console.error('❌ Error checking database state:', error);
         return { error: error.message };
       }
 
@@ -60,7 +70,12 @@ export class PatientPopulationService {
         canProceed: true
       };
     } catch (error) {
-      console.error('Exception checking database state:', error);
+      console.error('💥 Exception checking database state:', error);
+      console.error('Error details:', {
+        message: error.message,
+        stack: error.stack,
+        name: error.name
+      });
       return { error: error.message };
     }
   }
@@ -81,12 +96,18 @@ export class PatientPopulationService {
     
     for (const check of checks) {
       try {
+        console.log(`🧪 Testing: ${check.name}...`);
         await check.test();
         results.push({ name: check.name, status: 'OK' });
         console.log(`✅ ${check.name}: OK`);
       } catch (error) {
         results.push({ name: check.name, status: 'FAILED', error: error.message });
         console.error(`❌ ${check.name}: FAILED - ${error.message}`);
+        console.error('Error details:', {
+          message: error.message,
+          stack: error.stack,
+          name: error.name
+        });
       }
     }
 
