@@ -1,6 +1,6 @@
 # Welcome to your Lovable project
 
-Change in Github
+Change in ADO
 
 ## Project info
 
