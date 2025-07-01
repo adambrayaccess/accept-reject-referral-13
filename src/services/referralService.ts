@@ -1,6 +1,5 @@
 
-// Legacy file - re-export everything from the new modular services
-// This maintains backward compatibility while we transition to the new structure
+// Main export file for all referral services
 export * from './referral';
 
 export { 
@@ -9,3 +8,12 @@ export {
   updateReferralTags,
   setReferralsData 
 } from './referral/referralUpdateService';
+
+// Re-export fetch services that now use Supabase exclusively
+export {
+  fetchReferrals,
+  fetchReferralById,
+  fetchPatientReferrals,
+  fetchChildReferrals,
+  fetchParentReferral
+} from './referral/referralFetchService';
