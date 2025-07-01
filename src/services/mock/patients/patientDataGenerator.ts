@@ -1,3 +1,4 @@
+
 import { Patient } from '@/types/patient';
 import { createVitalSignsSequence } from '../shared/vital-signs';
 import { createMedicationHistory } from '../shared/medications';
@@ -195,6 +196,15 @@ export class PatientDataGenerator {
     return `${part1} ${part2} ${part3}`;
   }
 
+  private static generateUUID(): string {
+    // Generate a proper UUID v4
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+      const r = Math.random() * 16 | 0;
+      const v = c == 'x' ? r : (r & 0x3 | 0x8);
+      return v.toString(16);
+    });
+  }
+
   private static generateBirthDate(ageRange: [number, number]): string {
     const currentYear = new Date().getFullYear();
     const minAge = ageRange[0];
@@ -216,7 +226,7 @@ export class PatientDataGenerator {
       const lastName = LAST_NAMES[Math.floor(Math.random() * LAST_NAMES.length)];
       
       relatedPeople.push({
-        id: `RP${patientId}${i + 1}`,
+        id: this.generateUUID(),
         name: `${firstName} ${lastName}`,
         relationship: relationships[Math.floor(Math.random() * relationships.length)],
         phone: PHONE_NUMBERS[Math.floor(Math.random() * PHONE_NUMBERS.length)],
@@ -245,7 +255,7 @@ export class PatientDataGenerator {
       toDate.setFullYear(toDate.getFullYear() + Math.floor(Math.random() * 3) + 1);
 
       historicAddresses.push({
-        id: `HA${patientId}${i + 1}`,
+        id: this.generateUUID(),
         address: UK_ADDRESSES[Math.floor(Math.random() * UK_ADDRESSES.length)],
         dateFrom: fromDate.toISOString().split('T')[0],
         dateTo: toDate.toISOString().split('T')[0],
@@ -315,7 +325,8 @@ export class PatientDataGenerator {
 
   static generatePatient(index: number): Patient {
     const profile = PATIENT_PROFILES[index];
-    const patientId = `P${(index + 6).toString().padStart(3, '0')}`;
+    const patientId = this.generateUUID(); // Generate proper UUID for database
+    const displayId = `P${(index + 6).toString().padStart(3, '0')}`; // Keep display ID for reference
     
     // Generate basic demographics
     const gender = profile.demographics.gender;
@@ -324,10 +335,12 @@ export class PatientDataGenerator {
     const birthDate = this.generateBirthDate(profile.demographics.ageRange);
     const baseDate = new Date().toISOString().split('T')[0];
 
+    console.log(`Generating patient ${displayId} with UUID: ${patientId}`);
+
     // Generate GP details
     const gp = GP_PRACTICES[Math.floor(Math.random() * GP_PRACTICES.length)];
     const gpDetails = profile.social.hasGP ? {
-      id: `GP${patientId}`,
+      id: this.generateUUID(),
       name: gp.name,
       practice: gp.practice,
       address: gp.address,
@@ -338,7 +351,7 @@ export class PatientDataGenerator {
     // Generate pharmacy details
     const pharmacy = PHARMACY_DETAILS[Math.floor(Math.random() * PHARMACY_DETAILS.length)];
     const pharmacies = profile.social.hasPharmacy ? [{
-      id: `PH${patientId}`,
+      id: this.generateUUID(),
       name: pharmacy.name,
       address: pharmacy.address,
       phone: pharmacy.phone,
@@ -348,15 +361,15 @@ export class PatientDataGenerator {
 
     // Generate medical history
     const vitalSigns = createVitalSignsSequence(baseDate, profile.clinical.vitalProfile);
-    const medications = createMedicationHistory(patientId, gp?.name || 'Dr. Unknown', profile.clinical.conditions, baseDate);
+    const medications = createMedicationHistory(displayId, gp?.name || 'Dr. Unknown', profile.clinical.conditions, baseDate);
     const testResults = [
-      ...createCommonTestResults(patientId, gp?.name || 'Dr. Unknown', baseDate),
-      ...(profile.clinical.specialtyTests ? createSpecializedTestResults(patientId, gp?.name || 'Dr. Unknown', profile.clinical.specialtyTests, baseDate) : [])
+      ...createCommonTestResults(displayId, gp?.name || 'Dr. Unknown', baseDate),
+      ...(profile.clinical.specialtyTests ? createSpecializedTestResults(displayId, gp?.name || 'Dr. Unknown', profile.clinical.specialtyTests, baseDate) : [])
     ];
-    const allergies = Math.random() > 0.7 ? createPatientAllergies(patientId, gp?.name || 'Dr. Unknown', baseDate) : undefined;
+    const allergies = Math.random() > 0.7 ? createPatientAllergies(displayId, gp?.name || 'Dr. Unknown', baseDate) : undefined;
 
     const patient: Patient = {
-      id: patientId,
+      id: patientId, // Use proper UUID for database
       name: `${firstName} ${lastName}`,
       birthDate,
       gender,
@@ -364,7 +377,7 @@ export class PatientDataGenerator {
       address: UK_ADDRESSES[Math.floor(Math.random() * UK_ADDRESSES.length)],
       phone: PHONE_NUMBERS[Math.floor(Math.random() * PHONE_NUMBERS.length)],
       // FHIR fields
-      fhirId: `Patient/${patientId}`,
+      fhirId: `Patient/${displayId}`, // Use display ID for FHIR reference
       active: true,
       maritalStatus: profile.demographics.maritalStatus,
       ethnicity: profile.demographics.ethnicity,
