@@ -1,0 +1,21 @@
+trigger:
+  - main  # Configure for the branches you want to mirror
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+steps:
+- checkout: self
+  persistCredentials: true
+  fetchDepth: 0  # This ensures all history is fetched
+
+- task: Bash@3
+  displayName: 'Mirror to GitHub'
+  inputs:
+    targetType: 'inline'
+    script: |
+      git remote add github https://$(GITHUB_PAT)@github.com/adambrayaccess/accept-reject-referral-13.git
+      git push --force github --all
+      git push --force github --tags
+  env:
+    GITHUB_PAT: $(githubPat)
