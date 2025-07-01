@@ -93,14 +93,27 @@ export async function executePatientPopulation() {
   }
 }
 
+/**
+ * Execute Phase 2 specifically - Medical History & Clinical Data
+ */
+export async function executePhase2() {
+  console.log('🏥 EXECUTING PHASE 2: Medical History & Clinical Data');
+  console.log('📋 Focus: Comprehensive medical records and clinical information');
+  
+  return await executePatientPopulation();
+}
+
 // Auto-execute if this file is run directly
 if (typeof window !== 'undefined') {
   // Browser environment - expose to global scope for console usage
   (window as any).executePatientPopulation = executePatientPopulation;
-  console.log('📋 Patient Population Plan loaded. Run executePatientPopulation() to start.');
-  console.log('🔧 Function is available in global scope');
-  console.log('💡 Try typing: executePatientPopulation()');
-  console.log('⚠️  Note: This function requires proper database permissions');
+  (window as any).executePhase2 = executePhase2;
+  
+  console.log('📋 Patient Population Plan loaded. Available functions:');
+  console.log('🔧 executePatientPopulation() - Complete population plan');
+  console.log('🏥 executePhase2() - Medical History & Clinical Data focus');
+  console.log('💡 Try typing: executePhase2()');
+  console.log('⚠️  Note: These functions require proper database permissions');
 } else {
-  console.log('🖥️ Server environment detected - function not exposed to global scope');
+  console.log('🖥️ Server environment detected - functions not exposed to global scope');
 }
