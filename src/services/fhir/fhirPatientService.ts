@@ -2,6 +2,7 @@
 import { supabase } from '@/integrations/supabase/client';
 import { Patient } from '@/types/patient';
 import { FhirResourceService } from './fhirResourceService';
+import { FhirPatientMapper } from './mappers/patientMapper';
 
 export class FhirPatientService {
   /**
@@ -31,19 +32,26 @@ export class FhirPatientService {
    */
   static async syncPatientToFhir(patient: Patient): Promise<boolean> {
     try {
-      // Generate FHIR resource
-      const fhirResource = this.createFhirPatientFromPatient(patient);
+      console.log('=== FHIR Patient Service ===');
+      console.log('Syncing patient to FHIR:', patient.id);
+
+      // Generate comprehensive FHIR resource using new mapper
+      const fhirResource = FhirPatientMapper.createFhirPatient(patient);
+      
+      console.log('Generated FHIR Patient resource:', JSON.stringify(fhirResource, null, 2));
       
       // Check if FHIR resource already exists
       const existingResource = await FhirResourceService.getFhirResource(`Patient/${patient.id}`);
       
       if (existingResource) {
+        console.log('Updating existing FHIR Patient resource');
         // Update existing resource
         await FhirResourceService.updateFhirResource(
           `Patient/${patient.id}`,
           fhirResource
         );
       } else {
+        console.log('Creating new FHIR Patient resource');
         // Create new resource
         await FhirResourceService.createFhirResource(
           'Patient',
@@ -59,6 +67,7 @@ export class FhirPatientService {
         .update({ fhir_id: `Patient/${patient.id}` })
         .eq('id', patient.id);
 
+      console.log('✅ Patient successfully synced to FHIR:', patient.id);
       return true;
     } catch (error) {
       console.error('Error syncing patient to FHIR:', error);
@@ -67,84 +76,46 @@ export class FhirPatientService {
   }
 
   /**
-   * Create FHIR Patient resource from Patient object
+   * Get all patients and sync them to FHIR
    */
-  private static createFhirPatientFromPatient(patient: Patient): any {
-    const fhirPatient: any = {
-      resourceType: 'Patient',
-      id: patient.id,
-      meta: {
-        versionId: '1',
-        lastUpdated: new Date().toISOString()
-      },
-      active: true,
-      identifier: [
-        {
-          use: 'official',
-          system: 'https://fhir.nhs.uk/Id/nhs-number',
-          value: patient.nhsNumber
-        }
-      ],
-      name: [
-        {
-          use: 'official',
-          text: patient.name
-        }
-      ],
-      gender: this.mapGender(patient.gender),
-      birthDate: patient.birthDate
-    };
+  static async bulkSyncPatientsToFhir(): Promise<{ successful: string[]; failed: string[] }> {
+    const successful: string[] = [];
+    const failed: string[] = [];
 
-    // Add address if available
-    if (patient.address) {
-      fhirPatient.address = [
-        {
-          use: 'home',
-          text: patient.address
-        }
-      ];
-    }
+    try {
+      console.log('=== FHIR Patient Bulk Sync ===');
+      
+      // Fetch all patients from database
+      const { data: patients, error } = await supabase
+        .from('patients')
+        .select('*');
 
-    // Add phone if available
-    if (patient.phone) {
-      fhirPatient.telecom = [
-        {
-          system: 'phone',
-          value: patient.phone,
-          use: 'home'
-        }
-      ];
-    }
+      if (error) {
+        console.error('Error fetching patients:', error);
+        return { successful, failed };
+      }
 
-    // Add marital status if available
-    if (patient.maritalStatus) {
-      fhirPatient.maritalStatus = {
-        coding: [
-          {
-            system: 'http://terminology.hl7.org/CodeSystem/v3-MaritalStatus',
-            code: patient.maritalStatus.toLowerCase(),
-            display: patient.maritalStatus
+      console.log(`Starting bulk sync for ${patients.length} patients`);
+
+      for (const patient of patients) {
+        try {
+          const synced = await this.syncPatientToFhir(patient);
+          if (synced) {
+            successful.push(patient.id);
+          } else {
+            failed.push(patient.id);
           }
-        ]
-      };
-    }
+        } catch (error) {
+          console.error(`Failed to sync patient ${patient.id}:`, error);
+          failed.push(patient.id);
+        }
+      }
 
-    return fhirPatient;
-  }
-
-  /**
-   * Map patient gender to FHIR gender
-   */
-  private static mapGender(gender?: string): string {
-    switch (gender?.toLowerCase()) {
-      case 'male':
-        return 'male';
-      case 'female':
-        return 'female';
-      case 'other':
-        return 'other';
-      default:
-        return 'unknown';
+      console.log(`Patient bulk sync completed: ${successful.length} successful, ${failed.length} failed`);
+      return { successful, failed };
+    } catch (error) {
+      console.error('Error during patient bulk sync:', error);
+      return { successful, failed };
     }
   }
 }

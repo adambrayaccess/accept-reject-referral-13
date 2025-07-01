@@ -17,7 +17,46 @@ export const mapPatient = (patient: any): Patient => ({
   ethnicity: patient.ethnicity,
   pronouns: patient.pronouns,
   accommodationType: patient.accommodation_type,
-  // Access restriction info
+  // Medical history
+  medicalHistory: patient.medical_history,
+  // GP details
+  gpDetails: patient.gp_details ? {
+    id: patient.gp_details.id,
+    name: patient.gp_details.name,
+    practice: patient.gp_details.practice,
+    address: patient.gp_details.address,
+    phone: patient.gp_details.phone,
+    email: patient.gp_details.email
+  } : undefined,
+  // Related people
+  relatedPeople: patient.related_people?.map((person: any) => ({
+    id: person.id,
+    name: person.name,
+    relationship: person.relationship,
+    phone: person.phone,
+    email: person.email,
+    address: person.address,
+    isPrimaryContact: person.is_primary_contact,
+    isNextOfKin: person.is_next_of_kin,
+    isEmergencyContact: person.is_emergency_contact
+  })),
+  // Pharmacies
+  pharmacies: patient.pharmacies?.map((pharmacy: any) => ({
+    id: pharmacy.id,
+    name: pharmacy.name,
+    address: pharmacy.address,
+    phone: pharmacy.phone,
+    email: pharmacy.email,
+    type: pharmacy.pharmacy_type
+  })),
+  // Reasonable adjustments
+  reasonableAdjustments: patient.reasonable_adjustments ? {
+    hasAdjustments: patient.reasonable_adjustments.has_adjustments,
+    flagLevel: patient.reasonable_adjustments.flag_level,
+    lastUpdated: patient.reasonable_adjustments.last_updated,
+    updatedBy: patient.reasonable_adjustments.updated_by
+  } : undefined,
+  // Access restriction
   accessRestriction: patient.access_restriction_enabled ? {
     isRestricted: patient.access_restriction_enabled,
     level: patient.access_restriction_level,
@@ -26,7 +65,15 @@ export const mapPatient = (patient: any): Patient => ({
     appliedDate: patient.access_restriction_applied_date,
     reviewDate: patient.access_restriction_review_date,
     notes: patient.access_restriction_notes
-  } : undefined
+  } : undefined,
+  // Historic addresses
+  historicAddresses: patient.historic_addresses?.map((address: any) => ({
+    id: address.id,
+    address: address.address,
+    dateFrom: address.date_from,
+    dateTo: address.date_to,
+    type: address.address_type
+  }))
 });
 
 export const mapPractitioner = (practitioner: any): FhirPractitioner => ({
@@ -61,12 +108,30 @@ export const mapReferralData = (referral: any): Referral => {
       allergies: referral.allergies_info ? referral.allergies_info.split(',') : [],
       notes: referral.notes
     },
-    attachments: [],
+    attachments: referral.attachments || [],
+    auditLog: referral.audit_log?.map((log: any) => ({
+      timestamp: log.timestamp,
+      action: log.action,
+      user: log.user_name,
+      notes: log.notes
+    })),
+    collaborationNotes: referral.collaboration_notes?.map((note: any) => ({
+      id: note.id,
+      timestamp: note.timestamp,
+      author: note.author,
+      content: note.content,
+      isInternal: note.is_internal
+    })),
     triageStatus: referral.triage_status,
+    tags: referral.tags?.map((tag: any) => tag.tag),
     parentReferralId: referral.parent_referral_id,
+    childReferralIds: referral.child_referral_ids,
     isSubReferral: referral.is_sub_referral,
     aiGenerated: referral.ai_generated,
     confidence: referral.confidence,
+    appointmentDetails: referral.appointment_details,
+    rttPathway: referral.rtt_pathway,
+    carePathway: referral.care_pathway,
     teamId: referral.team_id,
     assignedHCPId: referral.assigned_hcp_id,
     allocatedDate: referral.allocated_date,

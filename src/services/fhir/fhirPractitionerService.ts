@@ -2,6 +2,7 @@
 import { supabase } from '@/integrations/supabase/client';
 import { FhirPractitioner } from '@/types/referral';
 import { FhirResourceService } from './fhirResourceService';
+import { FhirPractitionerMapper } from './mappers/practitionerMapper';
 
 export class FhirPractitionerService {
   /**
@@ -9,19 +10,26 @@ export class FhirPractitionerService {
    */
   static async syncPractitionerToFhir(practitioner: FhirPractitioner): Promise<boolean> {
     try {
-      // Generate FHIR Practitioner resource
-      const fhirResource = this.createFhirPractitionerFromPractitioner(practitioner);
+      console.log('=== FHIR Practitioner Service ===');
+      console.log('Syncing practitioner to FHIR:', practitioner.id);
+
+      // Generate comprehensive FHIR resource using new mapper
+      const fhirResource = FhirPractitionerMapper.createFhirPractitioner(practitioner);
+      
+      console.log('Generated FHIR Practitioner resource:', JSON.stringify(fhirResource, null, 2));
       
       // Check if FHIR resource already exists
       const existingResource = await FhirResourceService.getFhirResource(`Practitioner/${practitioner.id}`);
       
       if (existingResource) {
+        console.log('Updating existing FHIR Practitioner resource');
         // Update existing resource
         await FhirResourceService.updateFhirResource(
           `Practitioner/${practitioner.id}`,
           fhirResource
         );
       } else {
+        console.log('Creating new FHIR Practitioner resource');
         // Create new resource
         await FhirResourceService.createFhirResource(
           'Practitioner',
@@ -37,6 +45,7 @@ export class FhirPractitionerService {
         .update({ fhir_id: `Practitioner/${practitioner.id}` })
         .eq('id', practitioner.id);
 
+      console.log('✅ Practitioner successfully synced to FHIR:', practitioner.id);
       return true;
     } catch (error) {
       console.error('Error syncing practitioner to FHIR:', error);
@@ -45,53 +54,46 @@ export class FhirPractitionerService {
   }
 
   /**
-   * Create FHIR Practitioner resource from Practitioner object
+   * Get all practitioners and sync them to FHIR
    */
-  private static createFhirPractitionerFromPractitioner(practitioner: FhirPractitioner): any {
-    const fhirPractitioner: any = {
-      resourceType: 'Practitioner',
-      id: practitioner.id,
-      meta: {
-        versionId: '1',
-        lastUpdated: new Date().toISOString()
-      },
-      active: true,
-      name: [
-        {
-          use: 'official',
-          text: practitioner.name
-        }
-      ]
-    };
+  static async bulkSyncPractitionersToFhir(): Promise<{ successful: string[]; failed: string[] }> {
+    const successful: string[] = [];
+    const failed: string[] = [];
 
-    // Add qualification if available
-    if (practitioner.role) {
-      fhirPractitioner.qualification = [
-        {
-          code: {
-            coding: [
-              {
-                system: 'http://terminology.hl7.org/CodeSystem/v2-0360',
-                display: practitioner.role
-              }
-            ],
-            text: practitioner.role
+    try {
+      console.log('=== FHIR Practitioner Bulk Sync ===');
+      
+      // Fetch all practitioners from database
+      const { data: practitioners, error } = await supabase
+        .from('practitioners')
+        .select('*');
+
+      if (error) {
+        console.error('Error fetching practitioners:', error);
+        return { successful, failed };
+      }
+
+      console.log(`Starting bulk sync for ${practitioners.length} practitioners`);
+
+      for (const practitioner of practitioners) {
+        try {
+          const synced = await this.syncPractitionerToFhir(practitioner);
+          if (synced) {
+            successful.push(practitioner.id);
+          } else {
+            failed.push(practitioner.id);
           }
+        } catch (error) {
+          console.error(`Failed to sync practitioner ${practitioner.id}:`, error);
+          failed.push(practitioner.id);
         }
-      ];
-    }
+      }
 
-    // Add contact information if available
-    if (practitioner.contact) {
-      fhirPractitioner.telecom = [
-        {
-          system: 'phone',
-          value: practitioner.contact,
-          use: 'work'
-        }
-      ];
+      console.log(`Practitioner bulk sync completed: ${successful.length} successful, ${failed.length} failed`);
+      return { successful, failed };
+    } catch (error) {
+      console.error('Error during practitioner bulk sync:', error);
+      return { successful, failed };
     }
-
-    return fhirPractitioner;
   }
 }
