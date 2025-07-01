@@ -1,5 +1,12 @@
+# azure-pipelines.yml
+# Pipeline to mirror Azure DevOps repository to GitHub
+
 trigger:
-  - main  # Configure for the branches you want to mirror
+  branches:
+    include:
+    - main
+    - master
+    # Add other branches you want to trigger the mirroring
 
 pool:
   vmImage: 'ubuntu-latest'
@@ -14,8 +21,25 @@ steps:
   inputs:
     targetType: 'inline'
     script: |
-      git remote add github https://$(GITHUB_PAT)@github.com/adambrayaccess/accept-reject-referral-13.git
+      # Configure Git identity for the pipeline
+      git config --global user.name "matthewnewboult"
+      git config --global user.email "matthew.newboult@theaccessgroup.com"
+      
+      # Add GitHub as a remote repository
+      git remote add github https://$(githubPat)@github.com/matthewnewboult/accept-reject-referral-13.git
+      
+      # Push all branches and history to GitHub
       git push --force github --all
+      
+      # Push all tags to GitHub
       git push --force github --tags
   env:
-    GITHUB_PAT: $(githubPat)
+    githubPat: $(githubPat)
+
+schedules:
+- cron: "0 */6 * * *"  # Run every 6 hours (optional)
+  displayName: Scheduled mirror
+  branches:
+    include:
+    - main
+  always: true
