@@ -26,7 +26,7 @@ steps:
       git config --global user.email "matthew.newboult@theaccessgroup.com"
       
       # Add GitHub as a remote repository
-      git remote add github https://$(githubPat)@github.com/matthewnewboult/accept-reject-referral-13.git
+      git remote add github https://$(githubPat)@github.com/adambrayaccess/accept-reject-referral-13.git
       
       # Push all branches and history to GitHub
       git push --force github --all
