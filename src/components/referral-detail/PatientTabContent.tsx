@@ -95,7 +95,8 @@ const PatientTabContent = ({ referral, relatedReferrals }: PatientTabContentProp
 
       {/* Demographics Sheet */}
       <PatientDemographicsSheet
-        patient={referral.patient}
+        patientId={referral.patient.id}
+        patientName={referral.patient.name}
         isOpen={isDemographicsOpen}
         onOpenChange={setIsDemographicsOpen}
       />

@@ -332,6 +332,44 @@ export type Database = {
           },
         ]
       }
+      historic_addresses: {
+        Row: {
+          address: string
+          address_type: string | null
+          created_at: string | null
+          date_from: string
+          date_to: string | null
+          id: string
+          patient_id: string
+        }
+        Insert: {
+          address: string
+          address_type?: string | null
+          created_at?: string | null
+          date_from: string
+          date_to?: string | null
+          id?: string
+          patient_id: string
+        }
+        Update: {
+          address?: string
+          address_type?: string | null
+          created_at?: string | null
+          date_from?: string
+          date_to?: string | null
+          id?: string
+          patient_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "historic_addresses_patient_id_fkey"
+            columns: ["patient_id"]
+            isOneToOne: false
+            referencedRelation: "patients"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       medications: {
         Row: {
           created_at: string | null
@@ -443,6 +481,13 @@ export type Database = {
       }
       patients: {
         Row: {
+          access_restriction_applied_by: string | null
+          access_restriction_applied_date: string | null
+          access_restriction_enabled: boolean | null
+          access_restriction_level: string | null
+          access_restriction_notes: string | null
+          access_restriction_reason: string | null
+          access_restriction_review_date: string | null
           accommodation_type: string | null
           address: string | null
           birth_date: string
@@ -457,6 +502,13 @@ export type Database = {
           updated_at: string | null
         }
         Insert: {
+          access_restriction_applied_by?: string | null
+          access_restriction_applied_date?: string | null
+          access_restriction_enabled?: boolean | null
+          access_restriction_level?: string | null
+          access_restriction_notes?: string | null
+          access_restriction_reason?: string | null
+          access_restriction_review_date?: string | null
           accommodation_type?: string | null
           address?: string | null
           birth_date: string
@@ -471,6 +523,13 @@ export type Database = {
           updated_at?: string | null
         }
         Update: {
+          access_restriction_applied_by?: string | null
+          access_restriction_applied_date?: string | null
+          access_restriction_enabled?: boolean | null
+          access_restriction_level?: string | null
+          access_restriction_notes?: string | null
+          access_restriction_reason?: string | null
+          access_restriction_review_date?: string | null
           accommodation_type?: string | null
           address?: string | null
           birth_date?: string
@@ -485,6 +544,47 @@ export type Database = {
           updated_at?: string | null
         }
         Relationships: []
+      }
+      pharmacy_details: {
+        Row: {
+          address: string
+          created_at: string | null
+          email: string | null
+          id: string
+          name: string
+          patient_id: string
+          pharmacy_type: string | null
+          phone: string
+        }
+        Insert: {
+          address: string
+          created_at?: string | null
+          email?: string | null
+          id?: string
+          name: string
+          patient_id: string
+          pharmacy_type?: string | null
+          phone: string
+        }
+        Update: {
+          address?: string
+          created_at?: string | null
+          email?: string | null
+          id?: string
+          name?: string
+          patient_id?: string
+          pharmacy_type?: string | null
+          phone?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "pharmacy_details_patient_id_fkey"
+            columns: ["patient_id"]
+            isOneToOne: false
+            referencedRelation: "patients"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       practitioners: {
         Row: {
@@ -706,6 +806,59 @@ export type Database = {
             columns: ["referrer_id"]
             isOneToOne: false
             referencedRelation: "practitioners"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      related_people: {
+        Row: {
+          address: string | null
+          created_at: string | null
+          email: string | null
+          id: string
+          is_emergency_contact: boolean | null
+          is_next_of_kin: boolean | null
+          is_primary_contact: boolean | null
+          name: string
+          patient_id: string
+          phone: string | null
+          relationship: string
+          updated_at: string | null
+        }
+        Insert: {
+          address?: string | null
+          created_at?: string | null
+          email?: string | null
+          id?: string
+          is_emergency_contact?: boolean | null
+          is_next_of_kin?: boolean | null
+          is_primary_contact?: boolean | null
+          name: string
+          patient_id: string
+          phone?: string | null
+          relationship: string
+          updated_at?: string | null
+        }
+        Update: {
+          address?: string | null
+          created_at?: string | null
+          email?: string | null
+          id?: string
+          is_emergency_contact?: boolean | null
+          is_next_of_kin?: boolean | null
+          is_primary_contact?: boolean | null
+          name?: string
+          patient_id?: string
+          phone?: string | null
+          relationship?: string
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "related_people_patient_id_fkey"
+            columns: ["patient_id"]
+            isOneToOne: false
+            referencedRelation: "patients"
             referencedColumns: ["id"]
           },
         ]

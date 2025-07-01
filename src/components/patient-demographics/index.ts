@@ -2,6 +2,7 @@
 export { default as PatientDemographicsSheet } from './PatientDemographicsSheet';
 export { default as PatientDemographicsButton } from './PatientDemographicsButton';
 export { default as PatientDemographicsContent } from './PatientDemographicsContent';
+export { default as PatientDemographicsSheetContent } from './PatientDemographicsSheetContent';
 export { default as PatientDemographicsAllergies } from './PatientDemographicsAllergies';
 export { default as PatientDemographicsAdjustments } from './PatientDemographicsAdjustments';
 export { default as PatientSummaryCard } from './PatientSummaryCard';
