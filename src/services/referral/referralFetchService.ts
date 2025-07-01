@@ -271,7 +271,7 @@ const transformReferralData = (dbReferral: any): Referral => {
       history: dbReferral.history || undefined,
       diagnosis: dbReferral.diagnosis || undefined,
       medications: dbReferral.medications || undefined,
-      allergiesInfo: dbReferral.allergies_info || undefined,
+      allergies: dbReferral.allergies_info || undefined,
       notes: dbReferral.notes || undefined
     },
     attachments: (dbReferral.attachments || []).map((attachment: any) => ({
@@ -304,8 +304,8 @@ const transformReferralData = (dbReferral: any): Referral => {
     aiGenerated: dbReferral.ai_generated || false,
     confidence: dbReferral.confidence || undefined,
     appointmentDetails: dbReferral.appointments && dbReferral.appointments.length > 0 ? {
-      appointmentDate: dbReferral.appointments[0].appointment_date,
-      appointmentTime: dbReferral.appointments[0].appointment_time,
+      date: dbReferral.appointments[0].appointment_date,
+      time: dbReferral.appointments[0].appointment_time,
       location: dbReferral.appointments[0].location,
       consultant: dbReferral.appointments[0].consultant,
       type: dbReferral.appointments[0].type,
