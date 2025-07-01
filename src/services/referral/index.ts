@@ -15,3 +15,8 @@ export * from './referralMappers';
 
 // Phase 3: Enhanced Referral Creation
 export * from './referralCreationService';
+
+// Phase 4: Mock Data Elimination
+export * from '../mockDataElimination/mockDataEliminationService';
+export * from '../mockDataElimination/postEliminationCleanup';
+export * from '../mockDataElimination/executePhase4';
