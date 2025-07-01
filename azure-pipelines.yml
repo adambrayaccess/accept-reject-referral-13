@@ -24,14 +24,29 @@ steps:
       # Configure Git identity for the pipeline
       git config --global user.name "matthewnewboult"
       git config --global user.email "matthew.newboult@theaccessgroup.com"
+
+      echo "Current branch and commit information:"
+      git branch
+      git rev-parse HEAD
+      echo "Last 5 commits:"
+      git log -n 5 --oneline
       
       # Add GitHub as a remote repository
+      echo "Configuring GitHub remote..."
+      git remote remove github 2>/dev/null || true
       git remote add github https://$(githubPat)@github.com/adambrayaccess/accept-reject-referral-13.git
+
+      echo "List of remotes:"
+      git remote -v
       
-      # Push all branches and history to GitHub
-      git push --force github --all
+      echo "Fetching from GitHub to compare..."
+      git fetch github
       
-      # Push all tags to GitHub
+      echo "Comparing branches with GitHub:"
+      git rev-list --left-right --count origin/main...github/main || echo "Unable to compare, continuing"
+      
+      echo "Forcing push to GitHub regardless of status:"
+      git push --force github HEAD:main
       git push --force github --tags
   env:
     githubPat: $(githubPat)
