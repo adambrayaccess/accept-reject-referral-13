@@ -1,8 +1,8 @@
 
 import { EnhancedTabs, EnhancedTabsContent, EnhancedTabsList, EnhancedTabsTrigger } from '@/components/ui/enhanced-tabs';
-import PatientDetailsForm from './PatientDetailsForm';
+import EnhancedPatientDetailsForm from './EnhancedPatientDetailsForm';
 import GPDetailsForm from './GPDetailsForm';
-import ClinicalDetailsForm from './ClinicalDetailsForm';
+import EnhancedClinicalDetailsForm from './EnhancedClinicalDetailsForm';
 import ReferralDocumentsTab, { DocumentFile } from './ReferralDocumentsTab';
 import { Patient } from '@/types/patient';
 
@@ -104,7 +104,7 @@ const ReferralFormTabs = ({
       </EnhancedTabsList>
       
       <EnhancedTabsContent value="patient" className="mt-4">
-        <PatientDetailsForm
+        <EnhancedPatientDetailsForm
           selectedPatient={selectedPatient}
           onPatientSelect={onPatientSelect}
           patientName={patientName}
@@ -139,7 +139,7 @@ const ReferralFormTabs = ({
       </EnhancedTabsContent>
       
       <EnhancedTabsContent value="clinical" className="mt-4">
-        <ClinicalDetailsForm
+        <EnhancedClinicalDetailsForm
           reason={reason}
           setReason={setReason}
           history={history}
@@ -152,6 +152,7 @@ const ReferralFormTabs = ({
           setAllergies={setAllergies}
           notes={notes}
           setNotes={setNotes}
+          selectedPatient={selectedPatient}
         />
       </EnhancedTabsContent>
       

@@ -12,3 +12,6 @@ export * from './bulkReferralService';
 export * from './patientReferralService';
 export * from './hierarchicalReferralService';
 export * from './referralMappers';
+
+// Phase 3: Enhanced Referral Creation
+export * from './referralCreationService';

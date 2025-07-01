@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
@@ -9,6 +8,8 @@ import { generateReferralId } from '@/utils/referralIdGenerator';
 import ReferralBasicInfoForm from './referral-form/ReferralBasicInfoForm';
 import ReferralFormTabs from './referral-form/ReferralFormTabs';
 import { DocumentFile } from './referral-form/ReferralDocumentsTab';
+import { ReferralCreationService, ReferralCreationData } from '@/services/referral/referralCreationService';
+import { Loader2 } from 'lucide-react';
 
 interface CreateReferralModalProps {
   isOpen: boolean;
@@ -17,6 +18,7 @@ interface CreateReferralModalProps {
 }
 
 const CreateReferralModal = ({ isOpen, onClose, onSubmit }: CreateReferralModalProps) => {
+  const [isCreating, setIsCreating] = useState(false);
   const [referralId, setReferralId] = useState('');
   const [priority, setPriority] = useState<ReferralPriority>('routine');
   const [specialty, setSpecialty] = useState('');
@@ -65,7 +67,7 @@ const CreateReferralModal = ({ isOpen, onClose, onSubmit }: CreateReferralModalP
       // Auto-fill patient fields
       setPatientName(patient.name);
       setBirthDate(patient.birthDate);
-      setGender(patient.gender);
+      setGender(patient.gender || '');
       setNhsNumber(patient.nhsNumber);
       setAddress(patient.address || '');
       setPhone(patient.phone || '');
@@ -99,7 +101,7 @@ const CreateReferralModal = ({ isOpen, onClose, onSubmit }: CreateReferralModalP
     }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
     if (!referralId || !specialty || !practitionerId || !patientName || !birthDate || !nhsNumber || !reason) {
@@ -122,24 +124,11 @@ const CreateReferralModal = ({ isOpen, onClose, onSubmit }: CreateReferralModalP
       return;
     }
 
-    // Create attachments from documents
-    const attachments = documents.map(doc => ({
-      id: doc.id,
-      title: doc.title,
-      contentType: doc.file.type,
-      size: doc.file.size,
-      date: new Date().toISOString(),
-      url: URL.createObjectURL(doc.file) // Temporary URL for demo
-    }));
+    setIsCreating(true);
 
-    const newReferral: Partial<Referral> = {
-      id: `REF-${referralId}`,
-      created: new Date().toISOString(),
-      status: 'new',
-      priority,
-      specialty,
-      referrer,
-      patient: {
+    try {
+      // Prepare patient data
+      const patientData: Patient = {
         id: selectedPatient?.id || nhsNumber,
         name: patientName,
         birthDate,
@@ -155,21 +144,63 @@ const CreateReferralModal = ({ isOpen, onClose, onSubmit }: CreateReferralModalP
           phone: gpPhone,
           email: gpEmail
         } : undefined,
-      },
-      clinicalInfo: {
+      };
+
+      // Create attachments from documents
+      const attachments = documents.map(doc => ({
+        id: doc.id,
+        title: doc.title,
+        contentType: doc.file.type,
+        size: doc.file.size,
+        date: new Date().toISOString(),
+        url: URL.createObjectURL(doc.file) // Temporary URL for demo
+      }));
+
+      // Prepare referral creation data
+      const creationData: ReferralCreationData = {
+        priority,
+        specialty,
+        practitionerId,
+        patient: patientData,
         reason,
         history,
         diagnosis,
         medications: medications.split('\n').filter(med => med.trim()),
         allergies: allergies.split('\n').filter(allergy => allergy.trim()),
         notes,
-      },
-      attachments,
-    };
+        attachments,
+        aiGenerated: false
+      };
 
-    onSubmit(newReferral);
-    onClose();
-    resetForm();
+      // Create referral using enhanced service
+      const result = await ReferralCreationService.createReferral(creationData);
+
+      if (result.success && result.referral) {
+        toast({
+          title: "Referral Created",
+          description: `Referral ${result.referral.ubrn} has been created successfully.`,
+        });
+        
+        onSubmit(result.referral);
+        onClose();
+        resetForm();
+      } else {
+        toast({
+          title: "Creation Failed",
+          description: result.error || "Failed to create referral",
+          variant: "destructive",
+        });
+      }
+    } catch (error) {
+      console.error('Error creating referral:', error);
+      toast({
+        title: "Unexpected Error",
+        description: "An unexpected error occurred while creating the referral",
+        variant: "destructive",
+      });
+    } finally {
+      setIsCreating(false);
+    }
   };
 
   const resetForm = () => {
@@ -200,9 +231,9 @@ const CreateReferralModal = ({ isOpen, onClose, onSubmit }: CreateReferralModalP
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">
+      <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle>Create Manual Referral</DialogTitle>
+          <DialogTitle>Create Manual Referral - Phase 3 Enhanced</DialogTitle>
         </DialogHeader>
         <form onSubmit={handleSubmit} className="space-y-6">
           <ReferralBasicInfoForm
@@ -258,8 +289,19 @@ const CreateReferralModal = ({ isOpen, onClose, onSubmit }: CreateReferralModalP
           />
 
           <DialogFooter>
-            <Button type="button" variant="outline" onClick={onClose}>Cancel</Button>
-            <Button type="submit">Create Referral</Button>
+            <Button type="button" variant="outline" onClick={onClose} disabled={isCreating}>
+              Cancel
+            </Button>
+            <Button type="submit" disabled={isCreating}>
+              {isCreating ? (
+                <>
+                  <Loader2 className="h-4 w-4 animate-spin mr-2" />
+                  Creating Referral...
+                </>
+              ) : (
+                'Create Referral'
+              )}
+            </Button>
           </DialogFooter>
         </form>
       </DialogContent>
