@@ -66,8 +66,8 @@ export async function executePhase2MedicalData() {
       return {
         phase: 'Phase 2: Medical History & Clinical Data',
         success: true,
-        patientsPopulated: insertion?.successful || 0,
-        medicalDataTables: Object.keys(insertion?.tableStats || {}),
+        patientsPopulated: result.result?.databaseInsertion?.successful || 0,
+        medicalDataTables: Object.keys(result.result?.databaseInsertion?.tableStats || {}),
         duration: result.result?.duration
       };
     } else {
