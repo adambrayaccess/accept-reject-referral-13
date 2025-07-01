@@ -1,3 +1,4 @@
+
 import { Referral, Patient, FhirPractitioner } from '@/types/referral';
 import { FhirIntegrationService } from './fhirIntegrationService';
 
@@ -40,7 +41,7 @@ export const mapPatient = (patient: any): Patient => ({
     isEmergencyContact: person.is_emergency_contact
   })),
   // Pharmacies
-  pharmacies: patient.pharmacies?.map((pharmacy: any) => ({
+  pharmacies: patient.pharmacy_details?.map((pharmacy: any) => ({
     id: pharmacy.id,
     name: pharmacy.name,
     address: pharmacy.address,
@@ -54,7 +55,17 @@ export const mapPatient = (patient: any): Patient => ({
     flagLevel: patient.reasonable_adjustments.flag_level,
     lastUpdated: patient.reasonable_adjustments.last_updated,
     updatedBy: patient.reasonable_adjustments.updated_by,
-    adjustments: patient.reasonable_adjustments.adjustments || [] // Add the required adjustments array
+    adjustments: patient.reasonable_adjustments.adjustment_details?.map((adj: any) => ({
+      id: adj.id,
+      category: adj.category,
+      description: adj.description,
+      specificNeeds: adj.specific_needs,
+      implementationNotes: adj.implementation_notes,
+      status: adj.status,
+      dateRecorded: adj.date_recorded,
+      recordedBy: adj.recorded_by,
+      reviewDate: adj.review_date
+    })) || []
   } : undefined,
   // Access restriction
   accessRestriction: patient.access_restriction_enabled ? {
@@ -73,6 +84,75 @@ export const mapPatient = (patient: any): Patient => ({
     dateFrom: address.date_from,
     dateTo: address.date_to,
     type: address.address_type
+  })),
+  // Allergies
+  allergies: patient.allergies?.map((allergy: any) => ({
+    id: allergy.id,
+    allergen: allergy.allergen,
+    type: allergy.type,
+    severity: allergy.severity,
+    reactions: allergy.reactions,
+    onsetDate: allergy.onset_date,
+    lastReactionDate: allergy.last_reaction_date,
+    status: allergy.status,
+    verificationStatus: allergy.verification_status,
+    recordedDate: allergy.recorded_date,
+    recordedBy: allergy.recorded_by,
+    notes: allergy.notes
+  })),
+  // Medications
+  medications: patient.medications?.map((med: any) => ({
+    id: med.id,
+    name: med.name,
+    dosage: med.dosage,
+    frequency: med.frequency,
+    prescribedDate: med.prescribed_date,
+    prescribedBy: med.prescribed_by,
+    endDate: med.end_date,
+    status: med.status,
+    indication: med.indication,
+    notes: med.notes
+  })),
+  // Vital signs
+  vitalSigns: patient.vital_signs?.map((vital: any) => ({
+    id: vital.id,
+    timestamp: vital.timestamp,
+    bloodPressureSystolic: vital.blood_pressure_systolic,
+    bloodPressureDiastolic: vital.blood_pressure_diastolic,
+    heartRate: vital.heart_rate,
+    respiration: vital.respiration,
+    temperature: vital.temperature,
+    oxygenSaturation: vital.oxygen_saturation,
+    news2: vital.news2
+  })),
+  // Test results
+  testResults: patient.test_results?.map((test: any) => ({
+    id: test.id,
+    testName: test.test_name,
+    testType: test.test_type,
+    requestedDate: test.requested_date,
+    requestedBy: test.requested_by,
+    sampleDate: test.sample_date,
+    performedBy: test.performed_by,
+    reportDate: test.report_date,
+    results: test.results,
+    interpretation: test.interpretation,
+    status: test.status,
+    notes: test.notes
+  })),
+  // MHA sections
+  mhaSections: patient.mha_sections?.map((section: any) => ({
+    id: section.id,
+    sectionNumber: section.section_number,
+    sectionTitle: section.section_title,
+    appliedDate: section.applied_date,
+    expiryDate: section.expiry_date,
+    reviewDate: section.review_date,
+    status: section.status,
+    hospital: section.hospital,
+    consultantResponsible: section.consultant_responsible,
+    reason: section.reason,
+    notes: section.notes
   }))
 });
 
@@ -104,11 +184,18 @@ export const mapReferralData = (referral: any): Referral => {
       reason: referral.reason,
       history: referral.history,
       diagnosis: referral.diagnosis,
-      medications: referral.medications ? referral.medications.split(',') : [],
-      allergies: referral.allergies_info ? referral.allergies_info.split(',') : [],
+      medications: referral.medications ? referral.medications.split(',').map((m: string) => m.trim()).filter(Boolean) : [],
+      allergies: referral.allergies_info ? referral.allergies_info.split(',').map((a: string) => a.trim()).filter(Boolean) : [],
       notes: referral.notes
     },
-    attachments: referral.attachments || [],
+    attachments: referral.attachments?.map((att: any) => ({
+      id: att.id,
+      title: att.filename,
+      contentType: att.file_type,
+      size: att.file_size,
+      date: att.uploaded_date,
+      url: att.file_url
+    })) || [],
     auditLog: referral.audit_log?.map((log: any) => ({
       timestamp: log.timestamp,
       action: log.action,
@@ -123,15 +210,24 @@ export const mapReferralData = (referral: any): Referral => {
       isInternal: note.is_internal
     })),
     triageStatus: referral.triage_status,
-    tags: referral.tags?.map((tag: any) => tag.tag),
+    tags: referral.referral_tags?.map((tag: any) => tag.tag) || [],
     parentReferralId: referral.parent_referral_id,
-    childReferralIds: referral.child_referral_ids,
     isSubReferral: referral.is_sub_referral,
     aiGenerated: referral.ai_generated,
     confidence: referral.confidence,
-    appointmentDetails: referral.appointment_details,
-    rttPathway: referral.rtt_pathway,
-    carePathway: referral.care_pathway,
+    appointmentDetails: referral.appointments?.length > 0 ? {
+      id: referral.appointments[0].id,
+      appointmentDate: referral.appointments[0].appointment_date,
+      appointmentTime: referral.appointments[0].appointment_time,
+      type: referral.appointments[0].type,
+      status: referral.appointments[0].status,
+      location: referral.appointments[0].location,
+      consultant: referral.appointments[0].consultant,
+      notes: referral.appointments[0].notes
+    } : undefined,
+    // RTT and care pathway data would come from separate tables if needed
+    rttPathway: undefined,
+    carePathway: undefined,
     teamId: referral.team_id,
     assignedHCPId: referral.assigned_hcp_id,
     allocatedDate: referral.allocated_date,
@@ -140,7 +236,9 @@ export const mapReferralData = (referral: any): Referral => {
     fhirId: referral.fhir_id,
     intent: referral.intent,
     authoredOn: referral.authored_on,
-    supportingInfo: referral.supporting_info
+    supportingInfo: referral.supporting_info,
+    // Calculate child referral IDs - this would need a separate query in practice
+    childReferralIds: []
   };
 
   // Automatically sync to FHIR when mapping (for real-time sync)

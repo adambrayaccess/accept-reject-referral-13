@@ -3,29 +3,85 @@ import { supabase } from '@/integrations/supabase/client';
 import { Referral } from '@/types/referral';
 import { mapReferralData } from './referralMappers';
 
-export const fetchReferrals = async (): Promise<Referral[]> => {
+export const fetchReferrals = async (filters?: {
+  specialty?: string;
+  status?: string;
+  limit?: number;
+  offset?: number;
+}): Promise<Referral[]> => {
   try {
-    const { data: referrals, error } = await supabase
+    console.log('Fetching referrals with filters:', filters);
+    
+    let query = supabase
       .from('referrals')
       .select(`
         *,
-        patient:patient_id (
-          *
+        patient:patients!inner(
+          *,
+          gp_details(*),
+          related_people(*),
+          pharmacy_details(*),
+          reasonable_adjustments(*,
+            adjustment_details(*)
+          ),
+          historic_addresses(*),
+          allergies(*),
+          medications(*),
+          vital_signs(*),
+          test_results(*),
+          mha_sections(*)
         ),
-        referrer:referrer_id (
-          *
-        )
-      `)
-      .order('created_at', { ascending: false });
+        referrer:practitioners!inner(*),
+        referral_tags(tag),
+        audit_log(*),
+        collaboration_notes(*),
+        appointments(*),
+        attachments(*)
+      `);
+
+    // Apply filters
+    if (filters?.specialty) {
+      query = query.eq('specialty', filters.specialty);
+    }
+    
+    if (filters?.status) {
+      query = query.eq('status', filters.status);
+    }
+    
+    // Apply pagination
+    if (filters?.limit) {
+      query = query.limit(filters.limit);
+    }
+    
+    if (filters?.offset) {
+      query = query.range(filters.offset, (filters.offset + (filters.limit || 50)) - 1);
+    }
+    
+    // Order by display_order first, then created_at
+    query = query.order('display_order', { ascending: true })
+                 .order('created_at', { ascending: false });
+
+    const { data: referrals, error } = await query;
 
     if (error) {
       console.error('Error fetching referrals:', error);
       return [];
     }
 
-    return referrals.map(mapReferralData);
+    console.log(`Successfully fetched ${referrals?.length || 0} referrals`);
+    return referrals ? referrals.map(mapReferralData) : [];
   } catch (error) {
     console.error('Error fetching referrals:', error);
     return [];
   }
+};
+
+export const fetchReferralsBySpecialties = async (specialties: string[]): Promise<Referral[]> => {
+  if (specialties.length === 0) {
+    return fetchReferrals();
+  }
+  
+  return fetchReferrals({ 
+    specialty: specialties.length === 1 ? specialties[0] : undefined 
+  });
 };

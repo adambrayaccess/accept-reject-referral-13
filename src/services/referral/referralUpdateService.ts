@@ -1,4 +1,5 @@
 
+import { supabase } from '@/integrations/supabase/client';
 import { Referral, TriageStatus } from '@/types/referral';
 import { fetchReferralById } from './referralFetchService';
 
@@ -8,9 +9,6 @@ interface TeamAllocationData {
   triageStatus?: TriageStatus;
 }
 
-// Mock data store (in a real app, this would be a database)
-let referrals: Referral[] = [];
-
 export const updateReferralStatus = async (
   referralId: string, 
   status: 'accepted' | 'rejected', 
@@ -18,61 +16,66 @@ export const updateReferralStatus = async (
   teamAllocationData?: TeamAllocationData
 ): Promise<boolean> => {
   try {
-    // Simulate API delay
-    await new Promise(resolve => setTimeout(resolve, 500));
+    console.log(`Updating referral ${referralId} status to ${status}`);
     
-    // First, try to find the referral in our local store
-    let referralIndex = referrals.findIndex(r => r.id === referralId);
-    
-    // If not found, fetch it from the main data source and add to local store
-    if (referralIndex === -1) {
-      console.log(`Referral ${referralId} not found in local store, fetching from main data source`);
-      const fetchedReferral = await fetchReferralById(referralId);
-      if (!fetchedReferral) {
-        console.error(`Referral with ID ${referralId} not found in any data source`);
-        return false;
-      }
-      referrals.push(fetchedReferral);
-      referralIndex = referrals.length - 1;
-    }
-    
-    const referral = referrals[referralIndex];
-    
-    // Update basic status
-    referral.status = status;
-    
-    // Add audit log entry
-    if (!referral.auditLog) {
-      referral.auditLog = [];
-    }
-    
-    const auditEntry = {
-      timestamp: new Date().toISOString(),
-      user: 'Current User', // In real app, get from auth context
-      action: `Referral ${status}`,
-      notes: notes || undefined
+    // Start a transaction-like operation
+    const updates: any = {
+      status,
+      updated_at: new Date().toISOString()
     };
-    
-    referral.auditLog.push(auditEntry);
     
     // Handle team allocation if provided
     if (teamAllocationData) {
       if (teamAllocationData.teamId) {
-        referral.teamId = teamAllocationData.teamId;
-        referral.allocatedDate = new Date().toISOString();
-        referral.allocatedBy = 'Current User'; // In real app, get from auth context
+        updates.team_id = teamAllocationData.teamId;
+        updates.allocated_date = new Date().toISOString();
+        updates.allocated_by = 'Current User'; // In real app, get from auth context
       }
       
       if (teamAllocationData.assignedHCPId) {
-        referral.assignedHCPId = teamAllocationData.assignedHCPId;
+        updates.assigned_hcp_id = teamAllocationData.assignedHCPId;
       }
       
       if (teamAllocationData.triageStatus) {
-        referral.triageStatus = teamAllocationData.triageStatus;
+        updates.triage_status = teamAllocationData.triageStatus;
       }
     }
     
-    console.log(`Referral ${referralId} status updated to ${status}`, referral);
+    // Update the referral
+    const { error: updateError } = await supabase
+      .from('referrals')
+      .update(updates)
+      .eq('id', referralId);
+    
+    if (updateError) {
+      console.error('Error updating referral:', updateError);
+      return false;
+    }
+    
+    // Add audit log entry
+    const auditEntry = {
+      referral_id: referralId,
+      timestamp: new Date().toISOString(),
+      user_name: 'Current User', // In real app, get from auth context
+      action: `Referral ${status}`,
+      notes: notes || null
+    };
+    
+    const { error: auditError } = await supabase
+      .from('audit_log')
+      .insert([auditEntry]);
+      
+    if (auditError) {
+      console.error('Error adding audit log:', auditError);
+      // Don't fail the main operation for audit log issues
+    }
+    
+    // Emit custom event for real-time updates
+    window.dispatchEvent(new CustomEvent('referralUpdated', { 
+      detail: { referralId, status } 
+    }));
+    
+    console.log(`Successfully updated referral ${referralId} status to ${status}`);
     return true;
   } catch (error) {
     console.error('Error updating referral status:', error);
@@ -87,51 +90,40 @@ export const updateTriageStatus = async (
   teamAllocationData?: TeamAllocationData
 ): Promise<boolean> => {
   try {
-    console.log(`Attempting to update triage status for referral ${referralId} to ${triageStatus}`);
+    console.log(`Updating referral ${referralId} triage status to ${triageStatus}`);
     
-    // Simulate API delay
-    await new Promise(resolve => setTimeout(resolve, 500));
-    
-    // First, try to find the referral in our local store
-    let referralIndex = referrals.findIndex(r => r.id === referralId);
-    
-    // If not found, fetch it from the main data source and add to local store
-    if (referralIndex === -1) {
-      console.log(`Referral ${referralId} not found in local store, fetching from main data source`);
-      const fetchedReferral = await fetchReferralById(referralId);
-      if (!fetchedReferral) {
-        console.error(`Referral with ID ${referralId} not found in any data source`);
-        return false;
-      }
-      referrals.push(fetchedReferral);
-      referralIndex = referrals.length - 1;
-    }
-    
-    const referral = referrals[referralIndex];
-    
-    // Update triage status
-    referral.triageStatus = triageStatus;
+    const updates: any = {
+      triage_status: triageStatus,
+      updated_at: new Date().toISOString()
+    };
     
     // Handle team allocation if provided
     if (teamAllocationData) {
       if (teamAllocationData.teamId) {
-        referral.teamId = teamAllocationData.teamId;
-        if (!referral.allocatedDate) {
-          referral.allocatedDate = new Date().toISOString();
-          referral.allocatedBy = 'Current User'; // In real app, get from auth context
+        updates.team_id = teamAllocationData.teamId;
+        if (!updates.allocated_date) {
+          updates.allocated_date = new Date().toISOString();
+          updates.allocated_by = 'Current User'; // In real app, get from auth context
         }
       }
       
       if (teamAllocationData.assignedHCPId) {
-        referral.assignedHCPId = teamAllocationData.assignedHCPId;
+        updates.assigned_hcp_id = teamAllocationData.assignedHCPId;
       }
     }
     
-    // Add audit log entry
-    if (!referral.auditLog) {
-      referral.auditLog = [];
+    // Update the referral
+    const { error: updateError } = await supabase
+      .from('referrals')
+      .update(updates)
+      .eq('id', referralId);
+    
+    if (updateError) {
+      console.error('Error updating triage status:', updateError);
+      return false;
     }
     
+    // Add audit log entry
     let auditAction = `Triage status updated to ${triageStatus}`;
     if (teamAllocationData?.teamId || teamAllocationData?.assignedHCPId) {
       if (teamAllocationData.assignedHCPId) {
@@ -142,15 +134,28 @@ export const updateTriageStatus = async (
     }
     
     const auditEntry = {
+      referral_id: referralId,
       timestamp: new Date().toISOString(),
-      user: 'Current User', // In real app, get from auth context
+      user_name: 'Current User', // In real app, get from auth context
       action: auditAction,
-      notes: notes || undefined
+      notes: notes || null
     };
     
-    referral.auditLog.push(auditEntry);
+    const { error: auditError } = await supabase
+      .from('audit_log')
+      .insert([auditEntry]);
+      
+    if (auditError) {
+      console.error('Error adding audit log:', auditError);
+      // Don't fail the main operation for audit log issues
+    }
     
-    console.log(`Referral ${referralId} triage status updated to ${triageStatus}`, referral);
+    // Emit custom event for real-time updates
+    window.dispatchEvent(new CustomEvent('referralUpdated', { 
+      detail: { referralId, triageStatus } 
+    }));
+    
+    console.log(`Successfully updated referral ${referralId} triage status to ${triageStatus}`);
     return true;
   } catch (error) {
     console.error('Error updating triage status:', error);
@@ -163,44 +168,60 @@ export const updateReferralTags = async (
   tags: string[]
 ): Promise<boolean> => {
   try {
-    // Simulate API delay
-    await new Promise(resolve => setTimeout(resolve, 500));
+    console.log(`Updating referral ${referralId} tags:`, tags);
     
-    // First, try to find the referral in our local store
-    let referralIndex = referrals.findIndex(r => r.id === referralId);
+    // Delete existing tags
+    const { error: deleteError } = await supabase
+      .from('referral_tags')
+      .delete()
+      .eq('referral_id', referralId);
+      
+    if (deleteError) {
+      console.error('Error deleting existing tags:', deleteError);
+      return false;
+    }
     
-    // If not found, fetch it from the main data source and add to local store
-    if (referralIndex === -1) {
-      console.log(`Referral ${referralId} not found in local store, fetching from main data source`);
-      const fetchedReferral = await fetchReferralById(referralId);
-      if (!fetchedReferral) {
-        console.error(`Referral with ID ${referralId} not found in any data source`);
+    // Insert new tags
+    if (tags.length > 0) {
+      const tagInserts = tags.map(tag => ({
+        referral_id: referralId,
+        tag: tag
+      }));
+      
+      const { error: insertError } = await supabase
+        .from('referral_tags')
+        .insert(tagInserts);
+        
+      if (insertError) {
+        console.error('Error inserting new tags:', insertError);
         return false;
       }
-      referrals.push(fetchedReferral);
-      referralIndex = referrals.length - 1;
     }
-    
-    const referral = referrals[referralIndex];
-    
-    // Update tags
-    referral.tags = tags;
     
     // Add audit log entry
-    if (!referral.auditLog) {
-      referral.auditLog = [];
-    }
-    
     const auditEntry = {
+      referral_id: referralId,
       timestamp: new Date().toISOString(),
-      user: 'Current User', // In real app, get from auth context
-      action: `Tags updated`,
+      user_name: 'Current User', // In real app, get from auth context
+      action: 'Tags updated',
       notes: `Tags set to: ${tags.join(', ')}`
     };
     
-    referral.auditLog.push(auditEntry);
+    const { error: auditError } = await supabase
+      .from('audit_log')
+      .insert([auditEntry]);
+      
+    if (auditError) {
+      console.error('Error adding audit log:', auditError);
+      // Don't fail the main operation for audit log issues
+    }
     
-    console.log(`Referral ${referralId} tags updated`, referral);
+    // Emit custom event for real-time updates
+    window.dispatchEvent(new CustomEvent('referralUpdated', { 
+      detail: { referralId, tags } 
+    }));
+    
+    console.log(`Successfully updated referral ${referralId} tags`);
     return true;
   } catch (error) {
     console.error('Error updating referral tags:', error);
@@ -208,7 +229,7 @@ export const updateReferralTags = async (
   }
 };
 
-// Initialize with mock data if needed
+// Mock data store is no longer needed - remove this legacy function
 export const setReferralsData = (data: Referral[]) => {
-  referrals = data;
+  console.warn('setReferralsData is deprecated - data is now managed by Supabase');
 };
