@@ -63,7 +63,7 @@ export const useReferralData = (id: string | undefined) => {
       const patientReferrals = await fetchPatientReferrals(data.patient.id);
       const serviceReferrals = patientReferrals.filter(ref => ref.specialty === data.specialty && ref.id !== data.id);
       const activeReferrals = patientReferrals.filter(ref => ref.status !== 'rejected' && ref.id !== data.id);
-      const activeSpecialties = Array.from(new Set(activeReferrals.map(ref => ref.specialty)));
+      const activeSpecialties = Array.from(new Set(activeReferrals.map(ref => ref.specialty))).filter((specialty): specialty is string => typeof specialty === 'string');
       
       setRelatedReferrals({
         serviceTotal: serviceReferrals.length,
