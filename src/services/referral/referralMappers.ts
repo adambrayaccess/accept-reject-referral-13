@@ -1,4 +1,3 @@
-
 import { Referral, Patient, FhirPractitioner } from '@/types/referral';
 import { FhirIntegrationService } from './fhirIntegrationService';
 
@@ -49,12 +48,13 @@ export const mapPatient = (patient: any): Patient => ({
     email: pharmacy.email,
     type: pharmacy.pharmacy_type
   })),
-  // Reasonable adjustments
+  // Reasonable adjustments - include the required adjustments array
   reasonableAdjustments: patient.reasonable_adjustments ? {
     hasAdjustments: patient.reasonable_adjustments.has_adjustments,
     flagLevel: patient.reasonable_adjustments.flag_level,
     lastUpdated: patient.reasonable_adjustments.last_updated,
-    updatedBy: patient.reasonable_adjustments.updated_by
+    updatedBy: patient.reasonable_adjustments.updated_by,
+    adjustments: patient.reasonable_adjustments.adjustments || [] // Add the required adjustments array
   } : undefined,
   // Access restriction
   accessRestriction: patient.access_restriction_enabled ? {

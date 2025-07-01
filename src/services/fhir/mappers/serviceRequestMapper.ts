@@ -1,4 +1,3 @@
-
 import { Referral } from '@/types/referral';
 
 export class FhirServiceRequestMapper {
@@ -248,23 +247,23 @@ export class FhirServiceRequestMapper {
   private static mapExtensions(referral: Referral): any[] {
     const extensions = [];
 
-    // RTT Pathway extension
+    // RTT Pathway extension - use referral ID since RTTPathway doesn't have its own ID
     if (referral.rttPathway) {
       extensions.push({
         url: 'https://fhir.hl7.org.uk/StructureDefinition/Extension-UKCore-RTTPathway',
         valueReference: {
-          reference: `EpisodeOfCare/${referral.rttPathway.id}`,
+          reference: `EpisodeOfCare/${referral.id}-rtt`,
           display: 'RTT Pathway'
         }
       });
     }
 
-    // Care Pathway extension
+    // Care Pathway extension - use referral ID since CarePathway doesn't have its own ID
     if (referral.carePathway) {
       extensions.push({
         url: 'https://fhir.hl7.org.uk/StructureDefinition/Extension-UKCore-CarePathway',
         valueReference: {
-          reference: `CarePlan/${referral.carePathway.id}`,
+          reference: `CarePlan/${referral.id}-care-pathway`,
           display: referral.carePathway.name
         }
       });
