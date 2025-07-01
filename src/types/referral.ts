@@ -8,7 +8,6 @@ export * from './common';
 
 // Import specific types for the main Referral interface
 import type { Patient } from './patient';
-import type { Practitioner } from './patient';
 import type { RTTPathway, CarePathway } from './pathway';
 import type { 
   ReferralStatus, 
@@ -28,7 +27,7 @@ export interface Referral {
   status: ReferralStatus;
   priority: ReferralPriority;
   patient: Patient;
-  referrer: Practitioner;
+  referrer: FhirPractitioner;
   specialty: string;
   service?: string;
   clinicalInfo: ClinicalInfo;
@@ -66,8 +65,8 @@ export interface Referral {
   supportingInfo?: string[];
 }
 
-// Update Practitioner interface to include FHIR fields
-export interface Practitioner {
+// FHIR-compliant Practitioner interface
+export interface FhirPractitioner {
   id: string;
   name: string;
   role?: string;

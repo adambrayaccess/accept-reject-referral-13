@@ -1,3 +1,4 @@
+
 import type { MedicalHistory } from './medical';
 import type { ReasonableAdjustmentsFlag } from './reasonable-adjustments';
 
@@ -78,14 +79,6 @@ export interface Patient {
   accessRestriction?: AccessRestriction;
   // Historic addresses
   historicAddresses?: HistoricAddress[];
-}
-
-export interface Practitioner {
-  id: string;
-  name: string;
-  role?: string;
-  organization?: string;
-  contact?: string;
 }
 
 export interface HealthcareProfessional {

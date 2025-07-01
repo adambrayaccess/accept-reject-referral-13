@@ -48,7 +48,7 @@ export class FhirServiceRequestService {
    * Create FHIR ServiceRequest resource from Referral object
    */
   private static createFhirServiceRequestFromReferral(referral: Referral): any {
-    const fhirServiceRequest = {
+    const fhirServiceRequest: any = {
       resourceType: 'ServiceRequest',
       id: referral.id,
       meta: {

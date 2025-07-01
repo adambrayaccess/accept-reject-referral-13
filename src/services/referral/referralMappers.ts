@@ -1,5 +1,5 @@
 
-import { Referral, Patient, Practitioner } from '@/types/referral';
+import { Referral, Patient, FhirPractitioner } from '@/types/referral';
 import { FhirIntegrationService } from './fhirIntegrationService';
 
 export const mapPatient = (patient: any): Patient => ({
@@ -29,7 +29,7 @@ export const mapPatient = (patient: any): Patient => ({
   } : undefined
 });
 
-export const mapPractitioner = (practitioner: any): Practitioner => ({
+export const mapPractitioner = (practitioner: any): FhirPractitioner => ({
   id: practitioner.id,
   name: practitioner.name,
   role: practitioner.role,

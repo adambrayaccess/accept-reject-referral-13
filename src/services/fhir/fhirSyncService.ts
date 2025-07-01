@@ -4,7 +4,7 @@ import { FhirServiceRequestService } from './fhirServiceRequestService';
 import { FhirPractitionerService } from './fhirPractitionerService';
 import { Referral } from '@/types/referral';
 import { Patient } from '@/types/patient';
-import { Practitioner } from '@/types/referral';
+import { FhirPractitioner } from '@/types/referral';
 
 export class FhirSyncService {
   /**
@@ -87,7 +87,7 @@ export class FhirSyncService {
   /**
    * Sync individual practitioner to FHIR
    */
-  static async syncPractitionerToFhir(practitioner: Practitioner): Promise<boolean> {
+  static async syncPractitionerToFhir(practitioner: FhirPractitioner): Promise<boolean> {
     return await FhirPractitionerService.syncPractitionerToFhir(practitioner);
   }
 }

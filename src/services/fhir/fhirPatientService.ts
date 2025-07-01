@@ -32,7 +32,7 @@ export class FhirPatientService {
   static async syncPatientToFhir(patient: Patient): Promise<boolean> {
     try {
       // Generate FHIR resource
-      const fhirResource = await this.createFhirPatientFromPatient(patient);
+      const fhirResource = this.createFhirPatientFromPatient(patient);
       
       // Check if FHIR resource already exists
       const existingResource = await FhirResourceService.getFhirResource(`Patient/${patient.id}`);
@@ -70,7 +70,7 @@ export class FhirPatientService {
    * Create FHIR Patient resource from Patient object
    */
   private static createFhirPatientFromPatient(patient: Patient): any {
-    const fhirPatient = {
+    const fhirPatient: any = {
       resourceType: 'Patient',
       id: patient.id,
       meta: {

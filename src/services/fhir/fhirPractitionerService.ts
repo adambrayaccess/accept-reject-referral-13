@@ -1,13 +1,13 @@
 
 import { supabase } from '@/integrations/supabase/client';
-import { Practitioner } from '@/types/referral';
+import { FhirPractitioner } from '@/types/referral';
 import { FhirResourceService } from './fhirResourceService';
 
 export class FhirPractitionerService {
   /**
    * Create or update FHIR Practitioner resource
    */
-  static async syncPractitionerToFhir(practitioner: Practitioner): Promise<boolean> {
+  static async syncPractitionerToFhir(practitioner: FhirPractitioner): Promise<boolean> {
     try {
       // Generate FHIR Practitioner resource
       const fhirResource = this.createFhirPractitionerFromPractitioner(practitioner);
@@ -47,8 +47,8 @@ export class FhirPractitionerService {
   /**
    * Create FHIR Practitioner resource from Practitioner object
    */
-  private static createFhirPractitionerFromPractitioner(practitioner: Practitioner): any {
-    const fhirPractitioner = {
+  private static createFhirPractitionerFromPractitioner(practitioner: FhirPractitioner): any {
+    const fhirPractitioner: any = {
       resourceType: 'Practitioner',
       id: practitioner.id,
       meta: {
