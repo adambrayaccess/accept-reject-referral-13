@@ -945,6 +945,38 @@ export type Database = {
           },
         ]
       }
+      pinned_referrals: {
+        Row: {
+          created_at: string
+          id: string
+          pinned_at: string
+          referral_id: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          pinned_at?: string
+          referral_id: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          pinned_at?: string
+          referral_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "pinned_referrals_referral_id_fkey"
+            columns: ["referral_id"]
+            isOneToOne: false
+            referencedRelation: "referrals"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       practitioners: {
         Row: {
           active: boolean | null

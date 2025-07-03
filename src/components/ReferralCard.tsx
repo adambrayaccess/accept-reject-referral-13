@@ -7,6 +7,8 @@ import { Link } from 'react-router-dom';
 import ReferralPriorityBadge from '@/components/dashboard/ReferralPriorityBadge';
 import ReferralTypeBadge from '@/components/dashboard/ReferralTypeBadge';
 import ReferralStatusBadge from '@/components/dashboard/ReferralStatusBadge';
+import PinButton from '@/components/ui/pin-button';
+import { usePinning } from '@/hooks/usePinning';
 
 interface ReferralCardProps {
   referral: Referral;
@@ -16,6 +18,7 @@ interface ReferralCardProps {
 const ReferralCard = ({ referral }: ReferralCardProps) => {
   const formattedDate = format(new Date(referral.created), 'dd MMM yyyy');
   const formattedTime = format(new Date(referral.created), 'HH:mm');
+  const { isPinned, togglePin } = usePinning();
 
   return (
     <Link to={`/referral/${referral.id}`}>
@@ -23,7 +26,15 @@ const ReferralCard = ({ referral }: ReferralCardProps) => {
         <CardHeader className="pb-2">
           <div className="flex justify-between items-start">
             <CardTitle className="text-lg">{referral.patient.name}</CardTitle>
-            <ReferralStatusBadge referral={referral} />
+            <div className="flex items-center gap-2">
+              <PinButton
+                isPinned={isPinned(referral.id)}
+                onTogglePin={() => togglePin(referral.id)}
+                size="sm"
+                variant="ghost"
+              />
+              <ReferralStatusBadge referral={referral} />
+            </div>
           </div>
           <div className="flex flex-col gap-1">
             <div className="flex items-center gap-1 text-muted-foreground text-sm">

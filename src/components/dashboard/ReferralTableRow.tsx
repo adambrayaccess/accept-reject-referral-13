@@ -10,6 +10,8 @@ import ReferralPriorityBadge from './ReferralPriorityBadge';
 import ReferralStatusBadge from './ReferralStatusBadge';
 import ReferralSourceBadge from './ReferralSourceBadge';
 import ReferralTypeBadge from './ReferralTypeBadge';
+import PinButton from '@/components/ui/pin-button';
+import { usePinning } from '@/hooks/usePinning';
 
 interface ReferralTableRowProps {
   referral: Referral;
@@ -30,6 +32,8 @@ const ReferralTableRow = ({
   isSelected = false,
   onToggleSelection
 }: ReferralTableRowProps) => {
+  const { isPinned, togglePin } = usePinning();
+  
   const handleCheckboxChange = (e: React.MouseEvent) => {
     e.stopPropagation();
     onToggleSelection?.(referral.id);
@@ -83,15 +87,23 @@ const ReferralTableRow = ({
             </div>
           </TableCell>
           <TableCell className="p-2">
-            <Button
-              variant="link"
-              className="font-bold underline p-0 h-auto text-sm"
-              style={{ color: '#007373' }}
-              onClick={(e) => !isDragDisabled && onNameClick(e, referral.id)}
-              disabled={isDragDisabled}
-            >
-              {referral.patient.name}
-            </Button>
+            <div className="flex items-center gap-2">
+              <Button
+                variant="link"
+                className="font-bold underline p-0 h-auto text-sm"
+                style={{ color: '#007373' }}
+                onClick={(e) => !isDragDisabled && onNameClick(e, referral.id)}
+                disabled={isDragDisabled}
+              >
+                {referral.patient.name}
+              </Button>
+              <PinButton
+                isPinned={isPinned(referral.id)}
+                onTogglePin={() => togglePin(referral.id)}
+                size="sm"
+                variant="ghost"
+              />
+            </div>
           </TableCell>
           <TableCell className="p-2 text-sm">{referral.patient.gender}</TableCell>
           <TableCell className="p-2 font-mono text-sm">{referral.patient.nhsNumber}</TableCell>
