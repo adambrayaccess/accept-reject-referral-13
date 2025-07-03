@@ -91,6 +91,7 @@ const AuthPage = () => {
                   <p className="text-xs font-medium text-blue-700 mb-1">Test Credentials:</p>
                   <p className="text-xs text-blue-600">Email: test@example.com</p>
                   <p className="text-xs text-blue-600">Password: test123</p>
+                  <p className="text-xs text-amber-700 mt-1">⚠️ First sign up with these credentials, then sign in</p>
                   <button 
                     type="button"
                     onClick={() => {
