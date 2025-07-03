@@ -36,7 +36,7 @@ export const fetchAllTeams = async (): Promise<Team[]> => {
     return data?.map(team => ({
       id: team.id,
       name: team.name,
-      specialtyId: team.specialty, // Map specialty to specialtyId
+      specialtyId: team.specialty_id, // Use new foreign key
       description: team.description,
       leadId: team.lead_contact, // This could be enhanced to link to HCP IDs
       members: [], // Will be populated from HCP table separately
@@ -57,7 +57,7 @@ export const fetchTeamsBySpecialty = async (specialty: string): Promise<Team[]> 
     const { data, error } = await supabase
       .from('teams')
       .select('*')
-      .eq('specialty', specialty)
+      .eq('specialty_id', specialty)
       .eq('active', true)
       .order('name');
 
@@ -71,7 +71,7 @@ export const fetchTeamsBySpecialty = async (specialty: string): Promise<Team[]> 
     return data?.map(team => ({
       id: team.id,
       name: team.name,
-      specialtyId: team.specialty,
+      specialtyId: team.specialty_id,
       description: team.description,
       leadId: team.lead_contact,
       members: [], // Will be populated from HCP table
@@ -105,7 +105,7 @@ export const fetchTeamById = async (teamId: string): Promise<Team | null> => {
     return {
       id: data.id,
       name: data.name,
-      specialtyId: data.specialty,
+      specialtyId: data.specialty_id,
       description: data.description,
       leadId: data.lead_contact,
       members: [], // Will be populated from HCP table
