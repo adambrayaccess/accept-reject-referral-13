@@ -609,6 +609,7 @@ export type Database = {
           qualification_display: string | null
           qualification_issuer: string | null
           role: string | null
+          team_id: string | null
         }
         Insert: {
           active?: boolean | null
@@ -625,6 +626,7 @@ export type Database = {
           qualification_display?: string | null
           qualification_issuer?: string | null
           role?: string | null
+          team_id?: string | null
         }
         Update: {
           active?: boolean | null
@@ -641,8 +643,17 @@ export type Database = {
           qualification_display?: string | null
           qualification_issuer?: string | null
           role?: string | null
+          team_id?: string | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "hcp_team_id_fkey"
+            columns: ["team_id"]
+            isOneToOne: false
+            referencedRelation: "teams"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       historic_addresses: {
         Row: {
@@ -1312,6 +1323,48 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      teams: {
+        Row: {
+          active: boolean
+          created_at: string
+          description: string | null
+          email: string | null
+          id: string
+          lead_contact: string | null
+          location: string | null
+          name: string
+          phone: string | null
+          specialty: string
+          updated_at: string
+        }
+        Insert: {
+          active?: boolean
+          created_at?: string
+          description?: string | null
+          email?: string | null
+          id?: string
+          lead_contact?: string | null
+          location?: string | null
+          name: string
+          phone?: string | null
+          specialty: string
+          updated_at?: string
+        }
+        Update: {
+          active?: boolean
+          created_at?: string
+          description?: string | null
+          email?: string | null
+          id?: string
+          lead_contact?: string | null
+          location?: string | null
+          name?: string
+          phone?: string | null
+          specialty?: string
+          updated_at?: string
+        }
+        Relationships: []
       }
       test_results: {
         Row: {
