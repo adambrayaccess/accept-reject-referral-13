@@ -26,7 +26,14 @@ const PatientTabContent = ({ referral, relatedReferrals }: PatientTabContentProp
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-x-6 gap-y-3 text-sm">
       <div>
         <div className="text-xs font-medium text-muted-foreground">Full Name</div>
-        <div className="font-medium">{referral.patient.name}</div>
+        <div className="font-medium flex items-center gap-2 flex-wrap">
+          {referral.patient.name}
+          {referral.patient.pronouns && (
+            <Badge variant="secondary" className="text-xs bg-primary/10 text-primary border-primary/20">
+              {referral.patient.pronouns}
+            </Badge>
+          )}
+        </div>
       </div>
       
       <div>

@@ -14,15 +14,17 @@ const PatientSummaryCard = ({ patient, age }: PatientSummaryCardProps) => {
   return (
     <Card className="border-l-4 border-l-blue-500">
       <CardHeader className="pb-3">
-        <CardTitle className="flex items-center gap-2 text-xl">
-          <User className="h-6 w-6" />
-          {patient.name}
+        <CardTitle className="flex items-center gap-2 text-xl flex-wrap">
+          <div className="flex items-center gap-2">
+            <User className="h-6 w-6" />
+            {patient.name}
+          </div>
+          {patient.pronouns && (
+            <Badge variant="secondary" className="text-xs bg-primary/10 text-primary border-primary/20">
+              {patient.pronouns}
+            </Badge>
+          )}
         </CardTitle>
-        {patient.pronouns && (
-          <Badge variant="secondary" className="w-fit text-xs font-medium bg-blue-50 text-blue-700 border-blue-200">
-            {patient.pronouns}
-          </Badge>
-        )}
         <div className="flex flex-wrap gap-2 mt-2">
           <Badge variant="outline" className="font-mono">
             NHS: {patient.nhsNumber}
