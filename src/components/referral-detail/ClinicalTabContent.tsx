@@ -1,12 +1,36 @@
 
+import { useState, useEffect } from 'react';
 import { Referral } from '@/types/referral';
 import { Separator } from '@/components/ui/separator';
+import { fetchHCPById } from '@/services/hcpService';
 
 interface ClinicalTabContentProps {
   referral: Referral;
 }
 
 const ClinicalTabContent = ({ referral }: ClinicalTabContentProps) => {
+  const [hcpName, setHcpName] = useState<string>('');
+  const [isLoadingHCP, setIsLoadingHCP] = useState(false);
+
+  useEffect(() => {
+    const fetchHCPName = async () => {
+      if (referral.assignedHCPId) {
+        setIsLoadingHCP(true);
+        try {
+          const hcp = await fetchHCPById(referral.assignedHCPId);
+          setHcpName(hcp?.name || referral.assignedHCPId);
+        } catch (error) {
+          console.error('Error fetching HCP:', error);
+          setHcpName(referral.assignedHCPId);
+        } finally {
+          setIsLoadingHCP(false);
+        }
+      }
+    };
+
+    fetchHCPName();
+  }, [referral.assignedHCPId]);
+
   return (
     <div className="text-sm space-y-3">
       <div>
@@ -24,7 +48,9 @@ const ClinicalTabContent = ({ referral }: ClinicalTabContentProps) => {
       {referral.assignedHCPId && (
         <div>
           <div className="text-xs font-medium text-muted-foreground">HCP referred to</div>
-          <div className="font-medium">{referral.assignedHCPId}</div>
+          <div className="font-medium">
+            {isLoadingHCP ? 'Loading...' : hcpName || referral.assignedHCPId}
+          </div>
         </div>
       )}
       
