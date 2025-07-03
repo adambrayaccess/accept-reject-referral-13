@@ -24,6 +24,8 @@ interface ReferralFormTabsProps {
   setPhone: (value: string) => void;
   
   // GP fields
+  selectedGP?: Patient['gpDetails'];
+  onGPSelect: (gp: Patient['gpDetails'] | undefined) => void;
   gpName: string;
   setGpName: (value: string) => void;
   gpPractice: string;
@@ -69,6 +71,8 @@ const ReferralFormTabs = ({
   setAddress,
   phone,
   setPhone,
+  selectedGP,
+  onGPSelect,
   gpName,
   setGpName,
   gpPractice,
@@ -124,6 +128,8 @@ const ReferralFormTabs = ({
       
       <EnhancedTabsContent value="gp" className="mt-4">
         <GPDetailsForm
+          selectedGP={selectedGP}
+          onGPSelect={onGPSelect}
           gpName={gpName}
           setGpName={setGpName}
           gpPractice={gpPractice}

@@ -36,6 +36,7 @@ const CreateReferralModal = ({ isOpen, onClose, onSubmit }: CreateReferralModalP
   const [phone, setPhone] = useState('');
 
   // GP fields
+  const [selectedGP, setSelectedGP] = useState<Patient['gpDetails'] | undefined>();
   const [gpName, setGpName] = useState('');
   const [gpPractice, setGpPractice] = useState('');
   const [gpAddress, setGpAddress] = useState('');
@@ -95,6 +96,26 @@ const CreateReferralModal = ({ isOpen, onClose, onSubmit }: CreateReferralModalP
       setNhsNumber('');
       setAddress('');
       setPhone('');
+      setGpName('');
+      setGpPractice('');
+      setGpAddress('');
+      setGpPhone('');
+      setGpEmail('');
+    }
+  };
+
+  const handleGPSelect = (gp: Patient['gpDetails'] | undefined) => {
+    setSelectedGP(gp);
+    
+    if (gp) {
+      // Auto-fill GP fields from selected GP
+      setGpName(gp.name);
+      setGpPractice(gp.practice);
+      setGpAddress(gp.address);
+      setGpPhone(gp.phone);
+      setGpEmail(gp.email || '');
+    } else {
+      // Clear GP fields when no GP is selected
       setGpName('');
       setGpPractice('');
       setGpAddress('');
@@ -208,6 +229,7 @@ const CreateReferralModal = ({ isOpen, onClose, onSubmit }: CreateReferralModalP
 
   const resetForm = () => {
     setSelectedPatient(undefined);
+    setSelectedGP(undefined);
     setReferralId('');
     setPriority('routine');
     setSpecialty('');
@@ -268,6 +290,8 @@ const CreateReferralModal = ({ isOpen, onClose, onSubmit }: CreateReferralModalP
             setAddress={setAddress}
             phone={phone}
             setPhone={setPhone}
+            selectedGP={selectedGP}
+            onGPSelect={handleGPSelect}
             gpName={gpName}
             setGpName={setGpName}
             gpPractice={gpPractice}

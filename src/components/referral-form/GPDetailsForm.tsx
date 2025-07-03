@@ -2,6 +2,9 @@
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { GPDetails } from "@/types/patient";
+import { GPAutocomplete } from "@/components/ui/gp-autocomplete";
+import { Button } from "@/components/ui/button";
+import { Plus } from "lucide-react";
 
 interface GPDetailsFormProps {
   gpName: string;
@@ -15,6 +18,8 @@ interface GPDetailsFormProps {
   gpEmail: string;
   setGpEmail: (value: string) => void;
   selectedPatientGP?: GPDetails;
+  selectedGP?: GPDetails;
+  onGPSelect: (gp: GPDetails | undefined) => void;
 }
 
 const GPDetailsForm = ({
@@ -29,6 +34,8 @@ const GPDetailsForm = ({
   gpEmail,
   setGpEmail,
   selectedPatientGP,
+  selectedGP,
+  onGPSelect,
 }: GPDetailsFormProps) => {
   return (
     <div className="space-y-4">
@@ -39,6 +46,38 @@ const GPDetailsForm = ({
           </p>
         </div>
       )}
+
+      {selectedGP && (
+        <div className="p-3 bg-blue-50 border border-blue-200 rounded-md">
+          <p className="text-sm text-blue-800 font-medium">
+            GP details auto-filled from existing record
+          </p>
+        </div>
+      )}
+
+      <div className="space-y-2">
+        <Label>Search Existing GP Records</Label>
+        <div className="flex gap-2">
+          <div className="flex-1">
+            <GPAutocomplete
+              value={selectedGP}
+              onSelect={onGPSelect}
+              placeholder="Search for an existing GP..."
+              disabled={!!selectedPatientGP}
+            />
+          </div>
+          <Button
+            type="button"
+            variant="outline"
+            size="sm"
+            onClick={() => onGPSelect(undefined)}
+            disabled={!!selectedPatientGP}
+          >
+            <Plus className="h-4 w-4 mr-1" />
+            Add New
+          </Button>
+        </div>
+      </div>
 
       <div className="grid grid-cols-2 gap-4">
         <div className="space-y-2">
