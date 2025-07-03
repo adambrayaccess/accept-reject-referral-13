@@ -102,14 +102,7 @@ const ReferralDetailModal = ({ referralId, isOpen, onClose }: ReferralDetailModa
             <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-4">
               <div>
                 <div className="info-label">Full Name</div>
-                <div className="info-value flex items-center gap-2 flex-wrap">
-                  {referral.patient.name}
-                  {referral.patient.pronouns && (
-                    <Badge variant="secondary" className="text-xs bg-primary/10 text-primary border-primary/20">
-                      {referral.patient.pronouns}
-                    </Badge>
-                  )}
-                </div>
+                <div className="info-value">{referral.patient.name}</div>
               </div>
               
               <div>
@@ -142,20 +135,6 @@ const ReferralDetailModal = ({ referralId, isOpen, onClose }: ReferralDetailModa
                 <div>
                   <div className="info-label">Contact Number</div>
                   <div className="info-value">{referral.patient.phone}</div>
-                </div>
-              )}
-              
-              {referral.overseasStatus && (
-                <div>
-                  <div className="info-label">Overseas Status</div>
-                  <div className="info-value">{referral.overseasStatus}</div>
-                </div>
-              )}
-              
-              {referral.administrativeCategory && (
-                <div>
-                  <div className="info-label">Administrative Category</div>
-                  <div className="info-value">{referral.administrativeCategory}</div>
                 </div>
               )}
               
