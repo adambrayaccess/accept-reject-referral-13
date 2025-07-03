@@ -7,12 +7,14 @@ export const loadWaitingListReferrals = async (selectedSpecialties: string[] = [
   
   try {
     const filters: any = {
-      status: 'new' // Waiting list typically shows new/pending referrals
+      triageStatus: 'waiting-list' // Only show referrals with waiting-list triage status
     };
     
     // Apply specialty filter if specific specialties are selected
     if (selectedSpecialties.length === 1) {
       filters.specialty = selectedSpecialties[0];
+    } else if (selectedSpecialties.length > 1) {
+      filters.specialties = selectedSpecialties;
     }
     
     const referrals = await fetchReferrals(filters);

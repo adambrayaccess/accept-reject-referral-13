@@ -7,6 +7,7 @@ export const fetchReferrals = async (filters?: {
   specialty?: string;
   specialties?: string[];
   status?: string;
+  triageStatus?: string;
   limit?: number;
   offset?: number;
 }): Promise<Referral[]> => {
@@ -52,6 +53,10 @@ export const fetchReferrals = async (filters?: {
     
     if (filters?.status) {
       query = query.eq('status', filters.status);
+    }
+    
+    if (filters?.triageStatus) {
+      query = query.eq('triage_status', filters.triageStatus);
     }
     
     // Apply pagination
