@@ -9,6 +9,7 @@ import { Draggable } from 'react-beautiful-dnd';
 import ReferralPriorityBadge from './ReferralPriorityBadge';
 import ReferralStatusBadge from './ReferralStatusBadge';
 import ReferralSourceBadge from './ReferralSourceBadge';
+import ReferralTypeBadge from './ReferralTypeBadge';
 
 interface ReferralTableRowProps {
   referral: Referral;
@@ -114,6 +115,9 @@ const ReferralTableRow = ({
           </TableCell>
           <TableCell className="p-2">
             <ReferralSourceBadge referral={referral} />
+          </TableCell>
+          <TableCell className="p-2">
+            <ReferralTypeBadge referral={referral} />
           </TableCell>
           <TableCell className="p-2">
             <ChevronRight className="h-3 w-3 text-muted-foreground" />

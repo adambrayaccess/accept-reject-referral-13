@@ -15,6 +15,8 @@ interface ReferralBasicInfoFormProps {
   setSpecialty: (value: string) => void;
   practitionerId: string;
   setPractitionerId: (value: string) => void;
+  referralType: string;
+  setReferralType: (value: string) => void;
 }
 
 const ReferralBasicInfoForm = ({
@@ -26,6 +28,8 @@ const ReferralBasicInfoForm = ({
   setSpecialty,
   practitionerId,
   setPractitionerId,
+  referralType,
+  setReferralType,
 }: ReferralBasicInfoFormProps) => {
   return (
     <div className="space-y-4">
@@ -83,6 +87,24 @@ const ReferralBasicInfoForm = ({
                   {practitioner.name} - {practitioner.organization}
                 </SelectItem>
               ))}
+            </SelectContent>
+          </Select>
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 gap-4">
+        <div className="space-y-2">
+          <Label htmlFor="referralType">Referral Type</Label>
+          <Select value={referralType} onValueChange={(value: string) => setReferralType(value)}>
+            <SelectTrigger>
+              <SelectValue placeholder="Select referral type" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="External Referral">External Referral</SelectItem>
+              <SelectItem value="Internal Referral">Internal Referral</SelectItem>
+              <SelectItem value="Self Referral">Self Referral</SelectItem>
+              <SelectItem value="Emergency Referral">Emergency Referral</SelectItem>
+              <SelectItem value="Routine Referral">Routine Referral</SelectItem>
             </SelectContent>
           </Select>
         </div>

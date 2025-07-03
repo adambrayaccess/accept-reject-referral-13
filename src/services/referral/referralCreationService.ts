@@ -29,6 +29,7 @@ export interface ReferralCreationData {
   // Additional metadata
   aiGenerated?: boolean;
   confidence?: number;
+  referralType?: string;
 }
 
 export class ReferralCreationService {
@@ -78,6 +79,7 @@ export class ReferralCreationService {
           status: 'new',
           ai_generated: data.aiGenerated || false,
           confidence: data.confidence,
+          referral_type: data.referralType || 'External Referral',
           intent: 'order',
           authored_on: new Date().toISOString(),
         })
@@ -124,6 +126,7 @@ export class ReferralCreationService {
         triageStatus: referralData.triage_status,
         aiGenerated: referralData.ai_generated,
         confidence: referralData.confidence,
+        referralType: referralData.referral_type,
         fhirId: referralData.fhir_id,
         intent: referralData.intent,
         authoredOn: referralData.authored_on

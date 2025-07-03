@@ -23,6 +23,7 @@ const CreateReferralModal = ({ isOpen, onClose, onSubmit }: CreateReferralModalP
   const [priority, setPriority] = useState<ReferralPriority>('routine');
   const [specialty, setSpecialty] = useState('');
   const [practitionerId, setPractitionerId] = useState('');
+  const [referralType, setReferralType] = useState('External Referral');
   
   // Patient fields
   const [selectedPatient, setSelectedPatient] = useState<Patient | undefined>();
@@ -169,7 +170,8 @@ const CreateReferralModal = ({ isOpen, onClose, onSubmit }: CreateReferralModalP
         allergies: allergies.split('\n').filter(allergy => allergy.trim()),
         notes,
         attachments,
-        aiGenerated: false
+        aiGenerated: false,
+        referralType
       };
 
       // Create referral using enhanced service
@@ -209,6 +211,7 @@ const CreateReferralModal = ({ isOpen, onClose, onSubmit }: CreateReferralModalP
     setPriority('routine');
     setSpecialty('');
     setPractitionerId('');
+    setReferralType('External Referral');
     setPatientName('');
     setBirthDate('');
     setGender('');
@@ -245,6 +248,8 @@ const CreateReferralModal = ({ isOpen, onClose, onSubmit }: CreateReferralModalP
             setSpecialty={setSpecialty}
             practitionerId={practitionerId}
             setPractitionerId={setPractitionerId}
+            referralType={referralType}
+            setReferralType={setReferralType}
           />
 
           <ReferralFormTabs

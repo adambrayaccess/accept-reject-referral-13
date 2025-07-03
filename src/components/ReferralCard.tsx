@@ -5,6 +5,7 @@ import { Calendar, Clock, FileText } from 'lucide-react';
 import { format } from 'date-fns';
 import { Link } from 'react-router-dom';
 import ReferralPriorityBadge from '@/components/dashboard/ReferralPriorityBadge';
+import ReferralTypeBadge from '@/components/dashboard/ReferralTypeBadge';
 
 interface ReferralCardProps {
   referral: Referral;
@@ -54,6 +55,7 @@ const ReferralCard = ({ referral }: ReferralCardProps) => {
             
             <div className="flex items-center gap-2 text-sm mt-1">
               <ReferralPriorityBadge priority={referral.priority} size="sm" />
+              <ReferralTypeBadge referral={referral} size="sm" />
               
               {referral.attachments.length > 0 && (
                 <Badge variant="secondary" className="flex items-center gap-1">
