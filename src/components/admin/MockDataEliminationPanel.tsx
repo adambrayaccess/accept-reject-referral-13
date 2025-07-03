@@ -119,7 +119,7 @@ const MockDataEliminationPanel = () => {
             <Checkbox
               id="confirmation"
               checked={confirmationChecked}
-              onCheckedChange={setConfirmationChecked}
+              onCheckedChange={(checked) => setConfirmationChecked(checked === true)}
             />
             <label
               htmlFor="confirmation"
@@ -183,13 +183,13 @@ const MockDataEliminationPanel = () => {
             <div className="space-y-2">
               {Object.entries(selectiveOptions).map(([key, value]) => (
                 <div key={key} className="flex items-center space-x-2">
-                  <Checkbox
-                    id={key}
-                    checked={value}
-                    onCheckedChange={(checked) => 
-                      setSelectiveOptions(prev => ({ ...prev, [key]: checked }))
-                    }
-                  />
+                   <Checkbox
+                     id={key}
+                     checked={value}
+                     onCheckedChange={(checked) => 
+                       setSelectiveOptions(prev => ({ ...prev, [key]: checked === true }))
+                     }
+                   />
                   <label htmlFor={key} className="text-sm capitalize">
                     {key.replace(/([A-Z])/g, ' $1').trim()}
                   </label>

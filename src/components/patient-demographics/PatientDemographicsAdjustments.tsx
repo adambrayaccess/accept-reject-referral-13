@@ -30,9 +30,9 @@ const PatientDemographicsAdjustments = ({ adjustmentsFlag }: PatientDemographics
             <div className="space-y-3">
               <div className="flex items-center justify-between">
                 <h4 className="font-medium text-lg">{adjustment.description}</h4>
-                <Badge variant="outline" className="capitalize">
-                  {adjustment.category.replace('-', ' ')}
-                </Badge>
+                 <Badge variant="outline" className="capitalize">
+                   {adjustment.category?.replace('-', ' ') || 'Unknown category'}
+                 </Badge>
               </div>
               
               <div>

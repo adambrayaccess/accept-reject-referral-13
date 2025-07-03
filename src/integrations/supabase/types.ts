@@ -758,6 +758,7 @@ export type Database = {
           deceased_boolean: boolean | null
           deceased_datetime: string | null
           ethnicity: string | null
+          external_id: string | null
           fhir_id: string | null
           gender: string | null
           general_practitioner_reference: string | null
@@ -790,6 +791,7 @@ export type Database = {
           deceased_boolean?: boolean | null
           deceased_datetime?: string | null
           ethnicity?: string | null
+          external_id?: string | null
           fhir_id?: string | null
           gender?: string | null
           general_practitioner_reference?: string | null
@@ -822,6 +824,7 @@ export type Database = {
           deceased_boolean?: boolean | null
           deceased_datetime?: string | null
           ethnicity?: string | null
+          external_id?: string | null
           fhir_id?: string | null
           gender?: string | null
           general_practitioner_reference?: string | null
@@ -886,6 +889,7 @@ export type Database = {
           birth_date: string | null
           contact: string | null
           created_at: string | null
+          external_id: string | null
           fhir_id: string | null
           gender: Database["public"]["Enums"]["administrative_gender"] | null
           id: string
@@ -901,6 +905,7 @@ export type Database = {
           birth_date?: string | null
           contact?: string | null
           created_at?: string | null
+          external_id?: string | null
           fhir_id?: string | null
           gender?: Database["public"]["Enums"]["administrative_gender"] | null
           id?: string
@@ -916,6 +921,7 @@ export type Database = {
           birth_date?: string | null
           contact?: string | null
           created_at?: string | null
+          external_id?: string | null
           fhir_id?: string | null
           gender?: Database["public"]["Enums"]["administrative_gender"] | null
           id?: string
@@ -1018,6 +1024,7 @@ export type Database = {
       }
       referrals: {
         Row: {
+          administrative_category: string | null
           ai_generated: boolean | null
           allergies_info: string | null
           allocated_by: string | null
@@ -1032,6 +1039,7 @@ export type Database = {
           created_at: string | null
           diagnosis: string | null
           display_order: number | null
+          external_id: string | null
           fhir_id: string | null
           history: string | null
           id: string
@@ -1042,6 +1050,7 @@ export type Database = {
           occurrence_datetime: string | null
           occurrence_period_end: string | null
           occurrence_period_start: string | null
+          overseas_status: string | null
           parent_referral_id: string | null
           patient_id: string
           performer_reference: string | null
@@ -1049,6 +1058,7 @@ export type Database = {
           reason: string
           reasonable_code_code: string | null
           reasonable_code_display: string | null
+          referral_type: string | null
           referrer_id: string
           requester_reference: string | null
           service: string | null
@@ -1059,8 +1069,13 @@ export type Database = {
           triage_status: Database["public"]["Enums"]["triage_status"] | null
           ubrn: string
           updated_at: string | null
+          waiting_list_added_date: string | null
+          waiting_list_notes: string | null
+          waiting_list_position: number | null
+          waiting_list_priority_override: string | null
         }
         Insert: {
+          administrative_category?: string | null
           ai_generated?: boolean | null
           allergies_info?: string | null
           allocated_by?: string | null
@@ -1075,6 +1090,7 @@ export type Database = {
           created_at?: string | null
           diagnosis?: string | null
           display_order?: number | null
+          external_id?: string | null
           fhir_id?: string | null
           history?: string | null
           id?: string
@@ -1085,6 +1101,7 @@ export type Database = {
           occurrence_datetime?: string | null
           occurrence_period_end?: string | null
           occurrence_period_start?: string | null
+          overseas_status?: string | null
           parent_referral_id?: string | null
           patient_id: string
           performer_reference?: string | null
@@ -1092,6 +1109,7 @@ export type Database = {
           reason: string
           reasonable_code_code?: string | null
           reasonable_code_display?: string | null
+          referral_type?: string | null
           referrer_id: string
           requester_reference?: string | null
           service?: string | null
@@ -1102,8 +1120,13 @@ export type Database = {
           triage_status?: Database["public"]["Enums"]["triage_status"] | null
           ubrn: string
           updated_at?: string | null
+          waiting_list_added_date?: string | null
+          waiting_list_notes?: string | null
+          waiting_list_position?: number | null
+          waiting_list_priority_override?: string | null
         }
         Update: {
+          administrative_category?: string | null
           ai_generated?: boolean | null
           allergies_info?: string | null
           allocated_by?: string | null
@@ -1118,6 +1141,7 @@ export type Database = {
           created_at?: string | null
           diagnosis?: string | null
           display_order?: number | null
+          external_id?: string | null
           fhir_id?: string | null
           history?: string | null
           id?: string
@@ -1128,6 +1152,7 @@ export type Database = {
           occurrence_datetime?: string | null
           occurrence_period_end?: string | null
           occurrence_period_start?: string | null
+          overseas_status?: string | null
           parent_referral_id?: string | null
           patient_id?: string
           performer_reference?: string | null
@@ -1135,6 +1160,7 @@ export type Database = {
           reason?: string
           reasonable_code_code?: string | null
           reasonable_code_display?: string | null
+          referral_type?: string | null
           referrer_id?: string
           requester_reference?: string | null
           service?: string | null
@@ -1145,6 +1171,10 @@ export type Database = {
           triage_status?: Database["public"]["Enums"]["triage_status"] | null
           ubrn?: string
           updated_at?: string | null
+          waiting_list_added_date?: string | null
+          waiting_list_notes?: string | null
+          waiting_list_position?: number | null
+          waiting_list_priority_override?: string | null
         }
         Relationships: [
           {
@@ -1332,6 +1362,93 @@ export type Database = {
           },
         ]
       }
+      waiting_list_entries: {
+        Row: {
+          added_by: string
+          added_date: string
+          created_at: string
+          id: string
+          notes: string | null
+          position: number
+          priority_override: string | null
+          referral_id: string
+          specialty: string
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          added_by: string
+          added_date?: string
+          created_at?: string
+          id?: string
+          notes?: string | null
+          position: number
+          priority_override?: string | null
+          referral_id: string
+          specialty: string
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          added_by?: string
+          added_date?: string
+          created_at?: string
+          id?: string
+          notes?: string | null
+          position?: number
+          priority_override?: string | null
+          referral_id?: string
+          specialty?: string
+          status?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      waiting_list_history: {
+        Row: {
+          action: string
+          created_at: string
+          id: string
+          new_position: number | null
+          new_priority: string | null
+          notes: string | null
+          old_position: number | null
+          old_priority: string | null
+          performed_at: string
+          performed_by: string
+          referral_id: string
+          specialty: string
+        }
+        Insert: {
+          action: string
+          created_at?: string
+          id?: string
+          new_position?: number | null
+          new_priority?: string | null
+          notes?: string | null
+          old_position?: number | null
+          old_priority?: string | null
+          performed_at?: string
+          performed_by: string
+          referral_id: string
+          specialty: string
+        }
+        Update: {
+          action?: string
+          created_at?: string
+          id?: string
+          new_position?: number | null
+          new_priority?: string | null
+          notes?: string | null
+          old_position?: number | null
+          old_priority?: string | null
+          performed_at?: string
+          performed_by?: string
+          referral_id?: string
+          specialty?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
@@ -1340,6 +1457,10 @@ export type Database = {
       generate_fhir_patient_resource: {
         Args: { patient_row: Database["public"]["Tables"]["patients"]["Row"] }
         Returns: Json
+      }
+      reorder_waiting_list_positions: {
+        Args: { specialty_param: string; referral_positions: Json }
+        Returns: undefined
       }
     }
     Enums: {
@@ -1412,7 +1533,15 @@ export type Database = {
         | "in-progress"
         | "completed"
         | "cancelled"
-      triage_status: "pending" | "in-progress" | "completed" | "waiting-list"
+      triage_status:
+        | "pending"
+        | "in-progress"
+        | "completed"
+        | "waiting-list"
+        | "pre-assessment"
+        | "assessed"
+        | "pre-admission-assessment"
+        | "refer-to-another-specialty"
       verification_status: "confirmed" | "unconfirmed" | "suspected"
     }
     CompositeTypes: {
@@ -1606,7 +1735,16 @@ export const Constants = {
         "completed",
         "cancelled",
       ],
-      triage_status: ["pending", "in-progress", "completed", "waiting-list"],
+      triage_status: [
+        "pending",
+        "in-progress",
+        "completed",
+        "waiting-list",
+        "pre-assessment",
+        "assessed",
+        "pre-admission-assessment",
+        "refer-to-another-specialty",
+      ],
       verification_status: ["confirmed", "unconfirmed", "suspected"],
     },
   },

@@ -40,11 +40,11 @@ const PatientDemographicsAllergies = ({ allergies }: PatientDemographicsAllergie
                 <div>
                   <label className="text-sm font-medium text-muted-foreground">Reactions</label>
                   <div className="flex flex-wrap gap-1 mt-1">
-                    {allergy.reactions.map((reaction, idx) => (
-                      <Badge key={idx} variant="secondary" className="text-xs">
-                        {reaction.type.replace('_', ' ')}
-                      </Badge>
-                    ))}
+                     {allergy.reactions.map((reaction, idx) => (
+                       <Badge key={idx} variant="secondary" className="text-xs">
+                         {reaction.type?.replace('_', ' ') || 'Unknown reaction'}
+                       </Badge>
+                     ))}
                   </div>
                 </div>
               )}
