@@ -2,66 +2,31 @@
 import { Info, Users, AlertTriangle, Clock, CheckCircle, FileText } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+import { Referral } from '@/types/referral';
+import { calculateDashboardStatistics } from '@/services/dashboard/dashboardStatisticsService';
 
-const StatisticsBar = () => {
-  // Mock data - in a real app this would come from props or a hook
-  const statistics = [
-    {
-      title: 'New Referrals',
-      value: '56',
-      period: 'Last 7 days',
-      pagination: '1/3',
-      icon: Users,
-      iconColor: 'text-teal-600',
-      iconBg: 'bg-teal-100',
-      valueColor: 'text-teal-600'
-    },
-    {
-      title: 'Urgent Referrals',
-      value: '09',
-      period: 'Last 7 days',
-      pagination: '1/3',
-      icon: AlertTriangle,
-      iconColor: 'text-red-600',
-      iconBg: 'bg-red-100',
-      valueColor: 'text-red-600'
-    },
-    {
-      title: 'Waiting To Be Reviewed',
-      value: '19',
-      period: 'Last 7 days',
-      pagination: '1/3',
-      icon: Clock,
-      iconColor: 'text-purple-600',
-      iconBg: 'bg-purple-100',
-      valueColor: 'text-purple-600'
-    },
-    {
-      title: 'Ready For Discharge',
-      value: '28',
-      period: 'Last 7 days',
-      pagination: '1/3',
-      icon: CheckCircle,
-      iconColor: 'text-orange-600',
-      iconBg: 'bg-orange-100',
-      valueColor: 'text-orange-600'
-    },
-    {
-      title: 'No. Of Appointments',
-      value: '12',
-      period: 'Next 7 days',
-      pagination: '1/3',
-      icon: FileText,
-      iconColor: 'text-blue-600',
-      iconBg: 'bg-blue-100',
-      valueColor: 'text-blue-600'
+interface StatisticsBarProps {
+  referrals: Referral[];
+}
+
+const StatisticsBar = ({ referrals }: StatisticsBarProps) => {
+  const statistics = calculateDashboardStatistics(referrals);
+
+  const getIconComponent = (iconName: string) => {
+    switch (iconName) {
+      case 'Users': return Users;
+      case 'AlertTriangle': return AlertTriangle;
+      case 'Clock': return Clock;
+      case 'CheckCircle': return CheckCircle;
+      case 'FileText': return FileText;
+      default: return Users;
     }
-  ];
+  };
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 mb-6">
       {statistics.map((stat, index) => {
-        const IconComponent = stat.icon;
+        const IconComponent = getIconComponent(stat.icon);
         return (
           <Card key={index} className="border border-gray-200 shadow-none bg-white">
             <CardContent className="p-4">
