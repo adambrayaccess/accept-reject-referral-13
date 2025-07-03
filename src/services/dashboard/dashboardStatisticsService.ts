@@ -52,9 +52,9 @@ export const calculateDashboardStatistics = (referrals: Referral[]): DashboardSt
       period: 'Last 7 days',
       pagination: '1/3',
       icon: 'Users',
-      iconColor: 'text-teal-600',
-      iconBg: 'bg-teal-100',
-      valueColor: 'text-teal-600'
+      iconColor: 'text-primary',
+      iconBg: 'bg-primary/10',
+      valueColor: 'text-primary'
     },
     {
       title: 'Urgent Referrals',
@@ -62,9 +62,9 @@ export const calculateDashboardStatistics = (referrals: Referral[]): DashboardSt
       period: 'Last 7 days',
       pagination: '1/3',
       icon: 'AlertTriangle',
-      iconColor: 'text-red-600',
-      iconBg: 'bg-red-100',
-      valueColor: 'text-red-600'
+      iconColor: 'text-destructive',
+      iconBg: 'bg-destructive/10',
+      valueColor: 'text-destructive'
     },
     {
       title: 'Waiting To Be Reviewed',
@@ -72,9 +72,9 @@ export const calculateDashboardStatistics = (referrals: Referral[]): DashboardSt
       period: 'Current',
       pagination: '1/3',
       icon: 'Clock',
-      iconColor: 'text-purple-600',
-      iconBg: 'bg-purple-100',
-      valueColor: 'text-purple-600'
+      iconColor: 'text-purple',
+      iconBg: 'bg-purple/10',
+      valueColor: 'text-purple'
     },
     {
       title: 'Ready For Discharge',
@@ -82,9 +82,9 @@ export const calculateDashboardStatistics = (referrals: Referral[]): DashboardSt
       period: 'Current',
       pagination: '1/3',
       icon: 'CheckCircle',
-      iconColor: 'text-orange-600',
-      iconBg: 'bg-orange-100',
-      valueColor: 'text-orange-600'
+      iconColor: 'text-success',
+      iconBg: 'bg-success/10',
+      valueColor: 'text-success'
     },
     {
       title: 'No. Of Appointments',
@@ -92,9 +92,9 @@ export const calculateDashboardStatistics = (referrals: Referral[]): DashboardSt
       period: 'Next 7 days',
       pagination: '1/3',
       icon: 'FileText',
-      iconColor: 'text-blue-600',
-      iconBg: 'bg-blue-100',
-      valueColor: 'text-blue-600'
+      iconColor: 'text-warning',
+      iconBg: 'bg-warning/10',
+      valueColor: 'text-warning'
     }
   ];
 };
