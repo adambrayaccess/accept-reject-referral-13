@@ -5,7 +5,7 @@ import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Team } from '@/types/team';
 import { HealthcareProfessional } from '@/types/referral';
-import { getTeamsBySpecialty, getHCPsByTeam } from '@/data/teams';
+import { fetchTeamsBySpecialty, fetchHCPsByTeam } from '@/services/teamService';
 import { fetchAllHCPs, HCP } from '@/services/hcpService';
 import { Users, UserCheck } from 'lucide-react';
 
@@ -27,63 +27,63 @@ const TeamSelector = ({
   disabled = false 
 }: TeamSelectorProps) => {
   const [showHCPSelector, setShowHCPSelector] = useState(false);
-  const [databaseHCPs, setDatabaseHCPs] = useState<HCP[]>([]);
+  const [availableTeams, setAvailableTeams] = useState<Team[]>([]);
+  const [teamHCPs, setTeamHCPs] = useState<any[]>([]);
+  const [isLoadingTeams, setIsLoadingTeams] = useState(false);
   const [isLoadingHCPs, setIsLoadingHCPs] = useState(false);
   
-  // Load HCPs from database on component mount
+  // Load teams from database when specialty changes
   useEffect(() => {
-    const loadHCPs = async () => {
+    const loadTeams = async () => {
+      if (!specialtyId) return;
+      
+      setIsLoadingTeams(true);
+      try {
+        const teams = await fetchTeamsBySpecialty(specialtyId);
+        setAvailableTeams(teams);
+        console.log('TeamSelector: Loaded teams from database:', teams.length);
+      } catch (error) {
+        console.error('TeamSelector: Error loading teams from database:', error);
+        setAvailableTeams([]);
+      } finally {
+        setIsLoadingTeams(false);
+      }
+    };
+
+    loadTeams();
+  }, [specialtyId]);
+
+  // Load HCPs for selected team
+  useEffect(() => {
+    const loadTeamHCPs = async () => {
+      if (!selectedTeamId) {
+        setTeamHCPs([]);
+        return;
+      }
+      
       setIsLoadingHCPs(true);
       try {
-        const hcps = await fetchAllHCPs();
-        setDatabaseHCPs(hcps);
-        console.log('TeamSelector: Loaded HCPs from database:', hcps.length);
+        const hcps = await fetchHCPsByTeam(selectedTeamId);
+        setTeamHCPs(hcps);
+        console.log('TeamSelector: Loaded HCPs for team:', hcps.length);
       } catch (error) {
-        console.error('TeamSelector: Error loading HCPs from database:', error);
+        console.error('TeamSelector: Error loading HCPs for team:', error);
+        setTeamHCPs([]);
       } finally {
         setIsLoadingHCPs(false);
       }
     };
 
-    loadHCPs();
-  }, []);
-  
-  // Memoize team and HCP data to prevent unnecessary re-renders
-  const availableTeams = useMemo(() => {
-    console.log('TeamSelector: Loading teams for specialty:', specialtyId);
-    try {
-      const teams = getTeamsBySpecialty(specialtyId);
-      console.log('TeamSelector: Found teams:', teams);
-      return teams;
-    } catch (error) {
-      console.error('TeamSelector: Error loading teams:', error);
-      return [];
-    }
-  }, [specialtyId]);
-
-  // Use database HCPs instead of mock data
-  const availableHCPs = useMemo(() => {
-    if (!selectedTeamId || databaseHCPs.length === 0) return [];
-    console.log('TeamSelector: Using database HCPs for selection');
-    
-    // Convert database HCPs to the format expected by the component
-    return databaseHCPs.map(hcp => ({
-      id: hcp.id,
-      name: hcp.name,
-      role: hcp.role || 'Healthcare Professional',
-      specialty: '', // Not needed for team selection
-      isTeamLead: false, // Could be enhanced to support team leads from database
-      teamIds: []
-    }));
-  }, [selectedTeamId, databaseHCPs]);
+    loadTeamHCPs();
+  }, [selectedTeamId]);
 
   const selectedTeam = useMemo(() => {
     return availableTeams.find(team => team.id === selectedTeamId);
   }, [availableTeams, selectedTeamId]);
 
   const selectedHCP = useMemo(() => {
-    return availableHCPs.find(hcp => hcp.id === selectedHCPId);
-  }, [availableHCPs, selectedHCPId]);
+    return teamHCPs.find(hcp => hcp.id === selectedHCPId);
+  }, [teamHCPs, selectedHCPId]);
 
   const handleTeamChange = (teamId: string) => {
     console.log('TeamSelector: Team changed to:', teamId);
@@ -175,7 +175,7 @@ const TeamSelector = ({
             </div>
           )}
 
-          {showHCPSelector && !isLoadingHCPs && availableHCPs.length > 0 && (
+          {showHCPSelector && !isLoadingHCPs && teamHCPs.length > 0 && (
             <div className="space-y-2">
               <label className="text-sm font-medium flex items-center gap-2">
                 <UserCheck className="h-3 w-3" />
@@ -193,7 +193,7 @@ const TeamSelector = ({
                   <SelectItem value="unassigned">
                     <span className="text-muted-foreground">Keep unassigned to team</span>
                   </SelectItem>
-                  {availableHCPs.map((hcp) => (
+                  {teamHCPs.map((hcp) => (
                     <SelectItem key={hcp.id} value={hcp.id}>
                       <div className="flex items-center gap-2">
                         <span>{hcp.name}</span>

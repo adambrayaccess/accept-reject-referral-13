@@ -1,7 +1,9 @@
 
 import { Badge } from '@/components/ui/badge';
-import { getTeamById } from '@/data/teams';
+import { fetchTeamById } from '@/services/teamService';
 import { Users } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { Team } from '@/types/team';
 
 interface TeamBadgeProps {
   teamId: string;
@@ -16,7 +18,36 @@ const TeamBadge = ({
   showIcon = true,
   variant = 'secondary' 
 }: TeamBadgeProps) => {
-  const team = getTeamById(teamId);
+  const [team, setTeam] = useState<Team | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const loadTeam = async () => {
+      try {
+        const teamData = await fetchTeamById(teamId);
+        setTeam(teamData);
+      } catch (error) {
+        console.error('Error loading team:', error);
+        setTeam(null);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    if (teamId) {
+      loadTeam();
+    } else {
+      setIsLoading(false);
+    }
+  }, [teamId]);
+
+  if (isLoading) {
+    return (
+      <Badge variant="outline" className="text-xs">
+        Loading...
+      </Badge>
+    );
+  }
   
   if (!team) {
     return (

@@ -2,6 +2,7 @@
 import { supabase } from '@/integrations/supabase/client';
 import { Referral, TriageStatus } from '@/types/referral';
 import { fetchReferralById } from './referralFetchService';
+import { assignHCPToTeam } from '@/services/teamService';
 
 interface TeamAllocationData {
   teamId?: string;
@@ -34,6 +35,16 @@ export const updateReferralStatus = async (
       
       if (teamAllocationData.assignedHCPId) {
         updates.assigned_hcp_id = teamAllocationData.assignedHCPId;
+        
+        // Also assign the HCP to the team if both are specified
+        if (teamAllocationData.teamId) {
+          try {
+            await assignHCPToTeam(teamAllocationData.assignedHCPId, teamAllocationData.teamId);
+          } catch (error) {
+            console.error('Error assigning HCP to team:', error);
+            // Don't fail the main operation for this
+          }
+        }
       }
       
       if (teamAllocationData.triageStatus) {
