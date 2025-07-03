@@ -1324,6 +1324,36 @@ export type Database = {
           },
         ]
       }
+      specialties: {
+        Row: {
+          active: boolean
+          created_at: string
+          description: string | null
+          display_order: number | null
+          id: string
+          name: string
+          updated_at: string
+        }
+        Insert: {
+          active?: boolean
+          created_at?: string
+          description?: string | null
+          display_order?: number | null
+          id: string
+          name: string
+          updated_at?: string
+        }
+        Update: {
+          active?: boolean
+          created_at?: string
+          description?: string | null
+          display_order?: number | null
+          id?: string
+          name?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       teams: {
         Row: {
           active: boolean
