@@ -27,11 +27,7 @@ export const searchPatients = async (query: string): Promise<PatientSearchResult
     const { data: patients, error } = await supabase
       .from('patients')
       .select('*')
-      .or(`
-        name.ilike.${searchTerm},
-        nhs_number.ilike.%${nhsNumberSearch}%,
-        phone.ilike.${searchTerm}
-      `)
+      .or(`name.ilike.${searchTerm},nhs_number.ilike.%${nhsNumberSearch}%,phone.ilike.${searchTerm}`)
       .eq('active', true)
       .order('name', { ascending: true })
       .limit(20); // Increased limit for better results
