@@ -593,6 +593,57 @@ export type Database = {
           },
         ]
       }
+      hcp: {
+        Row: {
+          active: boolean | null
+          birth_date: string | null
+          contact: string | null
+          created_at: string | null
+          external_id: string | null
+          fhir_id: string | null
+          gender: string | null
+          id: string
+          name: string
+          organization: string | null
+          qualification_code: string | null
+          qualification_display: string | null
+          qualification_issuer: string | null
+          role: string | null
+        }
+        Insert: {
+          active?: boolean | null
+          birth_date?: string | null
+          contact?: string | null
+          created_at?: string | null
+          external_id?: string | null
+          fhir_id?: string | null
+          gender?: string | null
+          id?: string
+          name: string
+          organization?: string | null
+          qualification_code?: string | null
+          qualification_display?: string | null
+          qualification_issuer?: string | null
+          role?: string | null
+        }
+        Update: {
+          active?: boolean | null
+          birth_date?: string | null
+          contact?: string | null
+          created_at?: string | null
+          external_id?: string | null
+          fhir_id?: string | null
+          gender?: string | null
+          id?: string
+          name?: string
+          organization?: string | null
+          qualification_code?: string | null
+          qualification_display?: string | null
+          qualification_issuer?: string | null
+          role?: string | null
+        }
+        Relationships: []
+      }
       historic_addresses: {
         Row: {
           address: string
