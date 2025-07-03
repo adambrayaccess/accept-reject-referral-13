@@ -22,7 +22,7 @@ const getStatusConfig = (referral: Referral) => {
       case 'waiting-list':
         return {
           text: 'Waiting List',
-          className: 'bg-primary text-primary-foreground'
+          className: 'bg-waiting-list text-waiting-list-foreground'
         };
       case 'refer-to-another-specialty':
         return {

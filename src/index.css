@@ -48,6 +48,10 @@
     /* Purple secondary accent - WCAG compliant */
     --purple: 320 35% 35%; /* Darker purple #8A4A6B */
     --purple-foreground: 0 0% 100%;
+
+    /* Waiting List: Blue color #075985 */
+    --waiting-list: 205 92% 30%; /* #075985 */
+    --waiting-list-foreground: 0 0% 100%;
   }
 
   .dark {
@@ -92,6 +96,10 @@
     /* Purple secondary accent for dark mode */
     --purple: 320 40% 60%; /* Bright purple #C299B0 */
     --purple-foreground: 173 15% 8%; /* Dark text on purple #141A1A */
+
+    /* Waiting List: Lighter blue for dark mode */
+    --waiting-list: 205 70% 55%; /* Lighter blue for dark mode */
+    --waiting-list-foreground: 173 15% 8%; /* Dark text on waiting list #141A1A */
   }
 }
 

@@ -65,6 +65,10 @@ export default {
 					DEFAULT: 'hsl(var(--purple))',
 					foreground: 'hsl(var(--purple-foreground))'
 				},
+				'waiting-list': {
+					DEFAULT: 'hsl(var(--waiting-list))',
+					foreground: 'hsl(var(--waiting-list-foreground))'
+				},
 				sidebar: {
 					DEFAULT: 'hsl(var(--sidebar-background))',
 					foreground: 'hsl(var(--sidebar-foreground))',
