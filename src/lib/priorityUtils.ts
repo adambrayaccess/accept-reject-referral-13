@@ -7,6 +7,8 @@ export const getPriorityVariant = (priority: Referral['priority']) => {
       return 'destructive';
     case 'urgent':
       return 'secondary';
+    case 'routine':
+      return 'secondary';
     default:
       return 'outline';
   }
@@ -16,6 +18,8 @@ export const getPriorityCustomStyles = (priority: Referral['priority']) => {
   switch (priority) {
     case 'urgent':
       return 'bg-[#973060] text-white hover:bg-[#973060]/80';
+    case 'routine':
+      return 'bg-secondary text-secondary-foreground hover:bg-secondary/80';
     default:
       return '';
   }
