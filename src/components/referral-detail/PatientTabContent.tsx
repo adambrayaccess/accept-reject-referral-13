@@ -59,6 +59,13 @@ const PatientTabContent = ({ referral, relatedReferrals }: PatientTabContentProp
         </div>
       )}
       
+      {referral.patient.administrativeCategory && (
+        <div>
+          <div className="text-xs font-medium text-muted-foreground">Administrative Category</div>
+          <div className="font-medium">{referral.patient.administrativeCategory}</div>
+        </div>
+      )}
+      
       {/* Demographics Button */}
       <div className="col-span-1 lg:col-span-2 mt-3">
         <PatientDemographicsButton onClick={() => setIsDemographicsOpen(true)} />

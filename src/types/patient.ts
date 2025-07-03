@@ -66,6 +66,7 @@ export interface Patient {
   ethnicity?: string;
   pronouns?: string;
   accommodationType?: string;
+  administrativeCategory?: string;
   // Medical history
   medicalHistory?: MedicalHistory;
   // GP details

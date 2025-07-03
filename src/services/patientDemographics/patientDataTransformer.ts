@@ -26,6 +26,7 @@ export const transformPatientData = (
     pronouns: patient.pronouns || undefined,
     ethnicity: patient.ethnicity || undefined,
     accommodationType: patient.accommodation_type || undefined,
+    administrativeCategory: patient.administrative_category || undefined,
     gpDetails: gpDetails ? {
       id: gpDetails.id,
       name: gpDetails.name,
