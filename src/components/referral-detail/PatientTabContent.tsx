@@ -18,6 +18,9 @@ interface PatientTabContentProps {
 
 const PatientTabContent = ({ referral, relatedReferrals }: PatientTabContentProps) => {
   const [isDemographicsOpen, setIsDemographicsOpen] = useState(false);
+  
+  // Debug: Log patient data to check if administrativeCategory is present
+  console.log('PatientTabContent - Patient data:', referral.patient);
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-x-6 gap-y-3 text-sm">
