@@ -49,24 +49,29 @@ export const mapPatient = (patient: any): Patient => ({
     email: pharmacy.email,
     type: pharmacy.pharmacy_type
   })),
-  // Reasonable adjustments - include the required adjustments array
-  reasonableAdjustments: patient.reasonable_adjustments ? {
-    hasAdjustments: patient.reasonable_adjustments.has_adjustments,
-    flagLevel: patient.reasonable_adjustments.flag_level,
-    lastUpdated: patient.reasonable_adjustments.last_updated,
-    updatedBy: patient.reasonable_adjustments.updated_by,
-    adjustments: patient.reasonable_adjustments.adjustment_details?.map((adj: any) => ({
-      id: adj.id,
-      category: adj.category,
-      description: adj.description,
-      specificNeeds: adj.specific_needs,
-      implementationNotes: adj.implementation_notes,
-      status: adj.status,
-      dateRecorded: adj.date_recorded,
-      recordedBy: adj.recorded_by,
-      reviewDate: adj.review_date
-    })) || []
-  } : undefined,
+  // Reasonable adjustments - handle array case from Supabase query
+  reasonableAdjustments: (() => {
+    const adjustments = Array.isArray(patient.reasonable_adjustments) ? 
+      patient.reasonable_adjustments[0] : patient.reasonable_adjustments;
+    
+    return adjustments ? {
+      hasAdjustments: adjustments.has_adjustments,
+      flagLevel: adjustments.flag_level,
+      lastUpdated: adjustments.last_updated,
+      updatedBy: adjustments.updated_by,
+      adjustments: adjustments.adjustment_details?.map((adj: any) => ({
+        id: adj.id,
+        category: adj.category,
+        description: adj.description,
+        specificNeeds: adj.specific_needs,
+        implementationNotes: adj.implementation_notes,
+        status: adj.status,
+        dateRecorded: adj.date_recorded,
+        recordedBy: adj.recorded_by,
+        reviewDate: adj.review_date
+      })) || []
+    } : undefined;
+  })(),
   // Access restriction
   accessRestriction: patient.access_restriction_enabled ? {
     isRestricted: patient.access_restriction_enabled,
