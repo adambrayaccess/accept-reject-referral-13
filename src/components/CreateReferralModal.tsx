@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
 import { mockPractitioners } from '@/services/mock/practitioners';
 import { fetchPractitionerById } from '@/services/practitionerService';
+import { createPatient } from '@/services/patientService';
 import { Referral, ReferralPriority, Patient } from '@/types/referral';
 import { generateReferralId } from '@/utils/referralIdGenerator';
 import ReferralBasicInfoForm from './referral-form/ReferralBasicInfoForm';
@@ -20,6 +21,7 @@ interface CreateReferralModalProps {
 
 const CreateReferralModal = ({ isOpen, onClose, onSubmit }: CreateReferralModalProps) => {
   const [isCreating, setIsCreating] = useState(false);
+  const [isCreatingPatient, setIsCreatingPatient] = useState(false);
   const [referralId, setReferralId] = useState('');
   const [priority, setPriority] = useState<ReferralPriority>('routine');
   const [specialty, setSpecialty] = useState('');
@@ -124,6 +126,55 @@ const CreateReferralModal = ({ isOpen, onClose, onSubmit }: CreateReferralModalP
     }
   };
 
+  const handleCreateNewPatient = async () => {
+    if (!patientName || !birthDate || !nhsNumber) {
+      toast({
+        title: "Missing Information",
+        description: "Please fill in patient name, date of birth, and NHS number to create a new patient.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    setIsCreatingPatient(true);
+    try {
+      const newPatientData: Omit<Patient, 'id'> = {
+        name: patientName,
+        birthDate,
+        gender,
+        nhsNumber,
+        address,
+        phone,
+        active: true
+      };
+
+      const createdPatient = await createPatient(newPatientData);
+      
+      if (createdPatient) {
+        setSelectedPatient(createdPatient);
+        toast({
+          title: "Patient Created",
+          description: `${createdPatient.name} has been created and selected.`,
+        });
+      } else {
+        toast({
+          title: "Creation Failed",
+          description: "Failed to create patient. Please try again.",
+          variant: "destructive",
+        });
+      }
+    } catch (error) {
+      console.error('Error creating patient:', error);
+      toast({
+        title: "Creation Error",
+        description: "An error occurred while creating the patient.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsCreatingPatient(false);
+    }
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
@@ -150,24 +201,45 @@ const CreateReferralModal = ({ isOpen, onClose, onSubmit }: CreateReferralModalP
     setIsCreating(true);
 
     try {
+      // If no patient is selected but we have patient data, create a new patient first
+      let patientToUse = selectedPatient;
+      
+      if (!selectedPatient && patientName && birthDate && nhsNumber) {
+        setIsCreatingPatient(true);
+        const newPatientData: Omit<Patient, 'id'> = {
+          name: patientName,
+          birthDate,
+          gender,
+          nhsNumber,
+          address,
+          phone,
+          active: true
+        };
+
+        patientToUse = await createPatient(newPatientData);
+        setIsCreatingPatient(false);
+        
+        if (!patientToUse) {
+          toast({
+            title: "Patient Creation Failed",
+            description: "Could not create patient record. Please try again.",
+            variant: "destructive",
+          });
+          return;
+        }
+      }
+
+      if (!patientToUse) {
+        toast({
+          title: "Patient Required",
+          description: "Please select an existing patient or provide patient details to create a new one.",
+          variant: "destructive",
+        });
+        return;
+      }
+
       // Prepare patient data
-      const patientData: Patient = {
-        id: selectedPatient?.id || nhsNumber,
-        name: patientName,
-        birthDate,
-        gender,
-        nhsNumber,
-        address,
-        phone,
-        gpDetails: gpName ? {
-          id: `GP-${referralId}`,
-          name: gpName,
-          practice: gpPractice,
-          address: gpAddress,
-          phone: gpPhone,
-          email: gpEmail
-        } : undefined,
-      };
+      const patientData: Patient = patientToUse;
 
       // Create attachments from documents
       const attachments = documents.map(doc => ({
@@ -224,6 +296,7 @@ const CreateReferralModal = ({ isOpen, onClose, onSubmit }: CreateReferralModalP
       });
     } finally {
       setIsCreating(false);
+      setIsCreatingPatient(false);
     }
   };
 
@@ -278,6 +351,8 @@ const CreateReferralModal = ({ isOpen, onClose, onSubmit }: CreateReferralModalP
           <ReferralFormTabs
             selectedPatient={selectedPatient}
             onPatientSelect={handlePatientSelect}
+            onCreateNewPatient={handleCreateNewPatient}
+            isCreatingPatient={isCreatingPatient}
             patientName={patientName}
             setPatientName={setPatientName}
             birthDate={birthDate}
@@ -319,14 +394,14 @@ const CreateReferralModal = ({ isOpen, onClose, onSubmit }: CreateReferralModalP
           />
 
           <DialogFooter>
-            <Button type="button" variant="outline" onClick={onClose} disabled={isCreating}>
+            <Button type="button" variant="outline" onClick={onClose} disabled={isCreating || isCreatingPatient}>
               Cancel
             </Button>
-            <Button type="submit" disabled={isCreating}>
-              {isCreating ? (
+            <Button type="submit" disabled={isCreating || isCreatingPatient}>
+              {isCreating || isCreatingPatient ? (
                 <>
                   <Loader2 className="h-4 w-4 animate-spin mr-2" />
-                  Creating Referral...
+                  {isCreatingPatient ? 'Creating Patient...' : 'Creating Referral...'}
                 </>
               ) : (
                 'Create Referral'

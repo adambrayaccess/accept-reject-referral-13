@@ -1,6 +1,6 @@
 
 import { useState, useEffect } from 'react';
-import { Check, ChevronsUpDown, User } from 'lucide-react';
+import { Check, ChevronsUpDown, User, Plus } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import {
@@ -17,13 +17,14 @@ import {
   PopoverTrigger,
 } from '@/components/ui/popover';
 import { Patient } from '@/types/referral';
-import { searchPatients } from '@/services/patientSearchService';
+import { searchPatients, PatientSearchResult } from '@/services/patientService';
 
 interface PatientAutocompleteProps {
   value?: Patient;
   onSelect: (patient: Patient | undefined) => void;
   placeholder?: string;
   className?: string;
+  onCreateNew?: () => void;
 }
 
 const PatientAutocomplete = ({
@@ -31,18 +32,34 @@ const PatientAutocomplete = ({
   onSelect,
   placeholder = "Search for a patient...",
   className,
+  onCreateNew,
 }: PatientAutocompleteProps) => {
   const [open, setOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState<Patient[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    if (searchQuery.length >= 2) {
-      const results = searchPatients(searchQuery);
-      setSearchResults(results.map(r => r.patient));
-    } else {
-      setSearchResults([]);
-    }
+    const performSearch = async () => {
+      if (searchQuery.length >= 2) {
+        setIsLoading(true);
+        try {
+          const results = await searchPatients(searchQuery);
+          setSearchResults(results.map(r => r.patient));
+        } catch (error) {
+          console.error('Error searching patients:', error);
+          setSearchResults([]);
+        } finally {
+          setIsLoading(false);
+        }
+      } else {
+        setSearchResults([]);
+        setIsLoading(false);
+      }
+    };
+
+    const timeoutId = setTimeout(performSearch, 300);
+    return () => clearTimeout(timeoutId);
   }, [searchQuery]);
 
   const handleSelect = (patient: Patient) => {
@@ -85,11 +102,13 @@ const PatientAutocomplete = ({
           <CommandList>
             <CommandEmpty>
               {searchQuery.length < 2 
-                ? "Type at least 2 characters to search" 
+                ? "Type at least 2 characters to search patients" 
+                : isLoading 
+                ? "Searching patients..." 
                 : "No patients found."
               }
             </CommandEmpty>
-            {searchResults.length > 0 && (
+            {searchResults.length > 0 && !isLoading && (
               <CommandGroup>
                 {searchResults.map((patient) => (
                   <CommandItem
@@ -114,6 +133,14 @@ const PatientAutocomplete = ({
                     />
                   </CommandItem>
                 ))}
+              </CommandGroup>
+            )}
+            {searchQuery.length >= 2 && searchResults.length === 0 && !isLoading && onCreateNew && (
+              <CommandGroup>
+                <CommandItem onSelect={onCreateNew} className="flex items-center gap-2 p-2">
+                  <Plus className="h-4 w-4" />
+                  <span>Create new patient</span>
+                </CommandItem>
               </CommandGroup>
             )}
           </CommandList>

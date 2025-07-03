@@ -10,6 +10,8 @@ interface ReferralFormTabsProps {
   // Patient fields
   selectedPatient: Patient | undefined;
   onPatientSelect: (patient: Patient | undefined) => void;
+  onCreateNewPatient?: () => void;
+  isCreatingPatient?: boolean;
   patientName: string;
   setPatientName: (value: string) => void;
   birthDate: string;
@@ -59,6 +61,8 @@ interface ReferralFormTabsProps {
 const ReferralFormTabs = ({
   selectedPatient,
   onPatientSelect,
+  onCreateNewPatient,
+  isCreatingPatient = false,
   patientName,
   setPatientName,
   birthDate,
@@ -111,6 +115,8 @@ const ReferralFormTabs = ({
         <EnhancedPatientDetailsForm
           selectedPatient={selectedPatient}
           onPatientSelect={onPatientSelect}
+          onCreateNewPatient={onCreateNewPatient}
+          isCreatingPatient={isCreatingPatient}
           patientName={patientName}
           setPatientName={setPatientName}
           birthDate={birthDate}

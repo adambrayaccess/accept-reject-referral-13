@@ -25,6 +25,8 @@ interface EnhancedPatientDetailsFormProps {
   setPhone: (value: string) => void;
   selectedPatient?: Patient;
   onPatientSelect: (patient: Patient | undefined) => void;
+  onCreateNewPatient?: () => void;
+  isCreatingPatient?: boolean;
 }
 
 const EnhancedPatientDetailsForm = ({
@@ -42,6 +44,8 @@ const EnhancedPatientDetailsForm = ({
   setPhone,
   selectedPatient,
   onPatientSelect,
+  onCreateNewPatient,
+  isCreatingPatient = false,
 }: EnhancedPatientDetailsFormProps) => {
   const [fullPatientData, setFullPatientData] = useState<Patient | null>(null);
   const [isLoadingFullData, setIsLoadingFullData] = useState(false);
@@ -97,6 +101,7 @@ const EnhancedPatientDetailsForm = ({
         <PatientAutocomplete
           value={selectedPatient}
           onSelect={onPatientSelect}
+          onCreateNew={onCreateNewPatient}
           placeholder="Search by name, NHS number, or phone..."
         />
         {selectedPatient && (
@@ -109,14 +114,14 @@ const EnhancedPatientDetailsForm = ({
               variant="outline"
               size="sm"
               onClick={refreshPatientData}
-              disabled={isLoadingFullData}
+              disabled={isLoadingFullData || isCreatingPatient}
             >
-              {isLoadingFullData ? (
+              {isLoadingFullData || isCreatingPatient ? (
                 <Loader2 className="h-4 w-4 animate-spin" />
               ) : (
                 <RefreshCw className="h-4 w-4" />
               )}
-              Refresh Data
+              {isCreatingPatient ? 'Creating...' : 'Refresh Data'}
             </Button>
           </div>
         )}
