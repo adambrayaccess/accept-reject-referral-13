@@ -253,6 +253,47 @@ export type Database = {
           },
         ]
       }
+      clinical_notes: {
+        Row: {
+          created_at: string
+          created_by: string
+          id: string
+          is_internal: boolean
+          note_content: string
+          note_type: string
+          referral_id: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          created_by: string
+          id?: string
+          is_internal?: boolean
+          note_content: string
+          note_type?: string
+          referral_id: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          created_by?: string
+          id?: string
+          is_internal?: boolean
+          note_content?: string
+          note_type?: string
+          referral_id?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "clinical_notes_referral_id_fkey"
+            columns: ["referral_id"]
+            isOneToOne: false
+            referencedRelation: "referrals"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       collaboration_notes: {
         Row: {
           author: string

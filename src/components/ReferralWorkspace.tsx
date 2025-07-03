@@ -1,10 +1,11 @@
 
 import { useEffect, useState } from 'react';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
-import { History, Calendar, Clipboard, Users } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { History, Calendar, Clipboard, Users, FileText } from 'lucide-react';
 import { Referral } from '@/types/referral';
 import ReferralActions from './ReferralActions';
-import AuditLog from './audit/AuditLog';
+import EnhancedAuditLog from './audit/EnhancedAuditLog';
 import SubReferralsList from './sub-referrals/SubReferralsList';
 import ParentReferralInfo from './sub-referrals/ParentReferralInfo';
 import PatientJourney from './PatientJourney';
@@ -13,6 +14,7 @@ import AISuggestionsPanel from './ai-suggestions/AISuggestionsPanel';
 import AppointmentStatus from './cohort/AppointmentStatus';
 import TeamBadge from './team/TeamBadge';
 import HCPBadge from './team/HCPBadge';
+import AddClinicalNoteSheet from './clinical-notes/AddClinicalNoteSheet';
 
 interface ReferralWorkspaceProps {
   referral: Referral;
@@ -21,6 +23,7 @@ interface ReferralWorkspaceProps {
 
 const ReferralWorkspace = ({ referral, onStatusChange }: ReferralWorkspaceProps) => {
   const [refreshKey, setRefreshKey] = useState(0);
+  const [isAddNoteOpen, setIsAddNoteOpen] = useState(false);
 
   const handleTagsUpdated = () => {
     // Refresh parent component to show updated tags
@@ -32,11 +35,26 @@ const ReferralWorkspace = ({ referral, onStatusChange }: ReferralWorkspaceProps)
     onStatusChange();
   };
 
+  const handleNoteCreated = () => {
+    // Refresh to show new note in audit log
+    onStatusChange();
+  };
+
   return (
     <div className="flex flex-col h-full gap-3">
       {referral.isSubReferral && referral.parentReferralId && (
         <ParentReferralInfo childReferralId={referral.id} />
       )}
+
+      {/* Add Clinical Note Button */}
+      <Button 
+        onClick={() => setIsAddNoteOpen(true)}
+        className="w-full flex items-center gap-2"
+        variant="outline"
+      >
+        <FileText className="h-4 w-4" />
+        Add Note
+      </Button>
 
       {/* AI Suggestions Panel - Now shown for all referrals */}
       <AISuggestionsPanel 
@@ -118,9 +136,18 @@ const ReferralWorkspace = ({ referral, onStatusChange }: ReferralWorkspaceProps)
           </CardTitle>
         </CardHeader>
         <CardContent className="pt-0">
-          <AuditLog entries={referral.auditLog} />
+          <EnhancedAuditLog entries={referral.auditLog} referralId={referral.id} />
         </CardContent>
       </Card>
+
+      {/* Add Clinical Note Sheet */}
+      <AddClinicalNoteSheet
+        referralId={referral.id}
+        patientName={referral.patient.name}
+        isOpen={isAddNoteOpen}
+        onOpenChange={setIsAddNoteOpen}
+        onNoteCreated={handleNoteCreated}
+      />
     </div>
   );
 };
