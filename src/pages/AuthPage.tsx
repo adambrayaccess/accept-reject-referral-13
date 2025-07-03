@@ -87,6 +87,21 @@ const AuthPage = () => {
                 <CardDescription>
                   Enter your credentials to access your account
                 </CardDescription>
+                <div className="mt-2 p-3 bg-blue-50 rounded-lg border border-blue-200">
+                  <p className="text-xs font-medium text-blue-700 mb-1">Test Credentials:</p>
+                  <p className="text-xs text-blue-600">Email: test@example.com</p>
+                  <p className="text-xs text-blue-600">Password: test123</p>
+                  <button 
+                    type="button"
+                    onClick={() => {
+                      setEmail('test@example.com');
+                      setPassword('test123');
+                    }}
+                    className="text-xs text-blue-700 underline mt-1 hover:text-blue-800"
+                  >
+                    Fill test credentials
+                  </button>
+                </div>
               </CardHeader>
               <CardContent>
                 <form onSubmit={handleSignIn} className="space-y-4">
