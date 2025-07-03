@@ -48,13 +48,6 @@ const PatientTabContent = ({ referral, relatedReferrals }: PatientTabContentProp
         <div className="font-medium">{referral.patient.gender.charAt(0).toUpperCase() + referral.patient.gender.slice(1)}</div>
       </div>
       
-      {referral.patient.pronouns && (
-        <div>
-          <div className="text-xs font-medium text-muted-foreground">Pronouns</div>
-          <div className="font-medium">{referral.patient.pronouns}</div>
-        </div>
-      )}
-      
       {referral.patient.address && (
         <div>
           <div className="text-xs font-medium text-muted-foreground">Address</div>
