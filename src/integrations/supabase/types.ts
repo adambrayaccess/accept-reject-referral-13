@@ -1330,6 +1330,7 @@ export type Database = {
           created_at: string
           description: string | null
           display_order: number | null
+          external_id: string | null
           id: string
           name: string
           updated_at: string
@@ -1339,6 +1340,7 @@ export type Database = {
           created_at?: string
           description?: string | null
           display_order?: number | null
+          external_id?: string | null
           id: string
           name: string
           updated_at?: string
@@ -1348,6 +1350,7 @@ export type Database = {
           created_at?: string
           description?: string | null
           display_order?: number | null
+          external_id?: string | null
           id?: string
           name?: string
           updated_at?: string
@@ -1360,12 +1363,14 @@ export type Database = {
           created_at: string
           description: string | null
           email: string | null
+          external_id: string | null
           id: string
           lead_contact: string | null
           location: string | null
           name: string
           phone: string | null
           specialty: string
+          specialty_id: string | null
           updated_at: string
         }
         Insert: {
@@ -1373,12 +1378,14 @@ export type Database = {
           created_at?: string
           description?: string | null
           email?: string | null
+          external_id?: string | null
           id?: string
           lead_contact?: string | null
           location?: string | null
           name: string
           phone?: string | null
           specialty: string
+          specialty_id?: string | null
           updated_at?: string
         }
         Update: {
@@ -1386,15 +1393,25 @@ export type Database = {
           created_at?: string
           description?: string | null
           email?: string | null
+          external_id?: string | null
           id?: string
           lead_contact?: string | null
           location?: string | null
           name?: string
           phone?: string | null
           specialty?: string
+          specialty_id?: string | null
           updated_at?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "teams_specialty_id_fkey"
+            columns: ["specialty_id"]
+            isOneToOne: false
+            referencedRelation: "specialties"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       test_results: {
         Row: {
