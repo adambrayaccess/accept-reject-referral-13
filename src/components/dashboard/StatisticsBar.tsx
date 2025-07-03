@@ -1,5 +1,5 @@
 
-import { Info, Users, AlertTriangle, Clock, CheckCircle, FileText } from 'lucide-react';
+import { Info, Users, AlertTriangle, Clock, CheckCircle, FileText, Timer } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { Referral } from '@/types/referral';
@@ -19,12 +19,13 @@ const StatisticsBar = ({ referrals }: StatisticsBarProps) => {
       case 'Clock': return Clock;
       case 'CheckCircle': return CheckCircle;
       case 'FileText': return FileText;
+      case 'Timer': return Timer;
       default: return Users;
     }
   };
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 mb-6">
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-4 mb-6">
       {statistics.map((stat, index) => {
         const IconComponent = getIconComponent(stat.icon);
         return (

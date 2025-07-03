@@ -45,6 +45,11 @@ export const calculateDashboardStatistics = (referrals: Referral[]): DashboardSt
     return appointmentDate >= now && appointmentDate <= next7Days;
   }).length;
 
+  // Calculate referrals on waiting list
+  const onWaitingList = referrals.filter(ref => 
+    ref.triageStatus === 'waiting-list'
+  ).length;
+
   return [
     {
       title: 'New Referrals',
@@ -95,6 +100,16 @@ export const calculateDashboardStatistics = (referrals: Referral[]): DashboardSt
       iconColor: 'text-warning',
       iconBg: 'bg-warning/10',
       valueColor: 'text-warning'
+    },
+    {
+      title: 'On Waiting List',
+      value: onWaitingList.toString().padStart(2, '0'),
+      period: 'Current',
+      pagination: '1/3',
+      icon: 'Timer',
+      iconColor: 'text-muted-foreground',
+      iconBg: 'bg-muted',
+      valueColor: 'text-muted-foreground'
     }
   ];
 };
