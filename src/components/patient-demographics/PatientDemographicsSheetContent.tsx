@@ -52,9 +52,9 @@ const PatientDemographicsSheetContent = ({ patientId }: PatientDemographicsSheet
   const hasAdjustments = patient.reasonableAdjustments?.hasAdjustments;
   const hasAccessRestriction = patient.accessRestriction?.isRestricted;
   const hasMedicalHistory = patient.medicalHistory?.vitalSigns?.length > 0 || 
-                           patient.medications?.length > 0 || 
-                           patient.testResults?.length > 0 ||
-                           patient.mhaSections?.length > 0;
+                           patient.medicalHistory?.medicationHistory?.length > 0 || 
+                           patient.medicalHistory?.testResults?.length > 0 ||
+                           patient.medicalHistory?.mhaSections?.length > 0;
 
   return (
     <div className="space-y-6 pb-6">

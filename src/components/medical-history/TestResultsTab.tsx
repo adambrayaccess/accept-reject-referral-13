@@ -1,6 +1,6 @@
 
 import { format } from 'date-fns';
-import { TestResult } from '@/types/referral';
+import { TestResult } from '@/types/medical';
 import { Badge } from '@/components/ui/badge';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { FileText, Calendar, User, Building2, TestTube, TrendingUp, TrendingDown, Minus } from 'lucide-react';

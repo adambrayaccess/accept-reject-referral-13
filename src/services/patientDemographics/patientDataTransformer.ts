@@ -97,51 +97,50 @@ export const transformPatientData = (
         oxygenSaturation: vital.oxygen_saturation,
         bloodPressureSystolic: vital.blood_pressure_systolic,
         bloodPressureDiastolic: vital.blood_pressure_diastolic
+      })) : [],
+      
+      medicationHistory: medications ? medications.map(med => ({
+        id: med.id,
+        name: med.name,
+        dosage: med.dosage,
+        frequency: med.frequency,
+        prescribedDate: med.prescribed_date,
+        endDate: med.end_date || undefined,
+        prescribedBy: med.prescribed_by,
+        indication: med.indication || undefined,
+        status: med.status || 'active',
+        notes: med.notes || undefined
+      })) : [],
+      
+      testResults: testResults ? testResults.map(test => ({
+        id: test.id,
+        testName: test.test_name,
+        testType: test.test_type,
+        requestedDate: test.requested_date,
+        sampleDate: test.sample_date || undefined,
+        reportDate: test.report_date || undefined,
+        requestedBy: test.requested_by,
+        performedBy: test.performed_by || undefined,
+        results: test.results || [],
+        interpretation: test.interpretation || undefined,
+        status: test.status || 'requested',
+        notes: test.notes || undefined
+      })) : [],
+      
+      mhaSections: mhaSections ? mhaSections.map(section => ({
+        id: section.id,
+        sectionNumber: section.section_number,
+        sectionTitle: section.section_title,
+        appliedDate: section.applied_date,
+        expiryDate: section.expiry_date || undefined,
+        reviewDate: section.review_date || undefined,
+        hospital: section.hospital,
+        consultantResponsible: section.consultant_responsible,
+        reason: section.reason,
+        status: section.status,
+        notes: section.notes || undefined
       })) : []
     },
-    
-    // Phase 2: Direct medication, test results, and MHA sections on patient
-    medications: medications ? medications.map(med => ({
-      id: med.id,
-      name: med.name,
-      dosage: med.dosage,
-      frequency: med.frequency,
-      prescribedDate: med.prescribed_date,
-      endDate: med.end_date || undefined,
-      prescribedBy: med.prescribed_by,
-      indication: med.indication || undefined,
-      status: med.status || 'active',
-      notes: med.notes || undefined
-    })) : undefined,
-    
-    testResults: testResults ? testResults.map(test => ({
-      id: test.id,
-      testName: test.test_name,
-      testType: test.test_type,
-      requestedDate: test.requested_date,
-      sampleDate: test.sample_date || undefined,
-      reportDate: test.report_date || undefined,
-      requestedBy: test.requested_by,
-      performedBy: test.performed_by || undefined,
-      results: test.results || undefined,
-      interpretation: test.interpretation || undefined,
-      status: test.status || 'requested',
-      notes: test.notes || undefined
-    })) : undefined,
-    
-    mhaSections: mhaSections ? mhaSections.map(section => ({
-      id: section.id,
-      sectionNumber: section.section_number,
-      sectionTitle: section.section_title,
-      appliedDate: section.applied_date,
-      expiryDate: section.expiry_date || undefined,
-      reviewDate: section.review_date || undefined,
-      hospital: section.hospital,
-      consultantResponsible: section.consultant_responsible,
-      reason: section.reason,
-      status: section.status,
-      notes: section.notes || undefined
-    })) : undefined,
     
     reasonableAdjustments: reasonableAdjustments ? {
       hasAdjustments: reasonableAdjustments.has_adjustments || false,

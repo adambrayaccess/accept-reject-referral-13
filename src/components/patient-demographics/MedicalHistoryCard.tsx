@@ -12,8 +12,8 @@ interface MedicalHistoryCardProps {
 
 const MedicalHistoryCard = ({ patient }: MedicalHistoryCardProps) => {
   const vitalSigns = patient.medicalHistory?.vitalSigns || [];
-  const medications = patient.medications || [];
-  const testResults = patient.testResults || [];
+  const medications = patient.medicalHistory?.medicationHistory || [];
+  const testResults = patient.medicalHistory?.testResults || [];
   const latestVitals = vitalSigns[0]; // Most recent vital signs
 
   if (!latestVitals && medications.length === 0 && testResults.length === 0) {
@@ -156,7 +156,7 @@ const MedicalHistoryCard = ({ patient }: MedicalHistoryCardProps) => {
         )}
 
         {/* MHA Sections if present */}
-        {patient.mhaSections && patient.mhaSections.length > 0 && (
+        {patient.medicalHistory?.mhaSections && patient.medicalHistory.mhaSections.length > 0 && (
           <>
             <Separator />
             <div className="space-y-2">
@@ -165,7 +165,7 @@ const MedicalHistoryCard = ({ patient }: MedicalHistoryCardProps) => {
                 Mental Health Act Sections
               </h4>
               <div className="space-y-2">
-                {patient.mhaSections.map((section) => (
+                {patient.medicalHistory.mhaSections.map((section) => (
                   <div key={section.id} className="flex justify-between items-start text-sm bg-amber-50 p-2 rounded">
                     <div>
                       <div className="font-medium">Section {section.sectionNumber}: {section.sectionTitle}</div>
