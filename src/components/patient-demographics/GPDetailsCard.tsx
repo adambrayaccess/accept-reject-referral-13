@@ -9,7 +9,19 @@ interface GPDetailsCardProps {
 
 const GPDetailsCard = ({ patient }: GPDetailsCardProps) => {
   if (!patient.gpDetails) {
-    return null;
+    return (
+      <Card>
+        <CardHeader className="pb-3">
+          <CardTitle className="flex items-center gap-2">
+            <Shield className="h-5 w-5 text-blue-500" />
+            Primary Care Provider
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <p className="text-sm text-muted-foreground">No GP details available for this patient.</p>
+        </CardContent>
+      </Card>
+    );
   }
 
   return (
