@@ -1091,6 +1091,7 @@ export type Database = {
           diagnosis: string | null
           display_order: number | null
           external_id: string | null
+          external_reference: string | null
           fhir_id: string | null
           history: string | null
           id: string
@@ -1143,6 +1144,7 @@ export type Database = {
           diagnosis?: string | null
           display_order?: number | null
           external_id?: string | null
+          external_reference?: string | null
           fhir_id?: string | null
           history?: string | null
           id?: string
@@ -1195,6 +1197,7 @@ export type Database = {
           diagnosis?: string | null
           display_order?: number | null
           external_id?: string | null
+          external_reference?: string | null
           fhir_id?: string | null
           history?: string | null
           id?: string

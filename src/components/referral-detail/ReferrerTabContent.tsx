@@ -49,6 +49,13 @@ const ReferrerTabContent = ({ referral }: ReferrerTabContentProps) => {
         </div>
       )}
       
+      {referral.externalReference && (
+        <div>
+          <div className="text-xs font-medium text-muted-foreground">External Reference</div>
+          <div className="font-medium">{referral.externalReference}</div>
+        </div>
+      )}
+      
       <div>
         <div className="text-xs font-medium text-muted-foreground">Date Referred</div>
         <div className="font-medium">{format(new Date(referral.created), 'dd MMM yyyy, HH:mm')}</div>
