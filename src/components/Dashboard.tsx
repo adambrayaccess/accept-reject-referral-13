@@ -70,10 +70,10 @@ const Dashboard = () => {
 
   const handleCreateReferral = (newReferral: Partial<Referral>) => {
     const referralType = newReferral.aiGenerated ? 'Auto' : 'Manual';
-    toast({
-      title: "Referral Created",
-      description: `${referralType} referral ${newReferral.id} has been created`,
-    });
+    console.log('Referral created in dashboard:', newReferral);
+    
+    // Referral is already saved to database by the modal
+    // Just refresh the dashboard to show the new referral
     handleRefresh();
   };
 

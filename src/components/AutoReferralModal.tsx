@@ -18,6 +18,9 @@ import { mockPractitioners } from '@/services/mock/practitioners';
 import { analyzeDocument, mergeAnalysisResults, DocumentAnalysisResult } from '@/services/documentAnalysisService';
 import DocumentAnalysisProgress from '@/components/documents/DocumentAnalysisProgress';
 import DocumentPreview from '@/components/documents/DocumentPreview';
+import { ReferralCreationService, ReferralCreationData } from '@/services/referral/referralCreationService';
+import { generateReferralId } from '@/utils/referralIdGenerator';
+import { Patient } from '@/types/patient';
 
 interface AutoReferralModalProps {
   isOpen: boolean;
@@ -29,6 +32,7 @@ const AutoReferralModal = ({ isOpen, onClose, onSubmit }: AutoReferralModalProps
   const [patientInfo, setPatientInfo] = useState('');
   const [specialty, setSpecialty] = useState('');
   const [isGenerating, setIsGenerating] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [generationProgress, setGenerationProgress] = useState(0);
   const [generatedData, setGeneratedData] = useState<any>(null);
   
@@ -204,7 +208,7 @@ const AutoReferralModal = ({ isOpen, onClose, onSubmit }: AutoReferralModalProps
 
   const generateReferralFromAnalysis = (analysis: DocumentAnalysisResult) => {
     const currentDate = new Date().toISOString();
-    const referralId = `DOC-${Date.now()}`;
+    const referralId = generateReferralId();
 
     return {
       id: referralId,
@@ -214,7 +218,7 @@ const AutoReferralModal = ({ isOpen, onClose, onSubmit }: AutoReferralModalProps
       specialty: analysis.referralInfo.specialty || 'General Medicine',
       referrer: mockPractitioners[0],
       patient: {
-        id: `DOC-P-${Date.now()}`,
+        id: generateReferralId(), // Generate proper patient ID
         name: analysis.patientInfo.name || 'Patient from Document',
         birthDate: analysis.patientInfo.birthDate || '1980-01-01',
         gender: analysis.patientInfo.gender || 'unknown',
@@ -281,7 +285,7 @@ const AutoReferralModal = ({ isOpen, onClose, onSubmit }: AutoReferralModalProps
 
   const generateMockReferralData = (info: string, targetSpecialty: string) => {
     const currentDate = new Date().toISOString();
-    const referralId = `AUTO-${Date.now()}`;
+    const referralId = generateReferralId();
     
     // Extract patient name from input (simple extraction)
     const nameMatch = info.match(/(?:patient|name|called)\s+([A-Z][a-z]+\s+[A-Z][a-z]+)/i);
@@ -317,7 +321,7 @@ const AutoReferralModal = ({ isOpen, onClose, onSubmit }: AutoReferralModalProps
       specialty: determinedSpecialty,
       referrer: mockPractitioners[0], // Default to first practitioner
       patient: {
-        id: `AUTO-P-${Date.now()}`,
+        id: generateReferralId(), // Generate proper patient ID
         name: extractedName,
         birthDate: '1980-01-01', // Default
         gender: 'unknown',
@@ -339,7 +343,7 @@ const AutoReferralModal = ({ isOpen, onClose, onSubmit }: AutoReferralModalProps
     };
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (!generatedData) {
       toast({
         title: "No Data",
@@ -349,20 +353,75 @@ const AutoReferralModal = ({ isOpen, onClose, onSubmit }: AutoReferralModalProps
       return;
     }
 
-    onSubmit(generatedData);
-    toast({
-      title: "Auto Referral Created",
-      description: `AI-generated referral ${generatedData.id} has been created`,
-    });
-    onClose();
-    
-    // Reset form
-    setPatientInfo('');
-    setSpecialty('');
-    setGeneratedData(null);
-    setGenerationProgress(0);
-    setUploadedFiles([]);
-    setAnalysisResults([]);
+    setIsSubmitting(true);
+    try {
+      // Convert generated data to ReferralCreationData format
+      const patientData: Patient = {
+        id: generateReferralId(), // Generate proper ID
+        name: generatedData.patient.name,
+        birthDate: generatedData.patient.birthDate,
+        gender: generatedData.patient.gender,
+        nhsNumber: generatedData.patient.nhsNumber,
+        address: generatedData.patient.address,
+        phone: generatedData.patient.phone,
+        active: true
+      };
+
+      const creationData: ReferralCreationData = {
+        patient: patientData,
+        practitionerId: generatedData.referrer.id,
+        priority: generatedData.priority,
+        specialty: generatedData.specialty,
+        service: generatedData.service,
+        reason: generatedData.clinicalInfo.reason,
+        history: generatedData.clinicalInfo.history,
+        diagnosis: generatedData.clinicalInfo.diagnosis,
+        medications: generatedData.clinicalInfo.medications || [],
+        allergies: generatedData.clinicalInfo.allergies || [],
+        notes: generatedData.clinicalInfo.notes,
+        attachments: generatedData.attachments || [],
+        aiGenerated: true,
+        confidence: generatedData.confidence,
+        referralType: 'AI-Generated Referral'
+      };
+
+      // Create referral using the service
+      const result = await ReferralCreationService.createReferral(creationData);
+
+      if (result.success && result.referral) {
+        toast({
+          title: "Auto Referral Created",
+          description: `AI-generated referral ${result.referral.ubrn} has been saved to the database`,
+        });
+        
+        // Call the parent callback with the created referral
+        onSubmit(result.referral);
+        onClose();
+        
+        // Reset form
+        setPatientInfo('');
+        setSpecialty('');
+        setGeneratedData(null);
+        setGenerationProgress(0);
+        setUploadedFiles([]);
+        setAnalysisResults([]);
+      } else {
+        toast({
+          title: "Creation Failed",
+          description: result.error || "Failed to create referral in database",
+          variant: "destructive",
+        });
+      }
+    } catch (error) {
+      console.error('Error creating auto referral:', error);
+      toast({
+        title: "Error",
+        description: "An unexpected error occurred while creating the referral",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleClose = () => {
@@ -695,11 +754,21 @@ const AutoReferralModal = ({ isOpen, onClose, onSubmit }: AutoReferralModalProps
           </Button>
           {generatedData && (
             <Button 
-              onClick={handleSubmit} 
+              onClick={handleSubmit}
+              disabled={isSubmitting}
               className="bg-gradient-to-r from-purple-500 to-purple-600 hover:from-purple-600 hover:to-purple-700 text-white shadow-md"
             >
-              <Sparkles className="mr-2 h-4 w-4" />
-              Create AI Referral
+              {isSubmitting ? (
+                <>
+                  <Brain className="mr-2 h-4 w-4 animate-spin" />
+                  Creating Referral...
+                </>
+              ) : (
+                <>
+                  <Sparkles className="mr-2 h-4 w-4" />
+                  Create AI Referral
+                </>
+              )}
             </Button>
           )}
         </DialogFooter>
