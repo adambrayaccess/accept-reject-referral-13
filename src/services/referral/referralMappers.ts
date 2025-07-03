@@ -247,11 +247,11 @@ export const mapReferralData = (referral: any): Referral => {
     childReferralIds: []
   };
 
-  // Automatically sync to FHIR when mapping (for real-time sync)
+  // DISABLED: Automatically sync to FHIR when mapping (for real-time sync)
   // This ensures FHIR resources are always up-to-date
-  FhirIntegrationService.handleReferralChange(mappedReferral).catch(error => {
-    console.error('Background FHIR sync failed:', error);
-  });
+  // FhirIntegrationService.handleReferralChange(mappedReferral).catch(error => {
+  //   console.error('Background FHIR sync failed:', error);
+  // });
 
   return mappedReferral;
 };
