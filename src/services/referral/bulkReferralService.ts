@@ -88,6 +88,7 @@ export const fetchReferralsBySpecialties = async (specialties: string[]): Promis
   }
   
   return fetchReferrals({ 
-    specialty: specialties.length === 1 ? specialties[0] : undefined 
+    specialty: specialties.length === 1 ? specialties[0] : undefined,
+    specialties: specialties.length > 1 ? specialties : undefined
   });
 };
