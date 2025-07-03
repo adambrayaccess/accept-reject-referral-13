@@ -37,6 +37,7 @@ const ReferralViewContent = ({
             <ReferralDocuments 
               attachments={referral.attachments} 
               referralId={referral.id}
+              patientName={referral.patient.name}
               onDocumentUploaded={onDocumentUploaded}
             />
           </div>

@@ -8,10 +8,13 @@ import { Separator } from '@/components/ui/separator';
 import { FileText, Download, Eye, FileImage, Plus } from 'lucide-react';
 import { format } from 'date-fns';
 import DocumentUploadModal from './documents/DocumentUploadModal';
+import GenerateLettersButton from './letters/GenerateLettersButton';
+import GenerateLettersSheet from './letters/GenerateLettersSheet';
 
 interface ReferralDocumentsProps {
   attachments: Attachment[];
   referralId: string;
+  patientName?: string;
   onDocumentUploaded?: () => void;
 }
 
@@ -43,9 +46,10 @@ const getFileTypeDisplay = (contentType: string) => {
   return parts[1].toUpperCase();
 };
 
-const ReferralDocuments = ({ attachments, referralId, onDocumentUploaded }: ReferralDocumentsProps) => {
+const ReferralDocuments = ({ attachments, referralId, patientName, onDocumentUploaded }: ReferralDocumentsProps) => {
   const [activeTab, setActiveTab] = useState<string>(attachments.length > 0 ? attachments[0].id : '');
   const [isUploadModalOpen, setIsUploadModalOpen] = useState(false);
+  const [isGenerateLettersSheetOpen, setIsGenerateLettersSheetOpen] = useState(false);
   
   const handleDocumentUploaded = () => {
     setIsUploadModalOpen(false);
@@ -57,14 +61,19 @@ const ReferralDocuments = ({ attachments, referralId, onDocumentUploaded }: Refe
       <CardHeader className="pb-3">
         <div className="flex justify-between items-center">
           <CardTitle className="text-lg">Referral Documents</CardTitle>
-          <Button 
-            size="sm" 
-            onClick={() => setIsUploadModalOpen(true)}
-            className="flex items-center gap-1"
-          >
-            <Plus className="h-3 w-3" />
-            Add Document
-          </Button>
+          <div className="flex items-center gap-2">
+            <GenerateLettersButton 
+              onClick={() => setIsGenerateLettersSheetOpen(true)}
+            />
+            <Button 
+              size="sm" 
+              onClick={() => setIsUploadModalOpen(true)}
+              className="flex items-center gap-1"
+            >
+              <Plus className="h-3 w-3" />
+              Add Document
+            </Button>
+          </div>
         </div>
       </CardHeader>
       <CardContent className="pt-0">
@@ -150,6 +159,13 @@ const ReferralDocuments = ({ attachments, referralId, onDocumentUploaded }: Refe
         onClose={() => setIsUploadModalOpen(false)}
         referralId={referralId}
         onDocumentUploaded={handleDocumentUploaded}
+      />
+      
+      <GenerateLettersSheet
+        isOpen={isGenerateLettersSheetOpen}
+        onOpenChange={setIsGenerateLettersSheetOpen}
+        referralId={referralId}
+        patientName={patientName}
       />
     </Card>
   );
