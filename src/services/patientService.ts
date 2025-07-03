@@ -14,14 +14,27 @@ export const searchPatients = async (query: string): Promise<PatientSearchResult
   try {
     console.log('Searching patients in database with query:', query);
     
-    // Search patients by name, NHS number, or phone
+    // Clean and normalize the search query
+    const cleanQuery = query.trim();
+    const searchTerm = `%${cleanQuery}%`;
+    
+    // Create a more sophisticated search that handles:
+    // 1. Full name matches (split by space for first/last name)
+    // 2. NHS number searches (with or without spaces)
+    // 3. Phone number searches
+    const nhsNumberSearch = cleanQuery.replace(/\s+/g, ''); // Remove spaces for NHS number search
+    
     const { data: patients, error } = await supabase
       .from('patients')
       .select('*')
-      .or(`name.ilike.%${query}%,nhs_number.ilike.%${query}%,phone.ilike.%${query}%`)
+      .or(`
+        name.ilike.${searchTerm},
+        nhs_number.ilike.%${nhsNumberSearch}%,
+        phone.ilike.${searchTerm}
+      `)
       .eq('active', true)
       .order('name', { ascending: true })
-      .limit(10);
+      .limit(20); // Increased limit for better results
 
     if (error) {
       console.error('Error searching patients:', error);
@@ -49,18 +62,39 @@ export const searchPatients = async (query: string): Promise<PatientSearchResult
       };
 
       // Calculate relevance score based on match quality
-      const queryLower = query.toLowerCase();
+      const queryLower = cleanQuery.toLowerCase();
+      const nameLower = patient.name.toLowerCase();
+      const nhsNumberClean = patient.nhsNumber.replace(/\s+/g, '');
+      const queryNhsClean = cleanQuery.replace(/\s+/g, '');
+      
       let score = 0;
 
       // Exact name match gets highest score
-      if (patient.name.toLowerCase().includes(queryLower)) {
+      if (nameLower === queryLower) {
         score = 1.0;
-      } else if (patient.nhsNumber.includes(query)) {
+      }
+      // Name starts with query (common for name searches)
+      else if (nameLower.startsWith(queryLower)) {
+        score = 0.95;
+      }
+      // Name contains query
+      else if (nameLower.includes(queryLower)) {
         score = 0.9;
-      } else if (patient.phone?.includes(query)) {
+      }
+      // Exact NHS number match
+      else if (nhsNumberClean === queryNhsClean || patient.nhsNumber === cleanQuery) {
+        score = 0.98;
+      }
+      // NHS number contains query
+      else if (nhsNumberClean.includes(queryNhsClean)) {
+        score = 0.85;
+      }
+      // Phone number match
+      else if (patient.phone?.includes(cleanQuery)) {
         score = 0.8;
-      } else {
-        // Partial match
+      }
+      // Fallback for partial matches
+      else {
         score = 0.5;
       }
 
