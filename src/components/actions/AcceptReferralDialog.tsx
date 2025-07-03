@@ -8,7 +8,8 @@ import { CheckCircle } from 'lucide-react';
 import { Referral, TriageStatus } from '@/types/referral';
 import { updateReferralStatus, sendHL7Message } from '@/services/referralService';
 import { useToast } from '@/components/ui/use-toast';
-import { healthcareProfessionals, specialties } from '@/data/specialtyOptions';
+import { specialties } from '@/data/specialtyOptions';
+import { fetchAllHCPs, HCP } from '@/services/hcpService';
 import TeamSelector from '@/components/team/TeamSelector';
 import { getSpecialtyIdByName } from '@/data/specialtyOptions';
 
@@ -33,6 +34,8 @@ const AcceptReferralDialog = ({ referral, onStatusChange }: AcceptReferralDialog
   const [selectedTeamId, setSelectedTeamId] = useState<string>('');
   const [selectedHCPId, setSelectedHCPId] = useState<string>('');
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [databaseHCPs, setDatabaseHCPs] = useState<HCP[]>([]);
+  const [isLoadingHCPs, setIsLoadingHCPs] = useState(false);
   const { toast } = useToast();
 
   // Safely get specialty ID with error handling
@@ -47,7 +50,24 @@ const AcceptReferralDialog = ({ referral, onStatusChange }: AcceptReferralDialog
       return '';
     }
   })();
+  
+  // Load HCPs from database on component mount
+  useEffect(() => {
+    const loadHCPs = async () => {
+      setIsLoadingHCPs(true);
+      try {
+        const hcps = await fetchAllHCPs();
+        setDatabaseHCPs(hcps);
+        console.log('AcceptReferralDialog: Loaded HCPs from database:', hcps.length);
+      } catch (error) {
+        console.error('AcceptReferralDialog: Error loading HCPs from database:', error);
+      } finally {
+        setIsLoadingHCPs(false);
+      }
+    };
 
+    loadHCPs();
+  }, []);
   // Reset selection when status changes
   useEffect(() => {
     if (selectedStatus === 'refer-to-another-specialty') {
@@ -134,13 +154,13 @@ const AcceptReferralDialog = ({ referral, onStatusChange }: AcceptReferralDialog
           successMessage = `The referral has been accepted and referred to ${specialty?.name} specialty with status: Refer to Another Specialty.`;
         } else if (selectedTeamId) {
           const assignedTo = (finalHCPId && finalHCPId !== 'unassigned')
-            ? healthcareProfessionals.find(hp => hp.id === finalHCPId)?.name
+            ? databaseHCPs.find(hp => hp.id === finalHCPId)?.name
             : 'team';
           successMessage = `The referral has been accepted and allocated to ${assignedTo} with status: ${
             triageStatusOptions.find(s => s.value === selectedStatus)?.label
           }.`;
         } else {
-          const professional = healthcareProfessionals.find(hp => hp.id === finalProfessionalId);
+          const professional = databaseHCPs.find(hp => hp.id === finalProfessionalId);
           successMessage = `The referral has been accepted and allocated to ${professional?.name} with status: ${
             triageStatusOptions.find(s => s.value === selectedStatus)?.label
           }.`;
@@ -254,13 +274,19 @@ const AcceptReferralDialog = ({ referral, onStatusChange }: AcceptReferralDialog
                       <SelectValue placeholder="Select professional" />
                     </SelectTrigger>
                     <SelectContent>
-                      {healthcareProfessionals
-                        .filter(hp => !specialtyId || hp.specialty === specialtyId)
-                        .map((professional) => (
-                        <SelectItem key={professional.id} value={professional.id}>
-                          {professional.name} - {professional.role}
+                      {isLoadingHCPs ? (
+                        <SelectItem value="loading" disabled>
+                          Loading healthcare professionals...
                         </SelectItem>
-                      ))}
+                      ) : (
+                        databaseHCPs
+                          .filter(hcp => hcp.active !== false)
+                          .map((professional) => (
+                          <SelectItem key={professional.id} value={professional.id}>
+                            {professional.name} - {professional.role || 'Healthcare Professional'}
+                          </SelectItem>
+                        ))
+                      )}
                     </SelectContent>
                   </Select>
                 </div>
