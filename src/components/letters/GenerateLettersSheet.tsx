@@ -7,13 +7,15 @@ interface GenerateLettersSheetProps {
   patientName?: string;
   isOpen: boolean;
   onOpenChange: (open: boolean) => void;
+  onLetterCreated?: () => void;
 }
 
 const GenerateLettersSheet = ({ 
   referralId, 
   patientName, 
   isOpen, 
-  onOpenChange 
+  onOpenChange,
+  onLetterCreated
 }: GenerateLettersSheetProps) => {
   return (
     <Sheet open={isOpen} onOpenChange={onOpenChange}>
@@ -27,7 +29,10 @@ const GenerateLettersSheet = ({
         
         <ScrollArea className="h-[calc(100vh-140px)]">
           <div className="pr-4">
-            <GenerateLettersSheetContent referralId={referralId} />
+            <GenerateLettersSheetContent 
+              referralId={referralId} 
+              onLetterCreated={onLetterCreated}
+            />
           </div>
         </ScrollArea>
       </SheetContent>

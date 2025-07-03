@@ -1087,6 +1087,56 @@ export type Database = {
           },
         ]
       }
+      referral_letters: {
+        Row: {
+          created_at: string
+          created_by: string | null
+          id: string
+          letter_content: string
+          letter_type: string
+          recipient_email: string | null
+          recipient_name: string | null
+          referral_id: string
+          sent_at: string | null
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          letter_content: string
+          letter_type: string
+          recipient_email?: string | null
+          recipient_name?: string | null
+          referral_id: string
+          sent_at?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          letter_content?: string
+          letter_type?: string
+          recipient_email?: string | null
+          recipient_name?: string | null
+          referral_id?: string
+          sent_at?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "referral_letters_referral_id_fkey"
+            columns: ["referral_id"]
+            isOneToOne: false
+            referencedRelation: "referrals"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       referral_tags: {
         Row: {
           created_at: string | null
