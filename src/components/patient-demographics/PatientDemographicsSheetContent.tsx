@@ -61,6 +61,8 @@ const PatientDemographicsSheetContent = ({ patientId }: PatientDemographicsSheet
       <PatientSummaryCard patient={patient} age={age} />
       
       <ClinicalAlertsCard patient={patient} />
+
+      <DemographicDetailsCard patient={patient} age={age} />
       
       {hasAccessRestriction && (
         <AccessRestrictionCard patient={patient} />
@@ -74,9 +76,7 @@ const PatientDemographicsSheetContent = ({ patientId }: PatientDemographicsSheet
       <GPDetailsCard patient={patient} />
       
       <PharmacyDetailsCard patient={patient} />
-      
-      <DemographicDetailsCard patient={patient} age={age} />
-      
+            
       <RelatedPeopleCard patient={patient} />
       
       {hasAllergies && (
