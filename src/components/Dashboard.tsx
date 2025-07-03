@@ -18,6 +18,7 @@ const Dashboard = () => {
   const { toast } = useToast();
   const navigate = useNavigate();
   const [selectedSpecialties, setSelectedSpecialties] = useState<string[]>([]);
+  const [isSpecialtiesLoaded, setIsSpecialtiesLoaded] = useState(false);
   
   const {
     filteredReferrals,
@@ -36,7 +37,7 @@ const Dashboard = () => {
     setSortField,
     sortDirection,
     setSortDirection
-  } = useDashboardData(selectedSpecialties);
+  } = useDashboardData(isSpecialtiesLoaded ? selectedSpecialties : []);
 
   const {
     selectedIds,
@@ -57,6 +58,7 @@ const Dashboard = () => {
         const parsed = JSON.parse(storedSpecialties);
         if (Array.isArray(parsed) && parsed.length > 0) {
           setSelectedSpecialties(parsed);
+          setIsSpecialtiesLoaded(true);
         } else {
           navigate('/select-specialty');
         }

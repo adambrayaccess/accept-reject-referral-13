@@ -52,7 +52,10 @@ export const useDashboardData = (selectedSpecialties: string[] = []) => {
   };
 
   useEffect(() => {
-    loadReferrals();
+    // Only load referrals if we have selected specialties
+    if (selectedSpecialties.length > 0) {
+      loadReferrals();
+    }
     
     // Listen for referral updates to refresh data
     const handleReferralUpdate = () => {
