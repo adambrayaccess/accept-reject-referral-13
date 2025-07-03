@@ -21,6 +21,13 @@ const ClinicalTabContent = ({ referral }: ClinicalTabContentProps) => {
         </div>
       )}
       
+      {referral.assignedHCPId && (
+        <div>
+          <div className="text-xs font-medium text-muted-foreground">HCP referred to</div>
+          <div className="font-medium">{referral.assignedHCPId}</div>
+        </div>
+      )}
+      
       <Separator />
       
       <div>
