@@ -16,6 +16,21 @@ export const mapPatient = (patient: any): Patient => ({
   ethnicity: patient.ethnicity,
   pronouns: patient.pronouns,
   accommodationType: patient.accommodation_type,
+  // Direct access allergies for clinical indicators
+  allergies: patient.allergies?.map((allergy: any) => ({
+    id: allergy.id,
+    allergen: allergy.allergen,
+    type: allergy.type,
+    severity: allergy.severity,
+    reactions: allergy.reactions,
+    onsetDate: allergy.onset_date,
+    lastReactionDate: allergy.last_reaction_date,
+    status: allergy.status,
+    verificationStatus: allergy.verification_status,
+    recordedDate: allergy.recorded_date,
+    recordedBy: allergy.recorded_by,
+    notes: allergy.notes
+  })) || [],
   // Medical history - structure all medical data under medicalHistory object
   medicalHistory: {
     allergies: patient.allergies?.map((allergy: any) => ({
