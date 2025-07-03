@@ -50,8 +50,8 @@ const ReferralWorkspace = ({ referral, onStatusChange, onSuggestionApplied }: Re
       {/* Add Clinical Note Button */}
       <Button 
         onClick={() => setIsAddNoteOpen(true)}
-        className="w-full flex items-center gap-2"
-        variant="outline"
+        className="w-full flex items-center gap-2 bg-primary hover:bg-primary/90 text-primary-foreground"
+        variant="default"
       >
         <FileText className="h-4 w-4" />
         Add Note
