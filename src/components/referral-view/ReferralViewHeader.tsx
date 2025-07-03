@@ -14,31 +14,6 @@ interface ReferralViewHeaderProps {
 }
 
 const ReferralViewHeader = ({ referral, onBack }: ReferralViewHeaderProps) => {
-  // Enhanced data validation logging specifically for NEUR-2024-003
-  console.log('=== ReferralViewHeader Data Validation ===');
-  console.log('Referral ID:', referral.id);
-  console.log('Patient ID:', referral.patient?.id);
-  console.log('Patient name:', referral.patient?.name);
-  console.log('Is this NEUR-2024-003?', referral.id === 'NEUR-2024-003');
-  console.log('Patient reasonable adjustments prop:', referral.patient?.reasonableAdjustments);
-  
-  if (referral.id === 'NEUR-2024-003') {
-    console.log('🔍 DEBUGGING NEUR-2024-003 specifically:');
-    console.log('- Patient object type:', typeof referral.patient);
-    console.log('- Patient keys:', Object.keys(referral.patient || {}));
-    console.log('- ReasonableAdjustments value:', referral.patient?.reasonableAdjustments);
-    console.log('- Type of reasonableAdjustments:', typeof referral.patient?.reasonableAdjustments);
-    
-    if (referral.patient?.reasonableAdjustments) {
-      console.log('✅ Adjustments data found:');
-      console.log('  - hasAdjustments:', referral.patient.reasonableAdjustments.hasAdjustments);
-      console.log('  - flagLevel:', referral.patient.reasonableAdjustments.flagLevel);
-      console.log('  - adjustments array:', referral.patient.reasonableAdjustments.adjustments);
-    } else {
-      console.log('❌ No adjustments data - this is the bug!');
-    }
-  }
-  console.log('==========================================');
   
   return (
     <>

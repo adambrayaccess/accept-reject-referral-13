@@ -10,23 +10,10 @@ interface ReasonableAdjustmentsFlagProps {
 }
 
 const ReasonableAdjustmentsFlag = ({ adjustmentsFlag }: ReasonableAdjustmentsFlagProps) => {
-  // Enhanced data validation logging
-  console.log('=== ReasonableAdjustmentsFlag Component ===');
-  console.log('Received adjustmentsFlag prop:', JSON.stringify(adjustmentsFlag, null, 2));
-  console.log('adjustmentsFlag exists:', !!adjustmentsFlag);
-  console.log('hasAdjustments value:', adjustmentsFlag?.hasAdjustments);
-  console.log('flagLevel value:', adjustmentsFlag?.flagLevel);
-  console.log('adjustments array:', adjustmentsFlag?.adjustments);
-  console.log('adjustments length:', adjustmentsFlag?.adjustments?.length);
-  
-  // More specific validation
   const hasValidAdjustments = adjustmentsFlag && 
     adjustmentsFlag.hasAdjustments === true && 
     Array.isArray(adjustmentsFlag.adjustments) && 
     adjustmentsFlag.adjustments.length > 0;
-  
-  console.log('hasValidAdjustments calculated as:', hasValidAdjustments);
-  console.log('==========================================');
   
   if (!hasValidAdjustments) {
     return (
