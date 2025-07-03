@@ -6,14 +6,12 @@ import { format } from 'date-fns';
 import { Link } from 'react-router-dom';
 import ReferralPriorityBadge from '@/components/dashboard/ReferralPriorityBadge';
 import ReferralTypeBadge from '@/components/dashboard/ReferralTypeBadge';
+import ReferralStatusBadge from '@/components/dashboard/ReferralStatusBadge';
 
 interface ReferralCardProps {
   referral: Referral;
 }
 
-const getStatusClass = (status: Referral['status']) => {
-  return `status-${status}`;
-};
 
 const ReferralCard = ({ referral }: ReferralCardProps) => {
   const formattedDate = format(new Date(referral.created), 'dd MMM yyyy');
@@ -25,9 +23,7 @@ const ReferralCard = ({ referral }: ReferralCardProps) => {
         <CardHeader className="pb-2">
           <div className="flex justify-between items-start">
             <CardTitle className="text-lg">{referral.patient.name}</CardTitle>
-            <span className={getStatusClass(referral.status)}>
-              {referral.status.toUpperCase()}
-            </span>
+            <ReferralStatusBadge referral={referral} />
           </div>
           <div className="flex flex-col gap-1">
             <div className="flex items-center gap-1 text-muted-foreground text-sm">
