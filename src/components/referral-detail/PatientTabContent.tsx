@@ -49,7 +49,7 @@ const PatientTabContent = ({ referral, relatedReferrals }: PatientTabContentProp
       </div>
       
       {referral.patient.address && (
-        <div className="col-span-1 lg:col-span-2">
+        <div>
           <div className="text-xs font-medium text-muted-foreground">Address</div>
           <div className="font-medium">{referral.patient.address}</div>
         </div>
@@ -59,6 +59,13 @@ const PatientTabContent = ({ referral, relatedReferrals }: PatientTabContentProp
         <div>
           <div className="text-xs font-medium text-muted-foreground">Contact Number</div>
           <div className="font-medium">{referral.patient.phone}</div>
+        </div>
+      )}
+      
+      {referral.overseasStatus && (
+        <div>
+          <div className="text-xs font-medium text-muted-foreground">Overseas Status</div>
+          <div className="font-medium">{referral.overseasStatus}</div>
         </div>
       )}
       
