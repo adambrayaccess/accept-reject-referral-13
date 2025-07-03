@@ -15,15 +15,6 @@ export const transformPatientData = (
   testResults: any[] = [],
   mhaSections: any[] = []
 ): Patient => {
-  console.log('🔧 Data Transformer Debug:', {
-    patientId: patient.id,
-    patientName: patient.name,
-    vitalSignsCount: vitalSigns?.length || 0,
-    medicationsCount: medications?.length || 0,
-    testResultsCount: testResults?.length || 0,
-    mhaSectionsCount: mhaSections?.length || 0,
-    allergiesCount: allergies?.length || 0
-  });
   return {
     id: patient.id,
     name: patient.name,
