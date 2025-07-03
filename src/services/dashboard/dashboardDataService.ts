@@ -8,9 +8,11 @@ export const loadDashboardReferrals = async (selectedSpecialties: string[] = [])
   try {
     const filters: any = {};
     
-    // Apply specialty filter if specific specialties are selected
+    // Apply specialty filter for selected specialties
     if (selectedSpecialties.length === 1) {
       filters.specialty = selectedSpecialties[0];
+    } else if (selectedSpecialties.length > 1) {
+      filters.specialties = selectedSpecialties;
     }
     
     const referrals = await fetchReferrals(filters);

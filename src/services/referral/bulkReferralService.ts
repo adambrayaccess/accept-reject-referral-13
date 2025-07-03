@@ -5,6 +5,7 @@ import { mapReferralData } from './referralMappers';
 
 export const fetchReferrals = async (filters?: {
   specialty?: string;
+  specialties?: string[];
   status?: string;
   limit?: number;
   offset?: number;
@@ -42,6 +43,11 @@ export const fetchReferrals = async (filters?: {
     // Apply filters
     if (filters?.specialty) {
       query = query.eq('specialty', filters.specialty);
+    }
+    
+    // Apply multiple specialties filter
+    if (filters?.specialties && filters.specialties.length > 0) {
+      query = query.in('specialty', filters.specialties);
     }
     
     if (filters?.status) {
