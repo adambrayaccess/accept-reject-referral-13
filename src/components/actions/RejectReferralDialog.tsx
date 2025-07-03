@@ -1,6 +1,6 @@
-
 import { useState } from 'react';
-import { AlertDialog, AlertDialogContent, AlertDialogDescription, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger, AlertDialogFooter, AlertDialogCancel, AlertDialogAction } from '@/components/ui/alert-dialog';
+import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
+import { ScrollArea } from '@/components/ui/scroll-area';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { XCircle, AlertTriangle } from 'lucide-react';
@@ -14,6 +14,7 @@ interface RejectReferralDialogProps {
 }
 
 const RejectReferralDialog = ({ referral, onStatusChange }: RejectReferralDialogProps) => {
+  const [isOpen, setIsOpen] = useState(false);
   const [rejectNotes, setRejectNotes] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { toast } = useToast();
@@ -35,6 +36,10 @@ const RejectReferralDialog = ({ referral, onStatusChange }: RejectReferralDialog
           variant: "default",
         });
         
+        // Reset form and close sheet
+        setRejectNotes('');
+        setIsOpen(false);
+        
         // 4. Refresh the parent component
         onStatusChange();
       } else {
@@ -53,44 +58,66 @@ const RejectReferralDialog = ({ referral, onStatusChange }: RejectReferralDialog
   };
 
   return (
-    <AlertDialog>
-      <AlertDialogTrigger asChild>
+    <Sheet open={isOpen} onOpenChange={setIsOpen}>
+      <SheetTrigger asChild>
         <Button variant="destructive" className="w-full">
           <XCircle className="mr-2 h-4 w-4" />
           Reject Referral
         </Button>
-      </AlertDialogTrigger>
-      <AlertDialogContent>
-        <AlertDialogHeader>
-          <AlertDialogTitle className="flex items-center gap-2">
-            <AlertTriangle className="h-5 w-5 text-destructive" />
+      </SheetTrigger>
+      <SheetContent className="w-full sm:max-w-3xl lg:max-w-4xl">
+        <SheetHeader className="pb-4">
+          <SheetTitle className="text-2xl flex items-center gap-2">
+            <AlertTriangle className="h-6 w-6 text-destructive" />
             Reject Referral
-          </AlertDialogTitle>
-          <AlertDialogDescription>
-            You are about to reject this referral. Please provide a reason for rejection.
-            This will send an HL7 message to the EPR system.
-          </AlertDialogDescription>
-        </AlertDialogHeader>
-        <div className="my-4">
-          <Textarea
-            placeholder="Reason for rejection (required)"
-            value={rejectNotes}
-            onChange={(e) => setRejectNotes(e.target.value)}
-            required
-          />
-        </div>
-        <AlertDialogFooter>
-          <AlertDialogCancel>Cancel</AlertDialogCancel>
-          <AlertDialogAction 
-            onClick={handleReject} 
-            disabled={isSubmitting || !rejectNotes}
-            className="bg-destructive hover:bg-destructive/90"
-          >
-            {isSubmitting ? "Processing..." : "Confirm"}
-          </AlertDialogAction>
-        </AlertDialogFooter>
-      </AlertDialogContent>
-    </AlertDialog>
+          </SheetTitle>
+          <SheetDescription className="text-base">
+            You are about to reject this referral for {referral.patient.name}. Please provide a reason for rejection. This will send an HL7 message to the EPR system.
+          </SheetDescription>
+        </SheetHeader>
+        
+        <ScrollArea className="h-[calc(100vh-140px)]">
+          <div className="pr-4 space-y-6">
+            <div className="space-y-4">
+              <div className="space-y-2">
+                <label className="text-sm font-medium">Reason for Rejection <span className="text-destructive">*</span></label>
+                <Textarea
+                  placeholder="Please provide a detailed reason for rejection..."
+                  value={rejectNotes}
+                  onChange={(e) => setRejectNotes(e.target.value)}
+                  rows={6}
+                  className="resize-none"
+                />
+                {!rejectNotes && (
+                  <p className="text-sm text-muted-foreground">
+                    A reason for rejection is required and will be included in the HL7 message sent to the EPR system.
+                  </p>
+                )}
+              </div>
+            </div>
+
+            <div className="flex flex-col sm:flex-row gap-3 pt-6">
+              <Button 
+                onClick={handleReject} 
+                disabled={isSubmitting || !rejectNotes.trim()}
+                variant="destructive"
+                className="flex-1"
+              >
+                {isSubmitting ? "Processing..." : "Reject Referral"}
+              </Button>
+              <Button 
+                variant="outline" 
+                onClick={() => setIsOpen(false)}
+                disabled={isSubmitting}
+                className="flex-1"
+              >
+                Cancel
+              </Button>
+            </div>
+          </div>
+        </ScrollArea>
+      </SheetContent>
+    </Sheet>
   );
 };
 

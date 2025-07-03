@@ -1,13 +1,13 @@
-
 import { useState, useEffect } from 'react';
-import { AlertDialog, AlertDialogContent, AlertDialogDescription, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger, AlertDialogFooter, AlertDialogCancel, AlertDialogAction } from '@/components/ui/alert-dialog';
+import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
+import { ScrollArea } from '@/components/ui/scroll-area';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { CheckCircle } from 'lucide-react';
 import { Referral, TriageStatus } from '@/types/referral';
 import { updateReferralStatus, sendHL7Message } from '@/services/referralService';
-import { useToast } from '@/components/ui/use-toast';
+import { useToast } from '@/hooks/use-toast';
 import { specialties } from '@/data/specialtyOptions';
 import { fetchAllHCPs, HCP } from '@/services/hcpService';
 import TeamSelector from '@/components/team/TeamSelector';
@@ -27,6 +27,7 @@ const triageStatusOptions: { value: TriageStatus; label: string }[] = [
 ];
 
 const AcceptReferralDialog = ({ referral, onStatusChange }: AcceptReferralDialogProps) => {
+  const [isOpen, setIsOpen] = useState(false);
   const [acceptNotes, setAcceptNotes] = useState('');
   const [selectedProfessional, setSelectedProfessional] = useState<string>('');
   const [selectedSpecialty, setSelectedSpecialty] = useState<string>('');
@@ -68,6 +69,7 @@ const AcceptReferralDialog = ({ referral, onStatusChange }: AcceptReferralDialog
 
     loadHCPs();
   }, []);
+  
   // Reset selection when status changes
   useEffect(() => {
     if (selectedStatus === 'refer-to-another-specialty') {
@@ -172,6 +174,15 @@ const AcceptReferralDialog = ({ referral, onStatusChange }: AcceptReferralDialog
           variant: "default",
         });
         
+        // Reset form and close sheet
+        setAcceptNotes('');
+        setSelectedProfessional('');
+        setSelectedSpecialty('');
+        setSelectedStatus('');
+        setSelectedTeamId('');
+        setSelectedHCPId('');
+        setIsOpen(false);
+        
         onStatusChange();
       } else {
         throw new Error("Failed to update referral status");
@@ -204,114 +215,131 @@ const AcceptReferralDialog = ({ referral, onStatusChange }: AcceptReferralDialog
   }
 
   return (
-    <AlertDialog>
-      <AlertDialogTrigger asChild>
+    <Sheet open={isOpen} onOpenChange={setIsOpen}>
+      <SheetTrigger asChild>
         <Button className="w-full bg-success hover:bg-success/90">
           <CheckCircle className="mr-2 h-4 w-4" />
           Accept Referral
         </Button>
-      </AlertDialogTrigger>
-      <AlertDialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
-        <AlertDialogHeader>
-          <AlertDialogTitle>Accept Referral</AlertDialogTitle>
-          <AlertDialogDescription>
-            Please allocate this referral to a team and set status.
-          </AlertDialogDescription>
-        </AlertDialogHeader>
-        <div className="space-y-4 my-4">
-          <div className="space-y-2">
-            <label className="text-sm font-medium">Status</label>
-            <Select 
-              value={selectedStatus} 
-              onValueChange={(value: TriageStatus) => setSelectedStatus(value)}
-            >
-              <SelectTrigger>
-                <SelectValue placeholder="Select status" />
-              </SelectTrigger>
-              <SelectContent>
-                {triageStatusOptions.map((status) => (
-                  <SelectItem key={status.value} value={status.value}>
-                    {status.label}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
+      </SheetTrigger>
+      <SheetContent className="w-full sm:max-w-3xl lg:max-w-4xl">
+        <SheetHeader className="pb-4">
+          <SheetTitle className="text-2xl">Accept Referral</SheetTitle>
+          <SheetDescription className="text-base">
+            Please allocate this referral to a team and set status for {referral.patient.name}
+          </SheetDescription>
+        </SheetHeader>
+        
+        <ScrollArea className="h-[calc(100vh-140px)]">
+          <div className="pr-4 space-y-6">
+            <div className="space-y-4">
+              <div className="space-y-2">
+                <label className="text-sm font-medium">Status</label>
+                <Select 
+                  value={selectedStatus} 
+                  onValueChange={(value: TriageStatus) => setSelectedStatus(value)}
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select status" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {triageStatusOptions.map((status) => (
+                      <SelectItem key={status.value} value={status.value}>
+                        {status.label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
 
-          {selectedStatus === 'refer-to-another-specialty' ? (
-            <div className="space-y-2">
-              <label className="text-sm font-medium">Specialty</label>
-              <Select value={selectedSpecialty} onValueChange={setSelectedSpecialty}>
-                <SelectTrigger>
-                  <SelectValue placeholder="Select specialty" />
-                </SelectTrigger>
-                <SelectContent>
-                  {specialties.map((specialty) => (
-                    <SelectItem key={specialty.id} value={specialty.id}>
-                      {specialty.name}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-          ) : (
-            <>
-              {specialtyId && (
-                <TeamSelector
-                  specialtyId={specialtyId}
-                  selectedTeamId={selectedTeamId}
-                  selectedHCPId={selectedHCPId}
-                  onTeamChange={handleTeamChange}
-                  onHCPChange={handleHCPChange}
-                />
-              )}
-              
-              {(!specialtyId || !selectedTeamId) && (
+              {selectedStatus === 'refer-to-another-specialty' ? (
                 <div className="space-y-2">
-                  <label className="text-sm font-medium">Or assign directly to Healthcare Professional</label>
-                  <Select value={selectedProfessional} onValueChange={setSelectedProfessional}>
+                  <label className="text-sm font-medium">Specialty</label>
+                  <Select value={selectedSpecialty} onValueChange={setSelectedSpecialty}>
                     <SelectTrigger>
-                      <SelectValue placeholder="Select professional" />
+                      <SelectValue placeholder="Select specialty" />
                     </SelectTrigger>
                     <SelectContent>
-                      {isLoadingHCPs ? (
-                        <SelectItem value="loading" disabled>
-                          Loading healthcare professionals...
+                      {specialties.map((specialty) => (
+                        <SelectItem key={specialty.id} value={specialty.id}>
+                          {specialty.name}
                         </SelectItem>
-                      ) : (
-                        databaseHCPs
-                          .filter(hcp => hcp.active !== false)
-                          .map((professional) => (
-                          <SelectItem key={professional.id} value={professional.id}>
-                            {professional.name} - {professional.role || 'Healthcare Professional'}
-                          </SelectItem>
-                        ))
-                      )}
+                      ))}
                     </SelectContent>
                   </Select>
                 </div>
+              ) : (
+                <>
+                  {specialtyId && (
+                    <TeamSelector
+                      specialtyId={specialtyId}
+                      selectedTeamId={selectedTeamId}
+                      selectedHCPId={selectedHCPId}
+                      onTeamChange={handleTeamChange}
+                      onHCPChange={handleHCPChange}
+                    />
+                  )}
+                  
+                  {(!specialtyId || !selectedTeamId) && (
+                    <div className="space-y-2">
+                      <label className="text-sm font-medium">Or assign directly to Healthcare Professional</label>
+                      <Select value={selectedProfessional} onValueChange={setSelectedProfessional}>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select professional" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {isLoadingHCPs ? (
+                            <SelectItem value="loading" disabled>
+                              Loading healthcare professionals...
+                            </SelectItem>
+                          ) : (
+                            databaseHCPs
+                              .filter(hcp => hcp.active !== false)
+                              .map((professional) => (
+                              <SelectItem key={professional.id} value={professional.id}>
+                                {professional.name} - {professional.role || 'Healthcare Professional'}
+                              </SelectItem>
+                            ))
+                          )}
+                        </SelectContent>
+                      </Select>
+                    </div>
+                  )}
+                </>
               )}
-            </>
-          )}
 
-          <Textarea
-            placeholder="Add optional notes (e.g., appointment details)"
-            value={acceptNotes}
-            onChange={(e) => setAcceptNotes(e.target.value)}
-          />
-        </div>
-        <AlertDialogFooter>
-          <AlertDialogCancel>Cancel</AlertDialogCancel>
-          <AlertDialogAction 
-            onClick={handleAccept} 
-            disabled={isSubmitting || !isFormValid()}
-            className="bg-success hover:bg-success/90"
-          >
-            {isSubmitting ? "Processing..." : "Confirm"}
-          </AlertDialogAction>
-        </AlertDialogFooter>
-      </AlertDialogContent>
-    </AlertDialog>
+              <div className="space-y-2">
+                <label className="text-sm font-medium">Notes (Optional)</label>
+                <Textarea
+                  placeholder="Add optional notes (e.g., appointment details)"
+                  value={acceptNotes}
+                  onChange={(e) => setAcceptNotes(e.target.value)}
+                  rows={4}
+                />
+              </div>
+            </div>
+
+            <div className="flex flex-col sm:flex-row gap-3 pt-6">
+              <Button 
+                onClick={handleAccept} 
+                disabled={isSubmitting || !isFormValid()}
+                className="bg-success hover:bg-success/90 flex-1"
+              >
+                {isSubmitting ? "Processing..." : "Accept Referral"}
+              </Button>
+              <Button 
+                variant="outline" 
+                onClick={() => setIsOpen(false)}
+                disabled={isSubmitting}
+                className="flex-1"
+              >
+                Cancel
+              </Button>
+            </div>
+          </div>
+        </ScrollArea>
+      </SheetContent>
+    </Sheet>
   );
 };
 
