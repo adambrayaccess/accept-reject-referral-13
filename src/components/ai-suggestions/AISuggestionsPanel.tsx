@@ -19,7 +19,7 @@ interface AISuggestionsPanelProps {
 const AISuggestionsPanel = ({ referral, onSuggestionApplied }: AISuggestionsPanelProps) => {
   const [suggestions, setSuggestions] = useState<AISuggestionsResponse | null>(null);
   const [isLoading, setIsLoading] = useState(false);
-  const [isExpanded, setIsExpanded] = useState(false);
+  const [isExpanded, setIsExpanded] = useState(true); // Default to expanded in sheet
   const { toast } = useToast();
 
   const loadSuggestions = async () => {

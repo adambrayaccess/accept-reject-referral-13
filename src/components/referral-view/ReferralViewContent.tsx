@@ -15,13 +15,15 @@ interface ReferralViewContentProps {
   };
   onStatusChange: () => void;
   onDocumentUploaded: () => void;
+  onSuggestionApplied?: () => void;
 }
 
 const ReferralViewContent = ({ 
   referral, 
   relatedReferrals, 
   onStatusChange, 
-  onDocumentUploaded 
+  onDocumentUploaded,
+  onSuggestionApplied
 }: ReferralViewContentProps) => {
   return (
     <div className="flex flex-col md:flex-row gap-6 h-full min-h-0">
@@ -51,6 +53,7 @@ const ReferralViewContent = ({
             <ReferralWorkspace 
               referral={referral}
               onStatusChange={onStatusChange}
+              onSuggestionApplied={onSuggestionApplied}
             />
           </div>
         </ScrollArea>

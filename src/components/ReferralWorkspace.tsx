@@ -10,7 +10,6 @@ import SubReferralsList from './sub-referrals/SubReferralsList';
 import ParentReferralInfo from './sub-referrals/ParentReferralInfo';
 import PatientJourney from './PatientJourney';
 import ReferralTagging from './referral-tagging/ReferralTagging';
-import AISuggestionsPanel from './ai-suggestions/AISuggestionsPanel';
 import AppointmentStatus from './cohort/AppointmentStatus';
 import TeamBadge from './team/TeamBadge';
 import HCPBadge from './team/HCPBadge';
@@ -19,9 +18,10 @@ import AddClinicalNoteSheet from './clinical-notes/AddClinicalNoteSheet';
 interface ReferralWorkspaceProps {
   referral: Referral;
   onStatusChange: () => void;
+  onSuggestionApplied?: () => void;
 }
 
-const ReferralWorkspace = ({ referral, onStatusChange }: ReferralWorkspaceProps) => {
+const ReferralWorkspace = ({ referral, onStatusChange, onSuggestionApplied }: ReferralWorkspaceProps) => {
   const [refreshKey, setRefreshKey] = useState(0);
   const [isAddNoteOpen, setIsAddNoteOpen] = useState(false);
 
@@ -32,6 +32,7 @@ const ReferralWorkspace = ({ referral, onStatusChange }: ReferralWorkspaceProps)
 
   const handleAISuggestionApplied = () => {
     // Refresh the entire view when AI suggestions are applied
+    onSuggestionApplied?.();
     onStatusChange();
   };
 
@@ -55,12 +56,6 @@ const ReferralWorkspace = ({ referral, onStatusChange }: ReferralWorkspaceProps)
         <FileText className="h-4 w-4" />
         Add Note
       </Button>
-
-      {/* AI Suggestions Panel - Now shown for all referrals */}
-      <AISuggestionsPanel 
-        referral={referral}
-        onSuggestionApplied={handleAISuggestionApplied}
-      />
 
       {/* Team Allocation Card - NEW */}
       {referral.teamId && (

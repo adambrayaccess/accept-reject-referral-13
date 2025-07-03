@@ -41,7 +41,7 @@ const ReferralView = () => {
         <div className="container mx-auto px-6 max-w-none flex-1 min-h-0 flex flex-col">
           {/* Fixed header */}
           <div className="flex-shrink-0 py-4">
-            <ReferralViewHeader referral={referral} onBack={handleBack} />
+            <ReferralViewHeader referral={referral} onBack={handleBack} onSuggestionApplied={handleStatusChange} />
           </div>
           
           {/* Scrollable content area */}
@@ -51,6 +51,7 @@ const ReferralView = () => {
               relatedReferrals={relatedReferrals}
               onStatusChange={handleStatusChange}
               onDocumentUploaded={handleDocumentUploaded}
+              onSuggestionApplied={handleStatusChange}
             />
           </div>
         </div>

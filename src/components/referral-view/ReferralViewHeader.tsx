@@ -7,13 +7,15 @@ import TriageStatusBadge from '@/components/triage/TriageStatusBadge';
 import ReferralTagsDisplay from '@/components/referral-tagging/ReferralTagsDisplay';
 import AllergyIndicator from '@/components/clinical/AllergyIndicator';
 import ReasonableAdjustmentsFlag from '@/components/clinical/ReasonableAdjustmentsFlag';
+import AICopilotButton from '@/components/ai-suggestions/AICopilotButton';
 
 interface ReferralViewHeaderProps {
   referral: Referral;
   onBack: () => void;
+  onSuggestionApplied?: () => void;
 }
 
-const ReferralViewHeader = ({ referral, onBack }: ReferralViewHeaderProps) => {
+const ReferralViewHeader = ({ referral, onBack, onSuggestionApplied }: ReferralViewHeaderProps) => {
   
   return (
     <>
@@ -41,6 +43,13 @@ const ReferralViewHeader = ({ referral, onBack }: ReferralViewHeaderProps) => {
           {referral.tags && referral.tags.length > 0 && (
             <ReferralTagsDisplay tags={referral.tags} maxVisible={5} />
           )}
+        </div>
+        
+        <div className="flex items-center gap-2">
+          <AICopilotButton 
+            referral={referral} 
+            onSuggestionApplied={onSuggestionApplied || (() => {})}
+          />
         </div>
       </div>
     </>
