@@ -1,6 +1,6 @@
 
 import { Attachment } from '@/types/referral';
-import { mockReferrals } from './mockData';
+import { supabase } from '@/integrations/supabase/client';
 
 const MOCK_DELAY = 1000;
 
@@ -15,44 +15,61 @@ export const uploadDocument = async (
   referralId: string, 
   documentData: UploadDocumentData
 ): Promise<Attachment> => {
-  return new Promise((resolve, reject) => {
-    setTimeout(() => {
-      const referralIndex = mockReferrals.findIndex(ref => ref.id === referralId);
-      
-      if (referralIndex === -1) {
-        reject(new Error('Referral not found'));
-        return;
-      }
+  try {
+    // First, verify the referral exists
+    const { data: referral, error: referralError } = await supabase
+      .from('referrals')
+      .select('id')
+      .eq('id', referralId)
+      .single();
 
-      // Create new attachment
-      const newAttachment: Attachment = {
-        id: `att-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
-        title: documentData.title,
-        contentType: documentData.file.type,
-        url: `mock://uploads/${documentData.file.name}`, // In real app, this would be the actual upload URL
-        date: new Date().toISOString(),
-        size: documentData.file.size
-      };
+    if (referralError || !referral) {
+      throw new Error('Referral not found');
+    }
 
-      // Add to referral
-      mockReferrals[referralIndex].attachments.push(newAttachment);
+    // Create attachment record in database
+    const { data: attachment, error: attachmentError } = await supabase
+      .from('attachments')
+      .insert({
+        referral_id: referralId,
+        filename: documentData.file.name,
+        file_type: documentData.file.type,
+        file_size: documentData.file.size,
+        uploaded_by: 'Current User'
+      })
+      .select()
+      .single();
 
-      // Add audit log entry
-      if (!mockReferrals[referralIndex].auditLog) {
-        mockReferrals[referralIndex].auditLog = [];
-      }
-      
-      mockReferrals[referralIndex].auditLog.push({
-        timestamp: new Date().toISOString(),
-        user: 'Current User',
+    if (attachmentError) {
+      throw new Error('Failed to create attachment record');
+    }
+
+    // Add audit log entry
+    await supabase
+      .from('audit_log')
+      .insert({
+        referral_id: referralId,
         action: `Document uploaded: ${documentData.title}`,
-        notes: documentData.description || undefined
+        user_name: 'Current User',
+        notes: documentData.description || null
       });
 
-      console.log(`Document uploaded to referral ${referralId}:`, newAttachment);
-      resolve(newAttachment);
-    }, MOCK_DELAY);
-  });
+    // Convert database record to Attachment type
+    const newAttachment: Attachment = {
+      id: attachment.id,
+      title: documentData.title,
+      contentType: attachment.file_type,
+      url: attachment.file_url || `mock://uploads/${documentData.file.name}`,
+      date: attachment.uploaded_date || attachment.created_at,
+      size: attachment.file_size || documentData.file.size
+    };
+
+    console.log(`Document uploaded to referral ${referralId}:`, newAttachment);
+    return newAttachment;
+  } catch (error) {
+    console.error('Upload error:', error);
+    throw error;
+  }
 };
 
 // Delete a document from a referral
@@ -60,42 +77,44 @@ export const deleteDocument = async (
   referralId: string, 
   attachmentId: string
 ): Promise<boolean> => {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      const referralIndex = mockReferrals.findIndex(ref => ref.id === referralId);
-      
-      if (referralIndex === -1) {
-        resolve(false);
-        return;
-      }
+  try {
+    // Get attachment details before deleting
+    const { data: attachment, error: fetchError } = await supabase
+      .from('attachments')
+      .select('filename')
+      .eq('id', attachmentId)
+      .eq('referral_id', referralId)
+      .single();
 
-      const attachmentIndex = mockReferrals[referralIndex].attachments.findIndex(
-        att => att.id === attachmentId
-      );
+    if (fetchError || !attachment) {
+      return false;
+    }
 
-      if (attachmentIndex === -1) {
-        resolve(false);
-        return;
-      }
+    // Delete attachment
+    const { error: deleteError } = await supabase
+      .from('attachments')
+      .delete()
+      .eq('id', attachmentId)
+      .eq('referral_id', referralId);
 
-      const deletedAttachment = mockReferrals[referralIndex].attachments[attachmentIndex];
-      
-      // Remove attachment
-      mockReferrals[referralIndex].attachments.splice(attachmentIndex, 1);
+    if (deleteError) {
+      console.error('Error deleting attachment:', deleteError);
+      return false;
+    }
 
-      // Add audit log entry
-      if (!mockReferrals[referralIndex].auditLog) {
-        mockReferrals[referralIndex].auditLog = [];
-      }
-      
-      mockReferrals[referralIndex].auditLog.push({
-        timestamp: new Date().toISOString(),
-        user: 'Current User',
-        action: `Document deleted: ${deletedAttachment.title}`
+    // Add audit log entry
+    await supabase
+      .from('audit_log')
+      .insert({
+        referral_id: referralId,
+        action: `Document deleted: ${attachment.filename}`,
+        user_name: 'Current User'
       });
 
-      console.log(`Document deleted from referral ${referralId}:`, deletedAttachment.title);
-      resolve(true);
-    }, MOCK_DELAY);
-  });
+    console.log(`Document deleted from referral ${referralId}:`, attachment.filename);
+    return true;
+  } catch (error) {
+    console.error('Delete error:', error);
+    return false;
+  }
 };
