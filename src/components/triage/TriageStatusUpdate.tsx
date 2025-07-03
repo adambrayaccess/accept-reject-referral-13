@@ -9,7 +9,7 @@ import { TriageStatus } from '@/types/referral';
 import { updateTriageStatus } from '@/services/referralService';
 import { useToast } from '@/hooks/use-toast';
 import TeamSelector from '@/components/team/TeamSelector';
-import { getSpecialtyIdByName } from '@/data/specialtyOptions';
+import { getSpecialtyIdByName } from '@/utils/legacySpecialtyUtils';
 
 interface TriageStatusUpdateProps {
   referralId: string;

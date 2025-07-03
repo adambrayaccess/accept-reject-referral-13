@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import { useToast } from '@/hooks/use-toast';
 import { useNavigate } from 'react-router-dom';
 import { Referral } from '@/types/referral';
-import { specialties } from '@/data/specialtyOptions';
+import { useSpecialtyData } from '@/hooks/useSpecialtyData';
 import { useDashboardData } from '@/hooks/useDashboardData';
 import { useReferralSelection } from '@/hooks/useReferralSelection';
 import PageHeader from './PageHeader';
@@ -93,7 +93,8 @@ const Dashboard = () => {
   };
 
   const selectedReferrals = getSelectedReferrals(filteredReferrals);
-  const specialtyNames = specialties.map(s => s.name);
+  const { getSpecialtyNames } = useSpecialtyData();
+  const specialtyNames = getSpecialtyNames();
 
   return (
     <div className="min-h-screen bg-gray-50">

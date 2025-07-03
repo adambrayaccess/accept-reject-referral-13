@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { ReferralPriority, FhirPractitioner } from "@/types/referral";
 import { fetchPractitioners } from "@/services/practitionerService";
-import { specialties } from "@/data/specialtyOptions";
+import { useSpecialtyData } from "@/hooks/useSpecialtyData";
 
 interface ReferralBasicInfoFormProps {
   referralId: string;
@@ -34,6 +34,7 @@ const ReferralBasicInfoForm = ({
 }: ReferralBasicInfoFormProps) => {
   const [practitioners, setPractitioners] = useState<FhirPractitioner[]>([]);
   const [isLoadingPractitioners, setIsLoadingPractitioners] = useState(true);
+  const { specialties } = useSpecialtyData();
 
   useEffect(() => {
     const loadPractitioners = async () => {

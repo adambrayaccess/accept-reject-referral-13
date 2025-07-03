@@ -1,10 +1,11 @@
 
 import SpecialtySelector from '@/components/SpecialtySelector';
-import { getAllSpecialtyNames } from '@/data/specialtyOptions';
+import { useSpecialtyData } from '@/hooks/useSpecialtyData';
 
 const SpecialtySelection = () => {
-  // Use centralized specialty data instead of hardcoded list
-  const specialties = getAllSpecialtyNames();
+  // Use database specialty data
+  const { getSpecialtyNames } = useSpecialtyData();
+  const specialties = getSpecialtyNames();
 
   return (
     <div className="container mx-auto">

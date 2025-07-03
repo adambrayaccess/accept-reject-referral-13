@@ -11,7 +11,7 @@ import { useToast } from '@/components/ui/use-toast';
 import { specialties } from '@/data/specialtyOptions';
 import { fetchAllHCPs, HCP } from '@/services/hcpService';
 import TeamSelector from '@/components/team/TeamSelector';
-import { getSpecialtyIdByName } from '@/data/specialtyOptions';
+import { getSpecialtyIdByName } from '@/utils/legacySpecialtyUtils';
 
 interface AcceptReferralDialogProps {
   referral: Referral;

@@ -1,5 +1,6 @@
 
-import { getAllSpecialtyNames, getSpecialtyIdByName, getSpecialtyNameById, isValidSpecialty } from '@/data/specialtyOptions';
+import { getCachedSpecialtyNames, getCachedSpecialtyIdByName, getCachedSpecialtyNameById } from '@/services/specialtyService';
+import { isValidSpecialty } from '@/data/specialtyOptions';
 import { Referral } from '@/types/referral';
 
 /**
@@ -12,7 +13,7 @@ export const extractSpecialtiesFromReferrals = (referrals: Referral[]): string[]
     if (referral.specialty) {
       // Convert specialty ID to name if needed
       const specialtyName = isValidSpecialty(referral.specialty) 
-        ? getSpecialtyNameById(referral.specialty)
+        ? getCachedSpecialtyNameById(referral.specialty)
         : referral.specialty;
       specialtySet.add(specialtyName);
     }
@@ -25,7 +26,7 @@ export const extractSpecialtiesFromReferrals = (referrals: Referral[]): string[]
  * Get all available specialties (from central config + any found in data)
  */
 export const getAllAvailableSpecialties = (referrals: Referral[] = []): string[] => {
-  const configSpecialties = getAllSpecialtyNames();
+  const configSpecialties = getCachedSpecialtyNames();
   const dataSpecialties = extractSpecialtiesFromReferrals(referrals);
   
   // Combine and deduplicate
@@ -38,13 +39,13 @@ export const getAllAvailableSpecialties = (referrals: Referral[] = []): string[]
  */
 export const normalizeSpecialty = (specialty: string): string => {
   // If it's a valid specialty name, return as-is
-  if (getAllSpecialtyNames().includes(specialty)) {
+  if (getCachedSpecialtyNames().includes(specialty)) {
     return specialty;
   }
-  
+
   // If it's a valid specialty ID, convert to name
   if (isValidSpecialty(specialty)) {
-    return getSpecialtyNameById(specialty);
+    return getCachedSpecialtyNameById(specialty);
   }
   
   // Return as-is for unknown specialties (they'll be filtered out in UI)
@@ -55,6 +56,6 @@ export const normalizeSpecialty = (specialty: string): string => {
  * Filter specialties to only include valid ones
  */
 export const filterValidSpecialties = (specialties: string[]): string[] => {
-  const validSpecialtyNames = getAllSpecialtyNames();
+  const validSpecialtyNames = getCachedSpecialtyNames();
   return specialties.filter(specialty => validSpecialtyNames.includes(specialty));
 };

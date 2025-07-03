@@ -1,7 +1,14 @@
 
 import { SpecialtyOption, HealthcareProfessional } from '@/types/referral';
+import { 
+  getCachedSpecialtyNames, 
+  getCachedSpecialtyIdByName, 
+  getCachedSpecialtyNameById,
+  initializeSpecialtyCache 
+} from '@/services/specialtyService';
 
-// Centralized specialty configuration - all specialties available in the system
+// Legacy specialty configuration for backward compatibility
+// This data has been migrated to the database and should be removed once all dependencies are updated
 export const specialties: SpecialtyOption[] = [
   { id: 'card', name: 'Cardiology' },
   { id: 'derm', name: 'Dermatology' },
@@ -16,27 +23,26 @@ export const specialties: SpecialtyOption[] = [
   { id: 'mhea', name: 'Mental Health' },
 ];
 
-// Helper function to get specialty name by ID
+// Helper functions that now use cached database data
 export const getSpecialtyNameById = (id: string): string => {
-  const specialty = specialties.find(s => s.id === id);
-  return specialty ? specialty.name : id;
+  return getCachedSpecialtyNameById(id);
 };
 
-// Helper function to get specialty ID by name
 export const getSpecialtyIdByName = (name: string): string => {
-  const specialty = specialties.find(s => s.name === name);
-  return specialty ? specialty.id : name.toLowerCase().substring(0, 4);
+  return getCachedSpecialtyIdByName(name);
 };
 
-// Get all specialty names as an array
 export const getAllSpecialtyNames = (): string[] => {
-  return specialties.map(s => s.name);
+  return getCachedSpecialtyNames();
 };
 
-// Validate if a specialty exists
+// Validate if a specialty exists (fallback to legacy for now)
 export const isValidSpecialty = (specialtyId: string): boolean => {
   return specialties.some(s => s.id === specialtyId);
 };
+
+// Initialize the specialty cache on app startup
+initializeSpecialtyCache().catch(console.error);
 
 export const healthcareProfessionals: HealthcareProfessional[] = [
   // Cardiology

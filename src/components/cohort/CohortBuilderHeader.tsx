@@ -1,6 +1,6 @@
 
 import InlineSpecialtySelector from '../InlineSpecialtySelector';
-import { getAllSpecialtyNames } from '@/data/specialtyOptions';
+import { useSpecialtyData } from '@/hooks/useSpecialtyData';
 import { useToast } from '@/hooks/use-toast';
 
 interface CohortBuilderHeaderProps {
@@ -10,8 +10,9 @@ interface CohortBuilderHeaderProps {
 
 const CohortBuilderHeader = ({ selectedSpecialties, onSpecialtyChange }: CohortBuilderHeaderProps) => {
   const { toast } = useToast();
-  // Use centralized specialty data
-  const specialtyNames = getAllSpecialtyNames();
+  // Use database specialty data
+  const { getSpecialtyNames } = useSpecialtyData();
+  const specialtyNames = getSpecialtyNames();
 
   const handleSpecialtySelectionChange = (newSelection: string[]) => {
     if (onSpecialtyChange) {
