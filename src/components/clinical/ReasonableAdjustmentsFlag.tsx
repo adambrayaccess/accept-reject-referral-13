@@ -10,10 +10,19 @@ interface ReasonableAdjustmentsFlagProps {
 }
 
 const ReasonableAdjustmentsFlag = ({ adjustmentsFlag }: ReasonableAdjustmentsFlagProps) => {
+  console.log('ReasonableAdjustmentsFlag - Data check:', {
+    adjustmentsFlag,
+    hasAdjustments: adjustmentsFlag?.hasAdjustments,
+    adjustmentsArray: adjustmentsFlag?.adjustments,
+    adjustmentsLength: adjustmentsFlag?.adjustments?.length
+  });
+  
   const hasValidAdjustments = adjustmentsFlag && 
     adjustmentsFlag.hasAdjustments === true && 
     Array.isArray(adjustmentsFlag.adjustments) && 
     adjustmentsFlag.adjustments.length > 0;
+    
+  console.log('hasValidAdjustments result:', hasValidAdjustments);
   
   if (!hasValidAdjustments) {
     return (
