@@ -104,8 +104,11 @@ export class PinningService {
       const { data: { user } } = await supabase.auth.getUser();
       
       if (!user) {
+        console.log('No authenticated user found');
         return [];
       }
+
+      console.log('Fetching pinned referrals for user:', user.id);
 
       const { data, error } = await supabase
         .from('pinned_referrals')
@@ -114,10 +117,15 @@ export class PinningService {
         .order('pinned_at', { ascending: false });
 
       if (error) {
+        console.error('Supabase error fetching pinned referrals:', error);
         throw error;
       }
 
-      return data.map(item => item.referral_id);
+      console.log('Pinned referrals data:', data);
+      const referralIds = data.map(item => item.referral_id);
+      console.log('Mapped referral IDs:', referralIds);
+
+      return referralIds;
     } catch (error) {
       console.error('Error fetching pinned referrals:', error);
       return [];

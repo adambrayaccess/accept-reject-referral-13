@@ -1,18 +1,32 @@
 import { useState, useEffect } from 'react';
 import { PinningService } from '@/services/pinningService';
 import { useToast } from '@/hooks/use-toast';
+import { useAuth } from '@/hooks/useAuth';
 
 export const usePinning = () => {
   const [pinnedReferralIds, setPinnedReferralIds] = useState<Set<string>>(new Set());
   const [isLoading, setIsLoading] = useState(true);
   const { toast } = useToast();
+  const { user } = useAuth();
 
-  // Load pinned referrals on mount
+  // Load pinned referrals when user is authenticated
   useEffect(() => {
-    loadPinnedReferrals();
-  }, []);
+    if (user) {
+      loadPinnedReferrals();
+    } else {
+      // Clear pinned referrals when user is not authenticated
+      setPinnedReferralIds(new Set());
+      setIsLoading(false);
+    }
+  }, [user]);
 
   const loadPinnedReferrals = async () => {
+    if (!user) {
+      setPinnedReferralIds(new Set());
+      setIsLoading(false);
+      return;
+    }
+
     try {
       setIsLoading(true);
       const pinnedIds = await PinningService.getPinnedReferralIds();
