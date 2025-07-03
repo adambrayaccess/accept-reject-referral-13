@@ -163,7 +163,7 @@ const ReferralDocuments = ({ attachments, referralId, patientName, onDocumentUpl
           </div>
         ) : (
           <ScrollArea className="h-[400px] w-full">
-            <div className="space-y-2">
+            <div className="space-y-2 pb-2">
               {allDocuments.map((doc, index) => (
                 <div key={doc.id} className="group">
                   <div className="flex items-center justify-between p-4 rounded-lg border border-border hover:bg-accent/50 transition-colors">
