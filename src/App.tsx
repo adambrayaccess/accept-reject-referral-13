@@ -11,6 +11,8 @@ import NotFound from "./pages/NotFound";
 import SpecialtySelection from "./pages/SpecialtySelection";
 import CohortBuilder from "./pages/CohortBuilder";
 import AdminPage from "./pages/AdminPage";
+import AuthPage from "./pages/AuthPage";
+import ProtectedRoute from "./components/auth/ProtectedRoute";
 
 const queryClient = new QueryClient();
 
@@ -20,11 +22,32 @@ const App: React.FC = () => {
       <BrowserRouter>
         <TooltipProvider>
           <Routes>
-            <Route path="/" element={<Index />} />
-            <Route path="/referral/:id" element={<ReferralView />} />
-            <Route path="/select-specialty" element={<SpecialtySelection />} />
-            <Route path="/cohort-builder" element={<CohortBuilder />} />
-            <Route path="/admin" element={<AdminPage />} />
+            <Route path="/auth" element={<AuthPage />} />
+            <Route path="/" element={
+              <ProtectedRoute>
+                <Index />
+              </ProtectedRoute>
+            } />
+            <Route path="/referral/:id" element={
+              <ProtectedRoute>
+                <ReferralView />
+              </ProtectedRoute>
+            } />
+            <Route path="/select-specialty" element={
+              <ProtectedRoute>
+                <SpecialtySelection />
+              </ProtectedRoute>
+            } />
+            <Route path="/cohort-builder" element={
+              <ProtectedRoute>
+                <CohortBuilder />
+              </ProtectedRoute>
+            } />
+            <Route path="/admin" element={
+              <ProtectedRoute>
+                <AdminPage />
+              </ProtectedRoute>
+            } />
             <Route path="*" element={<NotFound />} />
           </Routes>
           <Toaster />
