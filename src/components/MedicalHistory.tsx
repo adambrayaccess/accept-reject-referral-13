@@ -12,6 +12,18 @@ interface MedicalHistoryProps {
 }
 
 const MedicalHistory = ({ patient }: MedicalHistoryProps) => {
+  console.log('🔍 MedicalHistory Debug:', {
+    patientId: patient.id,
+    patientName: patient.name,
+    hasMedicalHistory: !!patient.medicalHistory,
+    vitalSigns: patient.medicalHistory?.vitalSigns?.length || 0,
+    medicationHistory: patient.medicalHistory?.medicationHistory?.length || 0,
+    testResults: patient.medicalHistory?.testResults?.length || 0,
+    mhaSections: patient.medicalHistory?.mhaSections?.length || 0,
+    allergies: patient.medicalHistory?.allergies?.length || 0,
+    fullMedicalHistory: patient.medicalHistory
+  });
+
   if (!patient.medicalHistory) {
     return (
       <Card>
