@@ -6,7 +6,8 @@ import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { Badge } from '@/components/ui/badge';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { FileText, Download, Eye, FileImage, Plus, Mail, Calendar, User, FileType, HardDrive } from 'lucide-react';
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
+import { FileText, Download, Eye, FileImage, Plus, Mail, Calendar, User, FileType, HardDrive, ChevronDown, ChevronRight } from 'lucide-react';
 import { format } from 'date-fns';
 import DocumentUploadModal from './documents/DocumentUploadModal';
 import GenerateLettersButton from './letters/GenerateLettersButton';
@@ -53,6 +54,7 @@ const ReferralDocuments = ({ attachments, referralId, patientName, onDocumentUpl
   const [isLoadingLetters, setIsLoadingLetters] = useState(true);
   const [isUploadModalOpen, setIsUploadModalOpen] = useState(false);
   const [isGenerateLettersSheetOpen, setIsGenerateLettersSheetOpen] = useState(false);
+  const [expandedLetters, setExpandedLetters] = useState<Set<string>>(new Set());
   
   // Load letters on component mount and when referralId changes
   useEffect(() => {
@@ -78,6 +80,18 @@ const ReferralDocuments = ({ attachments, referralId, patientName, onDocumentUpl
 
   const handleLetterCreated = () => {
     loadLetters(); // Reload letters when a new one is created
+  };
+
+  const toggleLetterExpansion = (letterId: string) => {
+    setExpandedLetters(prev => {
+      const newSet = new Set(prev);
+      if (newSet.has(letterId)) {
+        newSet.delete(letterId);
+      } else {
+        newSet.add(letterId);
+      }
+      return newSet;
+    });
   };
 
   const getLetterTypeLabel = (letterType: string) => {
@@ -212,6 +226,20 @@ const ReferralDocuments = ({ attachments, referralId, patientName, onDocumentUpl
 
                     {/* Actions */}
                     <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                      {doc.type === 'letter' && (
+                        <Button 
+                          variant="ghost" 
+                          size="sm" 
+                          className="h-8 w-8 p-0"
+                          onClick={() => toggleLetterExpansion(doc.id)}
+                        >
+                          {expandedLetters.has(doc.id) ? (
+                            <ChevronDown className="h-4 w-4" />
+                          ) : (
+                            <ChevronRight className="h-4 w-4" />
+                          )}
+                        </Button>
+                      )}
                       <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
                         <Eye className="h-4 w-4" />
                       </Button>
@@ -221,14 +249,18 @@ const ReferralDocuments = ({ attachments, referralId, patientName, onDocumentUpl
                     </div>
                   </div>
                   
-                  {/* Letter content preview for letters */}
+                  {/* Collapsible letter content preview for letters */}
                   {doc.type === 'letter' && (
-                    <div className="ml-16 mt-2 p-3 bg-muted/50 rounded-lg">
-                      <p className="text-xs text-muted-foreground mb-1">Letter Preview:</p>
-                      <p className="text-sm line-clamp-2">
-                        {(doc.data as ReferralLetter).letterContent}
-                      </p>
-                    </div>
+                    <Collapsible open={expandedLetters.has(doc.id)}>
+                      <CollapsibleContent>
+                        <div className="ml-16 mt-2 p-3 bg-muted/50 rounded-lg">
+                          <p className="text-xs text-muted-foreground mb-1">Letter Preview:</p>
+                          <p className="text-sm whitespace-pre-wrap">
+                            {(doc.data as ReferralLetter).letterContent}
+                          </p>
+                        </div>
+                      </CollapsibleContent>
+                    </Collapsible>
                   )}
                   
                   {index < allDocuments.length - 1 && <Separator className="mt-2" />}
