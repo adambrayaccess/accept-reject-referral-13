@@ -247,6 +247,8 @@ export const mapReferralData = (referral: any): Referral => {
     referralType: referral.referral_type,
     // Add external reference
     externalReference: referral.external_reference,
+    // Add CAMHS Service Tier
+    camhsServiceTier: referral.camhs_service_tier,
     // Add patient area/care setting
     patientAreaCareSetting: referral.patient_area_care_setting,
     // Calculate child referral IDs - this would need a separate query in practice

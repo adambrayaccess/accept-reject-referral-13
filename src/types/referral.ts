@@ -73,6 +73,8 @@ export interface Referral {
   referralType?: string;
   // External reference
   externalReference?: string;
+  // CAMHS Service Tier
+  camhsServiceTier?: string;
   // Patient area/care setting
   patientAreaCareSetting?: string;
 }

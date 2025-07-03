@@ -1082,6 +1082,7 @@ export type Database = {
           allocated_date: string | null
           assigned_hcp_id: string | null
           authored_on: string | null
+          camhs_service_tier: string | null
           category_code: string | null
           category_display: string | null
           code_code: string | null
@@ -1135,6 +1136,7 @@ export type Database = {
           allocated_date?: string | null
           assigned_hcp_id?: string | null
           authored_on?: string | null
+          camhs_service_tier?: string | null
           category_code?: string | null
           category_display?: string | null
           code_code?: string | null
@@ -1188,6 +1190,7 @@ export type Database = {
           allocated_date?: string | null
           assigned_hcp_id?: string | null
           authored_on?: string | null
+          camhs_service_tier?: string | null
           category_code?: string | null
           category_display?: string | null
           code_code?: string | null
