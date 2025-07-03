@@ -69,6 +69,8 @@ export interface Referral {
   administrativeCategory?: string;
   // Overseas status
   overseasStatus?: string;
+  // Referral type
+  referralType?: string;
 }
 
 // FHIR-compliant Practitioner interface
