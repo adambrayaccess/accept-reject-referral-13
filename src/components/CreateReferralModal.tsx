@@ -3,6 +3,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
 import { mockPractitioners } from '@/services/mock/practitioners';
+import { fetchPractitionerById } from '@/services/practitionerService';
 import { Referral, ReferralPriority, Patient } from '@/types/referral';
 import { generateReferralId } from '@/utils/referralIdGenerator';
 import ReferralBasicInfoForm from './referral-form/ReferralBasicInfoForm';
@@ -114,9 +115,9 @@ const CreateReferralModal = ({ isOpen, onClose, onSubmit }: CreateReferralModalP
       return;
     }
 
-    const referrer = mockPractitioners.find(p => p.id === practitionerId);
+    const practitioner = await fetchPractitionerById(practitionerId);
     
-    if (!referrer) {
+    if (!practitioner) {
       toast({
         title: "Error",
         description: "Selected practitioner not found",

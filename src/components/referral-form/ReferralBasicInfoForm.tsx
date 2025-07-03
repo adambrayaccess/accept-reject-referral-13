@@ -1,9 +1,10 @@
 
+import { useState, useEffect } from 'react';
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { ReferralPriority } from "@/types/referral";
-import { mockPractitioners } from "@/services/mock/practitioners";
+import { ReferralPriority, FhirPractitioner } from "@/types/referral";
+import { fetchPractitioners } from "@/services/practitionerService";
 import { specialties } from "@/data/specialtyOptions";
 
 interface ReferralBasicInfoFormProps {
@@ -31,6 +32,24 @@ const ReferralBasicInfoForm = ({
   referralType,
   setReferralType,
 }: ReferralBasicInfoFormProps) => {
+  const [practitioners, setPractitioners] = useState<FhirPractitioner[]>([]);
+  const [isLoadingPractitioners, setIsLoadingPractitioners] = useState(true);
+
+  useEffect(() => {
+    const loadPractitioners = async () => {
+      setIsLoadingPractitioners(true);
+      try {
+        const practitionerData = await fetchPractitioners();
+        setPractitioners(practitionerData);
+      } catch (error) {
+        console.error('Error loading practitioners:', error);
+      } finally {
+        setIsLoadingPractitioners(false);
+      }
+    };
+
+    loadPractitioners();
+  }, []);
   return (
     <div className="space-y-4">
       <div className="grid grid-cols-2 gap-4">
@@ -79,10 +98,10 @@ const ReferralBasicInfoForm = ({
           <Label htmlFor="practitioner">Referring Practitioner</Label>
           <Select value={practitionerId} onValueChange={(value: string) => setPractitionerId(value)}>
             <SelectTrigger>
-              <SelectValue placeholder="Select practitioner" />
+              <SelectValue placeholder={isLoadingPractitioners ? "Loading practitioners..." : "Select practitioner"} />
             </SelectTrigger>
             <SelectContent>
-              {mockPractitioners.map((practitioner) => (
+              {practitioners.map((practitioner) => (
                 <SelectItem key={practitioner.id} value={practitioner.id}>
                   {practitioner.name} - {practitioner.organization}
                 </SelectItem>
