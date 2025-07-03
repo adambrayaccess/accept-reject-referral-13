@@ -136,9 +136,9 @@ const WaitingListTable = ({
 
   return (
     <>
-      <div className="border rounded-lg">
+      <div className="border rounded-lg bg-white">
         <DragDropContext onDragEnd={handleDragEnd}>
-          <Table>
+          <Table className="bg-white">
             <WaitingListTableHeader 
               referrals={referrals}
               isAllSelected={isAllSelected}

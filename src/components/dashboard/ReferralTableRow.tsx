@@ -46,8 +46,8 @@ const ReferralTableRow = ({
         <TableRow 
           ref={provided.innerRef}
           {...provided.draggableProps}
-          className={`hover:bg-muted/50 cursor-pointer ${
-            snapshot.isDragging ? 'bg-muted shadow-lg' : ''
+          className={`bg-white hover:bg-gray-50 cursor-pointer ${
+            snapshot.isDragging ? 'bg-gray-100 shadow-lg' : ''
           } ${isDragDisabled ? 'opacity-50' : ''} ${
             isSelected ? 'bg-blue-50' : ''
           }`}

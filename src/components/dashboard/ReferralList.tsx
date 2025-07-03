@@ -69,7 +69,7 @@ const ReferralList = ({
 
   if (isLoading) {
     return (
-      <div className="border rounded-lg">
+      <div className="border rounded-lg bg-white">
         <div className="p-8 text-center">
           <div className="animate-pulse">Loading referrals...</div>
         </div>
@@ -79,7 +79,7 @@ const ReferralList = ({
 
   if (filteredReferrals.length === 0) {
     return (
-      <div className="border rounded-lg">
+      <div className="border rounded-lg bg-white">
         <div className="p-8 text-center">
           <p className="text-muted-foreground">No referrals match your search criteria.</p>
         </div>
@@ -89,9 +89,9 @@ const ReferralList = ({
 
   return (
     <>
-      <div className="border rounded-lg">
+      <div className="border rounded-lg bg-white">
         <DragDropContext onDragEnd={handleDragEnd}>
-          <Table>
+          <Table className="bg-white">
             <ReferralTableHeader 
               referrals={filteredReferrals}
               isAllSelected={isAllSelected}
