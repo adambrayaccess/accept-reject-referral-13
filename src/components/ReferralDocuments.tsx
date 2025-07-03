@@ -2,16 +2,16 @@
 import { useState, useEffect } from 'react';
 import { Attachment } from '@/types/referral';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { EnhancedTabs, EnhancedTabsContent, EnhancedTabsList, EnhancedTabsTrigger } from '@/components/ui/enhanced-tabs';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
-import { FileText, Download, Eye, FileImage, Plus, Mail } from 'lucide-react';
+import { Badge } from '@/components/ui/badge';
+import { ScrollArea } from '@/components/ui/scroll-area';
+import { FileText, Download, Eye, FileImage, Plus, Mail, Calendar, User, FileType, HardDrive } from 'lucide-react';
 import { format } from 'date-fns';
 import DocumentUploadModal from './documents/DocumentUploadModal';
 import GenerateLettersButton from './letters/GenerateLettersButton';
 import GenerateLettersSheet from './letters/GenerateLettersSheet';
 import { LetterService, ReferralLetter } from '@/services/letterService';
-import { Badge } from '@/components/ui/badge';
 
 interface ReferralDocumentsProps {
   attachments: Attachment[];
@@ -51,14 +51,6 @@ const getFileTypeDisplay = (contentType: string) => {
 const ReferralDocuments = ({ attachments, referralId, patientName, onDocumentUploaded }: ReferralDocumentsProps) => {
   const [letters, setLetters] = useState<ReferralLetter[]>([]);
   const [isLoadingLetters, setIsLoadingLetters] = useState(true);
-  
-  // Combine attachments and letters for tabs
-  const allDocuments = [
-    ...attachments.map(att => ({ type: 'attachment', data: att })),
-    ...letters.map(letter => ({ type: 'letter', data: letter }))
-  ];
-  
-  const [activeTab, setActiveTab] = useState<string>(allDocuments.length > 0 ? allDocuments[0].data.id : '');
   const [isUploadModalOpen, setIsUploadModalOpen] = useState(false);
   const [isGenerateLettersSheetOpen, setIsGenerateLettersSheetOpen] = useState(false);
   
@@ -100,6 +92,24 @@ const ReferralDocuments = ({ attachments, referralId, patientName, onDocumentUpl
     const letterTypeObj = letterTypes.find(type => type.value === letterType);
     return letterTypeObj ? letterTypeObj.label : letterType;
   };
+
+  // Combine and sort all documents by date (most recent first)
+  const allDocuments = [
+    ...attachments.map(att => ({ 
+      type: 'attachment' as const, 
+      data: att,
+      date: new Date(att.date),
+      title: att.title,
+      id: att.id
+    })),
+    ...letters.map(letter => ({ 
+      type: 'letter' as const, 
+      data: letter,
+      date: new Date(letter.createdAt),
+      title: getLetterTypeLabel(letter.letterType),
+      id: letter.id
+    }))
+  ].sort((a, b) => b.date.getTime() - a.date.getTime());
   
   return (
     <Card>
@@ -120,6 +130,11 @@ const ReferralDocuments = ({ attachments, referralId, patientName, onDocumentUpl
             </Button>
           </div>
         </div>
+        {allDocuments.length > 0 && (
+          <div className="text-sm text-muted-foreground">
+            {allDocuments.length} document{allDocuments.length !== 1 ? 's' : ''} • {attachments.length} attachment{attachments.length !== 1 ? 's' : ''} • {letters.length} letter{letters.length !== 1 ? 's' : ''}
+          </div>
+        )}
       </CardHeader>
       <CardContent className="pt-0">
         {isLoadingLetters ? (
@@ -133,145 +148,94 @@ const ReferralDocuments = ({ attachments, referralId, patientName, onDocumentUpl
             <p className="text-muted-foreground text-sm">No documents available for this referral.</p>
           </div>
         ) : (
-          <EnhancedTabs value={activeTab} onValueChange={setActiveTab}>
-            <div className="overflow-x-auto pb-2 mb-3">
-              <EnhancedTabsList variant="compact" size="sm" className="w-full min-w-max">
-                {allDocuments.map((doc) => (
-                  <EnhancedTabsTrigger 
-                    key={doc.data.id} 
-                    value={doc.data.id} 
-                    variant="compact" 
-                    size="sm"
-                    className="whitespace-nowrap"
-                  >
-                    <span className="flex items-center gap-1">
-                      {doc.type === 'letter' ? (
-                        <Mail className="h-4 w-4" />
-                      ) : (
-                        getFileIcon((doc.data as Attachment).contentType)
-                      )}
-                      <span className="truncate max-w-[120px]">
-                        {doc.type === 'letter' 
-                          ? getLetterTypeLabel((doc.data as ReferralLetter).letterType)
-                          : (doc.data as Attachment).title
-                        }
-                      </span>
-                    </span>
-                  </EnhancedTabsTrigger>
-                ))}
-              </EnhancedTabsList>
-            </div>
-            
-            {/* Attachment tabs content */}
-            {attachments.map((attachment) => (
-              <EnhancedTabsContent key={attachment.id} value={attachment.id}>
-                <div className="space-y-3">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-2">
-                      {getFileIcon(attachment.contentType)}
-                      <span className="font-medium text-sm">{attachment.title}</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <Button variant="outline" size="sm" className="flex items-center gap-1 h-7">
-                        <Eye className="h-3 w-3" />
-                        <span className="hidden sm:inline text-xs">View</span>
-                      </Button>
-                      <Button variant="outline" size="sm" className="flex items-center gap-1 h-7">
-                        <Download className="h-3 w-3" />
-                        <span className="hidden sm:inline text-xs">Download</span>
-                      </Button>
-                    </div>
-                  </div>
-                  
-                  <Separator />
-                  
-                  <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 text-xs">
-                    <div>
-                      <div className="text-muted-foreground font-medium">Date Added</div>
-                      <div className="font-medium">
-                        {format(new Date(attachment.date), 'dd MMM yyyy, HH:mm')}
+          <ScrollArea className="h-[400px] w-full">
+            <div className="space-y-2">
+              {allDocuments.map((doc, index) => (
+                <div key={doc.id} className="group">
+                  <div className="flex items-center justify-between p-4 rounded-lg border border-border hover:bg-accent/50 transition-colors">
+                    <div className="flex items-center gap-3 flex-1 min-w-0">
+                      {/* Document Icon */}
+                      <div className="flex-shrink-0">
+                        {doc.type === 'letter' ? (
+                          <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
+                            <Mail className="h-5 w-5 text-primary" />
+                          </div>
+                        ) : (
+                          <div className="w-10 h-10 rounded-lg bg-accent flex items-center justify-center">
+                            {getFileIcon((doc.data as Attachment).contentType)}
+                          </div>
+                        )}
                       </div>
-                    </div>
-                    
-                    <div>
-                      <div className="text-muted-foreground font-medium">File Type</div>
-                      <div className="font-medium">
-                        {getFileTypeDisplay(attachment.contentType)}
-                      </div>
-                    </div>
-                    
-                    {attachment.size && (
-                      <div>
-                        <div className="text-muted-foreground font-medium">Size</div>
-                        <div className="font-medium">{formatBytes(attachment.size)}</div>
-                      </div>
-                    )}
-                  </div>
-                </div>
-              </EnhancedTabsContent>
-            ))}
 
-            {/* Letter tabs content */}
-            {letters.map((letter) => (
-              <EnhancedTabsContent key={letter.id} value={letter.id}>
-                <div className="space-y-3">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-2">
-                      <Mail className="h-4 w-4" />
-                      <span className="font-medium text-sm">{getLetterTypeLabel(letter.letterType)}</span>
-                      <Badge variant={letter.status === 'sent' ? 'secondary' : 'outline'} className="text-xs">
-                        {letter.status === 'sent' ? 'Sent' : 'Draft'}
-                      </Badge>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <Button variant="outline" size="sm" className="flex items-center gap-1 h-7">
-                        <Eye className="h-3 w-3" />
-                        <span className="hidden sm:inline text-xs">View</span>
-                      </Button>
-                      <Button variant="outline" size="sm" className="flex items-center gap-1 h-7">
-                        <Download className="h-3 w-3" />
-                        <span className="hidden sm:inline text-xs">Download</span>
-                      </Button>
-                    </div>
-                  </div>
-                  
-                  <Separator />
-                  
-                  <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 text-xs">
-                    <div>
-                      <div className="text-muted-foreground font-medium">Date Created</div>
-                      <div className="font-medium">
-                        {format(new Date(letter.createdAt), 'dd MMM yyyy, HH:mm')}
-                      </div>
-                    </div>
-                    
-                    <div>
-                      <div className="text-muted-foreground font-medium">Created By</div>
-                      <div className="font-medium">
-                        {letter.createdBy || 'Unknown'}
-                      </div>
-                    </div>
-                    
-                    {letter.status === 'sent' && letter.sentAt && (
-                      <div>
-                        <div className="text-muted-foreground font-medium">Date Sent</div>
-                        <div className="font-medium">
-                          {format(new Date(letter.sentAt), 'dd MMM yyyy, HH:mm')}
+                      {/* Document Info */}
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center gap-2 mb-1">
+                          <h4 className="font-medium text-sm truncate">{doc.title}</h4>
+                          {doc.type === 'letter' && (
+                            <Badge 
+                              variant={(doc.data as ReferralLetter).status === 'sent' ? 'secondary' : 'outline'} 
+                              className="text-xs"
+                            >
+                              {(doc.data as ReferralLetter).status === 'sent' ? 'Sent' : 'Draft'}
+                            </Badge>
+                          )}
+                        </div>
+                        
+                        <div className="flex items-center gap-4 text-xs text-muted-foreground">
+                          <span className="flex items-center gap-1">
+                            <Calendar className="h-3 w-3" />
+                            {format(doc.date, 'dd MMM yyyy, HH:mm')}
+                          </span>
+                          
+                          {doc.type === 'attachment' ? (
+                            <>
+                              <span className="flex items-center gap-1">
+                                <FileType className="h-3 w-3" />
+                                {getFileTypeDisplay((doc.data as Attachment).contentType)}
+                              </span>
+                              {(doc.data as Attachment).size && (
+                                <span className="flex items-center gap-1">
+                                  <HardDrive className="h-3 w-3" />
+                                  {formatBytes((doc.data as Attachment).size)}
+                                </span>
+                              )}
+                            </>
+                          ) : (
+                            <span className="flex items-center gap-1">
+                              <User className="h-3 w-3" />
+                              {(doc.data as ReferralLetter).createdBy || 'Unknown'}
+                            </span>
+                          )}
                         </div>
                       </div>
-                    )}
-                  </div>
-                  
-                  <div className="mt-3">
-                    <div className="text-muted-foreground font-medium text-xs mb-1">Letter Content</div>
-                    <div className="p-3 bg-muted rounded-lg text-sm max-h-32 overflow-y-auto">
-                      {letter.letterContent}
+                    </div>
+
+                    {/* Actions */}
+                    <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                      <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                        <Eye className="h-4 w-4" />
+                      </Button>
+                      <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                        <Download className="h-4 w-4" />
+                      </Button>
                     </div>
                   </div>
+                  
+                  {/* Letter content preview for letters */}
+                  {doc.type === 'letter' && (
+                    <div className="ml-16 mt-2 p-3 bg-muted/50 rounded-lg">
+                      <p className="text-xs text-muted-foreground mb-1">Letter Preview:</p>
+                      <p className="text-sm line-clamp-2">
+                        {(doc.data as ReferralLetter).letterContent}
+                      </p>
+                    </div>
+                  )}
+                  
+                  {index < allDocuments.length - 1 && <Separator className="mt-2" />}
                 </div>
-              </EnhancedTabsContent>
-            ))}
-          </EnhancedTabs>
+              ))}
+            </div>
+          </ScrollArea>
         )}
       </CardContent>
       
