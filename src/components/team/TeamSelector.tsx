@@ -1,11 +1,12 @@
 
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Team } from '@/types/team';
 import { HealthcareProfessional } from '@/types/referral';
 import { getTeamsBySpecialty, getHCPsByTeam } from '@/data/teams';
+import { fetchAllHCPs, HCP } from '@/services/hcpService';
 import { Users, UserCheck } from 'lucide-react';
 
 interface TeamSelectorProps {
@@ -26,6 +27,26 @@ const TeamSelector = ({
   disabled = false 
 }: TeamSelectorProps) => {
   const [showHCPSelector, setShowHCPSelector] = useState(false);
+  const [databaseHCPs, setDatabaseHCPs] = useState<HCP[]>([]);
+  const [isLoadingHCPs, setIsLoadingHCPs] = useState(false);
+  
+  // Load HCPs from database on component mount
+  useEffect(() => {
+    const loadHCPs = async () => {
+      setIsLoadingHCPs(true);
+      try {
+        const hcps = await fetchAllHCPs();
+        setDatabaseHCPs(hcps);
+        console.log('TeamSelector: Loaded HCPs from database:', hcps.length);
+      } catch (error) {
+        console.error('TeamSelector: Error loading HCPs from database:', error);
+      } finally {
+        setIsLoadingHCPs(false);
+      }
+    };
+
+    loadHCPs();
+  }, []);
   
   // Memoize team and HCP data to prevent unnecessary re-renders
   const availableTeams = useMemo(() => {
@@ -40,18 +61,21 @@ const TeamSelector = ({
     }
   }, [specialtyId]);
 
+  // Use database HCPs instead of mock data
   const availableHCPs = useMemo(() => {
-    if (!selectedTeamId) return [];
-    console.log('TeamSelector: Loading HCPs for team:', selectedTeamId);
-    try {
-      const hcps = getHCPsByTeam(selectedTeamId);
-      console.log('TeamSelector: Found HCPs:', hcps);
-      return hcps;
-    } catch (error) {
-      console.error('TeamSelector: Error loading HCPs:', error);
-      return [];
-    }
-  }, [selectedTeamId]);
+    if (!selectedTeamId || databaseHCPs.length === 0) return [];
+    console.log('TeamSelector: Using database HCPs for selection');
+    
+    // Convert database HCPs to the format expected by the component
+    return databaseHCPs.map(hcp => ({
+      id: hcp.id,
+      name: hcp.name,
+      role: hcp.role || 'Healthcare Professional',
+      specialty: '', // Not needed for team selection
+      isTeamLead: false, // Could be enhanced to support team leads from database
+      teamIds: []
+    }));
+  }, [selectedTeamId, databaseHCPs]);
 
   const selectedTeam = useMemo(() => {
     return availableTeams.find(team => team.id === selectedTeamId);
@@ -151,7 +175,7 @@ const TeamSelector = ({
             </div>
           )}
 
-          {showHCPSelector && availableHCPs.length > 0 && (
+          {showHCPSelector && !isLoadingHCPs && availableHCPs.length > 0 && (
             <div className="space-y-2">
               <label className="text-sm font-medium flex items-center gap-2">
                 <UserCheck className="h-3 w-3" />
@@ -186,6 +210,12 @@ const TeamSelector = ({
                   ))}
                 </SelectContent>
               </Select>
+            </div>
+          )}
+
+          {showHCPSelector && isLoadingHCPs && (
+            <div className="text-sm text-muted-foreground p-3 bg-muted rounded-lg">
+              Loading healthcare professionals...
             </div>
           )}
 
