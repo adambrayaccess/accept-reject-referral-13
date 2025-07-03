@@ -245,6 +245,8 @@ export const mapReferralData = (referral: any): Referral => {
     overseasStatus: referral.overseas_status,
     // Add referral type
     referralType: referral.referral_type,
+    // Add patient area/care setting
+    patientAreaCareSetting: referral.patient_area_care_setting,
     // Calculate child referral IDs - this would need a separate query in practice
     childReferralIds: []
   };
