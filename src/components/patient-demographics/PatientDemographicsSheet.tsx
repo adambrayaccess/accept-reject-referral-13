@@ -20,7 +20,7 @@ const PatientDemographicsSheet = ({
     <Sheet open={isOpen} onOpenChange={onOpenChange}>
       <SheetContent className="w-full sm:max-w-3xl lg:max-w-4xl">
         <SheetHeader className="pb-4">
-          <SheetTitle className="text-2xl">Patient Demographics</SheetTitle>
+          <SheetTitle className="text-2xl">Patient Case Record</SheetTitle>
           <SheetDescription className="text-base">
             Comprehensive demographic and clinical information{patientName ? ` for ${patientName}` : ''}
           </SheetDescription>
