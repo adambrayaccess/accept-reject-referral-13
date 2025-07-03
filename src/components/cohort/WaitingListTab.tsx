@@ -29,6 +29,7 @@ interface WaitingListTabProps {
   isIndeterminate: boolean;
   handleRefresh: () => void;
   reorderReferrals: (reorderedReferrals: Referral[]) => void;
+  selectedSpecialties?: string[];
 }
 
 const WaitingListTab = ({
@@ -50,13 +51,14 @@ const WaitingListTab = ({
   isAllSelected,
   isIndeterminate,
   handleRefresh,
-  reorderReferrals
+  reorderReferrals,
+  selectedSpecialties = []
 }: WaitingListTabProps) => {
   const [view, setView] = useState<'table' | 'grid'>('table');
 
   return (
     <div className="space-y-6">
-      <WaitingListStatisticsBar referrals={referrals} />
+      <WaitingListStatisticsBar referrals={referrals} selectedSpecialties={selectedSpecialties} />
       
       {selectedCount > 0 && (
         <div className="flex items-center justify-between bg-blue-50 border border-blue-200 rounded-lg p-3">

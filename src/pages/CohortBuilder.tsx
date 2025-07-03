@@ -110,6 +110,7 @@ const CohortBuilder = () => {
               isIndeterminate={isIndeterminate}
               handleRefresh={refreshWaitingList}
               reorderReferrals={reorderReferrals}
+              selectedSpecialties={selectedSpecialties}
             />
           </EnhancedTabsContent>
           

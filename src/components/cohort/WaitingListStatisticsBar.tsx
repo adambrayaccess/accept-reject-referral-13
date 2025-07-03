@@ -1,45 +1,59 @@
 
+import { useState, useEffect } from 'react';
 import { Users, Clock, Calendar, AlertTriangle, Target, Timer } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
+import { Skeleton } from '@/components/ui/skeleton';
 import { Referral } from '@/types/referral';
+import { fetchWaitingListStatistics, WaitingListStatistics } from '@/services/waitingList/waitingListStatisticsService';
 
 interface WaitingListStatisticsBarProps {
   referrals: Referral[];
+  selectedSpecialties?: string[];
 }
 
-const WaitingListStatisticsBar = ({ referrals }: WaitingListStatisticsBarProps) => {
-  // Calculate statistics
-  const totalReferrals = referrals.length;
-  
-  const referralAges = referrals.map(ref => ref.calculatedReferralAge || 0);
-  const highestDaysWaiting = referralAges.length > 0 ? Math.max(...referralAges) : 0;
-  
-  // Count referrals with scheduled/confirmed appointments
-  const appointmentsScheduled = referrals.filter(ref => 
-    ref.appointmentDetails && 
-    ['scheduled', 'confirmed'].includes(ref.appointmentDetails.status)
-  ).length;
-  
-  // Count referrals awaiting appointment (no appointment data or cancelled)
-  const awaitingAppointment = referrals.filter(ref => 
-    !ref.appointmentDetails || 
-    ref.appointmentDetails.status === 'cancelled' ||
-    ref.triageStatus === 'waiting-list'
-  ).length;
-  
-  // RTT Pathway statistics
-  const rttBreaches = referrals.filter(ref => 
-    ref.rttPathway?.breachRisk === 'breached'
-  ).length;
+const WaitingListStatisticsBar = ({ referrals, selectedSpecialties = [] }: WaitingListStatisticsBarProps) => {
+  const [statistics, setStatistics] = useState<WaitingListStatistics | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
 
-  const rttHighRisk = referrals.filter(ref => 
-    ref.rttPathway?.breachRisk === 'high'
-  ).length;
+  useEffect(() => {
+    const loadStatistics = async () => {
+      setIsLoading(true);
+      try {
+        const stats = await fetchWaitingListStatistics(selectedSpecialties);
+        setStatistics(stats);
+      } catch (error) {
+        console.error('Error loading waiting list statistics:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
 
-  const statistics = [
+    loadStatistics();
+  }, [selectedSpecialties]);
+
+  if (isLoading || !statistics) {
+    return (
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-4">
+        {Array.from({ length: 6 }).map((_, index) => (
+          <Card key={index} className="border-border shadow-none bg-card">
+            <CardContent className="p-4">
+              <Skeleton className="h-4 w-24 mb-3" />
+              <div className="flex items-center gap-3 mb-3">
+                <Skeleton className="w-8 h-8 rounded-lg" />
+                <Skeleton className="h-8 w-12" />
+              </div>
+              <Skeleton className="h-3 w-20" />
+            </CardContent>
+          </Card>
+        ))}
+      </div>
+    );
+  }
+
+  const statisticsItems = [
     {
       title: 'Total Referrals',
-      value: totalReferrals.toString(),
+      value: statistics.totalReferrals.toString(),
       period: 'Currently in waiting list',
       icon: Users,
       iconColor: 'text-primary',
@@ -48,8 +62,8 @@ const WaitingListStatisticsBar = ({ referrals }: WaitingListStatisticsBarProps) 
     },
     {
       title: 'RTT Breaches',
-      value: rttBreaches.toString(),
-      period: 'Over 18 weeks',
+      value: statistics.rttBreaches.toString(),
+      period: 'Emergency priority referrals',
       icon: AlertTriangle,
       iconColor: 'text-destructive',
       iconBg: 'bg-destructive/10',
@@ -57,8 +71,8 @@ const WaitingListStatisticsBar = ({ referrals }: WaitingListStatisticsBarProps) 
     },
     {
       title: 'High RTT Risk',
-      value: rttHighRisk.toString(),
-      period: 'Within 2 weeks of breach',
+      value: statistics.rttHighRisk.toString(),
+      period: 'Urgent priority referrals',
       icon: Timer,
       iconColor: 'text-warning',
       iconBg: 'bg-warning/10',
@@ -66,7 +80,7 @@ const WaitingListStatisticsBar = ({ referrals }: WaitingListStatisticsBarProps) 
     },
     {
       title: 'Appointments Scheduled',
-      value: appointmentsScheduled.toString(),
+      value: statistics.appointmentsScheduled.toString(),
       period: 'Confirmed or scheduled',
       icon: Calendar,
       iconColor: 'text-success',
@@ -75,7 +89,7 @@ const WaitingListStatisticsBar = ({ referrals }: WaitingListStatisticsBarProps) 
     },
     {
       title: 'Awaiting Appointment',
-      value: awaitingAppointment.toString(),  
+      value: statistics.awaitingAppointment.toString(),  
       period: 'Ready for scheduling',
       icon: Clock,
       iconColor: 'text-purple',
@@ -84,7 +98,7 @@ const WaitingListStatisticsBar = ({ referrals }: WaitingListStatisticsBarProps) 
     },
     {
       title: 'Longest Wait Time',
-      value: `${highestDaysWaiting} days`,
+      value: `${statistics.longestWaitDays} days`,
       period: 'Maximum duration',
       icon: Target,
       iconColor: 'text-muted-foreground',
@@ -95,7 +109,7 @@ const WaitingListStatisticsBar = ({ referrals }: WaitingListStatisticsBarProps) 
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-4">
-      {statistics.map((stat, index) => {
+      {statisticsItems.map((stat, index) => {
         const IconComponent = stat.icon;
         return (
           <Card key={index} className="border-border shadow-none bg-card">
