@@ -71,6 +71,8 @@ export interface Referral {
   overseasStatus?: string;
   // Referral type
   referralType?: string;
+  // Patient area/care setting
+  patientAreaCareSetting?: string;
 }
 
 // FHIR-compliant Practitioner interface

@@ -1052,6 +1052,7 @@ export type Database = {
           occurrence_period_start: string | null
           overseas_status: string | null
           parent_referral_id: string | null
+          patient_area_care_setting: string | null
           patient_id: string
           performer_reference: string | null
           priority: Database["public"]["Enums"]["referral_priority"] | null
@@ -1103,6 +1104,7 @@ export type Database = {
           occurrence_period_start?: string | null
           overseas_status?: string | null
           parent_referral_id?: string | null
+          patient_area_care_setting?: string | null
           patient_id: string
           performer_reference?: string | null
           priority?: Database["public"]["Enums"]["referral_priority"] | null
@@ -1154,6 +1156,7 @@ export type Database = {
           occurrence_period_start?: string | null
           overseas_status?: string | null
           parent_referral_id?: string | null
+          patient_area_care_setting?: string | null
           patient_id?: string
           performer_reference?: string | null
           priority?: Database["public"]["Enums"]["referral_priority"] | null
