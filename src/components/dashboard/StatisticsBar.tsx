@@ -52,17 +52,8 @@ const StatisticsBar = ({ referrals }: StatisticsBarProps) => {
                 <span className={`text-2xl font-bold ${stat.valueColor}`}>{stat.value}</span>
               </div>
 
-              <div className="flex items-center justify-between text-xs text-gray-500">
+              <div className="text-xs text-gray-500">
                 <span>{stat.period}</span>
-                <div className="flex items-center gap-1">
-                  <button className="w-4 h-4 rounded-full border border-gray-300 flex items-center justify-center hover:bg-gray-100">
-                    <span className="text-xs">‹</span>
-                  </button>
-                  <span className="text-xs">{stat.pagination}</span>
-                  <button className="w-4 h-4 rounded-full border border-gray-300 flex items-center justify-center hover:bg-gray-100">
-                    <span className="text-xs">›</span>
-                  </button>
-                </div>
               </div>
             </CardContent>
           </Card>
