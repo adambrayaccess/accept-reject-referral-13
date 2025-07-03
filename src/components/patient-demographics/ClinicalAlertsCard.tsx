@@ -11,7 +11,7 @@ interface ClinicalAlertsCardProps {
 }
 
 const ClinicalAlertsCard = ({ patient }: ClinicalAlertsCardProps) => {
-  const hasAllergies = patient.medicalHistory?.allergies && patient.medicalHistory.allergies.length > 0;
+  const hasAllergies = patient.allergies && patient.allergies.length > 0;
   const hasAdjustments = patient.reasonableAdjustments?.hasAdjustments;
 
   return (
@@ -24,7 +24,7 @@ const ClinicalAlertsCard = ({ patient }: ClinicalAlertsCardProps) => {
       </CardHeader>
       <CardContent>
         <div className="flex flex-wrap gap-2">
-          <AllergyIndicator allergies={patient.medicalHistory?.allergies} />
+          <AllergyIndicator allergies={patient.allergies} />
           <ReasonableAdjustmentsFlag adjustmentsFlag={patient.reasonableAdjustments} />
           {!hasAllergies && !hasAdjustments && (
             <Badge variant="outline" className="text-green-600 border-green-200">

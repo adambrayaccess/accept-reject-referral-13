@@ -51,7 +51,7 @@ const ReferralViewHeader = ({ referral, onBack }: ReferralViewHeaderProps) => {
         <div className="space-y-2">
           <div className="flex items-center gap-2 flex-wrap">
             <h1 className="text-2xl font-bold">{referral.patient.name}</h1>
-            <AllergyIndicator allergies={referral.patient.medicalHistory?.allergies} />
+            <AllergyIndicator allergies={referral.patient.allergies} />
             <ReasonableAdjustmentsFlag adjustmentsFlag={referral.patient.reasonableAdjustments} />
             {referral.isSubReferral && (
               <Badge variant="outline" className="text-xs">Sub-referral</Badge>
