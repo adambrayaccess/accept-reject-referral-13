@@ -1,4 +1,3 @@
-
 import { Referral, Patient, FhirPractitioner } from '@/types/referral';
 import { FhirIntegrationService } from './fhirIntegrationService';
 
@@ -17,8 +16,72 @@ export const mapPatient = (patient: any): Patient => ({
   ethnicity: patient.ethnicity,
   pronouns: patient.pronouns,
   accommodationType: patient.accommodation_type,
-  // Medical history
-  medicalHistory: patient.medical_history,
+  // Medical history - structure all medical data under medicalHistory object
+  medicalHistory: {
+    allergies: patient.allergies?.map((allergy: any) => ({
+      id: allergy.id,
+      allergen: allergy.allergen,
+      type: allergy.type,
+      severity: allergy.severity,
+      reactions: allergy.reactions,
+      onsetDate: allergy.onset_date,
+      lastReactionDate: allergy.last_reaction_date,
+      status: allergy.status,
+      verificationStatus: allergy.verification_status,
+      recordedDate: allergy.recorded_date,
+      recordedBy: allergy.recorded_by,
+      notes: allergy.notes
+    })) || [],
+    vitalSigns: patient.vital_signs?.map((vital: any) => ({
+      timestamp: vital.timestamp,
+      bloodPressureSystolic: vital.blood_pressure_systolic,
+      bloodPressureDiastolic: vital.blood_pressure_diastolic,
+      heartRate: vital.heart_rate,
+      respiration: vital.respiration,
+      temperature: vital.temperature,
+      oxygenSaturation: vital.oxygen_saturation,
+      news2: vital.news2
+    })) || [],
+    medicationHistory: patient.medications?.map((med: any) => ({
+      id: med.id,
+      name: med.name,
+      dosage: med.dosage,
+      frequency: med.frequency,
+      prescribedDate: med.prescribed_date,
+      prescribedBy: med.prescribed_by,
+      endDate: med.end_date,
+      status: med.status,
+      indication: med.indication,
+      notes: med.notes
+    })) || [],
+    testResults: patient.test_results?.map((test: any) => ({
+      id: test.id,
+      testName: test.test_name,
+      testType: test.test_type,
+      requestedDate: test.requested_date,
+      requestedBy: test.requested_by,
+      sampleDate: test.sample_date,
+      performedBy: test.performed_by,
+      reportDate: test.report_date,
+      results: test.results || [],
+      interpretation: test.interpretation,
+      status: test.status,
+      notes: test.notes
+    })) || [],
+    mhaSections: patient.mha_sections?.map((section: any) => ({
+      id: section.id,
+      sectionNumber: section.section_number,
+      sectionTitle: section.section_title,
+      appliedDate: section.applied_date,
+      expiryDate: section.expiry_date,
+      reviewDate: section.review_date,
+      status: section.status,
+      hospital: section.hospital,
+      consultantResponsible: section.consultant_responsible,
+      reason: section.reason,
+      notes: section.notes
+    })) || []
+  },
   // GP details
   gpDetails: patient.gp_details ? {
     id: patient.gp_details.id,
@@ -89,75 +152,6 @@ export const mapPatient = (patient: any): Patient => ({
     dateFrom: address.date_from,
     dateTo: address.date_to,
     type: address.address_type
-  })),
-  // Allergies
-  allergies: patient.allergies?.map((allergy: any) => ({
-    id: allergy.id,
-    allergen: allergy.allergen,
-    type: allergy.type,
-    severity: allergy.severity,
-    reactions: allergy.reactions,
-    onsetDate: allergy.onset_date,
-    lastReactionDate: allergy.last_reaction_date,
-    status: allergy.status,
-    verificationStatus: allergy.verification_status,
-    recordedDate: allergy.recorded_date,
-    recordedBy: allergy.recorded_by,
-    notes: allergy.notes
-  })),
-  // Medications
-  medications: patient.medications?.map((med: any) => ({
-    id: med.id,
-    name: med.name,
-    dosage: med.dosage,
-    frequency: med.frequency,
-    prescribedDate: med.prescribed_date,
-    prescribedBy: med.prescribed_by,
-    endDate: med.end_date,
-    status: med.status,
-    indication: med.indication,
-    notes: med.notes
-  })),
-  // Vital signs
-  vitalSigns: patient.vital_signs?.map((vital: any) => ({
-    id: vital.id,
-    timestamp: vital.timestamp,
-    bloodPressureSystolic: vital.blood_pressure_systolic,
-    bloodPressureDiastolic: vital.blood_pressure_diastolic,
-    heartRate: vital.heart_rate,
-    respiration: vital.respiration,
-    temperature: vital.temperature,
-    oxygenSaturation: vital.oxygen_saturation,
-    news2: vital.news2
-  })),
-  // Test results
-  testResults: patient.test_results?.map((test: any) => ({
-    id: test.id,
-    testName: test.test_name,
-    testType: test.test_type,
-    requestedDate: test.requested_date,
-    requestedBy: test.requested_by,
-    sampleDate: test.sample_date,
-    performedBy: test.performed_by,
-    reportDate: test.report_date,
-    results: test.results,
-    interpretation: test.interpretation,
-    status: test.status,
-    notes: test.notes
-  })),
-  // MHA sections
-  mhaSections: patient.mha_sections?.map((section: any) => ({
-    id: section.id,
-    sectionNumber: section.section_number,
-    sectionTitle: section.section_title,
-    appliedDate: section.applied_date,
-    expiryDate: section.expiry_date,
-    reviewDate: section.review_date,
-    status: section.status,
-    hospital: section.hospital,
-    consultantResponsible: section.consultant_responsible,
-    reason: section.reason,
-    notes: section.notes
   }))
 });
 
