@@ -65,6 +65,8 @@ export interface Referral {
   supportingInfo?: string[];
   // Display order for manual sorting
   displayOrder?: number;
+  // Administrative category
+  administrativeCategory?: string;
 }
 
 // FHIR-compliant Practitioner interface
