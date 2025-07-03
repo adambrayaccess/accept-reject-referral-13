@@ -5,6 +5,7 @@ import { mapReferralData } from '@/services/referral/referralMappers';
 import ReferralGrid from './ReferralGrid';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Pin } from 'lucide-react';
+import { usePinning } from '@/hooks/usePinning';
 
 interface PinnedReferralsTabProps {
   view: 'card' | 'list';
@@ -27,10 +28,11 @@ const PinnedReferralsTab = ({
 }: PinnedReferralsTabProps) => {
   const [pinnedReferrals, setPinnedReferrals] = useState<Referral[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const { pinnedReferralIds } = usePinning();
 
   useEffect(() => {
     loadPinnedReferrals();
-  }, []);
+  }, [pinnedReferralIds]); // Reload when pinned referrals change
 
   const loadPinnedReferrals = async () => {
     try {
