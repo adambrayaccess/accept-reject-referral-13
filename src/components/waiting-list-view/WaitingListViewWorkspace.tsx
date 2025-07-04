@@ -1,11 +1,10 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { History, Calendar, Clipboard, Users, FileText } from 'lucide-react';
 import { Referral } from '@/types/referral';
 import ReferralActions from '@/components/ReferralActions';
 import EnhancedAuditLog from '@/components/audit/EnhancedAuditLog';
-import SubReferralsList from '@/components/sub-referrals/SubReferralsList';
 import PatientJourney from '@/components/PatientJourney';
 import ReferralTagging from '@/components/referral-tagging/ReferralTagging';
 import AppointmentStatus from '@/components/cohort/AppointmentStatus';
@@ -20,7 +19,6 @@ interface WaitingListViewWorkspaceProps {
 }
 
 const WaitingListViewWorkspace = ({ referral, onStatusChange, onSuggestionApplied }: WaitingListViewWorkspaceProps) => {
-  const [refreshKey, setRefreshKey] = useState(0);
   const [isAddNoteOpen, setIsAddNoteOpen] = useState(false);
 
   const handleTagsUpdated = () => {
@@ -102,14 +100,6 @@ const WaitingListViewWorkspace = ({ referral, onStatusChange, onSuggestionApplie
           <AppointmentStatus referral={referral} />
         </CardContent>
       </Card>
-
-      {/* Sub-referrals List */}
-      {!referral.isSubReferral && (
-        <SubReferralsList 
-          parentReferralId={referral.id}
-          onRefresh={refreshKey}
-        />
-      )}
 
       <ReferralTagging 
         referral={referral}

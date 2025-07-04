@@ -1,8 +1,10 @@
+import { useState } from 'react';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Referral } from '@/types/referral';
 import ReferralDetail from '@/components/ReferralDetail';
 import ReferralDocuments from '@/components/ReferralDocuments';
 import ParentReferralInfo from '@/components/sub-referrals/ParentReferralInfo';
+import SubReferralsList from '@/components/sub-referrals/SubReferralsList';
 import WaitingListViewWorkspace from './WaitingListViewWorkspace';
 
 interface WaitingListViewContentProps {
@@ -24,6 +26,8 @@ const WaitingListViewContent = ({
   onDocumentUploaded,
   onSuggestionApplied
 }: WaitingListViewContentProps) => {
+  const [refreshKey, setRefreshKey] = useState(0);
+  
   return (
     <div className="flex flex-col md:flex-row gap-6 h-full min-h-0">
       {/* Left column - Main content (60% width) */}
@@ -36,6 +40,13 @@ const WaitingListViewContent = ({
             />
             {referral.isSubReferral && referral.parentReferralId && (
               <ParentReferralInfo childReferralId={referral.id} />
+            )}
+            {/* Sub-referrals List - Moved to left column */}
+            {!referral.isSubReferral && (
+              <SubReferralsList 
+                parentReferralId={referral.id}
+                onRefresh={refreshKey}
+              />
             )}
             <ReferralDocuments 
               attachments={referral.attachments} 
