@@ -2,7 +2,7 @@ import { Referral } from '@/types/referral';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
-import { Clock, Calendar, AlertTriangle, CheckCircle, Target, MapPin, ExternalLink } from 'lucide-react';
+import { Clock, AlertTriangle, CheckCircle, Target, MapPin, ExternalLink } from 'lucide-react';
 import { format, differenceInDays } from 'date-fns';
 import { useNavigate } from 'react-router-dom';
 import RTTPathwayBadge from '@/components/cohort/RTTPathwayBadge';
@@ -162,35 +162,23 @@ const WaitingListRTTPathwayTabContent = ({ referral }: WaitingListRTTPathwayTabC
         </div>
       )}
 
-      {/* Triage Status */}
-      {referral.triageStatus && (
-        <>
-          <Separator />
-          <div className="space-y-3">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-2">
-                <Calendar className="w-4 h-4 text-muted-foreground" />
-                <h4 className="text-sm font-medium">Triage Status</h4>
-              </div>
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => navigate(`/referral/${referral.id}`)}
-                className="flex items-center gap-1 text-xs"
-              >
-                <ExternalLink className="w-3 h-3" />
-                View Referral
-              </Button>
-            </div>
-            
-            <div>
-              <Badge variant="outline" className="capitalize">
-                {referral.triageStatus.replace('-', ' ')}
-              </Badge>
-            </div>
-          </div>
-        </>
-      )}
+      {/* View Referral Section */}
+      <Separator />
+      <div className="space-y-3">
+        <div className="flex items-center gap-2">
+          <ExternalLink className="w-4 h-4 text-muted-foreground" />
+          <h4 className="text-sm font-medium">View Details</h4>
+        </div>
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={() => navigate(`/referral/${referral.id}`)}
+          className="flex items-center gap-1 text-xs"
+        >
+          <ExternalLink className="w-3 h-3" />
+          View Referral
+        </Button>
+      </div>
     </div>
   );
 };
