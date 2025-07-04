@@ -165,15 +165,20 @@ function toast({ ...props }: Toast) {
     },
   })
 
-  // Add to notification history
-  addToNotificationHistory({
-    id,
-    title: typeof props.title === 'string' ? props.title : undefined,
-    description: typeof props.description === 'string' ? props.description : undefined,
-    variant: props.variant,
-    referralId: props.referralId,
-    actionLabel: props.actionLabel,
-  })
+  // Add to notification history - exclude certain notification types
+  const excludedTitles = ['Specialties Updated', 'Refreshed', 'Order Updated'];
+  const shouldExcludeFromHistory = excludedTitles.includes(props.title as string);
+  
+  if (!shouldExcludeFromHistory) {
+    addToNotificationHistory({
+      id,
+      title: typeof props.title === 'string' ? props.title : undefined,
+      description: typeof props.description === 'string' ? props.description : undefined,
+      variant: props.variant,
+      referralId: props.referralId,
+      actionLabel: props.actionLabel,
+    });
+  }
 
   return {
     id: id,
