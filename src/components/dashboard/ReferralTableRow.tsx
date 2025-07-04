@@ -193,7 +193,7 @@ const ReferralTableRow = ({
                 {getStatusText(referral).toUpperCase()}
               </div>
               <CircleDot 
-                className={`absolute -top-1 -right-1 h-2 w-2 ${getDotColor(referral)} fill-current`}
+                className={`absolute -top-1 -left-1 h-2 w-2 ${getDotColor(referral)} fill-current`}
               />
             </div>
           </TableCell>
