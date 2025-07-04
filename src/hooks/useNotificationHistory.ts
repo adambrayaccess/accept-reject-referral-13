@@ -4,7 +4,7 @@ export interface NotificationHistoryItem {
   id: string;
   title?: string;
   description?: string;
-  variant?: 'default' | 'destructive';
+  variant?: 'default' | 'destructive' | 'teal';
   timestamp: Date;
   read: boolean;
 }

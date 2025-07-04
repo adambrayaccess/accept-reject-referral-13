@@ -24,6 +24,7 @@ export const useReferralNotifications = () => {
           toast({
             title: "New Referral Imported",
             description: "A new referral has been imported into the system",
+            variant: "teal",
             action: (
               <ToastAction
                 altText="View referral"
