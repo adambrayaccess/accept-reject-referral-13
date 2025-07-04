@@ -2,7 +2,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { ArrowLeft } from 'lucide-react';
 import { Referral } from '@/types/referral';
-import TriageStatusBadge from '@/components/triage/TriageStatusBadge';
+import WaitingListStatusBadge from './WaitingListStatusBadge';
 import ReferralTagsDisplay from '@/components/referral-tagging/ReferralTagsDisplay';
 import AllergyIndicator from '@/components/clinical/AllergyIndicator';
 import ReasonableAdjustmentsFlag from '@/components/clinical/ReasonableAdjustmentsFlag';
@@ -33,7 +33,7 @@ const WaitingListViewHeader = ({ referral, onBack, onSuggestionApplied }: Waitin
               <Badge variant="outline" className="text-xs">Sub-referral</Badge>
             )}
             {referral.status === 'accepted' && (
-              <TriageStatusBadge status={referral.triageStatus} />
+              <WaitingListStatusBadge referral={referral} />
             )}
           </div>
           <p className="text-muted-foreground">
