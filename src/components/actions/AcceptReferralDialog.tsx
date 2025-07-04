@@ -230,7 +230,7 @@ const AcceptReferralDialog = ({ referral, onStatusChange, open, onOpenChange }: 
       )}
       <SheetContent className="w-full sm:max-w-3xl lg:max-w-4xl">
         <SheetHeader className="pb-4">
-          <SheetTitle className="text-2xl">Accept Referral</SheetTitle>
+          <SheetTitle className="text-2xl">Referral Triage</SheetTitle>
           <SheetDescription className="text-base">
             Please allocate this referral to a team and set status for {referral.patient.name}
           </SheetDescription>
