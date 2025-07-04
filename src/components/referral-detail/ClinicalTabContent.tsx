@@ -54,8 +54,6 @@ const ClinicalTabContent = ({ referral }: ClinicalTabContentProps) => {
         </div>
       )}
       
-      <Separator />
-      
       <div>
         <div className="text-xs font-medium text-muted-foreground">Reason for Referral</div>
         <div className="mt-1 text-sm">{referral.clinicalInfo.reason}</div>
