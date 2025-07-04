@@ -107,7 +107,8 @@ const AdminAICopilot = ({ referrals, overallStats, specialtyStats }: AdminAICopi
               size="sm"
               onClick={loadSuggestions}
               disabled={isLoading}
-              className="text-purple-700 hover:text-purple-800 hover:bg-purple-200"
+              className="text-white hover:bg-[#007A7A]/90"
+              style={{ backgroundColor: '#007A7A' }}
             >
               <RefreshCw className={`h-4 w-4 ${isLoading ? 'animate-spin' : ''}`} />
             </Button>
@@ -115,7 +116,8 @@ const AdminAICopilot = ({ referrals, overallStats, specialtyStats }: AdminAICopi
               variant="ghost"
               size="sm"
               onClick={() => setIsExpanded(!isExpanded)}
-              className="text-purple-700 hover:text-purple-800 hover:bg-purple-200"
+              className="text-white hover:bg-[#007A7A]/90"
+              style={{ backgroundColor: '#007A7A' }}
             >
               {isExpanded ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
             </Button>
@@ -176,9 +178,9 @@ const AdminAICopilot = ({ referrals, overallStats, specialtyStats }: AdminAICopi
                           {suggestion.reportType && (
                             <Button
                               size="sm"
-                              variant="outline"
                               onClick={() => handleGenerateReport(suggestion)}
-                              className="mt-2"
+                              className="mt-2 text-white hover:bg-[#007A7A]/90"
+                              style={{ backgroundColor: '#007A7A' }}
                             >
                               Generate Report
                             </Button>
