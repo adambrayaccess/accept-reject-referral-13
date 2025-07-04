@@ -2,7 +2,7 @@ import { Referral } from '@/types/referral';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
-import { Clock, AlertTriangle, CheckCircle, Target, MapPin, ExternalLink } from 'lucide-react';
+import { Clock, AlertTriangle, CheckCircle, Target, MapPin, ExternalLink, FileText } from 'lucide-react';
 import { format, differenceInDays } from 'date-fns';
 import { useNavigate } from 'react-router-dom';
 import RTTPathwayBadge from '@/components/cohort/RTTPathwayBadge';
@@ -166,8 +166,8 @@ const WaitingListRTTPathwayTabContent = ({ referral }: WaitingListRTTPathwayTabC
       <Separator />
       <div className="space-y-3">
         <div className="flex items-center gap-2">
-          <ExternalLink className="w-4 h-4 text-muted-foreground" />
-          <h4 className="text-sm font-medium">View Details</h4>
+          <FileText className="w-4 h-4 text-muted-foreground" />
+          <h4 className="text-sm font-medium">Referral Details</h4>
         </div>
         <Button
           variant="outline"
