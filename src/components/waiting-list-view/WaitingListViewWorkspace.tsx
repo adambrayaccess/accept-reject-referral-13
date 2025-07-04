@@ -10,6 +10,7 @@ import AppointmentStatus from '@/components/cohort/AppointmentStatus';
 import TeamBadge from '@/components/team/TeamBadge';
 import HCPBadge from '@/components/team/HCPBadge';
 import AddClinicalNoteSheet from '@/components/clinical-notes/AddClinicalNoteSheet';
+import InpatientHistory from './InpatientHistory';
 
 interface WaitingListViewWorkspaceProps {
   referral: Referral;
@@ -99,6 +100,9 @@ const WaitingListViewWorkspace = ({ referral, onStatusChange, onSuggestionApplie
           <AppointmentStatus referral={referral} />
         </CardContent>
       </Card>
+
+      {/* Inpatient History - New component above clinical tags */}
+      <InpatientHistory patientId={referral.patient.id} />
 
       <ReferralTagging 
         referral={referral}
