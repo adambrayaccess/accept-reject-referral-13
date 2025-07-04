@@ -220,12 +220,14 @@ const AcceptReferralDialog = ({ referral, onStatusChange, open, onOpenChange }: 
 
   return (
     <Sheet open={isOpen} onOpenChange={setIsOpen}>
-      <SheetTrigger asChild>
-        <Button className="w-full bg-success hover:bg-success/90">
-          <CheckCircle className="mr-2 h-4 w-4" />
-          Accept Referral
-        </Button>
-      </SheetTrigger>
+      {!referral.triageStatus && (
+        <SheetTrigger asChild>
+          <Button className="w-full bg-success hover:bg-success/90">
+            <CheckCircle className="mr-2 h-4 w-4" />
+            Accept Referral
+          </Button>
+        </SheetTrigger>
+      )}
       <SheetContent className="w-full sm:max-w-3xl lg:max-w-4xl">
         <SheetHeader className="pb-4">
           <SheetTitle className="text-2xl">Accept Referral</SheetTitle>
