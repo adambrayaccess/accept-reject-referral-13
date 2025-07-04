@@ -1,4 +1,5 @@
 import * as React from "react"
+import { addToNotificationHistory } from "./useNotificationHistory"
 
 import type {
   ToastActionElement,
@@ -159,6 +160,14 @@ function toast({ ...props }: Toast) {
         if (!open) dismiss()
       },
     },
+  })
+
+  // Add to notification history
+  addToNotificationHistory({
+    id,
+    title: typeof props.title === 'string' ? props.title : undefined,
+    description: typeof props.description === 'string' ? props.description : undefined,
+    variant: props.variant,
   })
 
   return {
