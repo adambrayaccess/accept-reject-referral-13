@@ -183,6 +183,15 @@ const AppointmentStatus = ({ referral, variant = 'default' }: AppointmentStatusP
         details: 'Awaiting next step',
         canBook: true
       };
+    } else if (referral.triageStatus === 'pre-assessment') {
+      return {
+        status: 'pre-assessment',
+        text: 'Pre-Assessment',
+        icon: Clock,
+        variant: 'secondary',
+        details: 'Ready for appointment booking',
+        canBook: true
+      };
     } else {
       return {
         status: 'pending',
