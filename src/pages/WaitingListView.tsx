@@ -1,9 +1,9 @@
 import { useParams, useNavigate } from 'react-router-dom';
 import PageHeader from '@/components/PageHeader';
-import ReferralViewHeader from '@/components/referral-view/ReferralViewHeader';
-import ReferralViewSkeleton from '@/components/referral-view/ReferralViewSkeleton';
-import ReferralViewNotFound from '@/components/referral-view/ReferralViewNotFound';
-import ReferralViewContent from '@/components/referral-view/ReferralViewContent';
+import WaitingListViewHeader from '@/components/waiting-list-view/WaitingListViewHeader';
+import WaitingListViewSkeleton from '@/components/waiting-list-view/WaitingListViewSkeleton';
+import WaitingListViewNotFound from '@/components/waiting-list-view/WaitingListViewNotFound';
+import WaitingListViewContent from '@/components/waiting-list-view/WaitingListViewContent';
 import { useReferralData } from '@/hooks/useReferralData';
 
 const WaitingListView = () => {
@@ -25,11 +25,11 @@ const WaitingListView = () => {
   };
 
   if (isLoading) {
-    return <ReferralViewSkeleton onBack={handleBack} />;
+    return <WaitingListViewSkeleton onBack={handleBack} />;
   }
 
   if (!referral) {
-    return <ReferralViewNotFound onBack={handleBack} />;
+    return <WaitingListViewNotFound onBack={handleBack} />;
   }
 
   return (
@@ -41,12 +41,12 @@ const WaitingListView = () => {
         <div className="container mx-auto px-6 max-w-none flex-1 min-h-0 flex flex-col">
           {/* Fixed header */}
           <div className="flex-shrink-0 py-4">
-            <ReferralViewHeader referral={referral} onBack={handleBack} onSuggestionApplied={handleStatusChange} />
+            <WaitingListViewHeader referral={referral} onBack={handleBack} onSuggestionApplied={handleStatusChange} />
           </div>
           
           {/* Scrollable content area */}
           <div className="flex-1 min-h-0">
-            <ReferralViewContent
+            <WaitingListViewContent
               referral={referral}
               relatedReferrals={relatedReferrals}
               onStatusChange={handleStatusChange}
