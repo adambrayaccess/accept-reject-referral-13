@@ -28,6 +28,10 @@ const CreateReferralDropdown = ({ onReferralCreated }: CreateReferralDropdownPro
       const timestamp = Date.now();
       const ubrn = `TEST-${timestamp}`;
       
+      // Use actual existing patient and referrer IDs to avoid foreign key constraint violations
+      const patientId = '168b1e08-0cec-4206-bfd5-69e725c0d5a2'; // Mr Ciaran WEST
+      const referrerId = 'fd91ee39-03ca-49f5-8488-1b5efd47f9f7'; // J Sharp
+      
       // Generate the SQL script that will be executed
       const sqlScript = `
 INSERT INTO public.referrals (
@@ -47,8 +51,8 @@ INSERT INTO public.referrals (
   '${ubrn}',
   'Test Specialty',
   'Test notification system - Auto-generated for testing referral notifications',
-  '00000000-0000-0000-0000-000000000000',
-  '00000000-0000-0000-0000-000000000000',
+  '${patientId}',
+  '${referrerId}',
   'Test',
   NULL,
   'new',
@@ -74,8 +78,8 @@ INSERT INTO public.referrals (
           ubrn,
           specialty: 'Test Specialty',
           reason: 'Test notification system - Auto-generated for testing referral notifications',
-          patient_id: '00000000-0000-0000-0000-000000000000',
-          referrer_id: '00000000-0000-0000-0000-000000000000',
+          patient_id: patientId,
+          referrer_id: referrerId,
           referral_source: 'Test',
           waiting_list_priority_override: null,
           status: 'new',
