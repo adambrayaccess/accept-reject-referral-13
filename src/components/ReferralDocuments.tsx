@@ -125,6 +125,20 @@ const ReferralDocuments = ({ attachments, referralId, patientName, onDocumentUpl
     }))
   ].sort((a, b) => b.date.getTime() - a.date.getTime());
   
+  // Calculate dynamic height based on number of documents
+  const getScrollAreaHeight = () => {
+    const baseItemHeight = 80; // Height per document item including padding and spacing
+    const minHeight = 200; // Minimum height
+    const maxHeight = 600; // Maximum height
+    
+    if (allDocuments.length === 0) {
+      return minHeight; // For empty state
+    }
+    
+    const calculatedHeight = allDocuments.length * baseItemHeight;
+    return Math.min(Math.max(calculatedHeight, minHeight), maxHeight);
+  };
+
   return (
     <Card>
       <CardHeader className="pb-3">
@@ -163,7 +177,7 @@ const ReferralDocuments = ({ attachments, referralId, patientName, onDocumentUpl
             <p className="text-muted-foreground text-sm">No documents available for this referral.</p>
           </div>
         ) : (
-          <ScrollArea className="h-[400px] w-full">
+          <ScrollArea className={`w-full`} style={{ height: `${getScrollAreaHeight()}px` }}>
             <div className="space-y-2 pb-2">
               {allDocuments.map((doc, index) => (
                 <div key={doc.id} className="group">
