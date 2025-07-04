@@ -3,7 +3,6 @@ import CohortGrid from './CohortGrid';
 import TaggedPatientsStatistics from './TaggedPatientsStatistics';
 import TagInsightsDashboard from './TagInsightsDashboard';
 import TaggedPatientsSelectionControls from './TaggedPatientsSelectionControls';
-import AICopilotActionsPanel from '@/components/ai-copilot/AICopilotActionsPanel';
 import { Referral } from '@/types/referral';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
@@ -81,17 +80,6 @@ const TaggedPatientsTab = ({
       {taggedReferrals.length > 0 && (
         <TagInsightsDashboard referrals={taggedReferrals} />
       )}
-      
-      {/* AI Copilot Actions Panel - always shown */}
-      <AICopilotActionsPanel
-        selectedReferrals={selectedReferrals.filter(ref => 
-          taggedReferrals.some(tagged => tagged.id === ref.id)
-        )}
-        onSuggestionApplied={() => {
-          // Trigger a refresh or update as needed
-          console.log('AI Copilot action applied, refreshing data...');
-        }}
-      />
       
       {/* Tagged patients grid */}
       {taggedReferrals.length > 0 ? (

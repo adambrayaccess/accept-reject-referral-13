@@ -71,6 +71,8 @@ const CohortBuilder = () => {
         <CohortBuilderHeader 
           selectedSpecialties={selectedSpecialties}
           onSpecialtyChange={handleSpecialtyChange}
+          selectedReferrals={waitingListSelected}
+          onAISuggestionApplied={refreshWaitingList}
         />
 
         <EnhancedTabs defaultValue="waitingList" className="w-full">
