@@ -1,0 +1,4 @@
+project_id = "rsyhehcmsvwedmtnsoat"
+
+[functions.send-referral-notification]
+verify_jwt = false
