@@ -5,7 +5,6 @@ import { History, Calendar, Clipboard, Users, FileText } from 'lucide-react';
 import { Referral } from '@/types/referral';
 import ReferralActions from '@/components/ReferralActions';
 import EnhancedAuditLog from '@/components/audit/EnhancedAuditLog';
-import PatientJourney from '@/components/PatientJourney';
 import ReferralTagging from '@/components/referral-tagging/ReferralTagging';
 import AppointmentStatus from '@/components/cohort/AppointmentStatus';
 import TeamBadge from '@/components/team/TeamBadge';
@@ -105,8 +104,6 @@ const WaitingListViewWorkspace = ({ referral, onStatusChange, onSuggestionApplie
         referral={referral}
         onTagsUpdated={handleTagsUpdated}
       />
-
-      <PatientJourney referral={referral} />
 
       <Card className="flex-1">
         <CardHeader className="pb-3">
