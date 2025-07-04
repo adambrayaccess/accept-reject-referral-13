@@ -23,6 +23,14 @@ const AppointmentStatus = ({ referral }: AppointmentStatusProps) => {
 
   // Only show the book button if triage status is not NULL
   const canBookAppointment = referral.triageStatus !== null;
+  
+  // Debug logging
+  console.log('AppointmentStatus Debug:', {
+    referralId: referral.id,
+    triageStatus: referral.triageStatus,
+    triageStatusType: typeof referral.triageStatus,
+    canBookAppointment
+  });
 
   return (
     <div className="space-y-4">
