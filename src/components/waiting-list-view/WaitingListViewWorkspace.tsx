@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { History, Calendar, Clipboard, Users, FileText } from 'lucide-react';
+import { History, Calendar, Timer, Users, FileText } from 'lucide-react';
 import { Referral } from '@/types/referral';
 import WaitingListActions from './WaitingListActions';
 import EnhancedAuditLog from '@/components/audit/EnhancedAuditLog';
@@ -79,7 +79,7 @@ const WaitingListViewWorkspace = ({ referral, onStatusChange, onSuggestionApplie
       <Card>
         <CardHeader className="pb-3">
           <CardTitle className="text-lg flex items-center">
-            <Clipboard className="h-5 w-5 mr-2" />
+            <Timer className="h-5 w-5 mr-2" />
             Waiting List Actions
           </CardTitle>
         </CardHeader>
