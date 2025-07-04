@@ -1,6 +1,7 @@
 
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/components/ui/hover-card';
 import { LayoutList, Plus } from 'lucide-react';
 import { Referral } from '@/types/referral';
 
@@ -29,21 +30,64 @@ const SubReferralIndicator = ({ referral, variant = 'default' }: SubReferralIndi
   if (variant === 'compact') {
     if (subReferralInfo.isSubReferral) {
       return (
-        <div className="flex items-center gap-1">
-          <LayoutList className="h-3 w-3 text-blue-500" />
-          <span className="text-xs text-blue-600">Sub-referral</span>
-        </div>
+        <HoverCard>
+          <HoverCardTrigger asChild>
+            <div className="flex items-center gap-1 cursor-pointer">
+              <LayoutList className="h-3 w-3 text-blue-500" />
+              <span className="text-xs text-blue-600">Sub-referral</span>
+            </div>
+          </HoverCardTrigger>
+          <HoverCardContent className="w-80 p-4" side="top">
+            <div className="space-y-2">
+              <h4 className="text-sm font-semibold text-foreground">Sub-Referral Details</h4>
+              <div className="text-sm text-muted-foreground">
+                This is a sub-referral of another referral in the system.
+              </div>
+              {subReferralInfo.parentReferralId && (
+                <div className="text-sm">
+                  <span className="font-medium">Parent Referral ID:</span>
+                  <br />
+                  <span className="text-muted-foreground">{subReferralInfo.parentReferralId}</span>
+                </div>
+              )}
+            </div>
+          </HoverCardContent>
+        </HoverCard>
       );
     }
     
     if (subReferralInfo.hasSubReferrals) {
       return (
-        <div className="flex items-center gap-1">
-          <LayoutList className="h-3 w-3 text-green-500" />
-          <span className="text-xs text-green-600">
-            {subReferralInfo.subReferralCount} sub-referral{subReferralInfo.subReferralCount > 1 ? 's' : ''}
-          </span>
-        </div>
+        <HoverCard>
+          <HoverCardTrigger asChild>
+            <div className="flex items-center gap-1 cursor-pointer">
+              <LayoutList className="h-3 w-3 text-green-500" />
+              <span className="text-xs text-green-600">
+                {subReferralInfo.subReferralCount} sub-referral{subReferralInfo.subReferralCount > 1 ? 's' : ''}
+              </span>
+            </div>
+          </HoverCardTrigger>
+          <HoverCardContent className="w-80 p-4" side="top">
+            <div className="space-y-2">
+              <h4 className="text-sm font-semibold text-foreground">Sub-Referrals</h4>
+              <div className="text-sm text-muted-foreground">
+                This referral has {subReferralInfo.subReferralCount} linked sub-referral{subReferralInfo.subReferralCount > 1 ? 's' : ''}.
+              </div>
+              {referral.childReferralIds && (
+                <div className="text-sm">
+                  <span className="font-medium">Sub-Referral IDs:</span>
+                  <div className="mt-1 space-y-1">
+                    {referral.childReferralIds.map((id, index) => (
+                      <div key={id} className="text-muted-foreground">
+                        {index + 1}. {id}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+          </HoverCardContent>
+        </HoverCard>
       );
     }
     
