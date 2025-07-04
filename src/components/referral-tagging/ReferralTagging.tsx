@@ -1,9 +1,11 @@
 
 import { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
 import { Separator } from '@/components/ui/separator';
-import { Tag, ChevronDown } from 'lucide-react';
+import { Tag, ChevronDown, ChevronRight } from 'lucide-react';
 import { Referral } from '@/types/referral';
 import { useToast } from '@/hooks/use-toast';
 import { updateReferralTags } from '@/services/referralService';
@@ -81,16 +83,18 @@ const ReferralTagging = ({ referral, onTagsUpdated }: ReferralTaggingProps) => {
                 <Tag className="h-5 w-5 mr-2" />
                 Clinical Tags
                 {currentTags.length > 0 && (
-                  <span className="ml-2 text-sm text-muted-foreground">
-                    ({currentTags.length})
-                  </span>
+                  <Badge variant="outline" className="ml-2">
+                    {currentTags.length}
+                  </Badge>
                 )}
               </div>
-              <ChevronDown 
-                className={`h-4 w-4 transition-transform duration-200 ${
-                  isOpen ? 'transform rotate-180' : ''
-                }`} 
-              />
+              <Button variant="ghost" size="sm">
+                {isOpen ? (
+                  <ChevronDown className="h-4 w-4" />
+                ) : (
+                  <ChevronRight className="h-4 w-4" />
+                )}
+              </Button>
             </CardTitle>
           </CardHeader>
         </CollapsibleTrigger>
