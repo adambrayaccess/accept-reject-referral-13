@@ -1,6 +1,9 @@
 
+import { useState } from 'react';
 import InlineSpecialtySelector from '../InlineSpecialtySelector';
 import CreateReferralDropdown from './CreateReferralDropdown';
+import { Button } from '@/components/ui/button';
+import { RefreshCcw } from 'lucide-react';
 import { Referral } from '@/types/referral';
 
 interface DashboardHeaderProps {
@@ -8,14 +11,27 @@ interface DashboardHeaderProps {
   specialtyNames: string[];
   onSpecialtySelectionChange: (newSelection: string[]) => void;
   onReferralCreated: (newReferral: Partial<Referral>) => void;
+  onRefresh: () => void;
 }
 
 const DashboardHeader = ({
   selectedSpecialties,
   specialtyNames,
   onSpecialtySelectionChange,
-  onReferralCreated
+  onReferralCreated,
+  onRefresh
 }: DashboardHeaderProps) => {
+  const [isRefreshing, setIsRefreshing] = useState(false);
+
+  const handleRefresh = async () => {
+    setIsRefreshing(true);
+    try {
+      await onRefresh();
+    } finally {
+      setIsRefreshing(false);
+    }
+  };
+
   return (
     <div className="px-6 py-6">
       <div className="flex flex-col sm:flex-row justify-between gap-4">
@@ -31,6 +47,16 @@ const DashboardHeader = ({
           </div>
         </div>
         <div className="flex gap-2 w-full sm:w-auto sm:flex-shrink-0">
+          <Button 
+            variant="outline" 
+            size="default" 
+            onClick={handleRefresh}
+            disabled={isRefreshing}
+            className="flex items-center gap-2"
+          >
+            <RefreshCcw className={`h-4 w-4 ${isRefreshing ? 'animate-spin' : ''}`} />
+            Refresh
+          </Button>
           <CreateReferralDropdown onReferralCreated={onReferralCreated} />
         </div>
       </div>

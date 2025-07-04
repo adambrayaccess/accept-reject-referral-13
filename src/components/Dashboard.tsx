@@ -106,6 +106,7 @@ const Dashboard = () => {
           specialtyNames={specialtyNames}
           onSpecialtySelectionChange={handleSpecialtySelectionChange}
           onReferralCreated={handleCreateReferral}
+          onRefresh={handleRefresh}
         />
 
         <div className="px-6">
