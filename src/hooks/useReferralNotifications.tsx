@@ -63,11 +63,11 @@ export const useReferralNotifications = () => {
             referralId: newReferral.id,
             actionLabel: "View Referral",
             action: (
-              <div className="flex items-center gap-2">
+              <div className="flex shrink-0 items-center gap-2 mt-2 sm:mt-0">
                 <ToastAction
                   altText="View referral"
                   onClick={() => navigate(`/referral/${newReferral.id}`)}
-                  className="bg-primary text-primary-foreground hover:bg-primary/90"
+                  className="bg-primary text-primary-foreground hover:bg-primary/90 text-xs sm:text-sm whitespace-nowrap"
                 >
                   View Referral
                 </ToastAction>
