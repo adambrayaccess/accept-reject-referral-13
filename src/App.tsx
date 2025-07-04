@@ -7,6 +7,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
 import ReferralView from "./pages/ReferralView";
+import WaitingListView from "./pages/WaitingListView";
 import NotFound from "./pages/NotFound";
 import SpecialtySelection from "./pages/SpecialtySelection";
 import CohortBuilder from "./pages/CohortBuilder";
@@ -31,6 +32,11 @@ const App: React.FC = () => {
             <Route path="/referral/:id" element={
               <ProtectedRoute>
                 <ReferralView />
+              </ProtectedRoute>
+            } />
+            <Route path="/waiting-list/referral/:id" element={
+              <ProtectedRoute>
+                <WaitingListView />
               </ProtectedRoute>
             } />
             <Route path="/select-specialty" element={
