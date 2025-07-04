@@ -3,7 +3,7 @@ import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { History, Calendar, Clipboard, Users, FileText } from 'lucide-react';
 import { Referral } from '@/types/referral';
-import ReferralActions from '@/components/ReferralActions';
+import WaitingListActions from './WaitingListActions';
 import EnhancedAuditLog from '@/components/audit/EnhancedAuditLog';
 import ReferralTagging from '@/components/referral-tagging/ReferralTagging';
 import AppointmentStatus from '@/components/cohort/AppointmentStatus';
@@ -75,16 +75,16 @@ const WaitingListViewWorkspace = ({ referral, onStatusChange, onSuggestionApplie
         </Card>
       )}
 
-      {/* Triage Actions Card */}
+      {/* Waiting List Actions Card */}
       <Card>
         <CardHeader className="pb-3">
           <CardTitle className="text-lg flex items-center">
             <Clipboard className="h-5 w-5 mr-2" />
-            Triage Actions
+            Waiting List Actions
           </CardTitle>
         </CardHeader>
         <CardContent className="pt-0">
-          <ReferralActions referral={referral} onStatusChange={onStatusChange} />
+          <WaitingListActions referral={referral} onStatusChange={onStatusChange} />
         </CardContent>
       </Card>
 
