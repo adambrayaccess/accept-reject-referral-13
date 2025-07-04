@@ -7,11 +7,67 @@ import { format } from 'date-fns';
 import { Referral } from '@/types/referral';
 import { Draggable } from 'react-beautiful-dnd';
 import ReferralPriorityBadge from './ReferralPriorityBadge';
-import ReferralStatusBadge from './ReferralStatusBadge';
+// Removed ReferralStatusBadge import - using inline text instead
 import ReferralSourceBadge from './ReferralSourceBadge';
 import ReferralTypeBadge from './ReferralTypeBadge';
 import PinButton from '@/components/ui/pin-button';
 import { usePinning } from '@/hooks/usePinning';
+
+const getStatusText = (referral: Referral) => {
+  if (referral.status === 'accepted' && referral.triageStatus) {
+    switch (referral.triageStatus) {
+      case 'pre-assessment':
+        return 'Pre-Assess';
+      case 'assessed':
+        return 'Assessed';
+      case 'waiting-list':
+        return 'Waiting List';
+      case 'refer-to-another-specialty':
+        return 'Refer on';
+      default:
+        return referral.triageStatus;
+    }
+  }
+
+  switch (referral.status) {
+    case 'new':
+      return 'New';
+    case 'accepted':
+      return 'Accepted';
+    case 'rejected':
+      return 'Rejected';
+    default:
+      return referral.status.charAt(0).toUpperCase() + referral.status.slice(1);
+  }
+};
+
+const getStatusTextColor = (referral: Referral) => {
+  if (referral.status === 'accepted' && referral.triageStatus) {
+    switch (referral.triageStatus) {
+      case 'pre-assessment':
+        return 'text-yellow-600';
+      case 'assessed':
+        return 'text-purple-600';
+      case 'waiting-list':
+        return 'text-blue-600';
+      case 'refer-to-another-specialty':
+        return 'text-gray-600';
+      default:
+        return 'text-gray-500';
+    }
+  }
+
+  switch (referral.status) {
+    case 'new':
+      return 'text-blue-600';
+    case 'accepted':
+      return 'text-green-600';
+    case 'rejected':
+      return 'text-red-600';
+    default:
+      return 'text-gray-500';
+  }
+};
 
 interface ReferralTableRowProps {
   referral: Referral;
@@ -123,7 +179,12 @@ const ReferralTableRow = ({
             </div>
           </TableCell>
           <TableCell className="p-2">
-            <ReferralStatusBadge referral={referral} />
+            <div 
+              className={`text-sm font-bold ${getStatusTextColor(referral)}`}
+              title={`Status: ${getStatusText(referral)}`}
+            >
+              {getStatusText(referral)}
+            </div>
           </TableCell>
           <TableCell className="p-2">
             <ReferralSourceBadge referral={referral} />
