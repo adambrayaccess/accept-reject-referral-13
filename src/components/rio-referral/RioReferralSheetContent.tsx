@@ -134,6 +134,13 @@ const RioReferralSheetContent = ({ referralId }: RioReferralSheetContentProps) =
               </div>
             )}
             
+            {referral.originatingSpecialty && (
+              <div>
+                <div className="text-xs font-medium text-muted-foreground">Originating Specialty</div>
+                <div className="font-medium">{referral.originatingSpecialty}</div>
+              </div>
+            )}
+            
             {referral.referralType && (
               <div>
                 <div className="text-xs font-medium text-muted-foreground">Referral Type</div>

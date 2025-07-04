@@ -77,6 +77,8 @@ export interface Referral {
   camhsServiceTier?: string;
   // Patient area/care setting
   patientAreaCareSetting?: string;
+  // Originating specialty
+  originatingSpecialty?: string;
 }
 
 // FHIR-compliant Practitioner interface

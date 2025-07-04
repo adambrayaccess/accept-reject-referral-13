@@ -1237,6 +1237,7 @@ export type Database = {
           occurrence_datetime: string | null
           occurrence_period_end: string | null
           occurrence_period_start: string | null
+          orginating_specialty: string | null
           overseas_status: string | null
           parent_referral_id: string | null
           patient_area_care_setting: string | null
@@ -1291,6 +1292,7 @@ export type Database = {
           occurrence_datetime?: string | null
           occurrence_period_end?: string | null
           occurrence_period_start?: string | null
+          orginating_specialty?: string | null
           overseas_status?: string | null
           parent_referral_id?: string | null
           patient_area_care_setting?: string | null
@@ -1345,6 +1347,7 @@ export type Database = {
           occurrence_datetime?: string | null
           occurrence_period_end?: string | null
           occurrence_period_start?: string | null
+          orginating_specialty?: string | null
           overseas_status?: string | null
           parent_referral_id?: string | null
           patient_area_care_setting?: string | null
