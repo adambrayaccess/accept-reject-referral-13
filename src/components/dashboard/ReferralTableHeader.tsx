@@ -19,7 +19,7 @@ const ReferralTableHeader = ({
   const checkboxChecked = isIndeterminate ? false : isAllSelected;
 
   return (
-    <TableHeader>
+    <TableHeader className="bg-secondary/50">
       <TableRow>
         <TableHead className="w-10">
           {referrals.length > 0 && (
