@@ -4,8 +4,9 @@ import { Referral } from '@/types/referral';
 import AppointmentStatus from './AppointmentStatus';
 import RTTPathwayBadge from './RTTPathwayBadge';
 import CarePathwayBadge from './CarePathwayBadge';
-import TeamBadge from '@/components/team/TeamBadge';
 import { formatTargetDate, calculateRTTPathway } from '@/utils/rttPathwayUtils';
+import { fetchTeamById } from '@/services/teamService';
+import { useState, useEffect } from 'react';
 
 interface PatientStatusInfoProps {
   referral: Referral;
@@ -14,6 +15,28 @@ interface PatientStatusInfoProps {
 const PatientStatusInfo = ({ referral }: PatientStatusInfoProps) => {
   // Calculate RTT pathway if not present, similar to RTTPathwayTabContent
   const rttPathway = referral.rttPathway || calculateRTTPathway(referral.created);
+  
+  const [teamName, setTeamName] = useState<string | null>(null);
+  const [isLoadingTeam, setIsLoadingTeam] = useState(false);
+
+  useEffect(() => {
+    const loadTeam = async () => {
+      if (!referral.teamId) return;
+      
+      setIsLoadingTeam(true);
+      try {
+        const teamData = await fetchTeamById(referral.teamId);
+        setTeamName(teamData?.name || null);
+      } catch (error) {
+        console.error('Error loading team:', error);
+        setTeamName(null);
+      } finally {
+        setIsLoadingTeam(false);
+      }
+    };
+
+    loadTeam();
+  }, [referral.teamId]);
   
   return (
     <>
@@ -40,11 +63,17 @@ const PatientStatusInfo = ({ referral }: PatientStatusInfoProps) => {
           variant="compact"
         />
       </TableCell>
-      <TableCell className="p-2">
+      <TableCell className="p-2 text-sm">
         {referral.teamId ? (
-          <TeamBadge teamId={referral.teamId} size="sm" />
+          isLoadingTeam ? (
+            <span className="text-muted-foreground">Loading...</span>
+          ) : teamName ? (
+            <span>{teamName}</span>
+          ) : (
+            <span className="text-muted-foreground">Unknown Team</span>
+          )
         ) : (
-          <span className="text-sm text-muted-foreground">Unassigned</span>
+          <span className="text-muted-foreground">Unassigned</span>
         )}
       </TableCell>
     </>
