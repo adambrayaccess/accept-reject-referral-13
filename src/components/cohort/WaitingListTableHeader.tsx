@@ -29,7 +29,7 @@ const WaitingListTableHeader = ({
   }, [isIndeterminate]);
 
   return (
-    <TableHeader>
+    <TableHeader className="bg-secondary/50">
       <TableRow role="row">
         <TableHead className="w-10" scope="col" aria-label="Drag handle column"></TableHead>
         <TableHead className="w-10" scope="col">
