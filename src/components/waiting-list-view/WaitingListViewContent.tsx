@@ -1,7 +1,6 @@
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Referral } from '@/types/referral';
 import ReferralDetail from '@/components/ReferralDetail';
-import MedicalHistory from '@/components/MedicalHistory';
 import ReferralDocuments from '@/components/ReferralDocuments';
 import ParentReferralInfo from '@/components/sub-referrals/ParentReferralInfo';
 import WaitingListViewWorkspace from './WaitingListViewWorkspace';
@@ -38,7 +37,6 @@ const WaitingListViewContent = ({
             {referral.isSubReferral && referral.parentReferralId && (
               <ParentReferralInfo childReferralId={referral.id} />
             )}
-            <MedicalHistory patient={referral.patient} />
             <ReferralDocuments 
               attachments={referral.attachments} 
               referralId={referral.id}
