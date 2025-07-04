@@ -61,6 +61,52 @@ export const useReferralNotifications = () => {
           });
         }
       )
+      .on(
+        'postgres_changes',
+        {
+          event: 'UPDATE',
+          schema: 'public',
+          table: 'referrals'
+        },
+        async (payload) => {
+          const updatedReferral = payload.new;
+          const oldReferral = payload.old;
+          
+          // Skip if this is an internal update (has updated_at change but was triggered by our app)
+          // We'll detect this by checking if the update happened very recently after a user action
+          // For now, we'll show all database updates
+          
+          // Fetch patient name for the notification
+          const patientName = await fetchPatientName(updatedReferral.patient_id);
+          
+          // Determine what changed to provide meaningful notification
+          let changeDescription = "has been updated";
+          if (oldReferral.status !== updatedReferral.status) {
+            changeDescription = `status changed from ${oldReferral.status} to ${updatedReferral.status}`;
+          } else if (oldReferral.priority !== updatedReferral.priority) {
+            changeDescription = `priority changed from ${oldReferral.priority} to ${updatedReferral.priority}`;
+          } else if (oldReferral.specialty !== updatedReferral.specialty) {
+            changeDescription = `specialty changed to ${updatedReferral.specialty}`;
+          } else if (oldReferral.triage_status !== updatedReferral.triage_status) {
+            changeDescription = `triage status updated to ${updatedReferral.triage_status || 'none'}`;
+          }
+          
+          toast({
+            title: "Referral Updated",
+            description: `Referral for ${patientName} ${changeDescription}`,
+            action: (
+              <ToastAction
+                altText="View referral"
+                onClick={() => navigate(`/referral/${updatedReferral.id}`)}
+                className="bg-primary text-primary-foreground hover:bg-primary/90"
+              >
+                View Referral
+              </ToastAction>
+            ),
+            duration: 8000,
+          });
+        }
+      )
       .subscribe();
 
     return () => {
