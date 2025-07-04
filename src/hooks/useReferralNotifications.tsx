@@ -3,6 +3,9 @@ import { useNavigate } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { ToastAction } from '@/components/ui/toast';
+import { addToNotificationHistory } from '@/hooks/useNotificationHistory';
+import { X } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 
 export const useReferralNotifications = () => {
   const { toast } = useToast();
@@ -45,17 +48,30 @@ export const useReferralNotifications = () => {
           // Fetch patient name for the notification
           const patientName = await fetchPatientName(newReferral.patient_id);
           
+          // Add to notification history
+          addToNotificationHistory({
+            id: `new-referral-${newReferral.id}`,
+            title: "New Referral Imported",
+            description: `A new referral for ${patientName} has been imported into the system`,
+            referralId: newReferral.id,
+            actionLabel: "View Referral"
+          });
+          
           toast({
             title: "New Referral Imported",
             description: `A new referral for ${patientName} has been imported into the system`,
+            referralId: newReferral.id,
+            actionLabel: "View Referral",
             action: (
-              <ToastAction
-                altText="View referral"
-                onClick={() => navigate(`/referral/${newReferral.id}`)}
-                className="bg-primary text-primary-foreground hover:bg-primary/90"
-              >
-                View Referral
-              </ToastAction>
+              <div className="flex items-center gap-2">
+                <ToastAction
+                  altText="View referral"
+                  onClick={() => navigate(`/referral/${newReferral.id}`)}
+                  className="bg-primary text-primary-foreground hover:bg-primary/90"
+                >
+                  View Referral
+                </ToastAction>
+              </div>
             ),
             duration: 10000,
           });
@@ -91,19 +107,32 @@ export const useReferralNotifications = () => {
             changeDescription = `triage status updated to ${updatedReferral.triage_status || 'none'}`;
           }
           
+          // Add to notification history
+          addToNotificationHistory({
+            id: `updated-referral-${updatedReferral.id}-${Date.now()}`,
+            title: "Referral Updated",
+            description: `Referral for ${patientName} ${changeDescription}`,
+            referralId: updatedReferral.id,
+            actionLabel: "View Referral"
+          });
+          
           toast({
             title: "Referral Updated",
             description: `Referral for ${patientName} ${changeDescription}`,
+            referralId: updatedReferral.id,
+            actionLabel: "View Referral",
             action: (
-              <ToastAction
-                altText="View referral"
-                onClick={() => navigate(`/referral/${updatedReferral.id}`)}
-                className="bg-primary text-primary-foreground hover:bg-primary/90"
-              >
-                View Referral
-              </ToastAction>
+              <div className="flex items-center gap-2">
+                <ToastAction
+                  altText="View referral"
+                  onClick={() => navigate(`/referral/${updatedReferral.id}`)}
+                  className="bg-primary text-primary-foreground hover:bg-primary/90"
+                >
+                  View Referral
+                </ToastAction>
+              </div>
             ),
-            duration: 8000,
+            duration: 10000,
           });
         }
       )

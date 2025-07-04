@@ -138,7 +138,10 @@ function dispatch(action: Action) {
   })
 }
 
-type Toast = Omit<ToasterToast, "id">
+type Toast = Omit<ToasterToast, "id"> & {
+  referralId?: string;
+  actionLabel?: string;
+}
 
 function toast({ ...props }: Toast) {
   const id = genId()
@@ -168,6 +171,8 @@ function toast({ ...props }: Toast) {
     title: typeof props.title === 'string' ? props.title : undefined,
     description: typeof props.description === 'string' ? props.description : undefined,
     variant: props.variant,
+    referralId: props.referralId,
+    actionLabel: props.actionLabel,
   })
 
   return {

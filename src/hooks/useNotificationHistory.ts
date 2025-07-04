@@ -7,6 +7,8 @@ export interface NotificationHistoryItem {
   variant?: 'default' | 'destructive';
   timestamp: Date;
   read: boolean;
+  referralId?: string;
+  actionLabel?: string;
 }
 
 const MAX_HISTORY_SIZE = 50;

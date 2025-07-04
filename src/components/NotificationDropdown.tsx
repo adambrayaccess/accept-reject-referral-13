@@ -1,5 +1,5 @@
 import React from 'react';
-import { Bell, BellDot, Trash2, Check } from 'lucide-react';
+import { Bell, BellDot, Trash2, Check, ExternalLink } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
@@ -12,9 +12,11 @@ import { Badge } from '@/components/ui/badge';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { useNotificationHistory } from '@/hooks/useNotificationHistory';
 import { format } from 'date-fns';
+import { useNavigate } from 'react-router-dom';
 
 const NotificationDropdown = () => {
   const { history, unreadCount, markAsRead, markAllAsRead, clearHistory } = useNotificationHistory();
+  const navigate = useNavigate();
 
   const formatTimestamp = (date: Date) => {
     const now = new Date();
@@ -26,10 +28,14 @@ const NotificationDropdown = () => {
     return format(date, 'MMM d, HH:mm');
   };
 
-  const handleMarkAsRead = (id: string, e: React.MouseEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-    markAsRead(id);
+  const handleNotificationClick = (notification: any) => {
+    if (!notification.read) {
+      markAsRead(notification.id);
+    }
+    
+    if (notification.referralId) {
+      navigate(`/referral/${notification.referralId}`);
+    }
   };
 
   return (
@@ -97,7 +103,7 @@ const NotificationDropdown = () => {
                       ? 'hover:bg-muted/50' 
                       : 'bg-accent/30 hover:bg-accent/50'
                   }`}
-                  onClick={() => !notification.read && markAsRead(notification.id)}
+                  onClick={() => handleNotificationClick(notification)}
                 >
                   <div className="flex items-start justify-between">
                     <div className="flex-1 min-w-0">
@@ -113,21 +119,18 @@ const NotificationDropdown = () => {
                           {notification.description}
                         </p>
                       )}
-                      <p className="text-xs text-muted-foreground">
-                        {formatTimestamp(notification.timestamp)}
-                      </p>
+                      <div className="flex items-center justify-between">
+                        <p className="text-xs text-muted-foreground">
+                          {formatTimestamp(notification.timestamp)}
+                        </p>
+                        {notification.referralId && (
+                          <div className="flex items-center text-xs text-muted-foreground">
+                            <ExternalLink className="w-3 h-3 mr-1" />
+                            View Referral
+                          </div>
+                        )}
+                      </div>
                     </div>
-                    
-                    {!notification.read && (
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={(e) => handleMarkAsRead(notification.id, e)}
-                        className="h-6 w-6 p-0 ml-2 flex-shrink-0"
-                      >
-                        <Check className="w-3 h-3" />
-                      </Button>
-                    )}
                   </div>
                   
                   {!notification.read && (
