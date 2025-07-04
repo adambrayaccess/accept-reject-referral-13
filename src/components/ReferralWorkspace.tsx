@@ -7,6 +7,7 @@ import { Referral } from '@/types/referral';
 import ReferralActions from './ReferralActions';
 import EnhancedAuditLog from './audit/EnhancedAuditLog';
 import SubReferralsList from './sub-referrals/SubReferralsList';
+import ParentReferralInfo from './sub-referrals/ParentReferralInfo';
 import PatientJourney from './PatientJourney';
 import ReferralTagging from './referral-tagging/ReferralTagging';
 import AppointmentStatus from './cohort/AppointmentStatus';
@@ -52,6 +53,10 @@ const ReferralWorkspace = ({ referral, onStatusChange, onSuggestionApplied }: Re
         <FileText className="h-4 w-4" />
         Add Note
       </Button>
+
+      {referral.isSubReferral && referral.parentReferralId && (
+        <ParentReferralInfo childReferralId={referral.id} />
+      )}
 
       {/* Team Allocation Card - NEW */}
       {referral.teamId && (
