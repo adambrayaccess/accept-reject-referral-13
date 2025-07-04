@@ -90,7 +90,7 @@ const RioReferralSheetContent = ({ referralId }: RioReferralSheetContentProps) =
             
             {referral.referrer.organization && (
               <div>
-                <div className="text-xs font-medium text-muted-foreground">Organization</div>
+                <div className="text-xs font-medium text-muted-foreground">Referral Organistation</div>
                 <div className="font-medium">{referral.referrer.organization}</div>
               </div>
             )}
