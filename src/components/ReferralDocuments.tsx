@@ -137,7 +137,8 @@ const ReferralDocuments = ({ attachments, referralId, patientName, onDocumentUpl
             <Button 
               size="sm" 
               onClick={() => setIsUploadModalOpen(true)}
-              className="flex items-center gap-1 bg-primary hover:bg-primary/90 text-primary-foreground"
+              className="flex items-center gap-1 text-white hover:bg-[#007A7A]/90"
+              style={{ backgroundColor: '#007A7A' }}
             >
               <Plus className="h-3 w-3" />
               Add Document

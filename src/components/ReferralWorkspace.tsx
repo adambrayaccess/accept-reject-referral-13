@@ -50,7 +50,8 @@ const ReferralWorkspace = ({ referral, onStatusChange, onSuggestionApplied }: Re
       {/* Add Clinical Note Button */}
       <Button 
         onClick={() => setIsAddNoteOpen(true)}
-        className="w-full flex items-center gap-2 bg-primary hover:bg-primary/90 text-primary-foreground"
+        className="w-full flex items-center gap-2 text-white hover:bg-[#007A7A]/90"
+        style={{ backgroundColor: '#007A7A' }}
         variant="default"
       >
         <FileText className="h-4 w-4" />

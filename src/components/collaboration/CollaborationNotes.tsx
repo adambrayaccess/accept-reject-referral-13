@@ -43,7 +43,8 @@ const CollaborationNotes = ({ notes = [] }: CollaborationNotesProps) => {
       />
       <Button 
         onClick={handleAddNote} 
-        className="w-full bg-primary hover:bg-primary/90 text-primary-foreground"
+        className="w-full text-white hover:bg-[#007A7A]/90"
+        style={{ backgroundColor: '#007A7A' }}
       >
         <FilePlus className="mr-2 h-4 w-4" />
         Add Note
