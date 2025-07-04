@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Referral } from '@/types/referral';
-import ReferralDetail from '@/components/ReferralDetail';
+import WaitingListReferralDetail from './WaitingListReferralDetail';
 import ReferralDocuments from '@/components/ReferralDocuments';
 import ParentReferralInfo from '@/components/sub-referrals/ParentReferralInfo';
 import SubReferralsList from '@/components/sub-referrals/SubReferralsList';
@@ -35,7 +35,7 @@ const WaitingListViewContent = ({
       <div className="flex-1 md:flex-none md:basis-[60%] h-full min-h-0">
         <ScrollArea className="h-full w-full">
           <div className="space-y-6 p-4 pb-8">
-            <ReferralDetail 
+            <WaitingListReferralDetail 
               referral={referral} 
               relatedReferrals={relatedReferrals}
             />

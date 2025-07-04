@@ -1,4 +1,3 @@
-
 import { Referral } from '@/types/referral';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { EnhancedTabs, EnhancedTabsContent, EnhancedTabsList, EnhancedTabsTrigger } from '@/components/ui/enhanced-tabs';
@@ -9,7 +8,7 @@ import PatientTabContent from '@/components/referral-detail/PatientTabContent';
 import ClinicalTabContent from '@/components/referral-detail/ClinicalTabContent';
 import ReferrerTabContent from '@/components/referral-detail/ReferrerTabContent';
 
-interface ReferralDetailProps {
+interface WaitingListReferralDetailProps {
   referral: Referral;
   relatedReferrals: {
     serviceTotal: number;
@@ -18,7 +17,7 @@ interface ReferralDetailProps {
   };
 }
 
-const ReferralDetail = ({ referral, relatedReferrals }: ReferralDetailProps) => {
+const WaitingListReferralDetail = ({ referral, relatedReferrals }: WaitingListReferralDetailProps) => {
   return (
     <Card>
       <CardHeader className="pb-3">
@@ -36,9 +35,12 @@ const ReferralDetail = ({ referral, relatedReferrals }: ReferralDetailProps) => 
         </div>
       </CardHeader>
       <CardContent className="pt-0">
-        <EnhancedTabs defaultValue="patient">
+        <EnhancedTabs defaultValue="rtt-pathway">
           <div className="mb-3">
             <EnhancedTabsList variant="grid" size="md">
+              <EnhancedTabsTrigger value="rtt-pathway" variant="grid" size="md">
+                RTT/Pathway
+              </EnhancedTabsTrigger>
               <EnhancedTabsTrigger value="patient" variant="grid" size="md">
                 Patient
               </EnhancedTabsTrigger>
@@ -48,11 +50,12 @@ const ReferralDetail = ({ referral, relatedReferrals }: ReferralDetailProps) => 
               <EnhancedTabsTrigger value="referrer" variant="grid" size="md">
                 Referrer
               </EnhancedTabsTrigger>
-              <EnhancedTabsTrigger value="rtt-pathway" variant="grid" size="md">
-                RTT/Pathway
-              </EnhancedTabsTrigger>
             </EnhancedTabsList>
           </div>
+          
+          <EnhancedTabsContent value="rtt-pathway" className="space-y-3">
+            <RTTPathwayTabContent referral={referral} />
+          </EnhancedTabsContent>
           
           <EnhancedTabsContent value="patient" className="space-y-3">
             <PatientTabContent referral={referral} relatedReferrals={relatedReferrals} />
@@ -65,14 +68,10 @@ const ReferralDetail = ({ referral, relatedReferrals }: ReferralDetailProps) => 
           <EnhancedTabsContent value="referrer" className="space-y-3">
             <ReferrerTabContent referral={referral} />
           </EnhancedTabsContent>
-          
-          <EnhancedTabsContent value="rtt-pathway" className="space-y-3">
-            <RTTPathwayTabContent referral={referral} />
-          </EnhancedTabsContent>
         </EnhancedTabs>
       </CardContent>
     </Card>
   );
 };
 
-export default ReferralDetail;
+export default WaitingListReferralDetail;
