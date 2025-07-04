@@ -43,11 +43,7 @@ const ReferralWorkspace = ({ referral, onStatusChange, onSuggestionApplied }: Re
 
   return (
     <div className="flex flex-col h-full gap-3">
-      {referral.isSubReferral && referral.parentReferralId && (
-        <ParentReferralInfo childReferralId={referral.id} />
-      )}
-
-      {/* Add Clinical Note Button */}
+      {/* Add Clinical Note Button - Moved to top */}
       <Button 
         onClick={() => setIsAddNoteOpen(true)}
         className="w-full flex items-center gap-2 text-white hover:bg-[#007A7A]/90"
@@ -57,6 +53,10 @@ const ReferralWorkspace = ({ referral, onStatusChange, onSuggestionApplied }: Re
         <FileText className="h-4 w-4" />
         Add Note
       </Button>
+
+      {referral.isSubReferral && referral.parentReferralId && (
+        <ParentReferralInfo childReferralId={referral.id} />
+      )}
 
       {/* Team Allocation Card - NEW */}
       {referral.teamId && (
