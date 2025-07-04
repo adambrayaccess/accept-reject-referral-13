@@ -183,7 +183,7 @@ const ReferralTableRow = ({
               className={`text-sm font-bold ${getStatusTextColor(referral)}`}
               title={`Status: ${getStatusText(referral)}`}
             >
-              {getStatusText(referral)}
+              {getStatusText(referral).toUpperCase()}
             </div>
           </TableCell>
           <TableCell className="p-2">
