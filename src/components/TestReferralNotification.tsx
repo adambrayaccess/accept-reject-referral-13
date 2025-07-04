@@ -17,7 +17,8 @@ const TestReferralNotification = () => {
           reason: 'Test notification system',
           patient_id: '00000000-0000-0000-0000-000000000000', // placeholder
           referrer_id: '00000000-0000-0000-0000-000000000000', // placeholder
-          referral_source: 'Test'
+          referral_source: 'Test',
+          waiting_list_priority_override: null // Explicitly set to null to avoid constraint violation
         })
         .select()
         .single();
