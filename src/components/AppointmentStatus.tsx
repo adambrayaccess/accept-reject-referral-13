@@ -36,10 +36,10 @@ const AppointmentStatus = ({ referralId }: AppointmentStatusProps) => {
             </div>
             <Button 
               onClick={handleBookNow}
-              className="text-white hover:bg-[#007A7A]/90"
-              style={{ backgroundColor: '#007A7A' }}
+              className="bg-primary hover:bg-primary/90 text-primary-foreground"
             >
-              Book now
+              <Calendar className="mr-2 h-4 w-4" />
+              Book Appointment
             </Button>
           </div>
         </CardContent>
