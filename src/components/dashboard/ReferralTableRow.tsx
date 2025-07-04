@@ -2,7 +2,7 @@
 import { TableCell, TableRow } from '@/components/ui/table';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
-import { ChevronDown, ChevronRight, GripVertical } from 'lucide-react';
+import { ChevronDown, ChevronRight, GripVertical, CircleDot } from 'lucide-react';
 import { format } from 'date-fns';
 import { Referral } from '@/types/referral';
 import { Draggable } from 'react-beautiful-dnd';
@@ -41,7 +41,7 @@ const getStatusText = (referral: Referral) => {
   }
 };
 
-const getStatusTextColor = (referral: Referral) => {
+const getDotColor = (referral: Referral) => {
   if (referral.status === 'accepted' && referral.triageStatus) {
     switch (referral.triageStatus) {
       case 'pre-assessment':
@@ -179,11 +179,16 @@ const ReferralTableRow = ({
             </div>
           </TableCell>
           <TableCell className="p-2">
-            <div 
-              className={`text-sm font-bold ${getStatusTextColor(referral)}`}
-              title={`Status: ${getStatusText(referral)}`}
-            >
-              {getStatusText(referral).toUpperCase()}
+            <div className="relative">
+              <div 
+                className="text-sm font-bold text-muted-foreground"
+                title={`Status: ${getStatusText(referral)}`}
+              >
+                {getStatusText(referral).toUpperCase()}
+              </div>
+              <CircleDot 
+                className={`absolute -top-1 -right-1 h-2 w-2 ${getDotColor(referral)}`}
+              />
             </div>
           </TableCell>
           <TableCell className="p-2">
