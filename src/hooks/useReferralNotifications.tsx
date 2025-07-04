@@ -8,6 +8,27 @@ export const useReferralNotifications = () => {
   const { toast } = useToast();
   const navigate = useNavigate();
 
+  // Function to fetch patient name by ID
+  const fetchPatientName = async (patientId: string): Promise<string> => {
+    try {
+      const { data: patient, error } = await supabase
+        .from('patients')
+        .select('name')
+        .eq('id', patientId)
+        .single();
+
+      if (error) {
+        console.error('Error fetching patient:', error);
+        return 'Unknown Patient';
+      }
+
+      return patient.name || 'Unknown Patient';
+    } catch (error) {
+      console.error('Error fetching patient name:', error);
+      return 'Unknown Patient';
+    }
+  };
+
   useEffect(() => {
     const channel = supabase
       .channel('referral-notifications')
@@ -18,12 +39,15 @@ export const useReferralNotifications = () => {
           schema: 'public',
           table: 'referrals'
         },
-        (payload) => {
+        async (payload) => {
           const newReferral = payload.new;
+          
+          // Fetch patient name for the notification
+          const patientName = await fetchPatientName(newReferral.patient_id);
           
           toast({
             title: "New Referral Imported",
-            description: "A new referral has been imported into the system",
+            description: `A new referral for ${patientName} has been imported into the system`,
             action: (
               <ToastAction
                 altText="View referral"
