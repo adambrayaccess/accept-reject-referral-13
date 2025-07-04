@@ -179,6 +179,12 @@ const ReferralTableRow = ({
             </div>
           </TableCell>
           <TableCell className="p-2">
+            <ReferralSourceBadge referral={referral} />
+          </TableCell>
+          <TableCell className="p-2">
+            <ReferralTypeBadge referral={referral} />
+          </TableCell>
+          <TableCell className="p-2">
             <div className="relative">
               <div 
                 className="text-sm font-bold text-muted-foreground"
@@ -187,15 +193,9 @@ const ReferralTableRow = ({
                 {getStatusText(referral).toUpperCase()}
               </div>
               <CircleDot 
-                className={`absolute -top-1 -right-1 h-2 w-2 ${getDotColor(referral)}`}
+                className={`absolute -top-1 -right-1 h-2 w-2 ${getDotColor(referral)} fill-current`}
               />
             </div>
-          </TableCell>
-          <TableCell className="p-2">
-            <ReferralSourceBadge referral={referral} />
-          </TableCell>
-          <TableCell className="p-2">
-            <ReferralTypeBadge referral={referral} />
           </TableCell>
           <TableCell className="p-2">
             <ChevronRight className="h-3 w-3 text-muted-foreground" />
