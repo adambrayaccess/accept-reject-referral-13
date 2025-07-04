@@ -81,6 +81,8 @@ export interface Referral {
   originatingSpecialty?: string;
   // Originating team
   originatingTeam?: string;
+  // Referral source
+  referralSource?: string;
 }
 
 // FHIR-compliant Practitioner interface

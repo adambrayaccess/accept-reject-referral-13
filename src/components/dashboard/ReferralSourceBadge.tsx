@@ -7,7 +7,12 @@ interface ReferralSourceBadgeProps {
 }
 
 const getSourceText = (referral: Referral) => {
-  // Based on referrer organization or default to GP
+  // Use the new referral_source field from database, fallback to organization logic
+  if (referral.referralSource) {
+    return referral.referralSource;
+  }
+  
+  // Fallback to organization-based logic for any missed data
   if (referral.referrer.organization) {
     if (referral.referrer.organization.toLowerCase().includes('hospital')) {
       return 'Hospital';

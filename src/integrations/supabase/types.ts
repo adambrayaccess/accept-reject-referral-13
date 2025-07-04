@@ -1248,6 +1248,7 @@ export type Database = {
           reason: string
           reasonable_code_code: string | null
           reasonable_code_display: string | null
+          referral_source: string | null
           referral_type: string | null
           referrer_id: string
           requester_reference: string | null
@@ -1304,6 +1305,7 @@ export type Database = {
           reason: string
           reasonable_code_code?: string | null
           reasonable_code_display?: string | null
+          referral_source?: string | null
           referral_type?: string | null
           referrer_id: string
           requester_reference?: string | null
@@ -1360,6 +1362,7 @@ export type Database = {
           reason?: string
           reasonable_code_code?: string | null
           reasonable_code_display?: string | null
+          referral_source?: string | null
           referral_type?: string | null
           referrer_id?: string
           requester_reference?: string | null
