@@ -20,6 +20,12 @@ interface WaitingListViewWorkspaceProps {
 
 const WaitingListViewWorkspace = ({ referral, onStatusChange, onSuggestionApplied }: WaitingListViewWorkspaceProps) => {
   const [isAddNoteOpen, setIsAddNoteOpen] = useState(false);
+  const [refreshTrigger, setRefreshTrigger] = useState(0);
+
+  const handleStatusChange = () => {
+    setRefreshTrigger(prev => prev + 1);
+    onStatusChange();
+  };
 
   const handleTagsUpdated = () => {
     // Refresh parent component to show updated tags
@@ -84,7 +90,7 @@ const WaitingListViewWorkspace = ({ referral, onStatusChange, onSuggestionApplie
           </CardTitle>
         </CardHeader>
         <CardContent className="pt-0">
-          <WaitingListActions referral={referral} onStatusChange={onStatusChange} />
+          <WaitingListActions referral={referral} onStatusChange={handleStatusChange} />
         </CardContent>
       </Card>
 
@@ -102,7 +108,7 @@ const WaitingListViewWorkspace = ({ referral, onStatusChange, onSuggestionApplie
       </Card>
 
       {/* Inpatient History - New component above clinical tags */}
-      <InpatientHistory patientId={referral.patient.id} />
+      <InpatientHistory patientId={referral.patient.id} refreshTrigger={refreshTrigger} />
 
       <ReferralTagging 
         referral={referral}

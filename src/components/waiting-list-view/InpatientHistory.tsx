@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { ChevronDown, ChevronRight, BedDouble, Calendar, MapPin, Activity } from 'lucide-react';
@@ -6,55 +6,33 @@ import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/component
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import { format } from 'date-fns';
-
-interface InpatientAdmission {
-  id: string;
-  ward: string;
-  bed: string;
-  bay?: string;
-  admissionDateTime: string;
-  admissionReason: string;
-  currentStatus: 'Active' | 'Discharged' | 'Transferred';
-  dischargeDateTime?: string;
-  consultant?: string;
-  specialty?: string;
-}
+import { getInpatientAdmissionsByPatientId, type InpatientAdmission } from '@/services/inpatientService';
 
 interface InpatientHistoryProps {
   patientId: string;
+  refreshTrigger?: number;
 }
 
-// Mock data - in real implementation, this would come from a database query
-const mockInpatientData: InpatientAdmission[] = [
-  {
-    id: '1',
-    ward: 'Cardiology Ward A',
-    bed: 'Bed 12',
-    bay: 'Bay 3',
-    admissionDateTime: '2024-07-01T14:30:00Z',
-    admissionReason: 'Chest pain investigation',
-    currentStatus: 'Active',
-    consultant: 'Dr. Smith',
-    specialty: 'Cardiology'
-  },
-  {
-    id: '2',
-    ward: 'Emergency Department',
-    bed: 'Bay 5',
-    admissionDateTime: '2024-06-15T09:15:00Z',
-    admissionReason: 'Acute shortness of breath',
-    currentStatus: 'Discharged',
-    dischargeDateTime: '2024-06-16T16:45:00Z',
-    consultant: 'Dr. Johnson',
-    specialty: 'Emergency Medicine'
-  }
-];
-
-const InpatientHistory = ({ patientId }: InpatientHistoryProps) => {
+const InpatientHistory = ({ patientId, refreshTrigger }: InpatientHistoryProps) => {
   const [isExpanded, setIsExpanded] = useState(false);
-  
-  // In real implementation, you would fetch data based on patientId
-  const admissions = mockInpatientData;
+  const [admissions, setAdmissions] = useState<InpatientAdmission[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchAdmissions = async () => {
+      setIsLoading(true);
+      try {
+        const data = await getInpatientAdmissionsByPatientId(patientId);
+        setAdmissions(data);
+      } catch (error) {
+        console.error('Error fetching inpatient admissions:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchAdmissions();
+  }, [patientId, refreshTrigger]);
 
   const getStatusBadgeVariant = (status: string) => {
     switch (status) {
@@ -97,7 +75,11 @@ const InpatientHistory = ({ patientId }: InpatientHistoryProps) => {
         
         <CollapsibleContent>
           <CardContent className="pt-0">
-            {admissions.length === 0 ? (
+            {isLoading ? (
+              <p className="text-sm text-muted-foreground text-center py-4">
+                Loading admission history...
+              </p>
+            ) : admissions.length === 0 ? (
               <p className="text-sm text-muted-foreground text-center py-4">
                 No inpatient admission history found
               </p>
@@ -108,9 +90,9 @@ const InpatientHistory = ({ patientId }: InpatientHistoryProps) => {
                     <div className="space-y-3">
                       {/* Status and Location */}
                       <div className="flex items-center justify-between">
-                        <Badge variant={getStatusBadgeVariant(admission.currentStatus)}>
+                        <Badge variant={getStatusBadgeVariant(admission.current_status)}>
                           <Activity className="h-3 w-3 mr-1" />
-                          {admission.currentStatus}
+                          {admission.current_status}
                         </Badge>
                         <div className="text-sm text-muted-foreground">
                           {admission.specialty}
@@ -121,12 +103,12 @@ const InpatientHistory = ({ patientId }: InpatientHistoryProps) => {
                       <div className="grid grid-cols-1 gap-2 text-sm">
                         <div className="flex items-center gap-2">
                           <MapPin className="h-4 w-4 text-muted-foreground" />
-                          <span className="font-medium">{admission.ward}</span>
+                          <span className="font-medium">{admission.ward_name}</span>
                         </div>
                         <div className="flex items-center gap-2 ml-6">
                           <span className="text-muted-foreground">Location:</span>
                           <span>
-                            {admission.bed}{admission.bay && `, ${admission.bay}`}
+                            {admission.bed_number || 'Not assigned'}{admission.bay_number && `, ${admission.bay_number}`}
                           </span>
                         </div>
                       </div>
@@ -138,17 +120,17 @@ const InpatientHistory = ({ patientId }: InpatientHistoryProps) => {
                           <div>
                             <div className="font-medium">Admitted:</div>
                             <div className="text-muted-foreground">
-                              {format(new Date(admission.admissionDateTime), 'dd MMM yyyy, HH:mm')}
+                              {format(new Date(admission.admission_datetime), 'dd MMM yyyy, HH:mm')}
                             </div>
                           </div>
                         </div>
 
-                        {admission.dischargeDateTime && (
+                        {admission.discharge_datetime && (
                           <div className="flex items-start gap-2 ml-6">
                             <div>
                               <div className="font-medium">Discharged:</div>
                               <div className="text-muted-foreground">
-                                {format(new Date(admission.dischargeDateTime), 'dd MMM yyyy, HH:mm')}
+                                {format(new Date(admission.discharge_datetime), 'dd MMM yyyy, HH:mm')}
                               </div>
                             </div>
                           </div>
@@ -157,7 +139,7 @@ const InpatientHistory = ({ patientId }: InpatientHistoryProps) => {
                         <div className="border-l-2 border-muted pl-4 ml-2">
                           <div className="font-medium">Reason:</div>
                           <div className="text-muted-foreground">
-                            {admission.admissionReason}
+                            {admission.admission_reason}
                           </div>
                         </div>
 

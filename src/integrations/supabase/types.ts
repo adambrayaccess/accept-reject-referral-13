@@ -734,6 +734,63 @@ export type Database = {
           },
         ]
       }
+      inpatient_admissions: {
+        Row: {
+          admission_datetime: string
+          admission_reason: string
+          admitted_by: string
+          bay_number: string | null
+          bed_number: string | null
+          consultant: string | null
+          created_at: string
+          current_status: string
+          discharge_datetime: string | null
+          id: string
+          notes: string | null
+          patient_id: string
+          referral_id: string | null
+          specialty: string | null
+          updated_at: string
+          ward_name: string
+        }
+        Insert: {
+          admission_datetime?: string
+          admission_reason: string
+          admitted_by: string
+          bay_number?: string | null
+          bed_number?: string | null
+          consultant?: string | null
+          created_at?: string
+          current_status?: string
+          discharge_datetime?: string | null
+          id?: string
+          notes?: string | null
+          patient_id: string
+          referral_id?: string | null
+          specialty?: string | null
+          updated_at?: string
+          ward_name: string
+        }
+        Update: {
+          admission_datetime?: string
+          admission_reason?: string
+          admitted_by?: string
+          bay_number?: string | null
+          bed_number?: string | null
+          consultant?: string | null
+          created_at?: string
+          current_status?: string
+          discharge_datetime?: string | null
+          id?: string
+          notes?: string | null
+          patient_id?: string
+          referral_id?: string | null
+          specialty?: string | null
+          updated_at?: string
+          ward_name?: string
+        }
+        Relationships: []
+      }
       medications: {
         Row: {
           created_at: string | null

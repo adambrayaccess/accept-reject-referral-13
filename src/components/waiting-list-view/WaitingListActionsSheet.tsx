@@ -8,6 +8,7 @@ import { ArrowRightLeft, UserX, BedDouble } from 'lucide-react';
 import { Referral } from '@/types/referral';
 import { useToast } from '@/hooks/use-toast';
 import { specialties } from '@/data/specialtyOptions';
+import { createInpatientAdmission } from '@/services/inpatientService';
 
 interface WaitingListActionsSheetProps {
   referral: Referral;
@@ -65,21 +66,36 @@ const WaitingListActionsSheet = ({ referral, open, onOpenChange, onStatusChange 
 
     setIsSubmitting(true);
     try {
-      // Mock implementation - in real app this would call appropriate services
-      await new Promise(resolve => setTimeout(resolve, 1000));
-
       let successMessage = "";
       
       switch (selectedAction) {
         case 'transfer':
+          // Mock implementation - transfer logic would go here
+          await new Promise(resolve => setTimeout(resolve, 1000));
           const specialty = specialties.find(s => s.id === selectedSpecialty);
           successMessage = `Patient has been transferred to ${specialty?.name} waiting list.`;
           break;
         case 'discharge':
+          // Mock implementation - discharge logic would go here
+          await new Promise(resolve => setTimeout(resolve, 1000));
           successMessage = `Patient has been discharged from the waiting list.`;
           break;
         case 'admit':
           const ward = availableWards.find(w => w.id === selectedWard);
+          const admissionResult = await createInpatientAdmission({
+            patient_id: referral.patient.id,
+            referral_id: referral.id,
+            ward_name: ward?.name || '',
+            admission_reason: `Admitted from ${referral.specialty} waiting list`,
+            specialty: referral.specialty,
+            notes: notes || undefined,
+            admitted_by: 'Current User' // In real app, get from auth context
+          });
+          
+          if (!admissionResult) {
+            throw new Error('Failed to create admission record');
+          }
+          
           successMessage = `Patient has been admitted to ${ward?.name}.`;
           break;
       }
