@@ -109,7 +109,7 @@ const Dashboard = () => {
         />
 
         <div className="px-6">
-          <StatisticsBar referrals={filteredReferrals} />
+          <StatisticsBar referrals={filteredReferrals} selectedSpecialties={selectedSpecialties} />
         </div>
 
         <div className="px-6 space-y-6">

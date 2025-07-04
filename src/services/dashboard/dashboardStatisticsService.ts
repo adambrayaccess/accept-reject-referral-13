@@ -1,5 +1,6 @@
 import { Referral } from '@/types/referral';
 import { subDays, isAfter, addDays } from 'date-fns';
+import { supabase } from '@/integrations/supabase/client';
 
 export interface DashboardStatistic {
   title: string;
@@ -12,7 +13,41 @@ export interface DashboardStatistic {
   valueColor: string;
 }
 
-export const calculateDashboardStatistics = (referrals: Referral[]): DashboardStatistic[] => {
+// Function to fetch upcoming appointments from the database
+const fetchUpcomingAppointments = async (next7Days: Date, selectedSpecialties: string[] = []): Promise<number> => {
+  try {
+    let query = supabase
+      .from('appointments')
+      .select(`
+        id,
+        appointment_date,
+        status,
+        referrals!inner(specialty)
+      `)
+      .gte('appointment_date', new Date().toISOString().split('T')[0])
+      .lte('appointment_date', next7Days.toISOString().split('T')[0])
+      .neq('status', 'cancelled');
+
+    // Filter by specialty if provided
+    if (selectedSpecialties.length > 0) {
+      query = query.in('referrals.specialty', selectedSpecialties);
+    }
+
+    const { data, error } = await query;
+
+    if (error) {
+      console.error('Error fetching appointments:', error);
+      return 0;
+    }
+
+    return data?.length || 0;
+  } catch (error) {
+    console.error('Error fetching upcoming appointments:', error);
+    return 0;
+  }
+};
+
+export const calculateDashboardStatistics = async (referrals: Referral[], selectedSpecialties: string[] = []): Promise<DashboardStatistic[]> => {
   const now = new Date();
   const last7Days = subDays(now, 7);
   const next7Days = addDays(now, 7);
@@ -38,12 +73,8 @@ export const calculateDashboardStatistics = (referrals: Referral[]): DashboardSt
     ref.status === 'accepted' && ref.triageStatus === 'assessed'
   ).length;
 
-  // Calculate upcoming appointments in next 7 days
-  const upcomingAppointments = referrals.filter(ref => {
-    if (!ref.appointmentDetails?.appointmentDate) return false;
-    const appointmentDate = new Date(ref.appointmentDetails.appointmentDate);
-    return appointmentDate >= now && appointmentDate <= next7Days;
-  }).length;
+  // Fetch upcoming appointments directly from the appointments table
+  const upcomingAppointments = await fetchUpcomingAppointments(next7Days, selectedSpecialties);
 
   // Calculate referrals on waiting list
   const onWaitingList = referrals.filter(ref => 
