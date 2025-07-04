@@ -7,10 +7,12 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { FilePlus, ChevronDown, Sparkles, FileText } from 'lucide-react';
+import { FilePlus, ChevronDown, Sparkles, FileText, TestTube } from 'lucide-react';
 import CreateReferralModal from '@/components/CreateReferralModal';
 import AutoReferralModal from '@/components/AutoReferralModal';
 import { Referral } from '@/types/referral';
+import { supabase } from '@/integrations/supabase/client';
+import { useToast } from '@/hooks/use-toast';
 
 interface CreateReferralDropdownProps {
   onReferralCreated: (referral: Partial<Referral>) => void;
@@ -19,6 +21,44 @@ interface CreateReferralDropdownProps {
 const CreateReferralDropdown = ({ onReferralCreated }: CreateReferralDropdownProps) => {
   const [isManualModalOpen, setIsManualModalOpen] = useState(false);
   const [isAutoModalOpen, setIsAutoModalOpen] = useState(false);
+  const { toast } = useToast();
+
+  const createTestReferral = async () => {
+    try {
+      // Create a test referral to trigger the notification
+      const { data, error } = await supabase
+        .from('referrals')
+        .insert({
+          ubrn: `TEST-${Date.now()}`,
+          specialty: 'Test Specialty',
+          reason: 'Test notification system',
+          patient_id: '00000000-0000-0000-0000-000000000000', // placeholder
+          referrer_id: '00000000-0000-0000-0000-000000000000', // placeholder
+          referral_source: 'Test',
+          waiting_list_priority_override: null // Explicitly set to null to avoid constraint violation
+        })
+        .select()
+        .single();
+
+      if (error) {
+        toast({
+          title: "Error",
+          description: "Failed to create test referral",
+          variant: "destructive"
+        });
+        console.error('Error creating test referral:', error);
+      } else {
+        toast({
+          title: "Test referral created",
+          description: "A notification should appear for the new referral"
+        });
+        // Refresh the referrals list if there's a callback
+        onReferralCreated(data);
+      }
+    } catch (err) {
+      console.error('Unexpected error:', err);
+    }
+  };
 
   return (
     <>
@@ -49,6 +89,14 @@ const CreateReferralDropdown = ({ onReferralCreated }: CreateReferralDropdownPro
             <Sparkles className="mr-2 h-4 w-4 text-purple-600" />
             <span className="font-medium">Add Auto Referral</span>
             <span className="ml-auto text-xs text-purple-600 font-semibold">AI-Powered</span>
+          </DropdownMenuItem>
+          <DropdownMenuItem 
+            onClick={createTestReferral}
+            className="text-orange-700 hover:bg-orange-50 focus:bg-orange-50"
+          >
+            <TestTube className="mr-2 h-4 w-4 text-orange-600" />
+            Create Test Referral
+            <span className="ml-auto text-xs text-orange-600">For Testing</span>
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
