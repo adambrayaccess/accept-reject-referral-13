@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -10,13 +9,13 @@ import { SpecialtyStats, OverallStats } from '@/hooks/useAdminStatistics';
 import { AdminAIResponse, AdminAISuggestion, generateAdminAISuggestions } from '@/services/adminAIService';
 import { useToast } from '@/hooks/use-toast';
 
-interface AdminAICopilotProps {
+interface AdminAICopilotPanelProps {
   referrals: Referral[];
   overallStats: OverallStats;
   specialtyStats: SpecialtyStats[];
 }
 
-const AdminAICopilot = ({ referrals, overallStats, specialtyStats }: AdminAICopilotProps) => {
+const AdminAICopilotPanel = ({ referrals, overallStats, specialtyStats }: AdminAICopilotPanelProps) => {
   const [suggestions, setSuggestions] = useState<AdminAIResponse | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [isExpanded, setIsExpanded] = useState(true);
@@ -209,4 +208,4 @@ const AdminAICopilot = ({ referrals, overallStats, specialtyStats }: AdminAICopi
   );
 };
 
-export default AdminAICopilot;
+export default AdminAICopilotPanel;

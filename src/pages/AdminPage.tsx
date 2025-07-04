@@ -9,7 +9,7 @@ import { useToast } from '@/hooks/use-toast';
 import OverallStatsCards from '@/components/admin/OverallStatsCards';
 import SpecialtyBreakdown from '@/components/admin/SpecialtyBreakdown';
 import AdminPageSkeleton from '@/components/admin/AdminPageSkeleton';
-import AdminAICopilot from '@/components/admin/AdminAICopilot';
+import AdminAICopilotButton from '@/components/admin/AdminAICopilotButton';
 import PageHeader from '@/components/PageHeader';
 
 const AdminPage = () => {
@@ -74,19 +74,17 @@ const AdminPage = () => {
             </div>
           </div>
           <div className="flex gap-2">
+            <AdminAICopilotButton 
+              referrals={referrals}
+              overallStats={overallStats}
+              specialtyStats={specialtyStats}
+            />
             <Button onClick={handleRefresh} variant="outline">
               <RefreshCw className="mr-2 h-4 w-4" />
               Refresh Data
             </Button>
           </div>
         </div>
-
-        {/* AI Copilot */}
-        <AdminAICopilot 
-          referrals={referrals}
-          overallStats={overallStats}
-          specialtyStats={specialtyStats}
-        />
 
         {/* Overall Statistics */}
         <OverallStatsCards stats={overallStats} />
