@@ -3,7 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { EnhancedTabs, EnhancedTabsContent, EnhancedTabsList, EnhancedTabsTrigger } from '@/components/ui/enhanced-tabs';
 import { Badge } from '@/components/ui/badge';
 import ReferralPriorityBadge from '@/components/dashboard/ReferralPriorityBadge';
-import RTTPathwayTabContent from '@/components/referral-detail/RTTPathwayTabContent';
+import WaitingListRTTPathwayTabContent from './WaitingListRTTPathwayTabContent';
 import PatientTabContent from '@/components/referral-detail/PatientTabContent';
 import ClinicalTabContent from '@/components/referral-detail/ClinicalTabContent';
 import ReferrerTabContent from '@/components/referral-detail/ReferrerTabContent';
@@ -54,7 +54,7 @@ const WaitingListReferralDetail = ({ referral, relatedReferrals }: WaitingListRe
           </div>
           
           <EnhancedTabsContent value="rtt-pathway" className="space-y-3">
-            <RTTPathwayTabContent referral={referral} />
+            <WaitingListRTTPathwayTabContent referral={referral} />
           </EnhancedTabsContent>
           
           <EnhancedTabsContent value="patient" className="space-y-3">

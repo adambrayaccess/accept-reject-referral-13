@@ -1,18 +1,20 @@
-
 import { Referral } from '@/types/referral';
 import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
-import { Clock, Calendar, AlertTriangle, CheckCircle, Target, MapPin } from 'lucide-react';
+import { Clock, Calendar, AlertTriangle, CheckCircle, Target, MapPin, ExternalLink } from 'lucide-react';
 import { format, differenceInDays } from 'date-fns';
+import { useNavigate } from 'react-router-dom';
 import RTTPathwayBadge from '@/components/cohort/RTTPathwayBadge';
 import CarePathwayBadge from '@/components/cohort/CarePathwayBadge';
 import { calculateRTTPathway } from '@/utils/rttPathwayUtils';
 
-interface RTTPathwayTabContentProps {
+interface WaitingListRTTPathwayTabContentProps {
   referral: Referral;
 }
 
-const RTTPathwayTabContent = ({ referral }: RTTPathwayTabContentProps) => {
+const WaitingListRTTPathwayTabContent = ({ referral }: WaitingListRTTPathwayTabContentProps) => {
+  const navigate = useNavigate();
   // Calculate RTT pathway if not present
   const rttPathway = referral.rttPathway || calculateRTTPathway(referral.created);
   
@@ -165,9 +167,20 @@ const RTTPathwayTabContent = ({ referral }: RTTPathwayTabContentProps) => {
         <>
           <Separator />
           <div className="space-y-3">
-            <div className="flex items-center gap-2">
-              <Calendar className="w-4 h-4 text-muted-foreground" />
-              <h4 className="text-sm font-medium">Triage Status</h4>
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <Calendar className="w-4 h-4 text-muted-foreground" />
+                <h4 className="text-sm font-medium">Triage Status</h4>
+              </div>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => navigate(`/referral/${referral.id}`)}
+                className="flex items-center gap-1 text-xs"
+              >
+                <ExternalLink className="w-3 h-3" />
+                View Referral
+              </Button>
             </div>
             
             <div>
@@ -182,4 +195,4 @@ const RTTPathwayTabContent = ({ referral }: RTTPathwayTabContentProps) => {
   );
 };
 
-export default RTTPathwayTabContent;
+export default WaitingListRTTPathwayTabContent;
