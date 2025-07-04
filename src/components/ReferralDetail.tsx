@@ -36,9 +36,12 @@ const ReferralDetail = ({ referral, relatedReferrals }: ReferralDetailProps) => 
         </div>
       </CardHeader>
       <CardContent className="pt-0">
-        <EnhancedTabs defaultValue="patient">
+        <EnhancedTabs defaultValue="rtt-pathway">
           <div className="mb-3">
             <EnhancedTabsList variant="grid" size="md">
+              <EnhancedTabsTrigger value="rtt-pathway" variant="grid" size="md">
+                RTT/Pathway
+              </EnhancedTabsTrigger>
               <EnhancedTabsTrigger value="patient" variant="grid" size="md">
                 Patient
               </EnhancedTabsTrigger>
@@ -48,11 +51,12 @@ const ReferralDetail = ({ referral, relatedReferrals }: ReferralDetailProps) => 
               <EnhancedTabsTrigger value="referrer" variant="grid" size="md">
                 Referrer
               </EnhancedTabsTrigger>
-              <EnhancedTabsTrigger value="rtt-pathway" variant="grid" size="md">
-                RTT/Pathway
-              </EnhancedTabsTrigger>
             </EnhancedTabsList>
           </div>
+          
+          <EnhancedTabsContent value="rtt-pathway" className="space-y-3">
+            <RTTPathwayTabContent referral={referral} />
+          </EnhancedTabsContent>
           
           <EnhancedTabsContent value="patient" className="space-y-3">
             <PatientTabContent referral={referral} relatedReferrals={relatedReferrals} />
@@ -64,10 +68,6 @@ const ReferralDetail = ({ referral, relatedReferrals }: ReferralDetailProps) => 
           
           <EnhancedTabsContent value="referrer" className="space-y-3">
             <ReferrerTabContent referral={referral} />
-          </EnhancedTabsContent>
-          
-          <EnhancedTabsContent value="rtt-pathway" className="space-y-3">
-            <RTTPathwayTabContent referral={referral} />
           </EnhancedTabsContent>
         </EnhancedTabs>
       </CardContent>
