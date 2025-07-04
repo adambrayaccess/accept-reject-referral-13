@@ -1225,6 +1225,7 @@ export type Database = {
           created_at: string | null
           diagnosis: string | null
           display_order: number | null
+          enquiry_number: string | null
           external_id: string | null
           external_reference: string | null
           fhir_id: string | null
@@ -1251,6 +1252,7 @@ export type Database = {
           referral_source: string | null
           referral_type: string | null
           referrer_id: string
+          referring_hospital: string | null
           referring_org_code: string | null
           requester_reference: string | null
           service: string | null
@@ -1283,6 +1285,7 @@ export type Database = {
           created_at?: string | null
           diagnosis?: string | null
           display_order?: number | null
+          enquiry_number?: string | null
           external_id?: string | null
           external_reference?: string | null
           fhir_id?: string | null
@@ -1309,6 +1312,7 @@ export type Database = {
           referral_source?: string | null
           referral_type?: string | null
           referrer_id: string
+          referring_hospital?: string | null
           referring_org_code?: string | null
           requester_reference?: string | null
           service?: string | null
@@ -1341,6 +1345,7 @@ export type Database = {
           created_at?: string | null
           diagnosis?: string | null
           display_order?: number | null
+          enquiry_number?: string | null
           external_id?: string | null
           external_reference?: string | null
           fhir_id?: string | null
@@ -1367,6 +1372,7 @@ export type Database = {
           referral_source?: string | null
           referral_type?: string | null
           referrer_id?: string
+          referring_hospital?: string | null
           referring_org_code?: string | null
           requester_reference?: string | null
           service?: string | null

@@ -109,6 +109,20 @@ const RioReferralSheetContent = ({ referralId }: RioReferralSheetContentProps) =
               </div>
             )}
             
+            {referral.referringHospital && (
+              <div>
+                <div className="text-xs font-medium text-muted-foreground">Referring Hospital</div>
+                <div className="font-medium">{referral.referringHospital}</div>
+              </div>
+            )}
+            
+            {referral.enquiryNumber && (
+              <div>
+                <div className="text-xs font-medium text-muted-foreground">Enquiry Number</div>
+                <div className="font-medium">{referral.enquiryNumber}</div>
+              </div>
+            )}
+            
             <div>
               <div className="text-xs font-medium text-muted-foreground">Date Referred</div>
               <div className="font-medium">{format(new Date(referral.created), 'dd MMM yyyy, HH:mm')}</div>
