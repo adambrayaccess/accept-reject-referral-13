@@ -1,38 +1,37 @@
 
 import { Referral } from '@/types/referral';
-import { Badge } from '@/components/ui/badge';
 
 interface ReferralStatusBadgeProps {
   referral: Referral;
 }
 
-const getStatusConfig = (referral: Referral) => {
+const getStatusTextConfig = (referral: Referral) => {
   if (referral.status === 'accepted' && referral.triageStatus) {
     switch (referral.triageStatus) {
       case 'pre-assessment':
         return {
           text: 'Pre-Assess',
-          className: 'bg-warning text-warning-foreground'
+          colorClass: 'text-blue-600' // warning color
         };
       case 'assessed':
         return {
           text: 'Assessed',
-          className: 'bg-purple text-purple-foreground'
+          colorClass: 'text-[#973060]' // purple color
         };
       case 'waiting-list':
         return {
           text: 'Waiting List',
-          className: 'bg-waiting-list text-waiting-list-foreground'
+          colorClass: 'text-blue-700' // waiting-list color
         };
       case 'refer-to-another-specialty':
         return {
           text: 'Refer on',
-          className: 'bg-secondary text-secondary-foreground'
+          colorClass: 'text-teal-600' // secondary color
         };
       default:
         return {
           text: referral.triageStatus,
-          className: 'bg-muted text-muted-foreground'
+          colorClass: 'text-gray-600' // muted color
         };
     }
   }
@@ -41,33 +40,33 @@ const getStatusConfig = (referral: Referral) => {
     case 'new':
       return {
         text: 'New',
-        className: 'bg-accent text-accent-foreground'
+        colorClass: 'text-teal-700' // accent color
       };
     case 'accepted':
       return {
         text: 'Accepted',
-        className: 'bg-success text-success-foreground'
+        colorClass: 'text-green-600' // success color
       };
     case 'rejected':
       return {
         text: 'Rejected',
-        className: 'bg-destructive text-destructive-foreground'
+        colorClass: 'text-red-600' // destructive color
       };
     default:
       return {
         text: referral.status.charAt(0).toUpperCase() + referral.status.slice(1),
-        className: 'bg-muted text-muted-foreground'
+        colorClass: 'text-gray-600' // muted color
       };
   }
 };
 
 const ReferralStatusBadge = ({ referral }: ReferralStatusBadgeProps) => {
-  const { text, className } = getStatusConfig(referral);
+  const { text, colorClass } = getStatusTextConfig(referral);
   
   return (
-    <Badge variant="secondary" className={className}>
+    <div className={`text-sm font-bold ${colorClass}`}>
       {text.toUpperCase()}
-    </Badge>
+    </div>
   );
 };
 

@@ -1,10 +1,7 @@
 
-import { Badge } from '@/components/ui/badge';
 import { Referral } from '@/types/referral';
 import { cn } from '@/lib/utils';
 import { 
-  getPriorityVariant, 
-  getPriorityCustomStyles, 
   getPriorityLabel 
 } from '@/lib/priorityUtils';
 
@@ -14,18 +11,27 @@ interface ReferralPriorityBadgeProps {
   size?: 'sm' | 'default';
 }
 
+const getPriorityTextColor = (priority: Referral['priority']) => {
+  switch (priority) {
+    case 'emergency':
+      return 'text-red-600'; // destructive color
+    case 'urgent':
+      return 'text-[#973060]'; // purple color
+    case 'routine':
+      return 'text-teal-600'; // secondary/teal color
+    default:
+      return 'text-gray-600';
+  }
+};
+
 const ReferralPriorityBadge = ({ priority, className, size = 'default' }: ReferralPriorityBadgeProps) => {
-  const variant = getPriorityVariant(priority);
-  const customStyles = getPriorityCustomStyles(priority);
-  const sizeClasses = size === 'sm' ? 'text-xs' : '';
+  const colorClass = getPriorityTextColor(priority);
+  const sizeClasses = size === 'sm' ? 'text-xs' : 'text-sm';
 
   return (
-    <Badge 
-      variant={variant}
-      className={cn(customStyles, sizeClasses, className)}
-    >
+    <div className={cn('font-bold', colorClass, sizeClasses, className)}>
       {getPriorityLabel(priority)}
-    </Badge>
+    </div>
   );
 };
 
