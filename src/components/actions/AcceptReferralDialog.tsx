@@ -1,9 +1,10 @@
 import { useState, useEffect } from 'react';
-import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from '@/components/ui/sheet';
+import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { CheckCircle } from 'lucide-react';
 import { Referral, TriageStatus } from '@/types/referral';
 import { updateReferralStatus, sendHL7Message } from '@/services/referralService';
 import { useToast } from '@/hooks/use-toast';
@@ -219,9 +220,15 @@ const AcceptReferralDialog = ({ referral, onStatusChange, open, onOpenChange }: 
 
   return (
     <Sheet open={isOpen} onOpenChange={setIsOpen}>
+      <SheetTrigger asChild>
+        <Button className="w-full bg-success hover:bg-success/90">
+          <CheckCircle className="mr-2 h-4 w-4" />
+          Accept Referral
+        </Button>
+      </SheetTrigger>
       <SheetContent className="w-full sm:max-w-3xl lg:max-w-4xl">
         <SheetHeader className="pb-4">
-          <SheetTitle className="text-2xl">Referral Triage</SheetTitle>
+          <SheetTitle className="text-2xl">Accept Referral</SheetTitle>
           <SheetDescription className="text-base">
             Please allocate this referral to a team and set status for {referral.patient.name}
           </SheetDescription>
