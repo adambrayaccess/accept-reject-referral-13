@@ -11,10 +11,14 @@ import { useToast } from '@/hooks/use-toast';
 interface RejectReferralDialogProps {
   referral: Referral;
   onStatusChange: () => void;
+  open?: boolean;
+  onOpenChange?: (open: boolean) => void;
 }
 
-const RejectReferralDialog = ({ referral, onStatusChange }: RejectReferralDialogProps) => {
-  const [isOpen, setIsOpen] = useState(false);
+const RejectReferralDialog = ({ referral, onStatusChange, open, onOpenChange }: RejectReferralDialogProps) => {
+  const [internalOpen, setInternalOpen] = useState(false);
+  const isOpen = open !== undefined ? open : internalOpen;
+  const setIsOpen = onOpenChange || setInternalOpen;
   const [rejectNotes, setRejectNotes] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { toast } = useToast();

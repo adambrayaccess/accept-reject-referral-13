@@ -15,6 +15,8 @@ interface ReferralActionsProps {
 
 const ReferralActions = ({ referral, onStatusChange }: ReferralActionsProps) => {
   const [isOpen, setIsOpen] = useState(false);
+  const [showAcceptDialog, setShowAcceptDialog] = useState(false);
+  const [showRejectDialog, setShowRejectDialog] = useState(false);
 
   console.log('ReferralActions rendering with referral:', {
     id: referral.id,
@@ -23,6 +25,20 @@ const ReferralActions = ({ referral, onStatusChange }: ReferralActionsProps) => 
     teamId: referral.teamId,
     assignedHCPId: referral.assignedHCPId
   });
+
+  const handleStatusIndicatorClick = () => {
+    if (referral.status === 'accepted') {
+      setShowAcceptDialog(true);
+    } else if (referral.status === 'rejected') {
+      setShowRejectDialog(true);
+    }
+  };
+
+  const handleDialogStatusChange = () => {
+    setShowAcceptDialog(false);
+    setShowRejectDialog(false);
+    onStatusChange();
+  };
 
   if (referral.status === 'new') {
     return (
@@ -35,30 +51,56 @@ const ReferralActions = ({ referral, onStatusChange }: ReferralActionsProps) => 
 
   if (referral.status === 'accepted') {
     return (
-      <Collapsible open={isOpen} onOpenChange={setIsOpen}>
-        <div className="space-y-4">
-          <CollapsibleTrigger className="w-full group">
-            <div className="flex items-center justify-between w-full gap-2">
-              <div className="flex-1">
-                <ReferralStatusIndicator status={referral.status} />
+      <>
+        <Collapsible open={isOpen} onOpenChange={setIsOpen}>
+          <div className="space-y-4">
+            <CollapsibleTrigger className="w-full group">
+              <div className="flex items-center justify-between w-full gap-2">
+                <div className="flex-1">
+                  <ReferralStatusIndicator 
+                    status={referral.status} 
+                    onClick={handleStatusIndicatorClick}
+                    showExternalLink={true}
+                  />
+                </div>
+                <ChevronDown className={`h-4 w-4 flex-shrink-0 transition-all duration-200 text-muted-foreground group-hover:text-primary group-hover:bg-accent/50 group-hover:rounded-sm group-hover:p-0.5 ${isOpen ? 'rotate-180' : ''}`} />
               </div>
-              <ChevronDown className={`h-4 w-4 flex-shrink-0 transition-all duration-200 text-muted-foreground group-hover:text-primary group-hover:bg-accent/50 group-hover:rounded-sm group-hover:p-0.5 ${isOpen ? 'rotate-180' : ''}`} />
-            </div>
-          </CollapsibleTrigger>
-          <CollapsibleContent>
-            <TriageStatusUpdate 
-              referralId={referral.id}
-              currentStatus={referral.triageStatus}
-              specialty={referral.specialty}
-              onStatusChange={onStatusChange}
-            />
-          </CollapsibleContent>
-        </div>
-      </Collapsible>
+            </CollapsibleTrigger>
+            <CollapsibleContent>
+              <TriageStatusUpdate 
+                referralId={referral.id}
+                currentStatus={referral.triageStatus}
+                specialty={referral.specialty}
+                onStatusChange={onStatusChange}
+              />
+            </CollapsibleContent>
+          </div>
+        </Collapsible>
+        <AcceptReferralDialog 
+          referral={referral} 
+          onStatusChange={handleDialogStatusChange}
+          open={showAcceptDialog}
+          onOpenChange={setShowAcceptDialog}
+        />
+      </>
     );
   }
 
-  return <ReferralStatusIndicator status={referral.status} />;
+  return (
+    <>
+      <ReferralStatusIndicator 
+        status={referral.status} 
+        onClick={handleStatusIndicatorClick}
+        showExternalLink={true}
+      />
+      <RejectReferralDialog 
+        referral={referral} 
+        onStatusChange={handleDialogStatusChange}
+        open={showRejectDialog}
+        onOpenChange={setShowRejectDialog}
+      />
+    </>
+  );
 };
 
 export default ReferralActions;

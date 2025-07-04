@@ -16,6 +16,8 @@ import { getSpecialtyIdByName } from '@/utils/legacySpecialtyUtils';
 interface AcceptReferralDialogProps {
   referral: Referral;
   onStatusChange: () => void;
+  open?: boolean;
+  onOpenChange?: (open: boolean) => void;
 }
 
 const triageStatusOptions: { value: TriageStatus; label: string }[] = [
@@ -26,8 +28,10 @@ const triageStatusOptions: { value: TriageStatus; label: string }[] = [
   { value: 'refer-to-another-specialty', label: 'Refer to Another Specialty' },
 ];
 
-const AcceptReferralDialog = ({ referral, onStatusChange }: AcceptReferralDialogProps) => {
-  const [isOpen, setIsOpen] = useState(false);
+const AcceptReferralDialog = ({ referral, onStatusChange, open, onOpenChange }: AcceptReferralDialogProps) => {
+  const [internalOpen, setInternalOpen] = useState(false);
+  const isOpen = open !== undefined ? open : internalOpen;
+  const setIsOpen = onOpenChange || setInternalOpen;
   const [acceptNotes, setAcceptNotes] = useState('');
   const [selectedProfessional, setSelectedProfessional] = useState<string>('');
   const [selectedSpecialty, setSelectedSpecialty] = useState<string>('');
