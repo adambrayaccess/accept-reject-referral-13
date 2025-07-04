@@ -4,6 +4,7 @@ import ReferralDetail from '@/components/ReferralDetail';
 import MedicalHistory from '@/components/MedicalHistory';
 import ReferralDocuments from '@/components/ReferralDocuments';
 import ReferralWorkspace from '@/components/ReferralWorkspace';
+import ParentReferralInfo from '@/components/sub-referrals/ParentReferralInfo';
 
 interface WaitingListViewContentProps {
   referral: Referral;
@@ -34,6 +35,9 @@ const WaitingListViewContent = ({
               referral={referral} 
               relatedReferrals={relatedReferrals}
             />
+            {referral.isSubReferral && referral.parentReferralId && (
+              <ParentReferralInfo childReferralId={referral.id} />
+            )}
             <MedicalHistory patient={referral.patient} />
             <ReferralDocuments 
               attachments={referral.attachments} 
