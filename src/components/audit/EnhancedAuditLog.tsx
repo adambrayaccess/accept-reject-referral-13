@@ -70,9 +70,9 @@ const EnhancedAuditLog = ({ entries = [], referralId }: EnhancedAuditLogProps) =
     }))
   ];
 
-  // Sort by timestamp
+  // Sort by timestamp (newest to oldest)
   const sortedEntries = combinedEntries.sort((a, b) => 
-    new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime()
+    new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()
   );
 
   // Calculate time differences between entries
