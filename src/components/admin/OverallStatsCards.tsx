@@ -28,7 +28,7 @@ const OverallStatsCards = ({ stats }: OverallStatsCardsProps) => {
         </CardHeader>
         <CardContent>
           <div className="flex items-center gap-2">
-            <Clock className="h-4 w-4 text-blue-500" />
+            <Clock className="h-4 w-4 text-waiting-list" />
             <span className="text-2xl font-bold">{stats.new}</span>
           </div>
         </CardContent>
@@ -40,7 +40,7 @@ const OverallStatsCards = ({ stats }: OverallStatsCardsProps) => {
         </CardHeader>
         <CardContent>
           <div className="flex items-center gap-2">
-            <div className="h-4 w-4 bg-green-500 rounded-full" />
+            <div className="h-4 w-4 bg-success rounded-full" />
             <span className="text-2xl font-bold">{stats.accepted}</span>
           </div>
         </CardContent>
@@ -52,7 +52,7 @@ const OverallStatsCards = ({ stats }: OverallStatsCardsProps) => {
         </CardHeader>
         <CardContent>
           <div className="flex items-center gap-2">
-            <Users className="h-4 w-4 text-orange-500" />
+            <Users className="h-4 w-4 text-warning" />
             <span className="text-2xl font-bold">{stats.waitingList}</span>
           </div>
         </CardContent>
@@ -64,7 +64,7 @@ const OverallStatsCards = ({ stats }: OverallStatsCardsProps) => {
         </CardHeader>
         <CardContent>
           <div className="flex items-center gap-2">
-            <div className="h-4 w-4 bg-red-500 rounded-full" />
+            <div className="h-4 w-4 bg-destructive rounded-full" />
             <span className="text-2xl font-bold">{stats.rejected}</span>
           </div>
         </CardContent>

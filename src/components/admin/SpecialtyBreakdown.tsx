@@ -25,8 +25,8 @@ const SpecialtyBreakdown = ({ specialtyStats, currentSpecialty }: SpecialtyBreak
                 <div className="flex items-center gap-3">
                   {stats.waitingList > 0 && (
                     <div className="text-sm text-muted-foreground">
-                      Avg wait: <span className="font-medium text-orange-600">{stats.averageWaitDays}d</span>
-                      {' '} | Longest: <span className="font-medium text-red-600">{stats.longestWaitDays}d</span>
+                      Avg wait: <span className="font-medium text-warning">{stats.averageWaitDays}d</span>
+                      {' '} | Longest: <span className="font-medium text-destructive">{stats.longestWaitDays}d</span>
                     </div>
                   )}
                   <Badge variant="outline" className="text-lg px-3 py-1">
@@ -36,49 +36,49 @@ const SpecialtyBreakdown = ({ specialtyStats, currentSpecialty }: SpecialtyBreak
               </div>
               
               <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-9 gap-2">
-                <div className="text-center p-2 bg-blue-50 rounded">
+                <div className="text-center p-2 bg-waiting-list/10 border border-waiting-list/20 rounded">
                   <div className="text-sm text-muted-foreground">New</div>
-                  <div className="text-xl font-bold text-blue-600">{stats.new}</div>
+                  <div className="text-xl font-bold text-waiting-list">{stats.new}</div>
                 </div>
                 
-                <div className="text-center p-2 bg-green-50 rounded">
+                <div className="text-center p-2 bg-success/10 border border-success/20 rounded">
                   <div className="text-sm text-muted-foreground">Accepted</div>
-                  <div className="text-xl font-bold text-green-600">{stats.accepted}</div>
+                  <div className="text-xl font-bold text-success">{stats.accepted}</div>
                 </div>
                 
-                <div className="text-center p-2 bg-red-50 rounded">
+                <div className="text-center p-2 bg-destructive/10 border border-destructive/20 rounded">
                   <div className="text-sm text-muted-foreground">Rejected</div>
-                  <div className="text-xl font-bold text-red-600">{stats.rejected}</div>
+                  <div className="text-xl font-bold text-destructive">{stats.rejected}</div>
                 </div>
                 
-                <div className="text-center p-2 bg-purple-50 rounded">
+                <div className="text-center p-2 bg-purple/10 border border-purple/20 rounded">
                   <div className="text-sm text-muted-foreground">Pre-Assessment</div>
-                  <div className="text-xl font-bold text-purple-600">{stats.preAssessment}</div>
+                  <div className="text-xl font-bold text-purple">{stats.preAssessment}</div>
                 </div>
                 
-                <div className="text-center p-2 bg-indigo-50 rounded">
+                <div className="text-center p-2 bg-primary/10 border border-primary/20 rounded">
                   <div className="text-sm text-muted-foreground">Assessed</div>
-                  <div className="text-xl font-bold text-indigo-600">{stats.assessed}</div>
+                  <div className="text-xl font-bold text-primary">{stats.assessed}</div>
                 </div>
                 
-                <div className="text-center p-2 bg-orange-50 rounded">
+                <div className="text-center p-2 bg-warning/10 border border-warning/20 rounded">
                   <div className="text-sm text-muted-foreground">Waiting List</div>
-                  <div className="text-xl font-bold text-orange-600">{stats.waitingList}</div>
+                  <div className="text-xl font-bold text-warning">{stats.waitingList}</div>
                 </div>
                 
-                <div className="text-center p-2 bg-teal-50 rounded">
+                <div className="text-center p-2 bg-secondary border border-secondary rounded">
                   <div className="text-sm text-muted-foreground">Pre-Admission</div>
-                  <div className="text-xl font-bold text-teal-600">{stats.preAdmission}</div>
+                  <div className="text-xl font-bold text-secondary-foreground">{stats.preAdmission}</div>
                 </div>
                 
-                <div className="text-center p-2 bg-yellow-50 rounded">
+                <div className="text-center p-2 bg-accent border border-accent rounded">
                   <div className="text-sm text-muted-foreground">Refer Other</div>
-                  <div className="text-xl font-bold text-yellow-600">{stats.referToOther}</div>
+                  <div className="text-xl font-bold text-accent-foreground">{stats.referToOther}</div>
                 </div>
                 
-                <div className="text-center p-2 bg-gray-50 rounded">
+                <div className="text-center p-2 bg-muted border border-border rounded">
                   <div className="text-sm text-muted-foreground">Progress</div>
-                  <div className="text-xl font-bold text-gray-600">
+                  <div className="text-xl font-bold text-muted-foreground">
                     {Math.round((stats.accepted / stats.total) * 100)}%
                   </div>
                 </div>
