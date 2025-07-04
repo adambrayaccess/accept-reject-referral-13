@@ -170,7 +170,7 @@ const ReferralDetailModal = ({ referralId, isOpen, onClose }: ReferralDetailModa
             
             {/* Appointment Status Section */}
             <Separator />
-            <AppointmentStatus referralId={referral.id} />
+            <AppointmentStatus referral={referral} />
           </div>
         ) : null}
       </DialogContent>
