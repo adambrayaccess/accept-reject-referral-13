@@ -1251,6 +1251,7 @@ export type Database = {
           referral_source: string | null
           referral_type: string | null
           referrer_id: string
+          referring_org_code: string | null
           requester_reference: string | null
           service: string | null
           specialty: string
@@ -1308,6 +1309,7 @@ export type Database = {
           referral_source?: string | null
           referral_type?: string | null
           referrer_id: string
+          referring_org_code?: string | null
           requester_reference?: string | null
           service?: string | null
           specialty: string
@@ -1365,6 +1367,7 @@ export type Database = {
           referral_source?: string | null
           referral_type?: string | null
           referrer_id?: string
+          referring_org_code?: string | null
           requester_reference?: string | null
           service?: string | null
           specialty?: string
