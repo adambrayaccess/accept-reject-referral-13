@@ -1,26 +1,35 @@
 
 import { TableCell } from '@/components/ui/table';
-import { Link } from 'react-router-dom';
+import { Button } from '@/components/ui/button';
 import { Referral } from '@/types/referral';
 
 interface PatientInfoProps {
   referral: Referral;
   isDragDisabled: boolean;
+  onNameClick?: (referral: Referral) => void;
 }
 
-const PatientInfo = ({ referral, isDragDisabled }: PatientInfoProps) => {
+const PatientInfo = ({ referral, isDragDisabled, onNameClick }: PatientInfoProps) => {
+  const handleNameClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (!isDragDisabled && onNameClick) {
+      onNameClick(referral);
+    }
+  };
+
   return (
     <TableCell className="p-2">
       <div className="flex items-center justify-between">
         <div>
-          <Link 
-            to={`/referral/${referral.id}`}
-            className="font-bold underline text-sm"
+          <Button
+            variant="link"
+            className="font-bold underline p-0 h-auto text-sm"
             style={{ color: '#007373' }}
-            onClick={(e) => !isDragDisabled && e.stopPropagation()}
+            onClick={handleNameClick}
+            disabled={isDragDisabled}
           >
             {referral.patient.name}
-          </Link>
+          </Button>
           <div className="text-sm text-muted-foreground font-mono">
             NHS: {referral.patient.nhsNumber}
           </div>

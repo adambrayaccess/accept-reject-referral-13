@@ -4,6 +4,7 @@ import { Referral } from '@/types/referral';
 import { Table, TableBody } from '@/components/ui/table';
 import { DragDropContext, Droppable, DropResult } from 'react-beautiful-dnd';
 import { useToast } from '@/hooks/use-toast';
+import { useNavigate } from 'react-router-dom';
 import WaitingListTableHeader from './WaitingListTableHeader';
 import PatientTableRow from './PatientTableRow';
 import WaitingListLoadingState from './WaitingListLoadingState';
@@ -38,6 +39,7 @@ const WaitingListTable = ({
   const [selectedReferralId, setSelectedReferralId] = useState<string | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { toast } = useToast();
+  const navigate = useNavigate();
 
   if (isLoading) {
     return <WaitingListLoadingState />;
@@ -125,8 +127,7 @@ const WaitingListTable = ({
   };
 
   const handleRowClick = (referral: Referral) => {
-    setSelectedReferralId(referral.id);
-    setIsModalOpen(true);
+    navigate(`/waiting-list/referral/${referral.id}`);
   };
 
   const handleCloseModal = () => {
@@ -156,15 +157,19 @@ const WaitingListTable = ({
                     const isSelected = selectedReferrals.some(r => r.id === referral.id);
 
                     return (
-                      <PatientTableRow
-                        key={referral.id}
-                        referral={referral}
-                        index={index}
-                        isSelected={isSelected}
-                        onSelectReferral={onSelectReferral}
-                        onRowClick={handleRowClick}
-                        isDragDisabled={isReordering}
-                      />
+                    <PatientTableRow
+                      key={referral.id}
+                      referral={referral}
+                      index={index}
+                      isSelected={isSelected}
+                      onSelectReferral={onSelectReferral}
+                      onRowClick={handleRowClick}
+                      onNameClick={(ref) => {
+                        setSelectedReferralId(ref.id);
+                        setIsModalOpen(true);
+                      }}
+                      isDragDisabled={isReordering}
+                    />
                     );
                   })}
                   {provided.placeholder}

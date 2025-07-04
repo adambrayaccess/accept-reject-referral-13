@@ -16,6 +16,7 @@ interface PatientTableRowProps {
   isSelected: boolean;
   onSelectReferral: (referral: Referral) => void;
   onRowClick?: (referral: Referral) => void;
+  onNameClick?: (referral: Referral) => void;
   isDragDisabled?: boolean;
 }
 
@@ -25,6 +26,7 @@ const PatientTableRow = ({
   isSelected,
   onSelectReferral,
   onRowClick,
+  onNameClick,
   isDragDisabled = false
 }: PatientTableRowProps) => {
   const handleCheckboxChange = (e: React.MouseEvent) => {
@@ -35,6 +37,13 @@ const PatientTableRow = ({
   const handleRowClick = () => {
     if (!isDragDisabled && onRowClick) {
       onRowClick(referral);
+    }
+  };
+
+  const handleNameClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (onNameClick) {
+      onNameClick(referral);
     }
   };
 
@@ -76,7 +85,11 @@ const PatientTableRow = ({
               aria-label={`Select referral for ${referral.patient.name}`}
             />
           </TableCell>
-          <PatientInfo referral={referral} isDragDisabled={isDragDisabled} />
+          <PatientInfo 
+            referral={referral} 
+            isDragDisabled={isDragDisabled} 
+            onNameClick={onNameClick}
+          />
           <PatientMetrics referral={referral} />
           <PatientReferralDetails referral={referral} />
           <PatientStatusInfo referral={referral} />

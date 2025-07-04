@@ -5,6 +5,7 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { Badge } from '@/components/ui/badge';
 import { differenceInDays } from 'date-fns';
 import { MapPin, Calendar } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import ReferralPriorityBadge from '@/components/dashboard/ReferralPriorityBadge';
 
 interface CohortGridProps {
@@ -22,6 +23,7 @@ const CohortGrid = ({
   onSelectReferral,
   showTagsOnly = false 
 }: CohortGridProps) => {
+  const navigate = useNavigate();
   if (isLoading) {
     return (
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 py-6">
@@ -70,7 +72,8 @@ const CohortGrid = ({
         return (
           <Card 
             key={referral.id} 
-            className={`overflow-hidden transition-shadow hover:shadow-md ${isSelected ? 'ring-2 ring-primary' : ''}`}
+            className={`overflow-hidden transition-shadow hover:shadow-md cursor-pointer ${isSelected ? 'ring-2 ring-primary' : ''}`}
+            onClick={() => navigate(`/waiting-list/referral/${referral.id}`)}
           >
             <CardContent className="p-0">
               <div className="flex items-center justify-between p-4">
@@ -78,6 +81,7 @@ const CohortGrid = ({
                   <Checkbox 
                     checked={isSelected}
                     onCheckedChange={() => onSelectReferral(referral)}
+                    onClick={(e) => e.stopPropagation()}
                     id={`select-${referral.id}`}
                   />
                   <div>
