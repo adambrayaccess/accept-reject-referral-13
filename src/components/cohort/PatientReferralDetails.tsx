@@ -25,12 +25,12 @@ const PatientReferralDetails = ({ referral }: PatientReferralDetailsProps) => {
       <TableCell className="p-2">
         <div className="flex flex-wrap gap-1 max-w-32">
           {tags.slice(0, 2).map(tag => (
-            <Badge key={tag} variant="outline" className={`text-sm ${getTagStyle(tag)}`}>
+            <Badge key={tag} variant="outline" className={`text-xs ${getTagStyle(tag)}`}>
               {tag}
             </Badge>
           ))}
           {tags.length > 2 && (
-            <Badge variant="outline" className="text-sm text-gray-800 bg-gray-100 border-gray-200">
+            <Badge variant="outline" className="text-xs text-gray-800 bg-gray-100 border-gray-200">
               +{tags.length - 2}
             </Badge>
           )}

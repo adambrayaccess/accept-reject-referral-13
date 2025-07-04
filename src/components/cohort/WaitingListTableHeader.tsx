@@ -53,7 +53,6 @@ const WaitingListTableHeader = ({
         <TableHead className="min-w-[120px]">Care Pathway</TableHead>
         <TableHead className="min-w-[80px]">RTT</TableHead>
         <TableHead className="min-w-[120px]">Assigned Team</TableHead>
-        <TableHead className="min-w-[120px]">AI Actions</TableHead>
         <TableHead className="min-w-[100px]">Sub-referrals</TableHead>
         <TableHead className="w-10"></TableHead>
       </TableRow>
