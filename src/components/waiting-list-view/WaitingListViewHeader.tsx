@@ -7,6 +7,7 @@ import ReferralTagsDisplay from '@/components/referral-tagging/ReferralTagsDispl
 import AllergyIndicator from '@/components/clinical/AllergyIndicator';
 import ReasonableAdjustmentsFlag from '@/components/clinical/ReasonableAdjustmentsFlag';
 import AICopilotButton from '@/components/ai-suggestions/AICopilotButton';
+import InpatientStatusBadge from './InpatientStatusBadge';
 
 interface WaitingListViewHeaderProps {
   referral: Referral;
@@ -35,6 +36,7 @@ const WaitingListViewHeader = ({ referral, onBack, onSuggestionApplied }: Waitin
             {referral.status === 'accepted' && (
               <WaitingListStatusBadge referral={referral} />
             )}
+            <InpatientStatusBadge patientId={referral.patient.id} />
           </div>
           <p className="text-muted-foreground">
             NHS: <span className="font-mono">{referral.patient.nhsNumber}</span>
