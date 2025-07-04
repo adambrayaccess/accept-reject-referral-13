@@ -1,8 +1,7 @@
 
 import React from 'react';
-import { Plus, HelpCircle, User, ChevronDown } from 'lucide-react';
+import { Bell, Plus, HelpCircle, User, ChevronDown } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import NotificationDropdown from './NotificationDropdown';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -26,7 +25,9 @@ const Titlebar = () => {
       {/* Right side - Navigation icons and user profile */}
       <div className="flex items-center gap-3">
         {/* Navigation icons */}
-        <NotificationDropdown />
+        <Button variant="ghost" size="icon" className="w-8 h-8">
+          <Bell className="w-4 h-4 text-gray-600" />
+        </Button>
         
         <Button variant="ghost" size="icon" className="w-8 h-8">
           <Plus className="w-4 h-4 text-gray-600" />

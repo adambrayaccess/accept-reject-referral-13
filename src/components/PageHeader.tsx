@@ -4,6 +4,7 @@ import { Search } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import Menu from './Menu';
 import UserMenu from './auth/UserMenu';
+import NotificationDropdown from './NotificationDropdown';
 
 interface PageHeaderProps {
   searchValue?: string;
@@ -36,12 +37,16 @@ const PageHeader = ({ searchValue = '', onSearchChange, showSearch = true }: Pag
                 className="pl-10 w-64 bg-white text-gray-900 placeholder-gray-500 border-gray-300 focus:border-teal-500"
               />
             </div>
+            <NotificationDropdown />
             <UserMenu />
           </div>
         )}
         
         {!showSearch && (
-          <UserMenu />
+          <div className="flex items-center gap-4">
+            <NotificationDropdown />
+            <UserMenu />
+          </div>
         )}
       </div>
     </div>
