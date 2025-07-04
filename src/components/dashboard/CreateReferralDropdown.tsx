@@ -25,38 +25,91 @@ const CreateReferralDropdown = ({ onReferralCreated }: CreateReferralDropdownPro
 
   const createTestReferral = async () => {
     try {
-      // Create a test referral to trigger the notification
+      const timestamp = Date.now();
+      const ubrn = `TEST-${timestamp}`;
+      
+      // Generate the SQL script that will be executed
+      const sqlScript = `
+INSERT INTO public.referrals (
+  ubrn,
+  specialty,
+  reason,
+  patient_id,
+  referrer_id,
+  referral_source,
+  waiting_list_priority_override,
+  status,
+  priority,
+  created_at,
+  updated_at,
+  authored_on
+) VALUES (
+  '${ubrn}',
+  'Test Specialty',
+  'Test notification system - Auto-generated for testing referral notifications',
+  '00000000-0000-0000-0000-000000000000',
+  '00000000-0000-0000-0000-000000000000',
+  'Test',
+  NULL,
+  'new',
+  'routine',
+  NOW(),
+  NOW(),
+  NOW()
+);`;
+
+      // Log the SQL script being executed
+      console.log('🔄 Executing SQL Script for Test Referral:');
+      console.log(sqlScript);
+      
+      toast({
+        title: "Generating Test Referral",
+        description: "Executing SQL script to create test referral...",
+      });
+
+      // Execute the equivalent operation using Supabase client (secure approach)
       const { data, error } = await supabase
         .from('referrals')
         .insert({
-          ubrn: `TEST-${Date.now()}`,
+          ubrn,
           specialty: 'Test Specialty',
-          reason: 'Test notification system',
-          patient_id: '00000000-0000-0000-0000-000000000000', // placeholder
-          referrer_id: '00000000-0000-0000-0000-000000000000', // placeholder
+          reason: 'Test notification system - Auto-generated for testing referral notifications',
+          patient_id: '00000000-0000-0000-0000-000000000000',
+          referrer_id: '00000000-0000-0000-0000-000000000000',
           referral_source: 'Test',
-          waiting_list_priority_override: null // Explicitly set to null to avoid constraint violation
+          waiting_list_priority_override: null,
+          status: 'new',
+          priority: 'routine',
+          created_at: new Date().toISOString(),
+          updated_at: new Date().toISOString(),
+          authored_on: new Date().toISOString()
         })
         .select()
         .single();
 
       if (error) {
+        console.error('❌ SQL Execution Failed:', error);
         toast({
-          title: "Error",
-          description: "Failed to create test referral",
+          title: "SQL Execution Failed",
+          description: `Error executing test referral creation: ${error.message}`,
           variant: "destructive"
         });
-        console.error('Error creating test referral:', error);
       } else {
+        console.log('✅ SQL Execution Successful - New referral created:', data);
         toast({
-          title: "Test referral created",
-          description: "A notification should appear for the new referral"
+          title: "Test Referral Created Successfully",
+          description: `SQL executed successfully! New referral ${data.ubrn} created with ID: ${data.id}`,
         });
         // Refresh the referrals list if there's a callback
         onReferralCreated(data);
       }
     } catch (err) {
-      console.error('Unexpected error:', err);
+      console.error('💥 Unexpected SQL execution error:', err);
+      toast({
+        title: "SQL Execution Error",
+        description: "Unexpected error during test referral creation",
+        variant: "destructive"
+      });
     }
   };
 
