@@ -47,7 +47,6 @@ export const usePinning = () => {
     const result = await PinningService.pinReferral(referralId);
     
     if (result.success) {
-      setPinnedReferralIds(prev => new Set([...prev, referralId]));
       toast({
         title: 'Success',
         description: 'Referral pinned successfully',
@@ -67,11 +66,6 @@ export const usePinning = () => {
     const result = await PinningService.unpinReferral(referralId);
     
     if (result.success) {
-      setPinnedReferralIds(prev => {
-        const newSet = new Set(prev);
-        newSet.delete(referralId);
-        return newSet;
-      });
       toast({
         title: 'Success',
         description: 'Referral unpinned successfully',
@@ -88,11 +82,41 @@ export const usePinning = () => {
   };
 
   const togglePin = async (referralId: string) => {
-    if (pinnedReferralIds.has(referralId)) {
-      return await unpinReferral(referralId);
+    const wasAlreadyPinned = pinnedReferralIds.has(referralId);
+    
+    // Optimistic update - immediately update UI
+    if (wasAlreadyPinned) {
+      setPinnedReferralIds(prev => {
+        const newSet = new Set(prev);
+        newSet.delete(referralId);
+        return newSet;
+      });
     } else {
-      return await pinReferral(referralId);
+      setPinnedReferralIds(prev => new Set([...prev, referralId]));
     }
+    
+    // Perform actual operation
+    let success;
+    if (wasAlreadyPinned) {
+      success = await unpinReferral(referralId);
+    } else {
+      success = await pinReferral(referralId);
+    }
+    
+    // Revert optimistic update if operation failed
+    if (!success) {
+      if (wasAlreadyPinned) {
+        setPinnedReferralIds(prev => new Set([...prev, referralId]));
+      } else {
+        setPinnedReferralIds(prev => {
+          const newSet = new Set(prev);
+          newSet.delete(referralId);
+          return newSet;
+        });
+      }
+    }
+    
+    return success;
   };
 
   const isPinned = (referralId: string) => {
