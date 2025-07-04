@@ -28,6 +28,7 @@ export const useReferralNotifications = () => {
               <ToastAction
                 altText="View referral"
                 onClick={() => navigate(`/referral/${newReferral.id}`)}
+                className="bg-primary text-primary-foreground hover:bg-primary/90"
               >
                 View Referral
               </ToastAction>
