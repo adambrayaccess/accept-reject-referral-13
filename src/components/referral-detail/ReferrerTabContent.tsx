@@ -28,7 +28,7 @@ const ReferrerTabContent = ({ referral }: ReferrerTabContentProps) => {
         
         {referral.referrer.organization && (
           <div>
-            <div className="text-xs font-medium text-muted-foreground">Referral Source</div>
+            <div className="text-xs font-medium text-muted-foreground">Referral Organisation</div>
             <div className="font-medium">{referral.referrer.organization}</div>
           </div>
         )}
