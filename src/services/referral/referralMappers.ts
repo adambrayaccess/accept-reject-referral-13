@@ -267,6 +267,8 @@ export const mapReferralData = (referral: any): Referral => {
     patientAreaCareSetting: referral.patient_area_care_setting,
     // Add originating specialty
     originatingSpecialty: referral.orginating_specialty,
+    // Add originating team
+    originatingTeam: referral.orginating_team,
     // Calculate child referral IDs - this would need a separate query in practice
     childReferralIds: []
   };

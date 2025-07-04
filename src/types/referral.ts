@@ -79,6 +79,8 @@ export interface Referral {
   patientAreaCareSetting?: string;
   // Originating specialty
   originatingSpecialty?: string;
+  // Originating team
+  originatingTeam?: string;
 }
 
 // FHIR-compliant Practitioner interface
