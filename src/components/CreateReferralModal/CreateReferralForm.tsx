@@ -1,28 +1,33 @@
 import { useState, useEffect } from 'react';
-import { Sheet, SheetContent, SheetHeader, SheetTitle } from '@/components/ui/sheet';
-import { ScrollArea } from '@/components/ui/scroll-area';
-import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
-import { mockPractitioners } from '@/services/mock/practitioners';
 import { fetchPractitionerById } from '@/services/practitionerService';
 import { createPatient } from '@/services/patientService';
 import { Referral, ReferralPriority, Patient } from '@/types/referral';
 import { generateReferralId } from '@/utils/referralIdGenerator';
-import ReferralBasicInfoForm from './referral-form/ReferralBasicInfoForm';
-import ReferralFormTabs from './referral-form/ReferralFormTabs';
-import { DocumentFile } from './referral-form/ReferralDocumentsTab';
+import ReferralBasicInfoForm from '../referral-form/ReferralBasicInfoForm';
+import ReferralFormTabs from '../referral-form/ReferralFormTabs';
+import { DocumentFile } from '../referral-form/ReferralDocumentsTab';
 import { ReferralCreationService, ReferralCreationData } from '@/services/referral/referralCreationService';
-import { Loader2, FileText } from 'lucide-react';
 
-interface CreateReferralModalProps {
-  isOpen: boolean;
-  onClose: () => void;
+interface CreateReferralFormProps {
   onSubmit: (referral: Partial<Referral>) => void;
+  onClose: () => void;
+  isCreating: boolean;
+  setIsCreating: (creating: boolean) => void;
+  isCreatingPatient: boolean;
+  setIsCreatingPatient: (creating: boolean) => void;
+  onFormSubmitReady: (handler: (e: React.FormEvent) => void) => void;
 }
 
-const CreateReferralModal = ({ isOpen, onClose, onSubmit }: CreateReferralModalProps) => {
-  const [isCreating, setIsCreating] = useState(false);
-  const [isCreatingPatient, setIsCreatingPatient] = useState(false);
+const CreateReferralForm = ({
+  onSubmit,
+  onClose,
+  isCreating,
+  setIsCreating,
+  isCreatingPatient,
+  setIsCreatingPatient,
+  onFormSubmitReady
+}: CreateReferralFormProps) => {
   const [referralId, setReferralId] = useState('');
   const [priority, setPriority] = useState<ReferralPriority>('routine');
   const [specialty, setSpecialty] = useState('');
@@ -62,12 +67,12 @@ const CreateReferralModal = ({ isOpen, onClose, onSubmit }: CreateReferralModalP
 
   const { toast } = useToast();
 
-  // Auto-generate referral ID when modal opens
+  // Auto-generate referral ID
   useEffect(() => {
-    if (isOpen && !referralId) {
+    if (!referralId) {
       setReferralId(generateReferralId());
     }
-  }, [isOpen, referralId]);
+  }, [referralId]);
 
   const handlePatientSelect = (patient: Patient | undefined) => {
     setSelectedPatient(patient);
@@ -338,109 +343,80 @@ const CreateReferralModal = ({ isOpen, onClose, onSubmit }: CreateReferralModalP
     setDocuments([]);
   };
 
-  return (
-    <Sheet open={isOpen} onOpenChange={onClose}>
-      <SheetContent className="w-full sm:max-w-3xl lg:max-w-4xl">
-        <SheetHeader className="pb-4">
-          <SheetTitle className="text-2xl flex items-center gap-2">
-            <FileText className="h-6 w-6" />
-            Create Referral
-          </SheetTitle>
-        </SheetHeader>
-        
-        <div className="flex flex-col h-full">
-          <div className="flex-1 overflow-auto">
-            <div className="p-6 space-y-6">
-              <ReferralBasicInfoForm
-                referralId={referralId}
-                setReferralId={setReferralId}
-                priority={priority}
-                setPriority={setPriority}
-                specialty={specialty}
-                setSpecialty={setSpecialty}
-                practitionerId={practitionerId}
-                setPractitionerId={setPractitionerId}
-                referralType={referralType}
-                setReferralType={setReferralType}
-              />
+  // Pass handleSubmit to parent component
+  useEffect(() => {
+    onFormSubmitReady(handleSubmit);
+  }, [onFormSubmitReady, handleSubmit]);
 
-              <ReferralFormTabs
-                practitionerId={practitionerId}
-                setPractitionerId={setPractitionerId}
-                selectedPatient={selectedPatient}
-                onPatientSelect={handlePatientSelect}
-                onCreateNewPatient={handleCreateNewPatient}
-                isCreatingPatient={isCreatingPatient}
-                patientName={patientName}
-                setPatientName={setPatientName}
-                birthDate={birthDate}
-                setBirthDate={setBirthDate}
-                gender={gender}
-                setGender={setGender}
-                nhsNumber={nhsNumber}
-                setNhsNumber={setNhsNumber}
-                address={address}
-                setAddress={setAddress}
-                phone={phone}
-                setPhone={setPhone}
-                administrativeCategory={administrativeCategory}
-                setAdministrativeCategory={setAdministrativeCategory}
-                overseasStatus={overseasStatus}
-                setOverseasStatus={setOverseasStatus}
-                patientAreaCareSetting={patientAreaCareSetting}
-                setPatientAreaCareSetting={setPatientAreaCareSetting}
-                selectedGP={selectedGP}
-                onGPSelect={handleGPSelect}
-                gpName={gpName}
-                setGpName={setGpName}
-                gpPractice={gpPractice}
-                setGpPractice={setGpPractice}
-                gpAddress={gpAddress}
-                setGpAddress={setGpAddress}
-                gpPhone={gpPhone}
-                setGpPhone={setGpPhone}
-                gpEmail={gpEmail}
-                setGpEmail={setGpEmail}
-                reason={reason}
-                setReason={setReason}
-                history={history}
-                setHistory={setHistory}
-                diagnosis={diagnosis}
-                setDiagnosis={setDiagnosis}
-                medications={medications}
-                setMedications={setMedications}
-                allergies={allergies}
-                setAllergies={setAllergies}
-                notes={notes}
-                setNotes={setNotes}
-                documents={documents}
-                setDocuments={setDocuments}
-              />
-            </div>
-          </div>
-          
-          {/* Fixed Footer */}
-          <div className="border-t bg-background p-4 pb-8">
-            <div className="flex justify-end gap-2">
-              <Button type="button" variant="outline" onClick={onClose} disabled={isCreating || isCreatingPatient}>
-                Cancel
-              </Button>
-              <Button onClick={handleSubmit} disabled={isCreating || isCreatingPatient}>
-                {isCreating || isCreatingPatient ? (
-                  <>
-                    <Loader2 className="h-4 w-4 animate-spin mr-2" />
-                    {isCreatingPatient ? 'Creating Patient...' : 'Creating Referral...'}
-                  </>
-                ) : (
-                  'Create Referral'
-                )}
-              </Button>
-            </div>
-          </div>
-        </div>
-      </SheetContent>
-    </Sheet>
+  return (
+    <div className="p-6 space-y-6">
+      <ReferralBasicInfoForm
+        referralId={referralId}
+        setReferralId={setReferralId}
+        priority={priority}
+        setPriority={setPriority}
+        specialty={specialty}
+        setSpecialty={setSpecialty}
+        practitionerId={practitionerId}
+        setPractitionerId={setPractitionerId}
+        referralType={referralType}
+        setReferralType={setReferralType}
+      />
+
+      <ReferralFormTabs
+        practitionerId={practitionerId}
+        setPractitionerId={setPractitionerId}
+        selectedPatient={selectedPatient}
+        onPatientSelect={handlePatientSelect}
+        onCreateNewPatient={handleCreateNewPatient}
+        isCreatingPatient={isCreatingPatient}
+        patientName={patientName}
+        setPatientName={setPatientName}
+        birthDate={birthDate}
+        setBirthDate={setBirthDate}
+        gender={gender}
+        setGender={setGender}
+        nhsNumber={nhsNumber}
+        setNhsNumber={setNhsNumber}
+        address={address}
+        setAddress={setAddress}
+        phone={phone}
+        setPhone={setPhone}
+        administrativeCategory={administrativeCategory}
+        setAdministrativeCategory={setAdministrativeCategory}
+        overseasStatus={overseasStatus}
+        setOverseasStatus={setOverseasStatus}
+        patientAreaCareSetting={patientAreaCareSetting}
+        setPatientAreaCareSetting={setPatientAreaCareSetting}
+        selectedGP={selectedGP}
+        onGPSelect={handleGPSelect}
+        gpName={gpName}
+        setGpName={setGpName}
+        gpPractice={gpPractice}
+        setGpPractice={setGpPractice}
+        gpAddress={gpAddress}
+        setGpAddress={setGpAddress}
+        gpPhone={gpPhone}
+        setGpPhone={setGpPhone}
+        gpEmail={gpEmail}
+        setGpEmail={setGpEmail}
+        reason={reason}
+        setReason={setReason}
+        history={history}
+        setHistory={setHistory}
+        diagnosis={diagnosis}
+        setDiagnosis={setDiagnosis}
+        medications={medications}
+        setMedications={setMedications}
+        allergies={allergies}
+        setAllergies={setAllergies}
+        notes={notes}
+        setNotes={setNotes}
+        documents={documents}
+        setDocuments={setDocuments}
+      />
+    </div>
   );
 };
 
-export default CreateReferralModal;
+export default CreateReferralForm;
