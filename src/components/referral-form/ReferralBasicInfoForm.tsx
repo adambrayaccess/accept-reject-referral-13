@@ -99,9 +99,6 @@ const ReferralBasicInfoForm = ({
             </SelectContent>
           </Select>
         </div>
-      </div>
-
-      <div className="grid grid-cols-1 gap-4">
         <div className="space-y-2">
           <Label htmlFor="referralType">Referral Type</Label>
           <Select value={referralType} onValueChange={(value: string) => setReferralType(value)}>
