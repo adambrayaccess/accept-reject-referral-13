@@ -54,7 +54,7 @@ const ReferralBasicInfoForm = ({
   return (
     <div className="grid grid-cols-4 gap-4">
       <div className="space-y-2">
-        <Label htmlFor="referralId" className="flex items-center gap-1">
+        <Label htmlFor="referralId" className="text-sm font-medium">
           Referral ID <span className="text-red-500">*</span>
         </Label>
         <Input
@@ -66,7 +66,9 @@ const ReferralBasicInfoForm = ({
         />
       </div>
       <div className="space-y-2">
-        <Label htmlFor="priority">Priority</Label>
+        <Label htmlFor="priority" className="text-sm font-medium">
+          Priority
+        </Label>
         <Select value={priority} onValueChange={(value: ReferralPriority) => setPriority(value)}>
           <SelectTrigger>
             <SelectValue placeholder="Select priority" />
@@ -79,7 +81,7 @@ const ReferralBasicInfoForm = ({
         </Select>
       </div>
       <div className="space-y-2">
-        <Label htmlFor="specialty" className="flex items-center gap-1">
+        <Label htmlFor="specialty" className="text-sm font-medium">
           Service <span className="text-red-500">*</span>
         </Label>
         <Select value={specialty} onValueChange={(value: string) => setSpecialty(value)} required>
@@ -96,7 +98,9 @@ const ReferralBasicInfoForm = ({
         </Select>
       </div>
       <div className="space-y-2">
-        <Label htmlFor="referralType">Referral Type</Label>
+        <Label htmlFor="referralType" className="text-sm font-medium">
+          Referral Type
+        </Label>
         <Select value={referralType} onValueChange={(value: string) => setReferralType(value)}>
           <SelectTrigger>
             <SelectValue placeholder="Select referral type" />
