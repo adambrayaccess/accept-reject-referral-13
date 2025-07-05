@@ -55,13 +55,16 @@ const ReferralBasicInfoForm = ({
     <div className="space-y-4">
       <div className="grid grid-cols-2 gap-4">
         <div className="space-y-2">
-          <Label htmlFor="referralId">Referral ID</Label>
+          <Label htmlFor="referralId" className="flex items-center gap-1">
+            Referral ID <span className="text-red-500">*</span>
+          </Label>
           <Input
             id="referralId"
             value={referralId}
             onChange={(e) => setReferralId(e.target.value)}
             placeholder="Auto-generated"
             required
+            className="border-red-200 focus:border-red-400"
           />
         </div>
         <div className="space-y-2">
@@ -81,9 +84,11 @@ const ReferralBasicInfoForm = ({
 
       <div className="grid grid-cols-2 gap-4">
         <div className="space-y-2">
-          <Label htmlFor="specialty">Service</Label>
-          <Select value={specialty} onValueChange={(value: string) => setSpecialty(value)}>
-            <SelectTrigger>
+          <Label htmlFor="specialty" className="flex items-center gap-1">
+            Service <span className="text-red-500">*</span>
+          </Label>
+          <Select value={specialty} onValueChange={(value: string) => setSpecialty(value)} required>
+            <SelectTrigger className="border-red-200 focus:border-red-400">
               <SelectValue placeholder="Select service" />
             </SelectTrigger>
             <SelectContent>
@@ -96,9 +101,11 @@ const ReferralBasicInfoForm = ({
           </Select>
         </div>
         <div className="space-y-2">
-          <Label htmlFor="practitioner">Referring Practitioner</Label>
-          <Select value={practitionerId} onValueChange={(value: string) => setPractitionerId(value)}>
-            <SelectTrigger>
+          <Label htmlFor="practitioner" className="flex items-center gap-1">
+            Referring Practitioner <span className="text-red-500">*</span>
+          </Label>
+          <Select value={practitionerId} onValueChange={(value: string) => setPractitionerId(value)} required>
+            <SelectTrigger className="border-red-200 focus:border-red-400">
               <SelectValue placeholder={isLoadingPractitioners ? "Loading practitioners..." : "Select practitioner"} />
             </SelectTrigger>
             <SelectContent>

@@ -156,13 +156,15 @@ const EnhancedClinicalDetailsForm = ({
       {/* Clinical Information Form */}
       <div className="space-y-4">
         <div className="space-y-2">
-          <Label htmlFor="reason">Reason for Referral *</Label>
+          <Label htmlFor="reason" className="flex items-center gap-1">
+            Reason for Referral <span className="text-red-500">*</span>
+          </Label>
           <Textarea
             id="reason"
             value={reason}
             onChange={(e) => setReason(e.target.value)}
             placeholder="Describe the primary reason for this referral..."
-            className="min-h-[80px]"
+            className="min-h-[80px] border-red-200 focus:border-red-400"
             required
           />
         </div>

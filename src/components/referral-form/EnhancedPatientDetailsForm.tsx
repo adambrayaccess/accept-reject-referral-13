@@ -142,25 +142,30 @@ const EnhancedPatientDetailsForm = ({
       {/* Basic Patient Details Form */}
       <div className="grid grid-cols-2 gap-4">
         <div className="space-y-2">
-          <Label htmlFor="patientName">Patient Name</Label>
+          <Label htmlFor="patientName" className="flex items-center gap-1">
+            Patient Name <span className="text-red-500">*</span>
+          </Label>
           <div className="relative">
             <User className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
             <Input
               id="patientName"
               value={patientName}
               onChange={(e) => setPatientName(e.target.value)}
-              className="pl-10"
+              className="pl-10 border-red-200 focus:border-red-400"
               required
             />
           </div>
         </div>
         <div className="space-y-2">
-          <Label htmlFor="birthDate">Date of Birth</Label>
+          <Label htmlFor="birthDate" className="flex items-center gap-1">
+            Date of Birth <span className="text-red-500">*</span>
+          </Label>
           <Input
             id="birthDate"
             type="date"
             value={birthDate}
             onChange={(e) => setBirthDate(e.target.value)}
+            className="border-red-200 focus:border-red-400"
             required
           />
         </div>
@@ -181,12 +186,15 @@ const EnhancedPatientDetailsForm = ({
           </Select>
         </div>
         <div className="space-y-2">
-          <Label htmlFor="nhsNumber">NHS Number</Label>
+          <Label htmlFor="nhsNumber" className="flex items-center gap-1">
+            NHS Number <span className="text-red-500">*</span>
+          </Label>
           <Input
             id="nhsNumber"
             value={nhsNumber}
             onChange={(e) => setNhsNumber(e.target.value)}
             placeholder="000 000 0000"
+            className="border-red-200 focus:border-red-400"
             required
           />
         </div>
