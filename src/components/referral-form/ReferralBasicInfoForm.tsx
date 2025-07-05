@@ -52,68 +52,63 @@ const ReferralBasicInfoForm = ({
     loadPractitioners();
   }, []);
   return (
-    <div className="space-y-4">
-      <div className="grid grid-cols-2 gap-4">
-        <div className="space-y-2">
-          <Label htmlFor="referralId" className="flex items-center gap-1">
-            Referral ID <span className="text-red-500">*</span>
-          </Label>
-          <Input
-            id="referralId"
-            value={referralId}
-            onChange={(e) => setReferralId(e.target.value)}
-            placeholder="Auto-generated"
-            required
-          />
-        </div>
-        <div className="space-y-2">
-          <Label htmlFor="priority">Priority</Label>
-          <Select value={priority} onValueChange={(value: ReferralPriority) => setPriority(value)}>
-            <SelectTrigger>
-              <SelectValue placeholder="Select priority" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="routine">Routine</SelectItem>
-              <SelectItem value="urgent">Urgent</SelectItem>
-              <SelectItem value="emergency">Emergency</SelectItem>
-            </SelectContent>
-          </Select>
-        </div>
+    <div className="grid grid-cols-2 gap-4">
+      <div className="space-y-2">
+        <Label htmlFor="referralId" className="flex items-center gap-1">
+          Referral ID <span className="text-red-500">*</span>
+        </Label>
+        <Input
+          id="referralId"
+          value={referralId}
+          onChange={(e) => setReferralId(e.target.value)}
+          placeholder="Auto-generated"
+          required
+        />
       </div>
-
-      <div className="grid grid-cols-2 gap-4">
-        <div className="space-y-2">
-          <Label htmlFor="specialty" className="flex items-center gap-1">
-            Service <span className="text-red-500">*</span>
-          </Label>
-          <Select value={specialty} onValueChange={(value: string) => setSpecialty(value)} required>
-            <SelectTrigger>
-              <SelectValue placeholder="Select service" />
-            </SelectTrigger>
-            <SelectContent>
-              {specialties.map((specialtyOption) => (
-                <SelectItem key={specialtyOption.id} value={specialtyOption.name}>
-                  {specialtyOption.name}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </div>
-        <div className="space-y-2">
-          <Label htmlFor="referralType">Referral Type</Label>
-          <Select value={referralType} onValueChange={(value: string) => setReferralType(value)}>
-            <SelectTrigger>
-              <SelectValue placeholder="Select referral type" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="External Referral">External Referral</SelectItem>
-              <SelectItem value="Internal Referral">Internal Referral</SelectItem>
-              <SelectItem value="Self Referral">Self Referral</SelectItem>
-              <SelectItem value="Emergency Referral">Emergency Referral</SelectItem>
-              <SelectItem value="Routine Referral">Routine Referral</SelectItem>
-            </SelectContent>
-          </Select>
-        </div>
+      <div className="space-y-2">
+        <Label htmlFor="priority">Priority</Label>
+        <Select value={priority} onValueChange={(value: ReferralPriority) => setPriority(value)}>
+          <SelectTrigger>
+            <SelectValue placeholder="Select priority" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="routine">Routine</SelectItem>
+            <SelectItem value="urgent">Urgent</SelectItem>
+            <SelectItem value="emergency">Emergency</SelectItem>
+          </SelectContent>
+        </Select>
+      </div>
+      <div className="space-y-2">
+        <Label htmlFor="specialty" className="flex items-center gap-1">
+          Service <span className="text-red-500">*</span>
+        </Label>
+        <Select value={specialty} onValueChange={(value: string) => setSpecialty(value)} required>
+          <SelectTrigger>
+            <SelectValue placeholder="Select service" />
+          </SelectTrigger>
+          <SelectContent>
+            {specialties.map((specialtyOption) => (
+              <SelectItem key={specialtyOption.id} value={specialtyOption.name}>
+                {specialtyOption.name}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+      </div>
+      <div className="space-y-2">
+        <Label htmlFor="referralType">Referral Type</Label>
+        <Select value={referralType} onValueChange={(value: string) => setReferralType(value)}>
+          <SelectTrigger>
+            <SelectValue placeholder="Select referral type" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="External Referral">External Referral</SelectItem>
+            <SelectItem value="Internal Referral">Internal Referral</SelectItem>
+            <SelectItem value="Self Referral">Self Referral</SelectItem>
+            <SelectItem value="Emergency Referral">Emergency Referral</SelectItem>
+            <SelectItem value="Routine Referral">Routine Referral</SelectItem>
+          </SelectContent>
+        </Select>
       </div>
     </div>
   );
