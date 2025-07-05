@@ -420,7 +420,7 @@ const CreateReferralModal = ({ isOpen, onClose, onSubmit }: CreateReferralModalP
           </div>
           
           {/* Fixed Footer */}
-          <div className="border-t bg-background p-4 pb-6">
+          <div className="border-t bg-background p-4 pb-8">
             <div className="flex justify-end gap-2">
               <Button type="button" variant="outline" onClick={onClose} disabled={isCreating || isCreatingPatient}>
                 Cancel
