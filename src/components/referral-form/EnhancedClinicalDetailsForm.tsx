@@ -195,37 +195,6 @@ const EnhancedClinicalDetailsForm = ({
           />
         </div>
 
-        <div className="space-y-2">
-          <Label htmlFor="medications">Current Medications</Label>
-          <Textarea
-            id="medications"
-            value={medications}
-            onChange={(e) => setMedications(e.target.value)}
-            placeholder="List current medications, one per line..."
-            className="min-h-[100px]"
-          />
-          {selectedPatient && (
-            <p className="text-xs text-muted-foreground">
-              ℹ️ Auto-populated from patient record. Edit as needed.
-            </p>
-          )}
-        </div>
-
-        <div className="space-y-2">
-          <Label htmlFor="allergies">Known Allergies</Label>
-          <Textarea
-            id="allergies"
-            value={allergies}
-            onChange={(e) => setAllergies(e.target.value)}
-            placeholder="List known allergies and reactions, one per line..."
-            className="min-h-[80px]"
-          />
-          {selectedPatient && (
-            <p className="text-xs text-muted-foreground">
-              ℹ️ Auto-populated from patient record. Edit as needed.
-            </p>
-          )}
-        </div>
 
         <div className="space-y-2">
           <Label htmlFor="notes">Additional Clinical Notes</Label>

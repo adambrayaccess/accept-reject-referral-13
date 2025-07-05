@@ -99,23 +99,6 @@ const ReferralBasicInfoForm = ({
             </SelectContent>
           </Select>
         </div>
-        <div className="space-y-2">
-          <Label htmlFor="practitioner" className="flex items-center gap-1">
-            Referring Practitioner <span className="text-red-500">*</span>
-          </Label>
-          <Select value={practitionerId} onValueChange={(value: string) => setPractitionerId(value)} required>
-            <SelectTrigger>
-              <SelectValue placeholder={isLoadingPractitioners ? "Loading practitioners..." : "Select practitioner"} />
-            </SelectTrigger>
-            <SelectContent>
-              {practitioners.map((practitioner) => (
-                <SelectItem key={practitioner.id} value={practitioner.id}>
-                  {practitioner.name} - {practitioner.organization}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </div>
       </div>
 
       <div className="grid grid-cols-1 gap-4">

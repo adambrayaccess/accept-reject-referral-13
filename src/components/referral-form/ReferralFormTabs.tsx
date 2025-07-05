@@ -7,6 +7,10 @@ import ReferralDocumentsTab, { DocumentFile } from './ReferralDocumentsTab';
 import { Patient } from '@/types/patient';
 
 interface ReferralFormTabsProps {
+  // Practitioner field
+  practitionerId: string;
+  setPractitionerId: (value: string) => void;
+  
   // Patient fields
   selectedPatient: Patient | undefined;
   onPatientSelect: (patient: Patient | undefined) => void;
@@ -24,6 +28,12 @@ interface ReferralFormTabsProps {
   setAddress: (value: string) => void;
   phone: string;
   setPhone: (value: string) => void;
+  administrativeCategory: string;
+  setAdministrativeCategory: (value: string) => void;
+  overseasStatus: string;
+  setOverseasStatus: (value: string) => void;
+  patientAreaCareSetting: string;
+  setPatientAreaCareSetting: (value: string) => void;
   
   // GP fields
   selectedGP?: Patient['gpDetails'];
@@ -59,6 +69,8 @@ interface ReferralFormTabsProps {
 }
 
 const ReferralFormTabs = ({
+  practitionerId,
+  setPractitionerId,
   selectedPatient,
   onPatientSelect,
   onCreateNewPatient,
@@ -75,6 +87,12 @@ const ReferralFormTabs = ({
   setAddress,
   phone,
   setPhone,
+  administrativeCategory,
+  setAdministrativeCategory,
+  overseasStatus,
+  setOverseasStatus,
+  patientAreaCareSetting,
+  setPatientAreaCareSetting,
   selectedGP,
   onGPSelect,
   gpName,
@@ -106,7 +124,7 @@ const ReferralFormTabs = ({
     <EnhancedTabs defaultValue="patient" className="w-full">
       <EnhancedTabsList variant="grid" size="md">
         <EnhancedTabsTrigger value="patient" variant="grid" size="md">Patient Details</EnhancedTabsTrigger>
-        <EnhancedTabsTrigger value="gp" variant="grid" size="md">GP Details</EnhancedTabsTrigger>
+        <EnhancedTabsTrigger value="gp" variant="grid" size="md">Referrer</EnhancedTabsTrigger>
         <EnhancedTabsTrigger value="clinical" variant="grid" size="md">Clinical Information</EnhancedTabsTrigger>
         <EnhancedTabsTrigger value="documents" variant="grid" size="md">Documents</EnhancedTabsTrigger>
       </EnhancedTabsList>
@@ -129,11 +147,19 @@ const ReferralFormTabs = ({
           setAddress={setAddress}
           phone={phone}
           setPhone={setPhone}
+          administrativeCategory={administrativeCategory}
+          setAdministrativeCategory={setAdministrativeCategory}
+          overseasStatus={overseasStatus}
+          setOverseasStatus={setOverseasStatus}
+          patientAreaCareSetting={patientAreaCareSetting}
+          setPatientAreaCareSetting={setPatientAreaCareSetting}
         />
       </EnhancedTabsContent>
       
       <EnhancedTabsContent value="gp" className="mt-4">
         <GPDetailsForm
+          practitionerId={practitionerId}
+          setPractitionerId={setPractitionerId}
           selectedGP={selectedGP}
           onGPSelect={onGPSelect}
           gpName={gpName}

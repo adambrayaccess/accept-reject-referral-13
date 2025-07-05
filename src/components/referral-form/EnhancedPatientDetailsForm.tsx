@@ -23,6 +23,12 @@ interface EnhancedPatientDetailsFormProps {
   setAddress: (value: string) => void;
   phone: string;
   setPhone: (value: string) => void;
+  administrativeCategory: string;
+  setAdministrativeCategory: (value: string) => void;
+  overseasStatus: string;
+  setOverseasStatus: (value: string) => void;
+  patientAreaCareSetting: string;
+  setPatientAreaCareSetting: (value: string) => void;
   selectedPatient?: Patient;
   onPatientSelect: (patient: Patient | undefined) => void;
   onCreateNewPatient?: () => void;
@@ -42,6 +48,12 @@ const EnhancedPatientDetailsForm = ({
   setAddress,
   phone,
   setPhone,
+  administrativeCategory,
+  setAdministrativeCategory,
+  overseasStatus,
+  setOverseasStatus,
+  patientAreaCareSetting,
+  setPatientAreaCareSetting,
   selectedPatient,
   onPatientSelect,
   onCreateNewPatient,
@@ -217,6 +229,56 @@ const EnhancedPatientDetailsForm = ({
           onChange={(e) => setPhone(e.target.value)}
           placeholder="01234 567890"
         />
+      </div>
+
+      <div className="grid grid-cols-2 gap-4">
+        <div className="space-y-2">
+          <Label htmlFor="administrativeCategory">Administrative Category</Label>
+          <Select value={administrativeCategory} onValueChange={setAdministrativeCategory}>
+            <SelectTrigger>
+              <SelectValue placeholder="Select category" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="NHS">NHS</SelectItem>
+              <SelectItem value="Private">Private</SelectItem>
+              <SelectItem value="Insurance">Insurance</SelectItem>
+              <SelectItem value="Other">Other</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+        <div className="space-y-2">
+          <Label htmlFor="overseasStatus">Overseas Status</Label>
+          <Select value={overseasStatus} onValueChange={setOverseasStatus}>
+            <SelectTrigger>
+              <SelectValue placeholder="Select status" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="UK Resident">UK Resident</SelectItem>
+              <SelectItem value="Overseas Visitor">Overseas Visitor</SelectItem>
+              <SelectItem value="EEA/EU National">EEA/EU National</SelectItem>
+              <SelectItem value="Other">Other</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+      </div>
+
+      <div className="space-y-2">
+        <Label htmlFor="patientAreaCareSetting">Patient Area Care Setting</Label>
+        <Select value={patientAreaCareSetting} onValueChange={setPatientAreaCareSetting}>
+          <SelectTrigger>
+            <SelectValue placeholder="Select care setting" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="Community">Community</SelectItem>
+            <SelectItem value="Hospital">Hospital</SelectItem>
+            <SelectItem value="Primary Care">Primary Care</SelectItem>
+            <SelectItem value="Secondary Care">Secondary Care</SelectItem>
+            <SelectItem value="Tertiary Care">Tertiary Care</SelectItem>
+            <SelectItem value="Mental Health">Mental Health</SelectItem>
+            <SelectItem value="Care Home">Care Home</SelectItem>
+            <SelectItem value="Other">Other</SelectItem>
+          </SelectContent>
+        </Select>
       </div>
     </div>
   );

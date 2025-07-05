@@ -1,12 +1,18 @@
 
+import { useState, useEffect } from 'react';
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { GPDetails } from "@/types/patient";
 import { GPAutocomplete } from "@/components/ui/gp-autocomplete";
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
+import { FhirPractitioner } from "@/types/referral";
+import { fetchPractitioners } from "@/services/practitionerService";
 
 interface GPDetailsFormProps {
+  practitionerId: string;
+  setPractitionerId: (value: string) => void;
   gpName: string;
   setGpName: (value: string) => void;
   gpPractice: string;
@@ -23,6 +29,8 @@ interface GPDetailsFormProps {
 }
 
 const GPDetailsForm = ({
+  practitionerId,
+  setPractitionerId,
   gpName,
   setGpName,
   gpPractice,
@@ -37,8 +45,43 @@ const GPDetailsForm = ({
   selectedGP,
   onGPSelect,
 }: GPDetailsFormProps) => {
+  const [practitioners, setPractitioners] = useState<FhirPractitioner[]>([]);
+  const [isLoadingPractitioners, setIsLoadingPractitioners] = useState(true);
+
+  useEffect(() => {
+    const loadPractitioners = async () => {
+      setIsLoadingPractitioners(true);
+      try {
+        const practitionerData = await fetchPractitioners();
+        setPractitioners(practitionerData);
+      } catch (error) {
+        console.error('Error loading practitioners:', error);
+      } finally {
+        setIsLoadingPractitioners(false);
+      }
+    };
+
+    loadPractitioners();
+  }, []);
   return (
     <div className="space-y-4">
+      <div className="space-y-2">
+        <Label htmlFor="practitioner" className="flex items-center gap-1">
+          Referring Practitioner <span className="text-red-500">*</span>
+        </Label>
+        <Select value={practitionerId} onValueChange={(value: string) => setPractitionerId(value)} required>
+          <SelectTrigger>
+            <SelectValue placeholder={isLoadingPractitioners ? "Loading practitioners..." : "Select practitioner"} />
+          </SelectTrigger>
+          <SelectContent>
+            {practitioners.map((practitioner) => (
+              <SelectItem key={practitioner.id} value={practitioner.id}>
+                {practitioner.name} - {practitioner.organization}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+      </div>
       {selectedPatientGP && (
         <div className="p-3 bg-green-50 border border-green-200 rounded-md">
           <p className="text-sm text-green-800 font-medium">

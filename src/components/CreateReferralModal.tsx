@@ -37,6 +37,9 @@ const CreateReferralModal = ({ isOpen, onClose, onSubmit }: CreateReferralModalP
   const [nhsNumber, setNhsNumber] = useState('');
   const [address, setAddress] = useState('');
   const [phone, setPhone] = useState('');
+  const [administrativeCategory, setAdministrativeCategory] = useState('');
+  const [overseasStatus, setOverseasStatus] = useState('');
+  const [patientAreaCareSetting, setPatientAreaCareSetting] = useState('');
 
   // GP fields
   const [selectedGP, setSelectedGP] = useState<Patient['gpDetails'] | undefined>();
@@ -315,6 +318,9 @@ const CreateReferralModal = ({ isOpen, onClose, onSubmit }: CreateReferralModalP
     setNhsNumber('');
     setAddress('');
     setPhone('');
+    setAdministrativeCategory('');
+    setOverseasStatus('');
+    setPatientAreaCareSetting('');
     setGpName('');
     setGpPractice('');
     setGpAddress('');
@@ -353,6 +359,8 @@ const CreateReferralModal = ({ isOpen, onClose, onSubmit }: CreateReferralModalP
               />
 
               <ReferralFormTabs
+                practitionerId={practitionerId}
+                setPractitionerId={setPractitionerId}
                 selectedPatient={selectedPatient}
                 onPatientSelect={handlePatientSelect}
                 onCreateNewPatient={handleCreateNewPatient}
@@ -369,6 +377,12 @@ const CreateReferralModal = ({ isOpen, onClose, onSubmit }: CreateReferralModalP
                 setAddress={setAddress}
                 phone={phone}
                 setPhone={setPhone}
+                administrativeCategory={administrativeCategory}
+                setAdministrativeCategory={setAdministrativeCategory}
+                overseasStatus={overseasStatus}
+                setOverseasStatus={setOverseasStatus}
+                patientAreaCareSetting={patientAreaCareSetting}
+                setPatientAreaCareSetting={setPatientAreaCareSetting}
                 selectedGP={selectedGP}
                 onGPSelect={handleGPSelect}
                 gpName={gpName}
