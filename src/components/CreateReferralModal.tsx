@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetFooter } from '@/components/ui/sheet';
+import { Sheet, SheetContent, SheetHeader, SheetTitle } from '@/components/ui/sheet';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
@@ -342,93 +342,98 @@ const CreateReferralModal = ({ isOpen, onClose, onSubmit }: CreateReferralModalP
           <SheetTitle className="text-2xl">Create Referral</SheetTitle>
         </SheetHeader>
         
-        <ScrollArea className="h-[calc(100vh-140px)]">
-          <div className="pr-4">
-            <form onSubmit={handleSubmit} className="space-y-6">
-              <ReferralBasicInfoForm
-                referralId={referralId}
-                setReferralId={setReferralId}
-                priority={priority}
-                setPriority={setPriority}
-                specialty={specialty}
-                setSpecialty={setSpecialty}
-                practitionerId={practitionerId}
-                setPractitionerId={setPractitionerId}
-                referralType={referralType}
-                setReferralType={setReferralType}
-              />
+        <div className="relative flex-1 flex flex-col">
+          <ScrollArea className="flex-1 pb-20">
+            <div className="pr-4">
+              <form onSubmit={handleSubmit} className="space-y-6">
+                <ReferralBasicInfoForm
+                  referralId={referralId}
+                  setReferralId={setReferralId}
+                  priority={priority}
+                  setPriority={setPriority}
+                  specialty={specialty}
+                  setSpecialty={setSpecialty}
+                  practitionerId={practitionerId}
+                  setPractitionerId={setPractitionerId}
+                  referralType={referralType}
+                  setReferralType={setReferralType}
+                />
 
-              <ReferralFormTabs
-                practitionerId={practitionerId}
-                setPractitionerId={setPractitionerId}
-                selectedPatient={selectedPatient}
-                onPatientSelect={handlePatientSelect}
-                onCreateNewPatient={handleCreateNewPatient}
-                isCreatingPatient={isCreatingPatient}
-                patientName={patientName}
-                setPatientName={setPatientName}
-                birthDate={birthDate}
-                setBirthDate={setBirthDate}
-                gender={gender}
-                setGender={setGender}
-                nhsNumber={nhsNumber}
-                setNhsNumber={setNhsNumber}
-                address={address}
-                setAddress={setAddress}
-                phone={phone}
-                setPhone={setPhone}
-                administrativeCategory={administrativeCategory}
-                setAdministrativeCategory={setAdministrativeCategory}
-                overseasStatus={overseasStatus}
-                setOverseasStatus={setOverseasStatus}
-                patientAreaCareSetting={patientAreaCareSetting}
-                setPatientAreaCareSetting={setPatientAreaCareSetting}
-                selectedGP={selectedGP}
-                onGPSelect={handleGPSelect}
-                gpName={gpName}
-                setGpName={setGpName}
-                gpPractice={gpPractice}
-                setGpPractice={setGpPractice}
-                gpAddress={gpAddress}
-                setGpAddress={setGpAddress}
-                gpPhone={gpPhone}
-                setGpPhone={setGpPhone}
-                gpEmail={gpEmail}
-                setGpEmail={setGpEmail}
-                reason={reason}
-                setReason={setReason}
-                history={history}
-                setHistory={setHistory}
-                diagnosis={diagnosis}
-                setDiagnosis={setDiagnosis}
-                medications={medications}
-                setMedications={setMedications}
-                allergies={allergies}
-                setAllergies={setAllergies}
-                notes={notes}
-                setNotes={setNotes}
-                documents={documents}
-                setDocuments={setDocuments}
-              />
-
-              <SheetFooter className="pt-4">
-                <Button type="button" variant="outline" onClick={onClose} disabled={isCreating || isCreatingPatient}>
-                  Cancel
-                </Button>
-                <Button type="submit" disabled={isCreating || isCreatingPatient}>
-                  {isCreating || isCreatingPatient ? (
-                    <>
-                      <Loader2 className="h-4 w-4 animate-spin mr-2" />
-                      {isCreatingPatient ? 'Creating Patient...' : 'Creating Referral...'}
-                    </>
-                  ) : (
-                    'Create Referral'
-                  )}
-                </Button>
-              </SheetFooter>
-            </form>
+                <ReferralFormTabs
+                  practitionerId={practitionerId}
+                  setPractitionerId={setPractitionerId}
+                  selectedPatient={selectedPatient}
+                  onPatientSelect={handlePatientSelect}
+                  onCreateNewPatient={handleCreateNewPatient}
+                  isCreatingPatient={isCreatingPatient}
+                  patientName={patientName}
+                  setPatientName={setPatientName}
+                  birthDate={birthDate}
+                  setBirthDate={setBirthDate}
+                  gender={gender}
+                  setGender={setGender}
+                  nhsNumber={nhsNumber}
+                  setNhsNumber={setNhsNumber}
+                  address={address}
+                  setAddress={setAddress}
+                  phone={phone}
+                  setPhone={setPhone}
+                  administrativeCategory={administrativeCategory}
+                  setAdministrativeCategory={setAdministrativeCategory}
+                  overseasStatus={overseasStatus}
+                  setOverseasStatus={setOverseasStatus}
+                  patientAreaCareSetting={patientAreaCareSetting}
+                  setPatientAreaCareSetting={setPatientAreaCareSetting}
+                  selectedGP={selectedGP}
+                  onGPSelect={handleGPSelect}
+                  gpName={gpName}
+                  setGpName={setGpName}
+                  gpPractice={gpPractice}
+                  setGpPractice={setGpPractice}
+                  gpAddress={gpAddress}
+                  setGpAddress={setGpAddress}
+                  gpPhone={gpPhone}
+                  setGpPhone={setGpPhone}
+                  gpEmail={gpEmail}
+                  setGpEmail={setGpEmail}
+                  reason={reason}
+                  setReason={setReason}
+                  history={history}
+                  setHistory={setHistory}
+                  diagnosis={diagnosis}
+                  setDiagnosis={setDiagnosis}
+                  medications={medications}
+                  setMedications={setMedications}
+                  allergies={allergies}
+                  setAllergies={setAllergies}
+                  notes={notes}
+                  setNotes={setNotes}
+                  documents={documents}
+                  setDocuments={setDocuments}
+                />
+              </form>
+            </div>
+          </ScrollArea>
+          
+          {/* Fixed buttons at bottom right */}
+          <div className="absolute bottom-0 right-0 p-4 bg-background border-t">
+            <div className="flex gap-2">
+              <Button type="button" variant="outline" onClick={onClose} disabled={isCreating || isCreatingPatient}>
+                Cancel
+              </Button>
+              <Button onClick={handleSubmit} disabled={isCreating || isCreatingPatient}>
+                {isCreating || isCreatingPatient ? (
+                  <>
+                    <Loader2 className="h-4 w-4 animate-spin mr-2" />
+                    {isCreatingPatient ? 'Creating Patient...' : 'Creating Referral...'}
+                  </>
+                ) : (
+                  'Create Referral'
+                )}
+              </Button>
+            </div>
           </div>
-        </ScrollArea>
+        </div>
       </SheetContent>
     </Sheet>
   );
