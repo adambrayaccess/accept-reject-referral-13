@@ -9,7 +9,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { FilePlus, ChevronDown, Sparkles, FileText, TestTube } from 'lucide-react';
 import CreateReferralModal from '@/components/CreateReferralModal';
-import AutoReferralModal from '@/components/AutoReferralModal';
+import AutoReferralSheet from '@/components/AutoReferralSheet';
 import { Referral } from '@/types/referral';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
@@ -164,7 +164,7 @@ INSERT INTO public.referrals (
         onSubmit={onReferralCreated}
       />
 
-      <AutoReferralModal
+      <AutoReferralSheet
         isOpen={isAutoModalOpen}
         onClose={() => setIsAutoModalOpen(false)}
         onSubmit={onReferralCreated}
