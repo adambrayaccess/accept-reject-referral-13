@@ -269,7 +269,10 @@ const CreateReferralModal = ({ isOpen, onClose, onSubmit }: CreateReferralModalP
         notes,
         attachments,
         aiGenerated: false,
-        referralType
+        referralType,
+        administrativeCategory,
+        overseasStatus,
+        patientAreaCareSetting
       };
 
       // Create referral using enhanced service

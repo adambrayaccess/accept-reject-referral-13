@@ -15,6 +15,11 @@ export interface ReferralCreationData {
   // Patient information
   patient: Patient;
   
+  // Administrative fields
+  administrativeCategory?: string;
+  overseasStatus?: string;
+  patientAreaCareSetting?: string;
+  
   // Clinical information
   reason: string;
   history?: string;
@@ -80,6 +85,9 @@ export class ReferralCreationService {
           ai_generated: data.aiGenerated || false,
           confidence: data.confidence,
           referral_type: data.referralType || 'External Referral',
+          administrative_category: data.administrativeCategory,
+          overseas_status: data.overseasStatus,
+          patient_area_care_setting: data.patientAreaCareSetting,
           intent: 'order',
           authored_on: new Date().toISOString(),
         })
