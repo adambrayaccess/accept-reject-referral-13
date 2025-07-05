@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetFooter } from '@/components/ui/sheet';
+import { ScrollArea } from '@/components/ui/scroll-area';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
 import { mockPractitioners } from '@/services/mock/practitioners';
@@ -329,88 +330,93 @@ const CreateReferralModal = ({ isOpen, onClose, onSubmit }: CreateReferralModalP
   };
 
   return (
-    <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
-        <DialogHeader>
-          <DialogTitle>Create Referral</DialogTitle>
-        </DialogHeader>
-        <form onSubmit={handleSubmit} className="space-y-6">
-          <ReferralBasicInfoForm
-            referralId={referralId}
-            setReferralId={setReferralId}
-            priority={priority}
-            setPriority={setPriority}
-            specialty={specialty}
-            setSpecialty={setSpecialty}
-            practitionerId={practitionerId}
-            setPractitionerId={setPractitionerId}
-            referralType={referralType}
-            setReferralType={setReferralType}
-          />
+    <Sheet open={isOpen} onOpenChange={onClose}>
+      <SheetContent className="w-full sm:max-w-3xl lg:max-w-4xl">
+        <SheetHeader className="pb-4">
+          <SheetTitle className="text-2xl">Create Referral</SheetTitle>
+        </SheetHeader>
+        
+        <ScrollArea className="h-[calc(100vh-140px)]">
+          <div className="pr-4">
+            <form onSubmit={handleSubmit} className="space-y-6">
+              <ReferralBasicInfoForm
+                referralId={referralId}
+                setReferralId={setReferralId}
+                priority={priority}
+                setPriority={setPriority}
+                specialty={specialty}
+                setSpecialty={setSpecialty}
+                practitionerId={practitionerId}
+                setPractitionerId={setPractitionerId}
+                referralType={referralType}
+                setReferralType={setReferralType}
+              />
 
-          <ReferralFormTabs
-            selectedPatient={selectedPatient}
-            onPatientSelect={handlePatientSelect}
-            onCreateNewPatient={handleCreateNewPatient}
-            isCreatingPatient={isCreatingPatient}
-            patientName={patientName}
-            setPatientName={setPatientName}
-            birthDate={birthDate}
-            setBirthDate={setBirthDate}
-            gender={gender}
-            setGender={setGender}
-            nhsNumber={nhsNumber}
-            setNhsNumber={setNhsNumber}
-            address={address}
-            setAddress={setAddress}
-            phone={phone}
-            setPhone={setPhone}
-            selectedGP={selectedGP}
-            onGPSelect={handleGPSelect}
-            gpName={gpName}
-            setGpName={setGpName}
-            gpPractice={gpPractice}
-            setGpPractice={setGpPractice}
-            gpAddress={gpAddress}
-            setGpAddress={setGpAddress}
-            gpPhone={gpPhone}
-            setGpPhone={setGpPhone}
-            gpEmail={gpEmail}
-            setGpEmail={setGpEmail}
-            reason={reason}
-            setReason={setReason}
-            history={history}
-            setHistory={setHistory}
-            diagnosis={diagnosis}
-            setDiagnosis={setDiagnosis}
-            medications={medications}
-            setMedications={setMedications}
-            allergies={allergies}
-            setAllergies={setAllergies}
-            notes={notes}
-            setNotes={setNotes}
-            documents={documents}
-            setDocuments={setDocuments}
-          />
+              <ReferralFormTabs
+                selectedPatient={selectedPatient}
+                onPatientSelect={handlePatientSelect}
+                onCreateNewPatient={handleCreateNewPatient}
+                isCreatingPatient={isCreatingPatient}
+                patientName={patientName}
+                setPatientName={setPatientName}
+                birthDate={birthDate}
+                setBirthDate={setBirthDate}
+                gender={gender}
+                setGender={setGender}
+                nhsNumber={nhsNumber}
+                setNhsNumber={setNhsNumber}
+                address={address}
+                setAddress={setAddress}
+                phone={phone}
+                setPhone={setPhone}
+                selectedGP={selectedGP}
+                onGPSelect={handleGPSelect}
+                gpName={gpName}
+                setGpName={setGpName}
+                gpPractice={gpPractice}
+                setGpPractice={setGpPractice}
+                gpAddress={gpAddress}
+                setGpAddress={setGpAddress}
+                gpPhone={gpPhone}
+                setGpPhone={setGpPhone}
+                gpEmail={gpEmail}
+                setGpEmail={setGpEmail}
+                reason={reason}
+                setReason={setReason}
+                history={history}
+                setHistory={setHistory}
+                diagnosis={diagnosis}
+                setDiagnosis={setDiagnosis}
+                medications={medications}
+                setMedications={setMedications}
+                allergies={allergies}
+                setAllergies={setAllergies}
+                notes={notes}
+                setNotes={setNotes}
+                documents={documents}
+                setDocuments={setDocuments}
+              />
 
-          <DialogFooter>
-            <Button type="button" variant="outline" onClick={onClose} disabled={isCreating || isCreatingPatient}>
-              Cancel
-            </Button>
-            <Button type="submit" disabled={isCreating || isCreatingPatient}>
-              {isCreating || isCreatingPatient ? (
-                <>
-                  <Loader2 className="h-4 w-4 animate-spin mr-2" />
-                  {isCreatingPatient ? 'Creating Patient...' : 'Creating Referral...'}
-                </>
-              ) : (
-                'Create Referral'
-              )}
-            </Button>
-          </DialogFooter>
-        </form>
-      </DialogContent>
-    </Dialog>
+              <SheetFooter className="pt-4">
+                <Button type="button" variant="outline" onClick={onClose} disabled={isCreating || isCreatingPatient}>
+                  Cancel
+                </Button>
+                <Button type="submit" disabled={isCreating || isCreatingPatient}>
+                  {isCreating || isCreatingPatient ? (
+                    <>
+                      <Loader2 className="h-4 w-4 animate-spin mr-2" />
+                      {isCreatingPatient ? 'Creating Patient...' : 'Creating Referral...'}
+                    </>
+                  ) : (
+                    'Create Referral'
+                  )}
+                </Button>
+              </SheetFooter>
+            </form>
+          </div>
+        </ScrollArea>
+      </SheetContent>
+    </Sheet>
   );
 };
 
