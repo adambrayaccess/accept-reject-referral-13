@@ -342,82 +342,80 @@ const CreateReferralModal = ({ isOpen, onClose, onSubmit }: CreateReferralModalP
           <SheetTitle className="text-2xl">Create Referral</SheetTitle>
         </SheetHeader>
         
-        <div className="relative flex-1 flex flex-col">
-          <ScrollArea className="flex-1 pb-20">
-            <div className="pr-4">
-              <form onSubmit={handleSubmit} className="space-y-6">
-                <ReferralBasicInfoForm
-                  referralId={referralId}
-                  setReferralId={setReferralId}
-                  priority={priority}
-                  setPriority={setPriority}
-                  specialty={specialty}
-                  setSpecialty={setSpecialty}
-                  practitionerId={practitionerId}
-                  setPractitionerId={setPractitionerId}
-                  referralType={referralType}
-                  setReferralType={setReferralType}
-                />
+        <div className="flex flex-col h-full">
+          <div className="flex-1 overflow-auto">
+            <div className="p-6 space-y-6">
+              <ReferralBasicInfoForm
+                referralId={referralId}
+                setReferralId={setReferralId}
+                priority={priority}
+                setPriority={setPriority}
+                specialty={specialty}
+                setSpecialty={setSpecialty}
+                practitionerId={practitionerId}
+                setPractitionerId={setPractitionerId}
+                referralType={referralType}
+                setReferralType={setReferralType}
+              />
 
-                <ReferralFormTabs
-                  practitionerId={practitionerId}
-                  setPractitionerId={setPractitionerId}
-                  selectedPatient={selectedPatient}
-                  onPatientSelect={handlePatientSelect}
-                  onCreateNewPatient={handleCreateNewPatient}
-                  isCreatingPatient={isCreatingPatient}
-                  patientName={patientName}
-                  setPatientName={setPatientName}
-                  birthDate={birthDate}
-                  setBirthDate={setBirthDate}
-                  gender={gender}
-                  setGender={setGender}
-                  nhsNumber={nhsNumber}
-                  setNhsNumber={setNhsNumber}
-                  address={address}
-                  setAddress={setAddress}
-                  phone={phone}
-                  setPhone={setPhone}
-                  administrativeCategory={administrativeCategory}
-                  setAdministrativeCategory={setAdministrativeCategory}
-                  overseasStatus={overseasStatus}
-                  setOverseasStatus={setOverseasStatus}
-                  patientAreaCareSetting={patientAreaCareSetting}
-                  setPatientAreaCareSetting={setPatientAreaCareSetting}
-                  selectedGP={selectedGP}
-                  onGPSelect={handleGPSelect}
-                  gpName={gpName}
-                  setGpName={setGpName}
-                  gpPractice={gpPractice}
-                  setGpPractice={setGpPractice}
-                  gpAddress={gpAddress}
-                  setGpAddress={setGpAddress}
-                  gpPhone={gpPhone}
-                  setGpPhone={setGpPhone}
-                  gpEmail={gpEmail}
-                  setGpEmail={setGpEmail}
-                  reason={reason}
-                  setReason={setReason}
-                  history={history}
-                  setHistory={setHistory}
-                  diagnosis={diagnosis}
-                  setDiagnosis={setDiagnosis}
-                  medications={medications}
-                  setMedications={setMedications}
-                  allergies={allergies}
-                  setAllergies={setAllergies}
-                  notes={notes}
-                  setNotes={setNotes}
-                  documents={documents}
-                  setDocuments={setDocuments}
-                />
-              </form>
+              <ReferralFormTabs
+                practitionerId={practitionerId}
+                setPractitionerId={setPractitionerId}
+                selectedPatient={selectedPatient}
+                onPatientSelect={handlePatientSelect}
+                onCreateNewPatient={handleCreateNewPatient}
+                isCreatingPatient={isCreatingPatient}
+                patientName={patientName}
+                setPatientName={setPatientName}
+                birthDate={birthDate}
+                setBirthDate={setBirthDate}
+                gender={gender}
+                setGender={setGender}
+                nhsNumber={nhsNumber}
+                setNhsNumber={setNhsNumber}
+                address={address}
+                setAddress={setAddress}
+                phone={phone}
+                setPhone={setPhone}
+                administrativeCategory={administrativeCategory}
+                setAdministrativeCategory={setAdministrativeCategory}
+                overseasStatus={overseasStatus}
+                setOverseasStatus={setOverseasStatus}
+                patientAreaCareSetting={patientAreaCareSetting}
+                setPatientAreaCareSetting={setPatientAreaCareSetting}
+                selectedGP={selectedGP}
+                onGPSelect={handleGPSelect}
+                gpName={gpName}
+                setGpName={setGpName}
+                gpPractice={gpPractice}
+                setGpPractice={setGpPractice}
+                gpAddress={gpAddress}
+                setGpAddress={setGpAddress}
+                gpPhone={gpPhone}
+                setGpPhone={setGpPhone}
+                gpEmail={gpEmail}
+                setGpEmail={setGpEmail}
+                reason={reason}
+                setReason={setReason}
+                history={history}
+                setHistory={setHistory}
+                diagnosis={diagnosis}
+                setDiagnosis={setDiagnosis}
+                medications={medications}
+                setMedications={setMedications}
+                allergies={allergies}
+                setAllergies={setAllergies}
+                notes={notes}
+                setNotes={setNotes}
+                documents={documents}
+                setDocuments={setDocuments}
+              />
             </div>
-          </ScrollArea>
+          </div>
           
-          {/* Fixed buttons at bottom right */}
-          <div className="absolute bottom-0 right-0 p-4 bg-background border-t">
-            <div className="flex gap-2">
+          {/* Fixed Footer */}
+          <div className="border-t bg-background p-4">
+            <div className="flex justify-end gap-2">
               <Button type="button" variant="outline" onClick={onClose} disabled={isCreating || isCreatingPatient}>
                 Cancel
               </Button>
