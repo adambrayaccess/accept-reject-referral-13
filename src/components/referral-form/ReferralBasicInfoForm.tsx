@@ -64,7 +64,6 @@ const ReferralBasicInfoForm = ({
             onChange={(e) => setReferralId(e.target.value)}
             placeholder="Auto-generated"
             required
-            className="border-red-200 focus:border-red-400"
           />
         </div>
         <div className="space-y-2">
@@ -88,7 +87,7 @@ const ReferralBasicInfoForm = ({
             Service <span className="text-red-500">*</span>
           </Label>
           <Select value={specialty} onValueChange={(value: string) => setSpecialty(value)} required>
-            <SelectTrigger className="border-red-200 focus:border-red-400">
+            <SelectTrigger>
               <SelectValue placeholder="Select service" />
             </SelectTrigger>
             <SelectContent>
@@ -105,7 +104,7 @@ const ReferralBasicInfoForm = ({
             Referring Practitioner <span className="text-red-500">*</span>
           </Label>
           <Select value={practitionerId} onValueChange={(value: string) => setPractitionerId(value)} required>
-            <SelectTrigger className="border-red-200 focus:border-red-400">
+            <SelectTrigger>
               <SelectValue placeholder={isLoadingPractitioners ? "Loading practitioners..." : "Select practitioner"} />
             </SelectTrigger>
             <SelectContent>

@@ -164,7 +164,7 @@ const EnhancedClinicalDetailsForm = ({
             value={reason}
             onChange={(e) => setReason(e.target.value)}
             placeholder="Describe the primary reason for this referral..."
-            className="min-h-[80px] border-red-200 focus:border-red-400"
+            className="min-h-[80px]"
             required
           />
         </div>

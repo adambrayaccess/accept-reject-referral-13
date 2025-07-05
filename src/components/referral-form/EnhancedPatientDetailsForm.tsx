@@ -151,7 +151,7 @@ const EnhancedPatientDetailsForm = ({
               id="patientName"
               value={patientName}
               onChange={(e) => setPatientName(e.target.value)}
-              className="pl-10 border-red-200 focus:border-red-400"
+              className="pl-10"
               required
             />
           </div>
@@ -165,7 +165,6 @@ const EnhancedPatientDetailsForm = ({
             type="date"
             value={birthDate}
             onChange={(e) => setBirthDate(e.target.value)}
-            className="border-red-200 focus:border-red-400"
             required
           />
         </div>
@@ -194,7 +193,6 @@ const EnhancedPatientDetailsForm = ({
             value={nhsNumber}
             onChange={(e) => setNhsNumber(e.target.value)}
             placeholder="000 000 0000"
-            className="border-red-200 focus:border-red-400"
             required
           />
         </div>
