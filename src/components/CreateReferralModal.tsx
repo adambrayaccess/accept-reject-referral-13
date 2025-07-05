@@ -12,7 +12,7 @@ import ReferralBasicInfoForm from './referral-form/ReferralBasicInfoForm';
 import ReferralFormTabs from './referral-form/ReferralFormTabs';
 import { DocumentFile } from './referral-form/ReferralDocumentsTab';
 import { ReferralCreationService, ReferralCreationData } from '@/services/referral/referralCreationService';
-import { Loader2 } from 'lucide-react';
+import { Loader2, FileText } from 'lucide-react';
 
 interface CreateReferralModalProps {
   isOpen: boolean;
@@ -342,7 +342,10 @@ const CreateReferralModal = ({ isOpen, onClose, onSubmit }: CreateReferralModalP
     <Sheet open={isOpen} onOpenChange={onClose}>
       <SheetContent className="w-full sm:max-w-3xl lg:max-w-4xl">
         <SheetHeader className="pb-4">
-          <SheetTitle className="text-2xl">Create Referral</SheetTitle>
+          <SheetTitle className="text-2xl flex items-center gap-2">
+            <FileText className="h-6 w-6" />
+            Create Referral
+          </SheetTitle>
         </SheetHeader>
         
         <div className="flex flex-col h-full">
