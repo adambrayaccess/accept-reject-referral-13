@@ -301,7 +301,7 @@ const AutoReferralSheet = ({ isOpen, onClose, onSubmit }: AutoReferralSheetProps
 
     // Determine specialty if not provided
     let determinedSpecialty = targetSpecialty;
-    if (!determinedSpecialty) {
+    if (!determinedSpecialty || determinedSpecialty === 'auto-detect') {
       if (info.toLowerCase().includes('heart') || info.toLowerCase().includes('cardiac')) {
         determinedSpecialty = 'Cardiology';
       } else if (info.toLowerCase().includes('skin') || info.toLowerCase().includes('rash')) {
@@ -688,7 +688,7 @@ const AutoReferralSheet = ({ isOpen, onClose, onSubmit }: AutoReferralSheetProps
                             <SelectValue placeholder="Let AI determine specialty" />
                           </SelectTrigger>
                           <SelectContent>
-                            <SelectItem value="">Auto-detect from information</SelectItem>
+                            <SelectItem value="auto-detect">Auto-detect from information</SelectItem>
                             <SelectItem value="Cardiology">Cardiology</SelectItem>
                             <SelectItem value="Dermatology">Dermatology</SelectItem>
                             <SelectItem value="Gastroenterology">Gastroenterology</SelectItem>
