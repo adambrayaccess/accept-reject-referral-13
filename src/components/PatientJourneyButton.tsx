@@ -16,7 +16,7 @@ const PatientJourneyButton = ({ referral }: PatientJourneyButtonProps) => {
       <Button
         variant="outline"
         onClick={() => setIsOpen(true)}
-        className="w-full flex items-center justify-center gap-2"
+        className="w-full flex items-center justify-center gap-2 bg-secondary hover:bg-accent text-secondary-foreground border-secondary"
       >
         <Route className="h-4 w-4" />
         View Patient Journey

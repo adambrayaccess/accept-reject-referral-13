@@ -12,6 +12,7 @@ import HCPBadge from '@/components/team/HCPBadge';
 import AddClinicalNoteSheet from '@/components/clinical-notes/AddClinicalNoteSheet';
 import InpatientHistory from './InpatientHistory';
 import { TriageHistoryButton, TriageHistorySheet } from '@/components/triage-history';
+import PatientJourneyButton from '@/components/PatientJourneyButton';
 
 interface WaitingListViewWorkspaceProps {
   referral: Referral;
@@ -57,6 +58,11 @@ const WaitingListViewWorkspace = ({ referral, onStatusChange, onSuggestionApplie
         <FileText className="h-4 w-4" />
         Add Note
       </Button>
+
+      {/* Patient Journey Button - Light teal color */}
+      <div className="w-full">
+        <PatientJourneyButton referral={referral} />
+      </div>
 
       {/* Team Allocation Card */}
       {referral.teamId && (
