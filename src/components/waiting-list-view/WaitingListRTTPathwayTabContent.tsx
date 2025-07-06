@@ -121,46 +121,54 @@ const WaitingListRTTPathwayTabContent = ({ referral }: WaitingListRTTPathwayTabC
       )}
 
       {/* Waiting List Allocation Section */}
-      {waitingListAllocation && (
-        <div className="space-y-3">
-          <div className="flex items-center gap-2">
-            <MapPin className="w-4 h-4 text-muted-foreground" />
-            <h4 className="text-sm font-medium">Waiting List Allocation</h4>
-          </div>
-          
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-x-6 gap-y-3 text-sm">
-            <div>
-              <div className="text-xs font-medium text-muted-foreground">Assigned Consultant</div>
-              <div className="font-medium">{waitingListAllocation.consultant}</div>
-            </div>
-            
-            <div>
-              <div className="text-xs font-medium text-muted-foreground">Clinic Location</div>
-              <div className="font-medium">{waitingListAllocation.clinic}</div>
-            </div>
-            
-            <div>
-              <div className="text-xs font-medium text-muted-foreground">Estimated Wait Time</div>
-              <div className="font-medium">{waitingListAllocation.estimatedWaitTime}</div>
-            </div>
-            
-            <div>
-              <div className="text-xs font-medium text-muted-foreground">Queue Position</div>
-              <div className="font-medium">
-                {waitingListAllocation.position} of {waitingListAllocation.totalWaiting}
+      <div className="space-y-3">
+        <div className="flex items-center gap-2">
+          <MapPin className="w-4 h-4 text-muted-foreground" />
+          <h4 className="text-sm font-medium">Waiting List Allocation</h4>
+        </div>
+        
+        {waitingListAllocation ? (
+          <>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-x-6 gap-y-3 text-sm">
+              <div>
+                <div className="text-xs font-medium text-muted-foreground">Assigned Consultant</div>
+                <div className="font-medium">{waitingListAllocation.consultant}</div>
+              </div>
+              
+              <div>
+                <div className="text-xs font-medium text-muted-foreground">Clinic Location</div>
+                <div className="font-medium">{waitingListAllocation.clinic}</div>
+              </div>
+              
+              <div>
+                <div className="text-xs font-medium text-muted-foreground">Estimated Wait Time</div>
+                <div className="font-medium">{waitingListAllocation.estimatedWaitTime}</div>
+              </div>
+              
+              <div>
+                <div className="text-xs font-medium text-muted-foreground">Queue Position</div>
+                <div className="font-medium">
+                  {waitingListAllocation.position} of {waitingListAllocation.totalWaiting}
+                </div>
               </div>
             </div>
-          </div>
 
-          <div className="mt-3 p-3 bg-blue-50 rounded-lg border border-blue-200">
-            <div className="text-xs font-medium text-blue-800 mb-1">Waiting List Status</div>
-            <div className="text-xs text-blue-700">
-              Patient is currently on the waiting list for {referral.specialty}. 
-              Appointment scheduling will begin approximately {waitingListAllocation.estimatedWaitTime} from referral date.
+            <div className="mt-3 p-3 bg-blue-50 rounded-lg border border-blue-200">
+              <div className="text-xs font-medium text-blue-800 mb-1">Waiting List Status</div>
+              <div className="text-xs text-blue-700">
+                Patient is currently on the waiting list for {referral.specialty}. 
+                Appointment scheduling will begin approximately {waitingListAllocation.estimatedWaitTime} from referral date.
+              </div>
+            </div>
+          </>
+        ) : (
+          <div className="p-3 bg-muted/30 rounded-lg border">
+            <div className="text-sm text-muted-foreground">
+              Awaiting Waiting List allocation
             </div>
           </div>
-        </div>
-      )}
+        )}
+      </div>
 
       {/* View Referral Section */}
       <Separator />
