@@ -1,7 +1,6 @@
 
 import { useState, useEffect } from 'react';
 import { Referral } from '@/types/referral';
-import { Separator } from '@/components/ui/separator';
 import { fetchHCPById } from '@/services/hcpService';
 
 interface ClinicalTabContentProps {
@@ -32,7 +31,7 @@ const ClinicalTabContent = ({ referral }: ClinicalTabContentProps) => {
   }, [referral.assignedHCPId]);
 
   return (
-    <div className="text-sm space-y-3">
+    <div className="grid grid-cols-1 lg:grid-cols-2 gap-x-6 gap-y-3 text-sm">
       <div>
         <div className="text-xs font-medium text-muted-foreground">Specialty</div>
         <div className="font-medium">{referral.specialty}</div>
@@ -54,27 +53,27 @@ const ClinicalTabContent = ({ referral }: ClinicalTabContentProps) => {
         </div>
       )}
       
-      <div>
+      <div className="lg:col-span-2">
         <div className="text-xs font-medium text-muted-foreground">Reason for Referral</div>
         <div className="mt-1 text-sm">{referral.clinicalInfo.reason}</div>
       </div>
       
       {referral.clinicalInfo.history && (
-        <div>
+        <div className="lg:col-span-2">
           <div className="text-xs font-medium text-muted-foreground">Clinical History</div>
           <div className="mt-1 text-sm whitespace-pre-line">{referral.clinicalInfo.history}</div>
         </div>
       )}
       
       {referral.clinicalInfo.diagnosis && (
-        <div>
+        <div className="lg:col-span-2">
           <div className="text-xs font-medium text-muted-foreground">Provisional Diagnosis</div>
           <div className="mt-1 text-sm">{referral.clinicalInfo.diagnosis}</div>
         </div>
       )}
       
       {referral.clinicalInfo.medications && referral.clinicalInfo.medications.length > 0 && (
-        <div>
+        <div className="lg:col-span-2">
           <div className="text-xs font-medium text-muted-foreground">Current Medications</div>
           <ul className="list-disc pl-4 mt-1 text-sm space-y-1">
             {referral.clinicalInfo.medications.map((med, index) => (
@@ -85,7 +84,7 @@ const ClinicalTabContent = ({ referral }: ClinicalTabContentProps) => {
       )}
       
       {referral.clinicalInfo.allergies && referral.clinicalInfo.allergies.length > 0 && (
-        <div>
+        <div className="lg:col-span-2">
           <div className="text-xs font-medium text-muted-foreground">Allergies</div>
           <ul className="list-disc pl-4 mt-1 text-sm space-y-1">
             {referral.clinicalInfo.allergies.map((allergy, index) => (
@@ -96,7 +95,7 @@ const ClinicalTabContent = ({ referral }: ClinicalTabContentProps) => {
       )}
       
       {referral.clinicalInfo.notes && (
-        <div>
+        <div className="lg:col-span-2">
           <div className="text-xs font-medium text-muted-foreground">Additional Notes</div>
           <div className="mt-1 text-sm whitespace-pre-line">{referral.clinicalInfo.notes}</div>
         </div>
