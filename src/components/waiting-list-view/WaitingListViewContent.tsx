@@ -38,6 +38,7 @@ const WaitingListViewContent = ({
             <WaitingListReferralDetail 
               referral={referral} 
               relatedReferrals={relatedReferrals}
+              onUpdate={onStatusChange}
             />
             {referral.isSubReferral && referral.parentReferralId && (
               <ParentReferralInfo childReferralId={referral.id} />

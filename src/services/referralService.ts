@@ -6,6 +6,7 @@ export {
   updateReferralStatus,
   updateTriageStatus,
   updateReferralTags,
+  updateReferralDetails,
   setReferralsData 
 } from './referral/referralUpdateService';
 

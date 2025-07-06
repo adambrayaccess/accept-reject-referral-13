@@ -241,6 +241,115 @@ export const updateReferralTags = async (
 };
 
 // Mock data store is no longer needed - remove this legacy function
+export const updateReferralDetails = async (
+  referralId: string,
+  updates: {
+    // Clinical fields
+    specialty?: string;
+    service?: string;
+    assignedHCPId?: string;
+    reason?: string;
+    history?: string;
+    diagnosis?: string;
+    medications?: string;
+    allergies_info?: string;
+    notes?: string;
+    // Referrer fields
+    referralSource?: string;
+    referralType?: string;
+    patientAreaCareSetting?: string;
+    externalReference?: string;
+    camhsServiceTier?: string;
+    // Patient fields
+    overseasStatus?: string;
+    administrativeCategory?: string;
+  }
+): Promise<boolean> => {
+  try {
+    console.log(`Updating referral ${referralId} details:`, updates);
+    
+    const dbUpdates: any = {
+      ...updates,
+      updated_at: new Date().toISOString()
+    };
+    
+    // Map field names to database column names
+    if (updates.assignedHCPId !== undefined) {
+      dbUpdates.assigned_hcp_id = updates.assignedHCPId;
+      delete dbUpdates.assignedHCPId;
+    }
+    if (updates.referralSource !== undefined) {
+      dbUpdates.referral_source = updates.referralSource;
+      delete dbUpdates.referralSource;
+    }
+    if (updates.referralType !== undefined) {
+      dbUpdates.referral_type = updates.referralType;
+      delete dbUpdates.referralType;
+    }
+    if (updates.patientAreaCareSetting !== undefined) {
+      dbUpdates.patient_area_care_setting = updates.patientAreaCareSetting;
+      delete dbUpdates.patientAreaCareSetting;
+    }
+    if (updates.externalReference !== undefined) {
+      dbUpdates.external_reference = updates.externalReference;
+      delete dbUpdates.externalReference;
+    }
+    if (updates.camhsServiceTier !== undefined) {
+      dbUpdates.camhs_service_tier = updates.camhsServiceTier;
+      delete dbUpdates.camhsServiceTier;
+    }
+    if (updates.overseasStatus !== undefined) {
+      dbUpdates.overseas_status = updates.overseasStatus;
+      delete dbUpdates.overseasStatus;
+    }
+    if (updates.administrativeCategory !== undefined) {
+      dbUpdates.administrative_category = updates.administrativeCategory;
+      delete dbUpdates.administrativeCategory;
+    }
+    
+    // Update the referral
+    const { error: updateError } = await supabase
+      .from('referrals')
+      .update(dbUpdates)
+      .eq('id', referralId);
+    
+    if (updateError) {
+      console.error('Error updating referral details:', updateError);
+      return false;
+    }
+    
+    // Add audit log entry
+    const auditEntry = {
+      referral_id: referralId,
+      timestamp: new Date().toISOString(),
+      user_name: 'Current User', // In real app, get from auth context
+      action: 'Referral details updated',
+      notes: `Updated fields: ${Object.keys(updates).join(', ')}`
+    };
+    
+    const { error: auditError } = await supabase
+      .from('audit_log')
+      .insert([auditEntry]);
+      
+    if (auditError) {
+      console.error('Error adding audit log:', auditError);
+      // Don't fail the main operation for audit log issues
+    }
+    
+    // Emit custom event for real-time updates
+    window.dispatchEvent(new CustomEvent('referralUpdated', { 
+      detail: { referralId, updates } 
+    }));
+    
+    console.log(`Successfully updated referral ${referralId} details`);
+    return true;
+  } catch (error) {
+    console.error('Error updating referral details:', error);
+    return false;
+  }
+};
+
+// Mock data store is no longer needed - remove this legacy function
 export const setReferralsData = (data: Referral[]) => {
   console.warn('setReferralsData is deprecated - data is now managed by Supabase');
 };

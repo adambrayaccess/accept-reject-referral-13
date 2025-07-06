@@ -34,6 +34,7 @@ const ReferralViewContent = ({
             <ReferralDetail 
               referral={referral} 
               relatedReferrals={relatedReferrals}
+              onUpdate={onStatusChange}
             />
             <MedicalHistory patient={referral.patient} />
             <ReferralDocuments 
