@@ -89,7 +89,7 @@ const EditablePatientTabContent = ({ referral, relatedReferrals, editData, setEd
               <SelectValue placeholder="Select overseas status" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="">None</SelectItem>
+              <SelectItem value="none">None</SelectItem>
               <SelectItem value="UK Resident">UK Resident</SelectItem>
               <SelectItem value="Overseas Visitor">Overseas Visitor</SelectItem>
               <SelectItem value="EEA National">EEA National</SelectItem>
@@ -111,7 +111,7 @@ const EditablePatientTabContent = ({ referral, relatedReferrals, editData, setEd
               <SelectValue placeholder="Select administrative category" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="">None</SelectItem>
+              <SelectItem value="none">None</SelectItem>
               <SelectItem value="NHS Patient">NHS Patient</SelectItem>
               <SelectItem value="Private Patient">Private Patient</SelectItem>
               <SelectItem value="Armed Forces">Armed Forces</SelectItem>

@@ -273,37 +273,37 @@ export const updateReferralDetails = async (
       updated_at: new Date().toISOString()
     };
     
-    // Map field names to database column names
+    // Map field names to database column names and handle "none" values
     if (updates.assignedHCPId !== undefined) {
-      dbUpdates.assigned_hcp_id = updates.assignedHCPId;
+      dbUpdates.assigned_hcp_id = updates.assignedHCPId === 'none' ? null : updates.assignedHCPId;
       delete dbUpdates.assignedHCPId;
     }
     if (updates.referralSource !== undefined) {
-      dbUpdates.referral_source = updates.referralSource;
+      dbUpdates.referral_source = updates.referralSource === 'none' ? null : updates.referralSource;
       delete dbUpdates.referralSource;
     }
     if (updates.referralType !== undefined) {
-      dbUpdates.referral_type = updates.referralType;
+      dbUpdates.referral_type = updates.referralType === 'none' ? null : updates.referralType;
       delete dbUpdates.referralType;
     }
     if (updates.patientAreaCareSetting !== undefined) {
-      dbUpdates.patient_area_care_setting = updates.patientAreaCareSetting;
+      dbUpdates.patient_area_care_setting = updates.patientAreaCareSetting === 'none' ? null : updates.patientAreaCareSetting;
       delete dbUpdates.patientAreaCareSetting;
     }
     if (updates.externalReference !== undefined) {
-      dbUpdates.external_reference = updates.externalReference;
+      dbUpdates.external_reference = updates.externalReference === 'none' ? null : updates.externalReference;
       delete dbUpdates.externalReference;
     }
     if (updates.camhsServiceTier !== undefined) {
-      dbUpdates.camhs_service_tier = updates.camhsServiceTier;
+      dbUpdates.camhs_service_tier = updates.camhsServiceTier === 'none' ? null : updates.camhsServiceTier;
       delete dbUpdates.camhsServiceTier;
     }
     if (updates.overseasStatus !== undefined) {
-      dbUpdates.overseas_status = updates.overseasStatus;
+      dbUpdates.overseas_status = updates.overseasStatus === 'none' ? null : updates.overseasStatus;
       delete dbUpdates.overseasStatus;
     }
     if (updates.administrativeCategory !== undefined) {
-      dbUpdates.administrative_category = updates.administrativeCategory;
+      dbUpdates.administrative_category = updates.administrativeCategory === 'none' ? null : updates.administrativeCategory;
       delete dbUpdates.administrativeCategory;
     }
     

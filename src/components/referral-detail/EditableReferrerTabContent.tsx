@@ -81,7 +81,7 @@ const EditableReferrerTabContent = ({ referral, editData, setEditData }: Editabl
               <SelectValue placeholder="Select referral type" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="">None</SelectItem>
+              <SelectItem value="none">None</SelectItem>
               <SelectItem value="External Referral">External Referral</SelectItem>
               <SelectItem value="Internal Referral">Internal Referral</SelectItem>
               <SelectItem value="Self Referral">Self Referral</SelectItem>
@@ -128,7 +128,7 @@ const EditableReferrerTabContent = ({ referral, editData, setEditData }: Editabl
               <SelectValue placeholder="Select CAMHS tier" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="">None</SelectItem>
+              <SelectItem value="none">None</SelectItem>
               <SelectItem value="Tier 1">Tier 1</SelectItem>
               <SelectItem value="Tier 2">Tier 2</SelectItem>
               <SelectItem value="Tier 3">Tier 3</SelectItem>
