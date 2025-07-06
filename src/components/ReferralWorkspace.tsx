@@ -14,6 +14,7 @@ import AppointmentStatus from './cohort/AppointmentStatus';
 import TeamBadge from './team/TeamBadge';
 import HCPBadge from './team/HCPBadge';
 import AddClinicalNoteSheet from './clinical-notes/AddClinicalNoteSheet';
+import { TriageHistoryButton, TriageHistorySheet } from './triage-history';
 
 interface ReferralWorkspaceProps {
   referral: Referral;
@@ -24,6 +25,7 @@ interface ReferralWorkspaceProps {
 const ReferralWorkspace = ({ referral, onStatusChange, onSuggestionApplied }: ReferralWorkspaceProps) => {
   const [refreshKey, setRefreshKey] = useState(0);
   const [isAddNoteOpen, setIsAddNoteOpen] = useState(false);
+  const [isTriageHistoryOpen, setIsTriageHistoryOpen] = useState(false);
 
   const handleTagsUpdated = () => {
     // Refresh parent component to show updated tags
@@ -126,13 +128,18 @@ const ReferralWorkspace = ({ referral, onStatusChange, onSuggestionApplied }: Re
 
       <Card className="flex-1">
         <CardHeader className="pb-3">
-          <CardTitle className="text-lg flex items-center">
-            <History className="h-5 w-5 mr-2" />
-            Triage History
+          <CardTitle className="text-lg flex items-center justify-between">
+            <div className="flex items-center">
+              <History className="h-5 w-5 mr-2" />
+              Triage History
+            </div>
+            <TriageHistoryButton onClick={() => setIsTriageHistoryOpen(true)} />
           </CardTitle>
         </CardHeader>
         <CardContent className="pt-0">
-          <EnhancedAuditLog entries={referral.auditLog} referralId={referral.id} />
+          <div className="text-sm text-muted-foreground">
+            Click "View Triage History" to see complete audit trail and clinical notes
+          </div>
         </CardContent>
       </Card>
 
@@ -143,6 +150,14 @@ const ReferralWorkspace = ({ referral, onStatusChange, onSuggestionApplied }: Re
         isOpen={isAddNoteOpen}
         onOpenChange={setIsAddNoteOpen}
         onNoteCreated={handleNoteCreated}
+      />
+
+      {/* Triage History Sheet */}
+      <TriageHistorySheet
+        referralId={referral.id}
+        auditLog={referral.auditLog}
+        isOpen={isTriageHistoryOpen}
+        onOpenChange={setIsTriageHistoryOpen}
       />
     </div>
   );
