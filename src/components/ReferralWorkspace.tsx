@@ -8,7 +8,7 @@ import ReferralActions from './ReferralActions';
 import EnhancedAuditLog from './audit/EnhancedAuditLog';
 import SubReferralsList from './sub-referrals/SubReferralsList';
 import ParentReferralInfo from './sub-referrals/ParentReferralInfo';
-import PatientJourney from './PatientJourney';
+import PatientJourneyButton from './PatientJourneyButton';
 import ReferralTagging from './referral-tagging/ReferralTagging';
 import AppointmentStatus from './cohort/AppointmentStatus';
 import TeamBadge from './team/TeamBadge';
@@ -124,7 +124,7 @@ const ReferralWorkspace = ({ referral, onStatusChange, onSuggestionApplied }: Re
         onTagsUpdated={handleTagsUpdated}
       />
 
-      <PatientJourney referral={referral} />
+      <PatientJourneyButton referral={referral} />
 
       <Card className="flex-1">
         <CardHeader className="pb-3">
