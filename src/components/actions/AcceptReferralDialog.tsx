@@ -4,7 +4,7 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { CheckCircle } from 'lucide-react';
+import { CheckCircle, Clipboard } from 'lucide-react';
 import { Referral, TriageStatus } from '@/types/referral';
 import { updateReferralStatus, sendHL7Message } from '@/services/referralService';
 import { useToast } from '@/hooks/use-toast';
@@ -230,7 +230,10 @@ const AcceptReferralDialog = ({ referral, onStatusChange, open, onOpenChange }: 
       )}
       <SheetContent className="w-full sm:max-w-3xl lg:max-w-4xl">
         <SheetHeader className="pb-4">
-          <SheetTitle className="text-2xl">Referral Triage</SheetTitle>
+          <SheetTitle className="text-2xl flex items-center gap-2">
+            <Clipboard className="h-6 w-6" />
+            Referral Triage
+          </SheetTitle>
           <SheetDescription className="text-base">
             Please allocate this referral to a team and set status for {referral.patient.name}
           </SheetDescription>
