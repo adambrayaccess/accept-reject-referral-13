@@ -56,6 +56,11 @@ const ReferralWorkspace = ({ referral, onStatusChange, onSuggestionApplied }: Re
         Add Note
       </Button>
 
+      {/* Patient Journey Button - Light teal color */}
+      <div className="w-full">
+        <PatientJourneyButton referral={referral} />
+      </div>
+
       {referral.isSubReferral && referral.parentReferralId && (
         <ParentReferralInfo childReferralId={referral.id} />
       )}
@@ -123,8 +128,6 @@ const ReferralWorkspace = ({ referral, onStatusChange, onSuggestionApplied }: Re
         referral={referral}
         onTagsUpdated={handleTagsUpdated}
       />
-
-      <PatientJourneyButton referral={referral} />
 
       <Card className="flex-1">
         <CardHeader className="pb-3">
