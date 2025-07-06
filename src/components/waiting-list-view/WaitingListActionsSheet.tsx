@@ -4,7 +4,7 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { ArrowRightLeft, UserX, BedDouble } from 'lucide-react';
+import { ArrowRightLeft, UserX, BedDouble, Clipboard } from 'lucide-react';
 import { Referral } from '@/types/referral';
 import { useToast } from '@/hooks/use-toast';
 import { specialties } from '@/data/specialtyOptions';
@@ -158,7 +158,10 @@ const WaitingListActionsSheet = ({ referral, open, onOpenChange, onStatusChange 
     <Sheet open={open} onOpenChange={onOpenChange}>
       <SheetContent className="w-full sm:max-w-2xl">
         <SheetHeader className="pb-4">
-          <SheetTitle className="text-2xl">Waiting List Actions</SheetTitle>
+          <SheetTitle className="text-2xl flex items-center gap-2">
+            <Clipboard className="h-6 w-6" />
+            Waiting List Actions
+          </SheetTitle>
           <SheetDescription className="text-base">
             Manage waiting list status for {referral.patient.name}
           </SheetDescription>
