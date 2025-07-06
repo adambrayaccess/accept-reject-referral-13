@@ -1,6 +1,7 @@
 
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from '@/components/ui/sheet';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import { User } from 'lucide-react';
 import PatientDemographicsSheetContent from './PatientDemographicsSheetContent';
 
 interface PatientDemographicsSheetProps {
@@ -20,7 +21,10 @@ const PatientDemographicsSheet = ({
     <Sheet open={isOpen} onOpenChange={onOpenChange}>
       <SheetContent className="w-full sm:max-w-3xl lg:max-w-4xl">
         <SheetHeader className="pb-4">
-          <SheetTitle className="text-2xl">Patient Case Record</SheetTitle>
+          <SheetTitle className="text-2xl flex items-center gap-2">
+            <User className="h-6 w-6" />
+            Patient Case Record
+          </SheetTitle>
           <SheetDescription className="text-base">
             Comprehensive demographic and clinical information{patientName ? ` for ${patientName}` : ''}
           </SheetDescription>
