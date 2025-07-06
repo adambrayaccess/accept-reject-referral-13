@@ -5,7 +5,7 @@ import WaitingListReferralDetail from './WaitingListReferralDetail';
 import ReferralDocuments from '@/components/ReferralDocuments';
 import ParentReferralInfo from '@/components/sub-referrals/ParentReferralInfo';
 import SubReferralsList from '@/components/sub-referrals/SubReferralsList';
-import PatientJourney from '@/components/PatientJourney';
+import PatientJourneyButton from '@/components/PatientJourneyButton';
 import WaitingListViewWorkspace from './WaitingListViewWorkspace';
 
 interface WaitingListViewContentProps {
@@ -50,7 +50,7 @@ const WaitingListViewContent = ({
                 onRefresh={refreshKey}
               />
             )}
-            <PatientJourney referral={referral} />
+            <PatientJourneyButton referral={referral} />
             <ReferralDocuments 
               attachments={referral.attachments} 
               referralId={referral.id}
