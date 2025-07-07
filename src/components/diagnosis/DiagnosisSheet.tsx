@@ -8,7 +8,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Diagnosis, fetchPatientDiagnoses } from '@/services/diagnosisService';
 import { format } from 'date-fns';
-import { FileText, AlertTriangle, Calendar, User2, Activity } from 'lucide-react';
+import { FileText, AlertTriangle, Calendar, User2, Activity, ClipboardPlus, Stethoscope } from 'lucide-react';
 
 interface DiagnosisSheetProps {
   isOpen: boolean;
@@ -44,7 +44,7 @@ const DiagnosisSheet = ({ isOpen, onClose, patientId, patientName }: DiagnosisSh
       case 'active':
         return 'bg-green-100 text-green-800 hover:bg-green-100/80';
       case 'chronic':
-        return 'bg-blue-100 text-blue-800 hover:bg-blue-100/80';
+        return 'bg-orange-100 text-orange-800 hover:bg-orange-100/80';
       case 'resolved':
         return 'bg-gray-100 text-gray-800 hover:bg-gray-100/80';
       case 'suspected':
@@ -76,7 +76,7 @@ const DiagnosisSheet = ({ isOpen, onClose, patientId, patientName }: DiagnosisSh
       <SheetContent className="w-full sm:max-w-3xl lg:max-w-4xl">
         <SheetHeader className="pb-4">
           <SheetTitle className="text-2xl flex items-center gap-2">
-            <FileText className="h-6 w-6" />
+            <Stethoscope className="h-6 w-6" />
             Patient Diagnoses
           </SheetTitle>
           <SheetDescription className="text-base">
@@ -107,7 +107,7 @@ const DiagnosisSheet = ({ isOpen, onClose, patientId, patientName }: DiagnosisSh
                     <CardHeader className="pb-3">
                       <div className="flex items-start justify-between">
                         <CardTitle className="text-lg font-semibold flex items-center gap-2">
-                          <Activity className="h-5 w-5" />
+                          <FileText className="h-5 w-5" />
                           {diagnosis.clinical_description}
                         </CardTitle>
                         <div className="flex gap-2 flex-wrap">
