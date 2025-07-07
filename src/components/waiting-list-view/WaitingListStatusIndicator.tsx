@@ -1,4 +1,4 @@
-import { AlertTriangle, CheckCircle, Clock, ExternalLink } from 'lucide-react';
+import { AlertTriangle, CheckCircle, Clock, ExternalLink, ArrowRightFromLine } from 'lucide-react';
 import { Referral } from '@/types/referral';
 import { calculateRTTPathway } from '@/utils/rttPathwayUtils';
 
@@ -58,7 +58,7 @@ const WaitingListStatusIndicator = ({ referral, onClick, showExternalLink }: Wai
   const getIcon = () => {
     switch (status.type) {
       case 'discharged':
-        return <CheckCircle className="h-5 w-5 text-muted-foreground" />;
+        return <ArrowRightFromLine className="h-5 w-5 text-muted-foreground" />;
       case 'exceeded':
         return <AlertTriangle className="h-5 w-5 text-destructive" />;
       case 'warning':
