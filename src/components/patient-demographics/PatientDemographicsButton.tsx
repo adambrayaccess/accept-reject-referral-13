@@ -1,6 +1,6 @@
 
 import { Button } from '@/components/ui/button';
-import { User, Eye } from 'lucide-react';
+import { User } from 'lucide-react';
 
 interface PatientDemographicsButtonProps {
   onClick: () => void;
@@ -16,7 +16,6 @@ const PatientDemographicsButton = ({ onClick }: PatientDemographicsButtonProps) 
     >
       <User className="h-4 w-4" />
       View Case Record
-      <Eye className="h-3 w-3" />
     </Button>
   );
 };
