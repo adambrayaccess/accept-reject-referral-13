@@ -8,7 +8,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { Button } from '@/components/ui/button';
-import { Menu as MenuIcon, FileText, Users, BarChart3 } from 'lucide-react';
+import { Menu as MenuIcon, FileText, Timer, BarChart3 } from 'lucide-react';
 
 const Menu = () => {
   const navigate = useNavigate();
@@ -23,7 +23,7 @@ const Menu = () => {
     {
       name: 'Waiting Lists',
       path: '/cohort-builder',
-      icon: Users,
+      icon: Timer,
     },
     {
       name: 'Analytics',
