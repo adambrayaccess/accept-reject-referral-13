@@ -132,6 +132,15 @@ const RTTPathwayTabContent = ({ referral }: RTTPathwayTabContentProps) => {
               Discharged from Waiting List
             </div>
           </div>
+        ) : referral.triageStatus === 'waiting-list' ? (
+          <div className="p-3 bg-blue-50 rounded-lg border border-blue-200">
+            <div className="text-sm text-blue-800 font-medium">
+              On Waiting List
+            </div>
+            <div className="text-xs text-blue-700 mt-1">
+              Patient is currently allocated to the {referral.specialty} waiting list
+            </div>
+          </div>
         ) : (
           <div className="p-3 bg-muted/30 rounded-lg border">
             <div className="text-sm text-muted-foreground">
@@ -148,7 +157,7 @@ const RTTPathwayTabContent = ({ referral }: RTTPathwayTabContentProps) => {
             <Button
               variant="outline"
               size="sm"
-              onClick={() => navigate(`/waiting-list-view/${referral.id}`)}
+              onClick={() => navigate(`/waiting-list/referral/${referral.id}`)}
               className="flex items-center gap-2 hover:bg-blue-50 hover:text-blue-700 hover:border-blue-200 transition-all duration-200 font-medium"
             >
               <ExternalLink className="w-3 h-3" />
