@@ -1,5 +1,5 @@
 
-export type ReferralStatus = 'new' | 'triaged' | 'accepted' | 'rejected' | 'completed' | 'cancelled';
+export type ReferralStatus = 'new' | 'triaged' | 'accepted' | 'rejected' | 'completed' | 'cancelled' | 'discharged' | 'complete';
 export type ReferralPriority = 'routine' | 'urgent' | 'emergency';
 export type TriageStatus = 'pre-assessment' | 'assessed' | 'pre-admission-assessment' | 'waiting-list' | 'refer-to-another-specialty';
 

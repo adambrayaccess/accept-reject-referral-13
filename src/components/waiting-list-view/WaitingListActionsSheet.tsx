@@ -9,6 +9,7 @@ import { Referral } from '@/types/referral';
 import { useToast } from '@/hooks/use-toast';
 import { specialties } from '@/data/specialtyOptions';
 import { createInpatientAdmission } from '@/services/inpatientService';
+import { dischargeFromWaitingList } from '@/services/waitingList/waitingListActionsService';
 
 interface WaitingListActionsSheetProps {
   referral: Referral;
@@ -76,8 +77,12 @@ const WaitingListActionsSheet = ({ referral, open, onOpenChange, onStatusChange 
           successMessage = `Patient has been transferred to ${specialty?.name} waiting list.`;
           break;
         case 'discharge':
-          // Mock implementation - discharge logic would go here
-          await new Promise(resolve => setTimeout(resolve, 1000));
+          await dischargeFromWaitingList({
+            referralId: referral.id,
+            specialty: referral.specialty,
+            performedBy: 'Current User', // In real app, get from auth context
+            dischargeReason: notes || 'Discharged from waiting list'
+          });
           successMessage = `Patient has been discharged from the waiting list.`;
           break;
         case 'admit':

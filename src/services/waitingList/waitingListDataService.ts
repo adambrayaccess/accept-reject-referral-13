@@ -7,7 +7,8 @@ export const loadWaitingListReferrals = async (selectedSpecialties: string[] = [
   
   try {
     const filters: any = {
-      triageStatus: 'waiting-list' // Only show referrals with waiting-list triage status
+      triageStatus: 'waiting-list', // Only show referrals with waiting-list triage status
+      excludeStatuses: ['discharged', 'complete'] // Exclude discharged and completed referrals
     };
     
     // Apply specialty filter if specific specialties are selected

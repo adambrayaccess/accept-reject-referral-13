@@ -1814,6 +1814,23 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      complete_referral_pathway: {
+        Args: {
+          referral_id_param: string
+          performed_by_param: string
+          completion_reason?: string
+        }
+        Returns: boolean
+      }
+      discharge_from_waiting_list: {
+        Args: {
+          referral_id_param: string
+          specialty_param: string
+          performed_by_param: string
+          discharge_reason?: string
+        }
+        Returns: boolean
+      }
       generate_fhir_patient_resource: {
         Args: { patient_row: Database["public"]["Tables"]["patients"]["Row"] }
         Returns: Json
@@ -1887,6 +1904,8 @@ export type Database = {
         | "rejected"
         | "completed"
         | "cancelled"
+        | "complete"
+        | "discharged"
       test_status:
         | "requested"
         | "collected"
@@ -2099,6 +2118,8 @@ export const Constants = {
         "rejected",
         "completed",
         "cancelled",
+        "complete",
+        "discharged",
       ],
       test_status: [
         "requested",
