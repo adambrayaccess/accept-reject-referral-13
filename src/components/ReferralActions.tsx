@@ -36,6 +36,15 @@ const ReferralActions = ({ referral, onStatusChange }: ReferralActionsProps) => 
     onStatusChange();
   };
 
+  // Show discharge message when referral is discharged
+  if (referral.status === 'discharged') {
+    return (
+      <div className="p-4 bg-gray-50 border border-gray-200 rounded-lg text-center">
+        <p className="text-gray-700 font-medium">This referral has been Discharged</p>
+      </div>
+    );
+  }
+
   // Show Accept/Reject buttons when referral is new and hasn't been triaged yet
   if (referral.status === 'new' && !referral.triageStatus) {
     return (
