@@ -129,14 +129,13 @@ const WaitingListRTTPathwayTabContent = ({ referral }: WaitingListRTTPathwayTabC
             <CarePathwayBadge carePathway={referral.carePathway} />
           </div>
           
-          <Separator />
         </>
       )}
 
       {/* Waiting List Allocation Section */}
       <div className="space-y-3">
         <div className="flex items-center gap-2">
-          <MapPin className="w-4 h-4 text-muted-foreground" />
+          <Timer className="w-4 h-4 text-muted-foreground" />
           <h4 className="text-sm font-medium">Waiting List Allocation</h4>
         </div>
         
@@ -191,7 +190,6 @@ const WaitingListRTTPathwayTabContent = ({ referral }: WaitingListRTTPathwayTabC
       </div>
 
       {/* View Referral Section */}
-      <Separator />
       <div className="space-y-3">
         <div className="flex items-center gap-2">
           <FileText className="w-4 h-4 text-muted-foreground" />
@@ -201,7 +199,7 @@ const WaitingListRTTPathwayTabContent = ({ referral }: WaitingListRTTPathwayTabC
           variant="outline"
           size="sm"
           onClick={() => navigate(`/referral/${referral.id}`)}
-          className="flex items-center gap-1 text-xs"
+          className="flex items-center gap-2 hover:bg-blue-50 hover:text-blue-700 hover:border-blue-200 transition-all duration-200 font-medium"
         >
           <ExternalLink className="w-3 h-3" />
           View Referral
