@@ -6,7 +6,7 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Label } from '@/components/ui/label';
-import { Plus, FileText } from 'lucide-react';
+import { Plus, LayoutList } from 'lucide-react';
 import { createSubReferral } from '@/services/referralService';
 import { useToast } from '@/hooks/use-toast';
 import { specialties } from '@/data/specialtyOptions';
@@ -84,7 +84,7 @@ const CreateSubReferralSheet = ({ parentReferralId, onSubReferralCreated, isOpen
       <SheetContent className="w-full sm:max-w-3xl lg:max-w-4xl">
         <SheetHeader className="pb-4">
           <SheetTitle className="text-2xl flex items-center gap-2">
-            <FileText className="h-6 w-6" />
+            <LayoutList className="h-6 w-6" />
             Create Sub-referral
           </SheetTitle>
           <SheetDescription className="text-base">
