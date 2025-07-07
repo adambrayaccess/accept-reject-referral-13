@@ -123,7 +123,7 @@ const RTTPathwayTabContent = ({ referral }: RTTPathwayTabContentProps) => {
       {/* Waiting List Allocation Section */}
       <div className="space-y-3">
         <div className="flex items-center gap-2">
-          <Timer className="w-4 h-4 text-muted-foreground" />
+          <MapPin className="w-4 h-4 text-muted-foreground" />
           <h4 className="text-sm font-medium">Waiting List Allocation</h4>
         </div>
 
@@ -152,7 +152,7 @@ const RTTPathwayTabContent = ({ referral }: RTTPathwayTabContentProps) => {
               onClick={() => navigate(`/waiting-list-view/${referral.id}`)}
               className="flex items-center gap-1 text-xs"
             >
-              <ExternalLink className="w-3 h-3" />
+              <Timer className="w-3 h-3" />
               View Waiting List
             </Button>
           </div>
