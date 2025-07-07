@@ -23,6 +23,15 @@ const WaitingListRTTPathwayTabContent = ({ referral }: WaitingListRTTPathwayTabC
   // Use database pathway if available, otherwise calculate it and create it
   const rttPathway = referral.rttPathway || calculateRTTPathway(referral.created);
   
+  // Debug logging to check what we're actually getting
+  console.log('=== RTT Pathway Debug ===');
+  console.log('Raw referral.rttPathway:', referral.rttPathway);
+  console.log('Clock start:', rttPathway.clockStart);
+  console.log('Target date:', rttPathway.targetDate);
+  console.log('Days remaining:', rttPathway.daysRemaining);
+  console.log('Breach risk:', rttPathway.breachRisk);
+  console.log('========================');
+  
   // If no database pathway exists, create one in the background
   React.useEffect(() => {
     if (!referral.rttPathway) {
