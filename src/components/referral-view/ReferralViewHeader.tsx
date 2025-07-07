@@ -8,6 +8,7 @@ import ReferralTagsDisplay from '@/components/referral-tagging/ReferralTagsDispl
 import AllergyIndicator from '@/components/clinical/AllergyIndicator';
 import ReasonableAdjustmentsFlag from '@/components/clinical/ReasonableAdjustmentsFlag';
 import AICopilotButton from '@/components/ai-suggestions/AICopilotButton';
+import ClinicalTagsPopover from '@/components/referral-tagging/ClinicalTagsPopover';
 
 interface ReferralViewHeaderProps {
   referral: Referral;
@@ -46,6 +47,10 @@ const ReferralViewHeader = ({ referral, onBack, onSuggestionApplied }: ReferralV
         </div>
         
         <div className="flex items-center gap-2">
+          <ClinicalTagsPopover 
+            referral={referral}
+            onTagsUpdated={onSuggestionApplied || (() => {})}
+          />
           <AICopilotButton 
             referral={referral} 
             onSuggestionApplied={onSuggestionApplied || (() => {})}
