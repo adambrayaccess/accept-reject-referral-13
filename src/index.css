@@ -41,8 +41,8 @@
     --success: 142 45% 30%; /* Darker green #2D7D4A */
     --success-foreground: 0 0% 100%;
 
-    /* Warning: Blue colors - WCAG compliant */
-    --warning: 206 80% 35%; /* Darker blue #1F5F99 */
+    /* Warning: Orange colors - WCAG compliant */
+    --warning: 25 95% 53%; /* Orange #FF8C00 */
     --warning-foreground: 0 0% 100%;
 
     /* Purple secondary accent - WCAG compliant */
@@ -89,8 +89,8 @@
     --success: 142 45% 50%; /* Bright green #4CAF6A */
     --success-foreground: 173 15% 8%; /* Dark text on success #141A1A */
 
-    /* Warning: Lighter blue for dark mode */
-    --warning: 206 70% 55%; /* Bright blue #4A90E2 */
+    /* Warning: Orange for dark mode */
+    --warning: 25 95% 60%; /* Bright orange #FF9933 */
     --warning-foreground: 173 15% 8%; /* Dark text on warning #141A1A */
 
     /* Purple secondary accent for dark mode */
