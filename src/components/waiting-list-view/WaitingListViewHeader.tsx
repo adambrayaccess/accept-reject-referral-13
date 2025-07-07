@@ -20,12 +20,12 @@ const WaitingListViewHeader = ({ referral, onBack, onSuggestionApplied }: Waitin
   
   return (
     <>
-      <Button variant="ghost" onClick={onBack} className="mb-3">
+      <Button variant="ghost" onClick={onBack} className="mb-3 ml-4">
         <ArrowLeft className="mr-2 h-4 w-4" />
         Back to Waiting List
       </Button>
       
-      <div className="flex flex-col md:flex-row justify-between items-start gap-3 mb-4">
+      <div className="flex flex-col md:flex-row justify-between items-start gap-3 mb-4 pl-4">
         <div className="space-y-2">
           <div className="flex items-center gap-2 flex-wrap">
             <h1 className="text-2xl font-bold">{referral.patient.name}</h1>
