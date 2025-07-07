@@ -1,5 +1,5 @@
 import { Button } from '@/components/ui/button';
-import { History, ExternalLink } from 'lucide-react';
+import { History } from 'lucide-react';
 
 interface TriageHistoryButtonProps {
   onClick: () => void;
@@ -15,7 +15,6 @@ const TriageHistoryButton = ({ onClick }: TriageHistoryButtonProps) => {
     >
       <History className="h-4 w-4" />
       View Triage History
-      <ExternalLink className="h-3 w-3" />
     </Button>
   );
 };
