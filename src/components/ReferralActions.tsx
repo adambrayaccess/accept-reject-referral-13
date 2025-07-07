@@ -52,8 +52,8 @@ const ReferralActions = ({ referral, onStatusChange }: ReferralActionsProps) => 
     );
   }
 
-  // Show Accept/Reject buttons when referral is new and hasn't been triaged yet
-  if (referral.status === 'new' && !referral.triageStatus) {
+  // Show Accept/Reject buttons when referral is new
+  if (referral.status === 'new') {
     return (
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <AcceptReferralDialog referral={referral} onStatusChange={onStatusChange} />
