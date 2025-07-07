@@ -44,6 +44,20 @@ const ClinicalTabContent = ({ referral }: ClinicalTabContentProps) => {
         </div>
       )}
       
+      {referral.clinicalInfo.diagnosis && (
+        <div>
+          <div className="text-xs font-medium text-muted-foreground">Provisional Diagnosis</div>
+          <div className="mt-1 text-sm">{referral.clinicalInfo.diagnosis}</div>
+        </div>
+      )}
+      
+      {referral.clinicalInfo.notes && (
+        <div>
+          <div className="text-xs font-medium text-muted-foreground">Additional Notes</div>
+          <div className="mt-1 text-sm whitespace-pre-line">{referral.clinicalInfo.notes}</div>
+        </div>
+      )}
+      
       {referral.assignedHCPId && (
         <div>
           <div className="text-xs font-medium text-muted-foreground">HCP referred to</div>
@@ -62,13 +76,6 @@ const ClinicalTabContent = ({ referral }: ClinicalTabContentProps) => {
         <div className="lg:col-span-2">
           <div className="text-xs font-medium text-muted-foreground">Clinical History</div>
           <div className="mt-1 text-sm whitespace-pre-line">{referral.clinicalInfo.history}</div>
-        </div>
-      )}
-      
-      {referral.clinicalInfo.diagnosis && (
-        <div className="lg:col-span-2">
-          <div className="text-xs font-medium text-muted-foreground">Provisional Diagnosis</div>
-          <div className="mt-1 text-sm">{referral.clinicalInfo.diagnosis}</div>
         </div>
       )}
       
@@ -91,13 +98,6 @@ const ClinicalTabContent = ({ referral }: ClinicalTabContentProps) => {
               <li key={index}>{allergy}</li>
             ))}
           </ul>
-        </div>
-      )}
-      
-      {referral.clinicalInfo.notes && (
-        <div className="lg:col-span-2">
-          <div className="text-xs font-medium text-muted-foreground">Additional Notes</div>
-          <div className="mt-1 text-sm whitespace-pre-line">{referral.clinicalInfo.notes}</div>
         </div>
       )}
     </div>
