@@ -16,7 +16,7 @@ interface CreateReferralFormProps {
   setIsCreating: (creating: boolean) => void;
   isCreatingPatient: boolean;
   setIsCreatingPatient: (creating: boolean) => void;
-  onFormSubmitReady: (handler: (e: React.FormEvent) => void) => void;
+  onFormSubmitReady: (handler: (e?: React.FormEvent) => void) => void;
 }
 
 const CreateReferralForm = ({
@@ -184,8 +184,8 @@ const CreateReferralForm = ({
     }
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleSubmit = async (e?: React.FormEvent) => {
+    e?.preventDefault();
     
     if (!referralId || !specialty || !practitionerId || !patientName || !birthDate || !nhsNumber || !reason) {
       toast({
