@@ -67,7 +67,7 @@ export const useWaitingListData = (selectedSpecialties: string[] = []) => {
     let filtered = applyFilters(orderedReferrals);
     
     // Only apply sorting if not using display order (preserve manual ordering)
-    if (sortField !== 'displayOrder' && sortField !== 'created') {
+    if (sortField !== 'displayOrder') {
       filtered = applySorting(filtered);
     }
     

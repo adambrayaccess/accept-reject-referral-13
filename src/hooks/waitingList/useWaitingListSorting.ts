@@ -48,6 +48,7 @@ export const useWaitingListSorting = () => {
       if (sortField === 'rtt') {
         valueA = a.rttPathway?.daysRemaining || 999;
         valueB = b.rttPathway?.daysRemaining || 999;
+        console.log(`RTT sorting: ${a.patient?.name} (${valueA}) vs ${b.patient?.name} (${valueB})`);
       }
 
       if (typeof valueA === 'string') valueA = valueA.toLowerCase();
