@@ -8,6 +8,8 @@ export const fetchReferrals = async (filters?: {
   specialties?: string[];
   status?: string;
   triageStatus?: string;
+  excludeStatuses?: string[];
+  waitingListIncludeDischargedFilter?: boolean;
   limit?: number;
   offset?: number;
 }): Promise<Referral[]> => {
@@ -57,6 +59,17 @@ export const fetchReferrals = async (filters?: {
     
     if (filters?.triageStatus) {
       query = query.eq('triage_status', filters.triageStatus);
+    }
+    
+    // Handle waiting list with discharged referrals filter
+    if (filters?.waitingListIncludeDischargedFilter) {
+      // Include both active waiting list referrals and discharged referrals
+      query = query.or('triage_status.eq.waiting-list,status.eq.discharged');
+    }
+    
+    // Exclude specific statuses
+    if (filters?.excludeStatuses && filters.excludeStatuses.length > 0) {
+      query = query.not('status', 'in', `(${filters.excludeStatuses.join(',')})`);
     }
     
     // Apply pagination

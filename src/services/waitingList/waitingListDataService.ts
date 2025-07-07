@@ -6,13 +6,18 @@ export const loadWaitingListReferrals = async (selectedSpecialties: string[] = [
   console.log('Loading waiting list referrals for specialties:', selectedSpecialties, 'includeDischarged:', includeDischarged);
   
   try {
-    const filters: any = {
-      triageStatus: 'waiting-list', // Only show referrals with waiting-list triage status
-    };
+    const filters: any = {};
     
-    // Conditionally exclude discharged referrals
-    if (!includeDischarged) {
-      filters.excludeStatuses = ['discharged', 'complete']; // Exclude discharged and completed referrals
+    // When including discharged referrals, we need to get both:
+    // 1. Active waiting list referrals (triage_status = 'waiting-list' AND status != 'discharged')
+    // 2. Discharged referrals that were previously on waiting list (status = 'discharged')
+    if (includeDischarged) {
+      // Include both waiting list and discharged referrals
+      filters.waitingListIncludeDischargedFilter = true;
+    } else {
+      // Only show active waiting list referrals
+      filters.triageStatus = 'waiting-list';
+      filters.excludeStatuses = ['discharged', 'complete'];
     }
     
     // Apply specialty filter if specific specialties are selected

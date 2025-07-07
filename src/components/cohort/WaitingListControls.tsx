@@ -34,6 +34,7 @@ const WaitingListControls = ({
     if (filters.location) count++;
     if (filters.search) count++;
     if (filters.ageRange?.min > 0 || filters.ageRange?.max < 365) count++;
+    if (filters.includeDischarged) count++;
     return count;
   };
 
@@ -103,6 +104,16 @@ const WaitingListControls = ({
               <X 
                 className="h-3 w-3 cursor-pointer" 
                 onClick={() => updateFilters({ ageRange: { min: 0, max: 365 } })}
+              />
+            </Badge>
+          )}
+          
+          {filters.includeDischarged && (
+            <Badge variant="secondary" className="flex items-center gap-1">
+              Include discharged
+              <X 
+                className="h-3 w-3 cursor-pointer" 
+                onClick={() => updateFilters({ includeDischarged: false })}
               />
             </Badge>
           )}
