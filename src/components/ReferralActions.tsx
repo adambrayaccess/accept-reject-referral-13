@@ -66,7 +66,7 @@ const ReferralActions = ({ referral, onStatusChange }: ReferralActionsProps) => 
     return (
       <>
         <ReferralStatusIndicator 
-          status={referral.status} 
+          referral={referral} 
           onClick={handleStatusIndicatorClick}
           showExternalLink={true}
         />
@@ -83,7 +83,7 @@ const ReferralActions = ({ referral, onStatusChange }: ReferralActionsProps) => 
   return (
     <>
       <ReferralStatusIndicator 
-        status={referral.status} 
+        referral={referral} 
         onClick={handleStatusIndicatorClick}
         showExternalLink={true}
       />
