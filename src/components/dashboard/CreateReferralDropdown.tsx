@@ -7,7 +7,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { FilePlus, ChevronDown, Sparkles, FileText, TestTube } from 'lucide-react';
+import { FilePlus, ChevronDown, Sparkles, FileText, FlaskConical } from 'lucide-react';
 import CreateReferralModal from '@/components/CreateReferralModal';
 import AutoReferralSheet from '@/components/AutoReferralSheet';
 import { Referral } from '@/types/referral';
@@ -150,7 +150,7 @@ INSERT INTO public.referrals (
             onClick={createTestReferral}
             className="text-orange-700 hover:bg-orange-50 focus:bg-orange-50"
           >
-            <TestTube className="mr-2 h-4 w-4 text-orange-600" />
+            <FlaskConical className="mr-2 h-4 w-4 text-orange-600" />
             Create Test Referral
             <span className="ml-auto text-xs text-orange-600">For Testing</span>
           </DropdownMenuItem>
