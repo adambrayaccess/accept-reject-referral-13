@@ -1,5 +1,5 @@
 
-import { CheckCircle, XCircle, ExternalLink } from 'lucide-react';
+import { CheckCircle, XCircle, Pencil } from 'lucide-react';
 import { Referral } from '@/types/referral';
 
 interface ReferralStatusIndicatorProps {
@@ -28,7 +28,7 @@ const ReferralStatusIndicator = ({ status, onClick, showExternalLink }: Referral
           )}
         </div>
         {showExternalLink && (
-          <ExternalLink className="h-4 w-4 text-muted-foreground" />
+          <Pencil className="h-4 w-4 text-muted-foreground" />
         )}
       </div>
     </div>
