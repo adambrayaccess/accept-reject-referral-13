@@ -1,12 +1,10 @@
 
-import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Users } from 'lucide-react';
 import { Referral } from '@/types/referral';
 import WaitingListTable from './WaitingListTable';
 import WaitingListControls from './WaitingListControls';
 import WaitingListStatisticsBar from './WaitingListStatisticsBar';
-import CohortGrid from './CohortGrid';
 import AIAssistantActions from '@/components/dashboard/AIAssistantActions';
 
 interface WaitingListTabProps {
@@ -54,8 +52,6 @@ const WaitingListTab = ({
   reorderReferrals,
   selectedSpecialties = []
 }: WaitingListTabProps) => {
-  const [view, setView] = useState<'table' | 'grid'>('table');
-
   return (
     <div className="space-y-6">
       <WaitingListStatisticsBar referrals={referrals} selectedSpecialties={selectedSpecialties} />
@@ -90,8 +86,6 @@ const WaitingListTab = ({
               setSortField={setSortField}
               sortDirection={sortDirection}
               setSortDirection={setSortDirection}
-              view={view}
-              onViewChange={setView}
             />
           </div>
           
@@ -105,26 +99,17 @@ const WaitingListTab = ({
         </div>
       </div>
 
-      {view === 'table' ? (
-        <WaitingListTable
-          referrals={referrals}
-          isLoading={isLoading || isReordering}
-          selectedReferrals={selectedReferrals}
-          onSelectReferral={toggleReferralSelection}
-          onReorderReferrals={reorderReferrals}
-          onSelectAll={selectAll}
-          onClearSelection={clearSelection}
-          isAllSelected={isAllSelected}
-          isIndeterminate={isIndeterminate}
-        />
-      ) : (
-        <CohortGrid
-          referrals={referrals}
-          isLoading={isLoading}
-          selectedReferrals={selectedReferrals}
-          onSelectReferral={toggleReferralSelection}
-        />
-      )}
+      <WaitingListTable
+        referrals={referrals}
+        isLoading={isLoading || isReordering}
+        selectedReferrals={selectedReferrals}
+        onSelectReferral={toggleReferralSelection}
+        onReorderReferrals={reorderReferrals}
+        onSelectAll={selectAll}
+        onClearSelection={clearSelection}
+        isAllSelected={isAllSelected}
+        isIndeterminate={isIndeterminate}
+      />
     </div>
   );
 };

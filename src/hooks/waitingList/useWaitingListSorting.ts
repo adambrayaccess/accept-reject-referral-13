@@ -3,8 +3,8 @@ import { useState } from 'react';
 import { Referral } from '@/types/referral';
 
 export const useWaitingListSorting = () => {
-  const [sortField, setSortField] = useState<string>('created');
-  const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('desc');
+  const [sortField, setSortField] = useState<string>('rtt');
+  const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('asc');
 
   const applySorting = (referrals: Referral[]): Referral[] => {
     const sorted = [...referrals];
@@ -42,6 +42,12 @@ export const useWaitingListSorting = () => {
         const priorityOrder = { emergency: 3, urgent: 2, routine: 1 };
         valueA = priorityOrder[a.carePathway?.priority] || 0;
         valueB = priorityOrder[b.carePathway?.priority] || 0;
+      }
+
+      // Handle RTT sorting
+      if (sortField === 'rtt') {
+        valueA = a.rttPathway?.daysRemaining || 999;
+        valueB = b.rttPathway?.daysRemaining || 999;
       }
 
       if (typeof valueA === 'string') valueA = valueA.toLowerCase();

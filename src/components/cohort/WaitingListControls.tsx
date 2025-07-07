@@ -3,7 +3,6 @@ import { Badge } from '@/components/ui/badge';
 import { X } from 'lucide-react';
 import WaitingListSearchBar from './WaitingListSearchBar';
 import WaitingListSortAndFilterControls from './WaitingListSortAndFilterControls';
-import WaitingListViewToggle from './WaitingListViewToggle';
 
 interface WaitingListControlsProps {
   filters: any;
@@ -13,8 +12,6 @@ interface WaitingListControlsProps {
   setSortField: (field: string) => void;
   sortDirection: 'asc' | 'desc';
   setSortDirection: (direction: 'asc' | 'desc') => void;
-  view: 'table' | 'grid';
-  onViewChange: (view: 'table' | 'grid') => void;
 }
 
 const WaitingListControls = ({
@@ -24,9 +21,7 @@ const WaitingListControls = ({
   sortField,
   setSortField,
   sortDirection,
-  setSortDirection,
-  view,
-  onViewChange
+  setSortDirection
 }: WaitingListControlsProps) => {
   const getActiveFiltersCount = () => {
     let count = 0;
@@ -60,7 +55,6 @@ const WaitingListControls = ({
             sortDirection={sortDirection}
             setSortDirection={setSortDirection}
           />
-          <WaitingListViewToggle view={view} onViewChange={onViewChange} />
         </div>
       </div>
 

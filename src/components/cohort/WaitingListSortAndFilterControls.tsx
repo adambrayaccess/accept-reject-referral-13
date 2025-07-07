@@ -54,6 +54,7 @@ const WaitingListSortAndFilterControls = ({
   const [isFilterOpen, setIsFilterOpen] = useState(false);
 
   const sortOptions = [
+    { value: 'rtt', label: 'RTT' },
     { value: 'created', label: 'Date Added' },
     { value: 'patient.name', label: 'Patient Name' },
     { value: 'priority', label: 'Priority' },
