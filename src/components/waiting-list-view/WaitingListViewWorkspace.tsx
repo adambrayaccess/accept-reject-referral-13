@@ -64,7 +64,20 @@ const WaitingListViewWorkspace = ({ referral, onStatusChange, onSuggestionApplie
         <PatientJourneyButton referral={referral} />
       </div>
 
-      {/* Team Allocation Card */}
+      {/* Waiting List Actions Card - MOVED ABOVE Team Allocation */}
+      <Card>
+        <CardHeader className="pb-3">
+          <CardTitle className="text-lg flex items-center">
+            <Timer className="h-5 w-5 mr-2" />
+            Waiting List Actions
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="pt-0">
+          <WaitingListActions referral={referral} onStatusChange={handleStatusChange} />
+        </CardContent>
+      </Card>
+
+      {/* Team Allocation Card - NOW BELOW Waiting List Actions */}
       {referral.teamId && (
         <Card>
           <CardHeader className="pb-3">
@@ -88,19 +101,6 @@ const WaitingListViewWorkspace = ({ referral, onStatusChange, onSuggestionApplie
           </CardContent>
         </Card>
       )}
-
-      {/* Waiting List Actions Card */}
-      <Card>
-        <CardHeader className="pb-3">
-          <CardTitle className="text-lg flex items-center">
-            <Timer className="h-5 w-5 mr-2" />
-            Waiting List Actions
-          </CardTitle>
-        </CardHeader>
-        <CardContent className="pt-0">
-          <WaitingListActions referral={referral} onStatusChange={handleStatusChange} />
-        </CardContent>
-      </Card>
 
       {/* Appointment Status Card */}
       <Card>
