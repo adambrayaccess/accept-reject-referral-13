@@ -41,8 +41,8 @@
     --success: 142 45% 30%; /* Darker green #2D7D4A */
     --success-foreground: 0 0% 100%;
 
-    /* Warning: Orange colors - WCAG compliant */
-    --warning: 25 95% 53%; /* Orange #FF8C00 */
+    /* Warning: Orange colors - matches orange-600 from RTT badges */
+    --warning: 25 95% 48%; /* Orange matching orange-600 #EA580C */
     --warning-foreground: 0 0% 100%;
 
     /* Purple secondary accent - WCAG compliant */
@@ -89,8 +89,8 @@
     --success: 142 45% 50%; /* Bright green #4CAF6A */
     --success-foreground: 173 15% 8%; /* Dark text on success #141A1A */
 
-    /* Warning: Orange for dark mode */
-    --warning: 25 95% 60%; /* Bright orange #FF9933 */
+    /* Warning: Orange for dark mode - lighter version */
+    --warning: 25 95% 55%; /* Lighter orange for dark mode */
     --warning-foreground: 173 15% 8%; /* Dark text on warning #141A1A */
 
     /* Purple secondary accent for dark mode */
