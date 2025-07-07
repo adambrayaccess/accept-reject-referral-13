@@ -107,7 +107,7 @@ const DiagnosisSheet = ({ isOpen, onClose, patientId, patientName }: DiagnosisSh
                     <CardHeader className="pb-3">
                       <div className="flex items-start justify-between">
                         <CardTitle className="text-lg font-semibold flex items-center gap-2">
-                          <FileText className="h-5 w-5" />
+                          <ClipboardPlus className="h-5 w-5" />
                           {diagnosis.clinical_description}
                         </CardTitle>
                         <div className="flex gap-2 flex-wrap">
