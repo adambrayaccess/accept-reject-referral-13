@@ -8,6 +8,7 @@ import AllergyIndicator from '@/components/clinical/AllergyIndicator';
 import ReasonableAdjustmentsFlag from '@/components/clinical/ReasonableAdjustmentsFlag';
 import AICopilotButton from '@/components/ai-suggestions/AICopilotButton';
 import InpatientStatusBadge from './InpatientStatusBadge';
+import ClinicalTagsPopover from '@/components/referral-tagging/ClinicalTagsPopover';
 
 interface WaitingListViewHeaderProps {
   referral: Referral;
@@ -47,6 +48,10 @@ const WaitingListViewHeader = ({ referral, onBack, onSuggestionApplied }: Waitin
         </div>
         
         <div className="flex items-center gap-2">
+          <ClinicalTagsPopover 
+            referral={referral}
+            onTagsUpdated={onSuggestionApplied || (() => {})}
+          />
           <AICopilotButton 
             referral={referral} 
             onSuggestionApplied={onSuggestionApplied || (() => {})}
