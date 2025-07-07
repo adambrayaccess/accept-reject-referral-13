@@ -26,6 +26,7 @@ const triageStatuses: { value: TriageStatus; label: string }[] = [
   { value: 'pre-admission-assessment', label: 'Pre-admission Assessment' },
   { value: 'waiting-list', label: 'Waiting List' },
   { value: 'refer-to-another-specialty', label: 'Refer to Another Specialty' },
+  { value: 'discharged', label: 'Discharged' },
 ];
 
 const TriageStatusUpdate = ({ 

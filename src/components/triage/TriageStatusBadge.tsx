@@ -18,6 +18,8 @@ const getTriageStatusVariant = (status?: TriageStatus) => {
       return 'destructive';
     case 'refer-to-another-specialty':
       return 'secondary';
+    case 'discharged':
+      return 'outline';
     default:
       return 'outline';
   }
@@ -35,6 +37,8 @@ const getTriageStatusLabel = (status?: TriageStatus) => {
       return 'Waiting List';
     case 'refer-to-another-specialty':
       return 'Refer to Another Specialty';
+    case 'discharged':
+      return 'Discharged';
     default:
       return 'No Status';
   }
@@ -52,6 +56,8 @@ const getTriageStatusColor = (status?: TriageStatus) => {
       return 'bg-purple-100 text-purple-800 hover:bg-purple-100/80';
     case 'refer-to-another-specialty':
       return 'bg-orange-100 text-orange-800 hover:bg-orange-100/80';
+    case 'discharged':
+      return 'bg-gray-100 text-gray-800 hover:bg-gray-100/80';
     default:
       return 'bg-gray-100 text-gray-800 hover:bg-gray-100/80';
   }
