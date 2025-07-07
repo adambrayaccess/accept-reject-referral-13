@@ -151,7 +151,6 @@ const EnhancedClinicalDetailsForm = ({
         </Card>
       )}
 
-      <Separator />
 
       {/* Clinical Information Form */}
       <div className="space-y-4">
