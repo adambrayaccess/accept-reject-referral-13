@@ -1,7 +1,9 @@
 import { useState, useEffect } from 'react';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { getInpatientAdmissionsByPatientId, type InpatientAdmission } from '@/services/inpatientService';
 import InpatientHistoryButton from './InpatientHistoryButton';
 import InpatientHistorySheet from './InpatientHistorySheet';
+import { BedDouble } from 'lucide-react';
 
 interface InpatientHistoryProps {
   patientId: string;
@@ -32,10 +34,23 @@ const InpatientHistory = ({ patientId, patientName, refreshTrigger }: InpatientH
 
   return (
     <>
-      <InpatientHistoryButton
-        onClick={() => setIsSheetOpen(true)}
-        admissionCount={admissions.length}
-      />
+      <Card>
+        <CardHeader className="pb-3">
+          <CardTitle className="flex items-center gap-2 text-lg">
+            <BedDouble className="h-5 w-5" />
+            Inpatient History
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-3">
+          <InpatientHistoryButton
+            onClick={() => setIsSheetOpen(true)}
+            admissionCount={admissions.length}
+          />
+          <p className="text-sm text-muted-foreground">
+            Click "View Inpatient History" to see complete admission and discharge records
+          </p>
+        </CardContent>
+      </Card>
       
       <InpatientHistorySheet
         patientId={patientId}
