@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import { Referral } from '@/types/referral';
 import { fetchHCPById } from '@/services/hcpService';
 import { Button } from '@/components/ui/button';
-import { FileText } from 'lucide-react';
+import { Stethoscope } from 'lucide-react';
 import DiagnosisSheet from '@/components/diagnosis/DiagnosisSheet';
 
 interface ClinicalTabContentProps {
@@ -115,7 +115,7 @@ const ClinicalTabContent = ({ referral }: ClinicalTabContentProps) => {
           onClick={() => setIsDiagnosisSheetOpen(true)}
           className="flex items-center gap-2"
         >
-          <FileText className="h-4 w-4" />
+          <Stethoscope className="h-4 w-4" />
           View Diagnoses
         </Button>
       </div>
