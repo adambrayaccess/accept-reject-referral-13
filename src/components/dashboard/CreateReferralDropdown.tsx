@@ -137,7 +137,7 @@ INSERT INTO public.referrals (
           <DropdownMenuItem onClick={() => setIsManualModalOpen(true)}>
             <FileText className="mr-2 h-4 w-4" />
             Create Manual Referral
-            <span className="ml-auto text-xs text-muted-foreground">Traditional</span>
+            <span className="ml-auto text-xs text-muted-foreground">Manual entry</span>
           </DropdownMenuItem>
           <DropdownMenuItem 
             onClick={() => setIsAutoModalOpen(true)}
