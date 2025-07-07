@@ -31,14 +31,12 @@ const InpatientHistorySheet = ({
           </SheetDescription>
         </SheetHeader>
         
-        <ScrollArea className="h-[calc(100vh-140px)]">
-          <div className="pr-4">
-            <InpatientHistorySheetContent 
-              patientId={patientId} 
-              refreshTrigger={refreshTrigger} 
-            />
-          </div>
-        </ScrollArea>
+        <div className="h-[calc(100vh-180px)]">
+          <InpatientHistorySheetContent 
+            patientId={patientId} 
+            refreshTrigger={refreshTrigger} 
+          />
+        </div>
       </SheetContent>
     </Sheet>
   );
