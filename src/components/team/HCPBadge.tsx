@@ -62,7 +62,7 @@ const HCPBadge = ({
   };
 
   return (
-    <Badge variant={variant} className={`${sizeClasses[size]} flex items-center gap-1`}>
+    <Badge variant={variant} className={`${sizeClasses[size]} flex items-center gap-1 text-white`}>
       {showIcon && <User className="h-3 w-3" />}
       <span>{hcp.name}</span>
       {hcp.role && (
