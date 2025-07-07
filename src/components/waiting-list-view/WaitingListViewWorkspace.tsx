@@ -5,7 +5,6 @@ import { History, Calendar, Timer, Users, FileText } from 'lucide-react';
 import { Referral } from '@/types/referral';
 import WaitingListActions from './WaitingListActions';
 import EnhancedAuditLog from '@/components/audit/EnhancedAuditLog';
-import ReferralTagging from '@/components/referral-tagging/ReferralTagging';
 import AppointmentStatus from '@/components/cohort/AppointmentStatus';
 import TeamBadge from '@/components/team/TeamBadge';
 import HCPBadge from '@/components/team/HCPBadge';
@@ -27,11 +26,6 @@ const WaitingListViewWorkspace = ({ referral, onStatusChange, onSuggestionApplie
 
   const handleStatusChange = () => {
     setRefreshTrigger(prev => prev + 1);
-    onStatusChange();
-  };
-
-  const handleTagsUpdated = () => {
-    // Refresh parent component to show updated tags
     onStatusChange();
   };
 
@@ -117,11 +111,6 @@ const WaitingListViewWorkspace = ({ referral, onStatusChange, onSuggestionApplie
 
       {/* Inpatient History - New component above clinical tags */}
       <InpatientHistory patientId={referral.patient.id} refreshTrigger={refreshTrigger} />
-
-      <ReferralTagging 
-        referral={referral}
-        onTagsUpdated={handleTagsUpdated}
-      />
 
       <Card className="flex-1">
         <CardHeader className="pb-3">
