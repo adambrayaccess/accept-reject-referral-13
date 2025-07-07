@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Separator } from '@/components/ui/separator';
-import { Tag, Plus } from 'lucide-react';
+import { Tag, Plus, X } from 'lucide-react';
 import { Referral } from '@/types/referral';
 import { CLINICAL_TAG_CATEGORIES } from './constants/tagCategories';
 import TagCategorySection from './TagCategorySection';
@@ -90,7 +90,7 @@ const ClinicalTagsPopover = ({ referral, onTagsUpdated }: ClinicalTagsPopoverPro
   };
 
   return (
-    <Popover open={isOpen} onOpenChange={setIsOpen}>
+    <Popover open={isOpen} onOpenChange={(open) => !open && setIsOpen(false)}>
       <PopoverTrigger asChild>
         <Button variant="outline" size="sm" className="gap-2">
           <Tag className="h-4 w-4" />
@@ -104,9 +104,19 @@ const ClinicalTagsPopover = ({ referral, onTagsUpdated }: ClinicalTagsPopoverPro
       </PopoverTrigger>
       <PopoverContent className="w-96 p-4 bg-white border shadow-lg z-50" align="start">
         <div className="space-y-4">
-          <div className="flex items-center gap-2">
-            <Tag className="h-4 w-4" />
-            <h3 className="font-semibold">Clinical Tags</h3>
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <Tag className="h-4 w-4" />
+              <h3 className="font-semibold">Clinical Tags</h3>
+            </div>
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => setIsOpen(false)}
+              className="h-6 w-6 p-0 hover:bg-muted"
+            >
+              <X className="h-4 w-4" />
+            </Button>
           </div>
           
           <CurrentTagsDisplay 
