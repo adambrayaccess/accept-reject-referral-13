@@ -1,5 +1,5 @@
 import { Button } from '@/components/ui/button';
-import { BedDouble, ExternalLink } from 'lucide-react';
+import { BedDouble } from 'lucide-react';
 
 interface InpatientHistoryButtonProps {
   onClick: () => void;
@@ -21,7 +21,6 @@ const InpatientHistoryButton = ({ onClick, admissionCount }: InpatientHistoryBut
           ({admissionCount})
         </span>
       )}
-      <ExternalLink className="h-3 w-3" />
     </Button>
   );
 };
