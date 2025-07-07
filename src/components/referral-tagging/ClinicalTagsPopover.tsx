@@ -9,6 +9,7 @@ import TagCategorySection from './TagCategorySection';
 import CustomTagInput from './CustomTagInput';
 import CurrentTagsDisplay from './CurrentTagsDisplay';
 import { useToast } from '@/hooks/use-toast';
+import { updateReferralTags } from '@/services/referralService';
 
 interface ClinicalTagsPopoverProps {
   referral: Referral;
@@ -27,16 +28,25 @@ const ClinicalTagsPopover = ({ referral, onTagsUpdated }: ClinicalTagsPopoverPro
     
     setIsUpdating(true);
     try {
-      // Simulate API call - in real app this would update the database
-      await new Promise(resolve => setTimeout(resolve, 500));
+      const updatedTags = [...currentTags, tag];
+      const success = await updateReferralTags(referral.id, updatedTags);
       
-      toast({
-        title: "Tag Added",
-        description: `Added "${tag}" to referral`,
-      });
-      
-      onTagsUpdated();
+      if (success) {
+        toast({
+          title: "Tag Added",
+          description: `Added "${tag}" to referral`,
+        });
+        
+        onTagsUpdated();
+      } else {
+        toast({
+          title: "Error",
+          description: "Failed to add tag",
+          variant: "destructive",
+        });
+      }
     } catch (error) {
+      console.error('Error adding tag:', error);
       toast({
         title: "Error",
         description: "Failed to add tag",
@@ -50,16 +60,25 @@ const ClinicalTagsPopover = ({ referral, onTagsUpdated }: ClinicalTagsPopoverPro
   const handleRemoveTag = async (tag: string) => {
     setIsUpdating(true);
     try {
-      // Simulate API call - in real app this would update the database
-      await new Promise(resolve => setTimeout(resolve, 500));
+      const updatedTags = currentTags.filter(t => t !== tag);
+      const success = await updateReferralTags(referral.id, updatedTags);
       
-      toast({
-        title: "Tag Removed",
-        description: `Removed "${tag}" from referral`,
-      });
-      
-      onTagsUpdated();
+      if (success) {
+        toast({
+          title: "Tag Removed",
+          description: `Removed "${tag}" from referral`,
+        });
+        
+        onTagsUpdated();
+      } else {
+        toast({
+          title: "Error",
+          description: "Failed to remove tag",
+          variant: "destructive",
+        });
+      }
     } catch (error) {
+      console.error('Error removing tag:', error);
       toast({
         title: "Error",
         description: "Failed to remove tag",
@@ -83,7 +102,7 @@ const ClinicalTagsPopover = ({ referral, onTagsUpdated }: ClinicalTagsPopoverPro
           )}
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-96 p-4" align="start">
+      <PopoverContent className="w-96 p-4 bg-white border shadow-lg z-50" align="start">
         <div className="space-y-4">
           <div className="flex items-center gap-2">
             <Tag className="h-4 w-4" />
