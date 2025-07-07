@@ -51,7 +51,7 @@ const HCPBadge = ({
   };
   return <Badge variant={variant} className={`${sizeClasses[size]} flex items-center gap-1`}>
       {showIcon && <User className="h-3 w-3" />}
-      <span className="font-semibold">{hcp.name}</span>
+      <span>{hcp.name}</span>
       {hcp.role && <span className="text-xs opacity-75">({hcp.role})</span>}
     </Badge>;
 };
