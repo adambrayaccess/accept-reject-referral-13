@@ -40,7 +40,7 @@ const HCPBadge = ({
       </Badge>;
   }
   if (!hcp) {
-    return <Badge variant="outline" className="text-xs">
+    return <Badge variant="outline" className="text-xs bg-transparent">
         Unknown HCP
       </Badge>;
   }
