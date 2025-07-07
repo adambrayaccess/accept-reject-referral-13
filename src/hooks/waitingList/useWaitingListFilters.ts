@@ -65,15 +65,20 @@ export const useWaitingListFilters = () => {
         const age = ref.calculatedReferralAge || 0;
         switch (filters.appointmentStatus) {
           case 'overdue':
-            return ref.triageStatus === 'waiting-list' && age > 60;
+            return (ref.triageStatus === 'waiting-list' && age > 60) || 
+                   (filters.includeDischarged && ref.status === 'discharged');
           case 'due':
-            return ref.triageStatus === 'waiting-list' && age > 30 && age <= 60;
+            return (ref.triageStatus === 'waiting-list' && age > 30 && age <= 60) || 
+                   (filters.includeDischarged && ref.status === 'discharged');
           case 'scheduled':
-            return ref.triageStatus === 'waiting-list' && age <= 30;
+            return (ref.triageStatus === 'waiting-list' && age <= 30) || 
+                   (filters.includeDischarged && ref.status === 'discharged');
           case 'booked':
-            return ref.triageStatus === 'pre-admission-assessment';
+            return ref.triageStatus === 'pre-admission-assessment' || 
+                   (filters.includeDischarged && ref.status === 'discharged');
           case 'completed':
-            return ref.triageStatus === 'assessed';
+            return ref.triageStatus === 'assessed' || 
+                   (filters.includeDischarged && ref.status === 'discharged');
           default:
             return true;
         }
