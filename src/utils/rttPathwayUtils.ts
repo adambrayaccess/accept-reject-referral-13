@@ -1,6 +1,6 @@
 
 import { differenceInDays, addDays, format } from 'date-fns';
-import { RTTPathway, RTTBreachRisk } from '@/types/referral';
+import { RTTPathway, RTTBreachRisk } from '@/types/pathway';
 
 export const calculateRTTPathway = (clockStartDate: string): RTTPathway => {
   const clockStart = new Date(clockStartDate);
