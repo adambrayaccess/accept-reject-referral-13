@@ -66,7 +66,10 @@ const RejectReferralDialog = ({
   };
   return <Sheet open={isOpen} onOpenChange={setIsOpen}>
       <SheetTrigger asChild>
-        
+        <Button variant="destructive" className="w-full flex items-center gap-2">
+          <XCircle className="h-4 w-4" />
+          Reject Referral
+        </Button>
       </SheetTrigger>
       <SheetContent className="w-full sm:max-w-3xl lg:max-w-4xl">
         <SheetHeader className="pb-4">
