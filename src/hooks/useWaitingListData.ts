@@ -72,7 +72,7 @@ export const useWaitingListData = (selectedSpecialties: string[] = []) => {
     }
     
     return filtered;
-  }, [orderedReferrals, filters, sortField, sortDirection]);
+  }, [orderedReferrals, filters, sortField, sortDirection, applyFilters, applySorting]);
 
   const handleRefresh = () => {
     loadReferrals();
