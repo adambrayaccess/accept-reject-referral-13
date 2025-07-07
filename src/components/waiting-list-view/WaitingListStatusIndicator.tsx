@@ -3,7 +3,7 @@ import { Referral } from '@/types/referral';
 import { calculateRTTPathway } from '@/utils/rttPathwayUtils';
 
 interface WaitingListStatus {
-  type: 'active' | 'warning' | 'exceeded';
+  type: 'active' | 'warning' | 'exceeded' | 'discharged';
   label: string;
   daysRemaining: number;
 }
@@ -15,12 +15,23 @@ interface WaitingListStatusIndicatorProps {
 }
 
 const WaitingListStatusIndicator = ({ referral, onClick, showExternalLink }: WaitingListStatusIndicatorProps) => {
+  // Check if referral is discharged
+  const isDischarged = referral.status === 'discharged';
+  
   // Calculate RTT pathway to get days remaining
   const rttPathway = referral.rttPathway || calculateRTTPathway(referral.created);
   const daysRemaining = rttPathway.daysRemaining;
 
-  // Determine waiting list status based on days remaining
+  // Determine waiting list status based on discharge status or days remaining
   const getWaitingListStatus = (days: number): WaitingListStatus => {
+    if (isDischarged) {
+      return {
+        type: 'discharged',
+        label: 'Discharged',
+        daysRemaining: days
+      };
+    }
+    
     if (days <= 0) {
       return {
         type: 'exceeded',
@@ -46,6 +57,8 @@ const WaitingListStatusIndicator = ({ referral, onClick, showExternalLink }: Wai
 
   const getIcon = () => {
     switch (status.type) {
+      case 'discharged':
+        return <CheckCircle className="h-5 w-5 text-muted-foreground" />;
       case 'exceeded':
         return <AlertTriangle className="h-5 w-5 text-destructive" />;
       case 'warning':
@@ -59,6 +72,8 @@ const WaitingListStatusIndicator = ({ referral, onClick, showExternalLink }: Wai
 
   const getStatusColor = () => {
     switch (status.type) {
+      case 'discharged':
+        return 'text-muted-foreground bg-muted/10 border-muted/20';
       case 'exceeded':
         return 'text-destructive bg-destructive/10 border-destructive/20';
       case 'warning':
@@ -71,6 +86,10 @@ const WaitingListStatusIndicator = ({ referral, onClick, showExternalLink }: Wai
   };
 
   const getDaysText = () => {
+    if (isDischarged) {
+      return 'Discharged from Waiting List';
+    }
+    
     if (status.daysRemaining <= 0) {
       const daysOver = Math.abs(status.daysRemaining);
       return `${daysOver} day${daysOver !== 1 ? 's' : ''} exceeded`;
@@ -86,7 +105,7 @@ const WaitingListStatusIndicator = ({ referral, onClick, showExternalLink }: Wai
           {getIcon()}
           <div>
             <div className="font-medium">Waiting List Status: {status.label}</div>
-            <div className="text-sm opacity-75">RTT: {getDaysText()}</div>
+            <div className="text-sm opacity-75">{isDischarged ? getDaysText() : `RTT: ${getDaysText()}`}</div>
           </div>
         </div>
         {showExternalLink && (

@@ -7,12 +7,22 @@ interface WaitingListStatusBadgeProps {
 }
 
 const WaitingListStatusBadge = ({ referral }: WaitingListStatusBadgeProps) => {
+  // Check if referral is discharged
+  const isDischarged = referral.status === 'discharged';
+  
   // Calculate RTT pathway to get days remaining
   const rttPathway = referral.rttPathway || calculateRTTPathway(referral.created);
   const daysRemaining = rttPathway.daysRemaining;
 
-  // Determine status and styling based on days remaining
+  // Determine status and styling based on discharge status or days remaining
   const getStatusInfo = (days: number) => {
+    if (isDischarged) {
+      return {
+        label: 'Discharged',
+        className: 'bg-muted/10 text-muted-foreground border-muted/20'
+      };
+    }
+    
     if (days <= 0) {
       return {
         label: 'Exceeded',

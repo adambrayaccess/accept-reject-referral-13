@@ -15,23 +15,30 @@ interface WaitingListRTTPathwayTabContentProps {
 
 const WaitingListRTTPathwayTabContent = ({ referral }: WaitingListRTTPathwayTabContentProps) => {
   const navigate = useNavigate();
+  // Check if referral is discharged
+  const isDischarged = referral.status === 'discharged';
+  
   // Calculate RTT pathway if not present
   const rttPathway = referral.rttPathway || calculateRTTPathway(referral.created);
   
   // Mock waiting list allocation data (in a real app, this would come from the API)
-  const waitingListAllocation = referral.triageStatus === 'waiting-list' ? {
+  const waitingListAllocation = isDischarged ? null : (referral.triageStatus === 'waiting-list' ? {
     consultant: 'Dr. Sarah Mitchell',
     clinic: 'Outpatient Clinic 3A',
     estimatedWaitTime: '8-12 weeks',
     position: 23,
     totalWaiting: 156
-  } : null;
+  } : null);
 
   const formatDate = (dateString: string) => {
     return format(new Date(dateString), 'dd MMM yyyy');
   };
 
   const getStatusIcon = (status: string) => {
+    if (isDischarged) {
+      return <CheckCircle className="w-4 h-4 text-green-600" />;
+    }
+    
     switch (status) {
       case 'active':
         return <Clock className="w-4 h-4 text-blue-600" />;
@@ -69,19 +76,25 @@ const WaitingListRTTPathwayTabContent = ({ referral }: WaitingListRTTPathwayTabC
           <div>
             <div className="text-xs font-medium text-muted-foreground">Days Remaining</div>
             <div className="font-medium">
-              <RTTPathwayBadge 
-                breachRisk={rttPathway.breachRisk} 
-                daysRemaining={rttPathway.daysRemaining}
-                variant="compact"
-              />
+              {isDischarged ? (
+                <Badge variant="outline" className="bg-muted/10 text-muted-foreground border-muted/20">
+                  N/A
+                </Badge>
+              ) : (
+                <RTTPathwayBadge 
+                  breachRisk={rttPathway.breachRisk} 
+                  daysRemaining={rttPathway.daysRemaining}
+                  variant="compact"
+                />
+              )}
             </div>
           </div>
           
           <div>
             <div className="text-xs font-medium text-muted-foreground">Pathway Status</div>
             <div className="flex items-center gap-2">
-              {getStatusIcon(rttPathway.status)}
-              <span className="font-medium capitalize">{rttPathway.status}</span>
+              {getStatusIcon(isDischarged ? 'completed' : rttPathway.status)}
+              <span className="font-medium capitalize">{isDischarged ? 'Complete' : rttPathway.status}</span>
             </div>
           </div>
         </div>
@@ -127,7 +140,14 @@ const WaitingListRTTPathwayTabContent = ({ referral }: WaitingListRTTPathwayTabC
           <h4 className="text-sm font-medium">Waiting List Allocation</h4>
         </div>
         
-        {waitingListAllocation ? (
+        {isDischarged ? (
+          <div className="p-3 bg-muted/30 rounded-lg border">
+            <div className="text-xs font-medium text-muted-foreground mb-1">Waiting List Status</div>
+            <div className="text-sm text-muted-foreground">
+              Discharged from Waiting List
+            </div>
+          </div>
+        ) : waitingListAllocation ? (
           <>
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-x-6 gap-y-3 text-sm">
               <div>
