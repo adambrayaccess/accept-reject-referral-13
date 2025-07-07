@@ -61,10 +61,6 @@ const ReferralWorkspace = ({ referral, onStatusChange, onSuggestionApplied }: Re
         <PatientJourneyButton referral={referral} />
       </div>
 
-      {referral.isSubReferral && referral.parentReferralId && (
-        <ParentReferralInfo childReferralId={referral.id} />
-      )}
-
       {/* Triage Actions Card - MOVED ABOVE Team Allocation */}
       <Card>
         <CardHeader className="pb-3">
@@ -77,6 +73,18 @@ const ReferralWorkspace = ({ referral, onStatusChange, onSuggestionApplied }: Re
           <ReferralActions referral={referral} onStatusChange={onStatusChange} />
         </CardContent>
       </Card>
+
+      {referral.isSubReferral && referral.parentReferralId && (
+        <ParentReferralInfo childReferralId={referral.id} />
+      )}
+
+      {/* Sub-referrals List - Now shown for all non-sub-referrals regardless of status */}
+      {!referral.isSubReferral && (
+        <SubReferralsList 
+          parentReferralId={referral.id}
+          onRefresh={refreshKey}
+        />
+      )}
 
       {/* Team Allocation Card - NOW BELOW Triage Actions */}
       {referral.teamId && (
@@ -115,14 +123,6 @@ const ReferralWorkspace = ({ referral, onStatusChange, onSuggestionApplied }: Re
           <AppointmentStatus referral={referral} />
         </CardContent>
       </Card>
-
-      {/* Sub-referrals List - Now shown for all non-sub-referrals regardless of status */}
-      {!referral.isSubReferral && (
-        <SubReferralsList 
-          parentReferralId={referral.id}
-          onRefresh={refreshKey}
-        />
-      )}
 
       <Card className="flex-1">
         <CardHeader className="pb-3">
