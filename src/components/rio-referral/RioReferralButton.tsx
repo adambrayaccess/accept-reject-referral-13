@@ -1,5 +1,5 @@
 import { Button } from '@/components/ui/button';
-import { FileText, ExternalLink } from 'lucide-react';
+import { FileText } from 'lucide-react';
 
 interface RioReferralButtonProps {
   onClick: () => void;
@@ -15,7 +15,6 @@ const RioReferralButton = ({ onClick }: RioReferralButtonProps) => {
     >
       <FileText className="h-4 w-4" />
       View Rio Referral
-      <ExternalLink className="h-3 w-3" />
     </Button>
   );
 };
