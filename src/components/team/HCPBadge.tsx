@@ -49,7 +49,7 @@ const HCPBadge = ({
     md: 'text-sm',
     lg: 'text-base'
   };
-  return <Badge variant={variant} className={`${sizeClasses[size]} flex items-center gap-1`}>
+  return <Badge variant={variant} className={`${sizeClasses[size]} flex items-center gap-1 bg-transparent`}>
       {showIcon && <User className="h-3 w-3 bg-transparent" />}
       <span>{hcp.name}</span>
       {hcp.role && <span className="text-xs opacity-75">({hcp.role})</span>}
