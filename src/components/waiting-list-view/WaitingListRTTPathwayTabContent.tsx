@@ -1,13 +1,15 @@
+import React from 'react';
 import { Referral } from '@/types/referral';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
-import { Clock, AlertTriangle, CheckCircle, Target, MapPin, ExternalLink, FileText } from 'lucide-react';
+import { Clock, AlertTriangle, CheckCircle, Target, MapPin, ExternalLink, FileText, Timer } from 'lucide-react';
 import { format, differenceInDays } from 'date-fns';
 import { useNavigate } from 'react-router-dom';
 import RTTPathwayBadge from '@/components/cohort/RTTPathwayBadge';
 import CarePathwayBadge from '@/components/cohort/CarePathwayBadge';
 import { calculateRTTPathway } from '@/utils/rttPathwayUtils';
+import { createOrUpdateRTTPathway } from '@/services/pathwayService';
 
 interface WaitingListRTTPathwayTabContentProps {
   referral: Referral;
@@ -18,8 +20,15 @@ const WaitingListRTTPathwayTabContent = ({ referral }: WaitingListRTTPathwayTabC
   // Check if referral is discharged
   const isDischarged = referral.status === 'discharged';
   
-  // Calculate RTT pathway if not present
+  // Use database pathway if available, otherwise calculate it and create it
   const rttPathway = referral.rttPathway || calculateRTTPathway(referral.created);
+  
+  // If no database pathway exists, create one in the background
+  React.useEffect(() => {
+    if (!referral.rttPathway) {
+      createOrUpdateRTTPathway(referral.id, referral.created);
+    }
+  }, [referral.id, referral.created, referral.rttPathway]);
   
   // Mock waiting list allocation data (in a real app, this would come from the API)
   const waitingListAllocation = isDischarged ? null : (referral.triageStatus === 'waiting-list' ? {
