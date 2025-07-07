@@ -108,7 +108,7 @@ const ClinicalTabContent = ({ referral }: ClinicalTabContentProps) => {
       </div>
 
       {/* View Diagnoses Button */}
-      <div className="mt-6 flex justify-end">
+      <div className="mt-6 flex justify-start">
         <Button
           variant="outline"
           size="sm"
