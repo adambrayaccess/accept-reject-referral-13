@@ -31,7 +31,7 @@ export const useWaitingListData = (selectedSpecialties: string[] = []) => {
   const loadReferrals = async () => {
     setIsLoading(true);
     try {
-      const processedData = await loadWaitingListReferrals(selectedSpecialties);
+      const processedData = await loadWaitingListReferrals(selectedSpecialties, filters.includeDischarged);
       console.log('Loaded referrals with display order:', processedData.map(r => ({ id: r.id, name: r.patient.name, displayOrder: (r as any).displayOrder })));
       setAllReferrals(processedData);
       setOrderedReferrals(processedData);
@@ -60,7 +60,7 @@ export const useWaitingListData = (selectedSpecialties: string[] = []) => {
     return () => {
       window.removeEventListener('referralUpdated', handleReferralUpdate);
     };
-  }, [selectedSpecialties]);
+  }, [selectedSpecialties, filters.includeDischarged]);
 
   // Filter and sort referrals
   const filteredAndSortedReferrals = useMemo(() => {

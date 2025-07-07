@@ -21,6 +21,8 @@ import {
 } from '@/components/ui/accordion';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
+import { Switch } from '@/components/ui/switch';
+import { Label } from '@/components/ui/label';
 import { 
   Filter, 
   ArrowUpDown, 
@@ -68,6 +70,7 @@ const WaitingListSortAndFilterControls = ({
     if (filters.priority !== 'all') count++;
     if (filters.location) count++;
     if (filters.ageRange?.min > 0 || filters.ageRange?.max < 365) count++;
+    if (filters.includeDischarged) count++;
     return count;
   };
 
@@ -132,6 +135,24 @@ const WaitingListSortAndFilterControls = ({
             </div>
 
             <Accordion type="multiple" defaultValue={['priority']}>
+              <AccordionItem value="status">
+                <AccordionTrigger className="py-2">
+                  <span>Status Options</span>
+                </AccordionTrigger>
+                <AccordionContent>
+                  <div className="flex items-center space-x-2">
+                    <Switch
+                      id="include-discharged"
+                      checked={filters.includeDischarged}
+                      onCheckedChange={(checked) => updateFilters({ includeDischarged: checked })}
+                    />
+                    <Label htmlFor="include-discharged" className="text-sm font-normal">
+                      Include discharged referrals
+                    </Label>
+                  </div>
+                </AccordionContent>
+              </AccordionItem>
+
               <AccordionItem value="priority">
                 <AccordionTrigger className="py-2">
                   <span>Priority</span>

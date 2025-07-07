@@ -11,6 +11,7 @@ export interface WaitingListFilters {
   ageRange: { min: number; max: number };
   rttBreachRisk: string;
   rttDaysRange: { min: number; max: number };
+  includeDischarged: boolean;
 }
 
 export const useWaitingListFilters = () => {
@@ -22,7 +23,8 @@ export const useWaitingListFilters = () => {
     appointmentStatus: 'all',
     ageRange: { min: 0, max: 365 },
     rttBreachRisk: 'all',
-    rttDaysRange: { min: 0, max: 126 }
+    rttDaysRange: { min: 0, max: 126 },
+    includeDischarged: false
   });
 
   const applyFilters = (referrals: Referral[]): Referral[] => {
@@ -116,7 +118,8 @@ export const useWaitingListFilters = () => {
       appointmentStatus: 'all',
       ageRange: { min: 0, max: 365 },
       rttBreachRisk: 'all',
-      rttDaysRange: { min: 0, max: 126 }
+      rttDaysRange: { min: 0, max: 126 },
+      includeDischarged: false
     });
   };
 

@@ -2,14 +2,18 @@
 import { Referral } from '@/types/referral';
 import { fetchReferrals } from '../referral/bulkReferralService';
 
-export const loadWaitingListReferrals = async (selectedSpecialties: string[] = []): Promise<Referral[]> => {
-  console.log('Loading waiting list referrals for specialties:', selectedSpecialties);
+export const loadWaitingListReferrals = async (selectedSpecialties: string[] = [], includeDischarged: boolean = false): Promise<Referral[]> => {
+  console.log('Loading waiting list referrals for specialties:', selectedSpecialties, 'includeDischarged:', includeDischarged);
   
   try {
     const filters: any = {
       triageStatus: 'waiting-list', // Only show referrals with waiting-list triage status
-      excludeStatuses: ['discharged', 'complete'] // Exclude discharged and completed referrals
     };
+    
+    // Conditionally exclude discharged referrals
+    if (!includeDischarged) {
+      filters.excludeStatuses = ['discharged', 'complete']; // Exclude discharged and completed referrals
+    }
     
     // Apply specialty filter if specific specialties are selected
     if (selectedSpecialties.length === 1) {
