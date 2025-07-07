@@ -3,12 +3,12 @@ import { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { ExternalLink, LayoutList } from 'lucide-react';
+import { ExternalLink, LayoutList, Plus } from 'lucide-react';
 import { Referral } from '@/types/referral';
 import { fetchChildReferrals } from '@/services/referralService';
 import { format } from 'date-fns';
 import { useNavigate } from 'react-router-dom';
-import CreateSubReferralDialog from './CreateSubReferralDialog';
+import CreateSubReferralSheet from './CreateSubReferralSheet';
 
 interface SubReferralsListProps {
   parentReferralId: string;
@@ -43,6 +43,7 @@ const SubReferralsList = ({ parentReferralId, onRefresh }: SubReferralsListProps
   const [subReferrals, setSubReferrals] = useState<Referral[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [refreshKey, setRefreshKey] = useState(0);
+  const [isCreateSheetOpen, setIsCreateSheetOpen] = useState(false);
   const navigate = useNavigate();
 
   const loadSubReferrals = async () => {
@@ -94,10 +95,10 @@ const SubReferralsList = ({ parentReferralId, onRefresh }: SubReferralsListProps
             <LayoutList className="h-5 w-5" />
             Sub-referrals ({subReferrals.length})
           </CardTitle>
-          <CreateSubReferralDialog 
-            parentReferralId={parentReferralId}
-            onSubReferralCreated={handleSubReferralCreated}
-          />
+          <Button variant="outline" size="sm" onClick={() => setIsCreateSheetOpen(true)}>
+            <Plus className="mr-2 h-4 w-4" />
+            Create Sub-referral
+          </Button>
         </div>
       </CardHeader>
       <CardContent>
@@ -142,6 +143,13 @@ const SubReferralsList = ({ parentReferralId, onRefresh }: SubReferralsListProps
           </div>
         )}
       </CardContent>
+      
+      <CreateSubReferralSheet
+        parentReferralId={parentReferralId}
+        onSubReferralCreated={handleSubReferralCreated}
+        isOpen={isCreateSheetOpen}
+        onOpenChange={setIsCreateSheetOpen}
+      />
     </Card>
   );
 };
