@@ -36,6 +36,9 @@ const triageStatusOptions: {
 }, {
   value: 'refer-to-another-specialty',
   label: 'Refer to Another Specialty'
+}, {
+  value: 'discharged',
+  label: 'Discharged'
 }];
 const AcceptReferralDialog = ({
   referral,

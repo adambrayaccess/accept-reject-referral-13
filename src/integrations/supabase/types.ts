@@ -1930,6 +1930,7 @@ export type Database = {
         | "assessed"
         | "pre-admission-assessment"
         | "refer-to-another-specialty"
+        | "discharged"
       verification_status: "confirmed" | "unconfirmed" | "suspected"
     }
     CompositeTypes: {
@@ -2146,6 +2147,7 @@ export const Constants = {
         "assessed",
         "pre-admission-assessment",
         "refer-to-another-specialty",
+        "discharged",
       ],
       verification_status: ["confirmed", "unconfirmed", "suspected"],
     },
