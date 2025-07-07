@@ -337,6 +337,72 @@ export type Database = {
           },
         ]
       }
+      diagnoses: {
+        Row: {
+          clinical_description: string
+          created_at: string
+          diagnosed_by: string
+          diagnosed_date: string
+          icd10_code: string | null
+          icd10_description: string | null
+          id: string
+          notes: string | null
+          patient_id: string
+          referral_id: string | null
+          resolved_date: string | null
+          severity: Database["public"]["Enums"]["diagnosis_severity"] | null
+          status: Database["public"]["Enums"]["diagnosis_status"]
+          updated_at: string
+        }
+        Insert: {
+          clinical_description: string
+          created_at?: string
+          diagnosed_by: string
+          diagnosed_date?: string
+          icd10_code?: string | null
+          icd10_description?: string | null
+          id?: string
+          notes?: string | null
+          patient_id: string
+          referral_id?: string | null
+          resolved_date?: string | null
+          severity?: Database["public"]["Enums"]["diagnosis_severity"] | null
+          status?: Database["public"]["Enums"]["diagnosis_status"]
+          updated_at?: string
+        }
+        Update: {
+          clinical_description?: string
+          created_at?: string
+          diagnosed_by?: string
+          diagnosed_date?: string
+          icd10_code?: string | null
+          icd10_description?: string | null
+          id?: string
+          notes?: string | null
+          patient_id?: string
+          referral_id?: string | null
+          resolved_date?: string | null
+          severity?: Database["public"]["Enums"]["diagnosis_severity"] | null
+          status?: Database["public"]["Enums"]["diagnosis_status"]
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "fk_diagnoses_patient"
+            columns: ["patient_id"]
+            isOneToOne: false
+            referencedRelation: "patients"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_diagnoses_referral"
+            columns: ["referral_id"]
+            isOneToOne: false
+            referencedRelation: "referrals"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       fhir_addresses: {
         Row: {
           city: string | null
@@ -1885,6 +1951,13 @@ export type Database = {
         | "sms"
         | "other"
       contact_point_use: "home" | "work" | "temp" | "old" | "mobile"
+      diagnosis_severity: "mild" | "moderate" | "severe" | "critical"
+      diagnosis_status:
+        | "active"
+        | "resolved"
+        | "suspected"
+        | "ruled_out"
+        | "chronic"
       fhir_resource_type:
         | "Patient"
         | "Practitioner"
@@ -2098,6 +2171,14 @@ export const Constants = {
         "other",
       ],
       contact_point_use: ["home", "work", "temp", "old", "mobile"],
+      diagnosis_severity: ["mild", "moderate", "severe", "critical"],
+      diagnosis_status: [
+        "active",
+        "resolved",
+        "suspected",
+        "ruled_out",
+        "chronic",
+      ],
       fhir_resource_type: [
         "Patient",
         "Practitioner",
