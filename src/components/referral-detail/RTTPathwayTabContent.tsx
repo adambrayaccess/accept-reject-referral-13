@@ -1,7 +1,9 @@
 import { Referral } from '@/types/referral';
 import { Separator } from '@/components/ui/separator';
-import { Clock, Calendar, AlertTriangle, CheckCircle, Target, MapPin } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Clock, Calendar, AlertTriangle, CheckCircle, Target, MapPin, ExternalLink, FileText } from 'lucide-react';
 import { format } from 'date-fns';
+import { useNavigate } from 'react-router-dom';
 import RTTPathwayBadge from '@/components/cohort/RTTPathwayBadge';
 import CarePathwayBadge from '@/components/cohort/CarePathwayBadge';
 import { calculateRTTPathway } from '@/utils/rttPathwayUtils';
@@ -11,6 +13,7 @@ interface RTTPathwayTabContentProps {
 }
 
 const RTTPathwayTabContent = ({ referral }: RTTPathwayTabContentProps) => {
+  const navigate = useNavigate();
   const rttPathway = referral.rttPathway || calculateRTTPathway(referral.created);
 
   const finalRttPathway = referral.status === 'discharged'
@@ -138,6 +141,28 @@ const RTTPathwayTabContent = ({ referral }: RTTPathwayTabContentProps) => {
           </div>
         )}
       </div>
+
+      {/* View Waiting List Section */}
+      {referral.triageStatus === 'waiting-list' && (
+        <>
+          <Separator />
+          <div className="space-y-3">
+            <div className="flex items-center gap-2">
+              <FileText className="w-4 h-4 text-muted-foreground" />
+              <h4 className="text-sm font-medium">Waiting List</h4>
+            </div>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => navigate(`/waiting-list-view/${referral.id}`)}
+              className="flex items-center gap-1 text-xs"
+            >
+              <ExternalLink className="w-3 h-3" />
+              View Waiting List
+            </Button>
+          </div>
+        </>
+      )}
     </div>
   );
 };
