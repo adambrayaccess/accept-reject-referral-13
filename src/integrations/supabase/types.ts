@@ -258,6 +258,50 @@ export type Database = {
           },
         ]
       }
+      care_pathways: {
+        Row: {
+          created_at: string
+          description: string | null
+          id: string
+          name: string
+          priority_level: string | null
+          referral_id: string
+          status: string
+          target_timeframe: string | null
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          name: string
+          priority_level?: string | null
+          referral_id: string
+          status?: string
+          target_timeframe?: string | null
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          name?: string
+          priority_level?: string | null
+          referral_id?: string
+          status?: string
+          target_timeframe?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "care_pathways_referral_id_fkey"
+            columns: ["referral_id"]
+            isOneToOne: true
+            referencedRelation: "referrals"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       clinical_notes: {
         Row: {
           created_at: string
@@ -1593,6 +1637,53 @@ export type Database = {
           },
         ]
       }
+      rtt_pathways: {
+        Row: {
+          breach_risk: string
+          clock_start_date: string
+          created_at: string
+          days_remaining: number
+          id: string
+          pause_history: Json | null
+          referral_id: string
+          status: string
+          target_date: string
+          updated_at: string
+        }
+        Insert: {
+          breach_risk?: string
+          clock_start_date: string
+          created_at?: string
+          days_remaining?: number
+          id?: string
+          pause_history?: Json | null
+          referral_id: string
+          status?: string
+          target_date: string
+          updated_at?: string
+        }
+        Update: {
+          breach_risk?: string
+          clock_start_date?: string
+          created_at?: string
+          days_remaining?: number
+          id?: string
+          pause_history?: Json | null
+          referral_id?: string
+          status?: string
+          target_date?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "rtt_pathways_referral_id_fkey"
+            columns: ["referral_id"]
+            isOneToOne: true
+            referencedRelation: "referrals"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       specialties: {
         Row: {
           active: boolean
@@ -1909,6 +2000,10 @@ export type Database = {
       generate_fhir_patient_resource: {
         Args: { patient_row: Database["public"]["Tables"]["patients"]["Row"] }
         Returns: Json
+      }
+      initialize_rtt_pathway: {
+        Args: { referral_id_param: string }
+        Returns: string
       }
       reorder_waiting_list_positions: {
         Args: { specialty_param: string; referral_positions: Json }

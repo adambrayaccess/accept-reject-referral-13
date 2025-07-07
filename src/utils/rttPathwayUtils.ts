@@ -23,7 +23,7 @@ export const calculateRTTPathway = (clockStartDate: string): RTTPathway => {
   return {
     clockStart: clockStartDate,
     targetDate: targetDate.toISOString(),
-    status: daysRemaining < 0 ? 'incomplete' : 'incomplete',
+    status: daysRemaining < 0 ? 'active' : 'active',
     daysRemaining: Math.max(0, daysRemaining),
     breachRisk
   };

@@ -31,7 +31,9 @@ export const fetchReferralById = async (referralId: string): Promise<Referral | 
         audit_log(*),
         collaboration_notes(*),
         appointments(*),
-        attachments(*)
+        attachments(*),
+        rtt_pathways(*),
+        care_pathways(*)
       `)
       .eq('id', referralId)
       .single();

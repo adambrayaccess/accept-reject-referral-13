@@ -28,4 +28,15 @@ export {
   FhirSyncService
 } from './fhir';
 
+// Export Pathway services
+export {
+  fetchRTTPathway,
+  createOrUpdateRTTPathway,
+  updateRTTPathwayStatus,
+  addRTTPathwayPause,
+  fetchCarePathway,
+  createCarePathway,
+  updateCarePathwayStatus
+} from './pathwayService';
+
 export { FhirIntegrationService } from './referral/fhirIntegrationService';

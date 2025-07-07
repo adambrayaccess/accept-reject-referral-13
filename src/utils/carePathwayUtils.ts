@@ -150,7 +150,7 @@ export const generateCarePathway = (
 
   const definition = carePathwayDefinitions[pathwayType];
   
-  const statuses: CarePathway['status'][] = ['active', 'completed', 'paused', 'discontinued'];
+  const statuses: CarePathway['status'][] = ['active', 'completed', 'on-hold', 'cancelled'];
   const weights = [0.7, 0.15, 0.1, 0.05]; // Most pathways are active
   
   let status: CarePathway['status'] = 'active';
@@ -184,9 +184,9 @@ export const getCarePathwayStatusColor = (status: CarePathway['status']): string
       return 'bg-green-100 text-green-800';
     case 'completed':
       return 'bg-blue-100 text-blue-800';
-    case 'paused':
+    case 'on-hold':
       return 'bg-yellow-100 text-yellow-800';
-    case 'discontinued':
+    case 'cancelled':
       return 'bg-red-100 text-red-800';
     default:
       return 'bg-gray-100 text-gray-800';

@@ -239,9 +239,30 @@ export const mapReferralData = (referral: any): Referral => {
       consultant: referral.appointments[0].consultant,
       notes: referral.appointments[0].notes
     } : undefined,
-    // RTT and care pathway data would come from separate tables if needed
-    rttPathway: undefined,
-    carePathway: undefined,
+    // RTT and care pathway data from database
+    rttPathway: referral.rtt_pathways?.length > 0 ? {
+      id: referral.rtt_pathways[0].id,
+      referralId: referral.rtt_pathways[0].referral_id,
+      clockStart: referral.rtt_pathways[0].clock_start_date,
+      targetDate: referral.rtt_pathways[0].target_date,
+      status: referral.rtt_pathways[0].status,
+      breachRisk: referral.rtt_pathways[0].breach_risk,
+      daysRemaining: referral.rtt_pathways[0].days_remaining,
+      pauseHistory: referral.rtt_pathways[0].pause_history || [],
+      createdAt: referral.rtt_pathways[0].created_at,
+      updatedAt: referral.rtt_pathways[0].updated_at,
+    } : undefined,
+    carePathway: referral.care_pathways?.length > 0 ? {
+      id: referral.care_pathways[0].id,
+      referralId: referral.care_pathways[0].referral_id,
+      name: referral.care_pathways[0].name,
+      status: referral.care_pathways[0].status,
+      description: referral.care_pathways[0].description,
+      targetTimeframe: referral.care_pathways[0].target_timeframe,
+      priorityLevel: referral.care_pathways[0].priority_level,
+      createdAt: referral.care_pathways[0].created_at,
+      updatedAt: referral.care_pathways[0].updated_at,
+    } : undefined,
     teamId: referral.team_id,
     assignedHCPId: referral.assigned_hcp_id,
     allocatedDate: referral.allocated_date,

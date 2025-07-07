@@ -1,3 +1,4 @@
+import React from 'react';
 import { Referral } from '@/types/referral';
 import { Separator } from '@/components/ui/separator';
 import { Button } from '@/components/ui/button';
@@ -7,6 +8,7 @@ import { useNavigate } from 'react-router-dom';
 import RTTPathwayBadge from '@/components/cohort/RTTPathwayBadge';
 import CarePathwayBadge from '@/components/cohort/CarePathwayBadge';
 import { calculateRTTPathway } from '@/utils/rttPathwayUtils';
+import { createOrUpdateRTTPathway } from '@/services/pathwayService';
 
 interface RTTPathwayTabContentProps {
   referral: Referral;
@@ -14,10 +16,19 @@ interface RTTPathwayTabContentProps {
 
 const RTTPathwayTabContent = ({ referral }: RTTPathwayTabContentProps) => {
   const navigate = useNavigate();
+  
+  // Use database pathway if available, otherwise calculate it and create it
   const rttPathway = referral.rttPathway || calculateRTTPathway(referral.created);
+  
+  // If no database pathway exists, create one in the background
+  React.useEffect(() => {
+    if (!referral.rttPathway) {
+      createOrUpdateRTTPathway(referral.id, referral.created);
+    }
+  }, [referral.id, referral.created, referral.rttPathway]);
 
   const finalRttPathway = referral.status === 'discharged'
-    ? { ...rttPathway, status: 'complete' }
+    ? { ...rttPathway, status: 'completed' as const }
     : rttPathway;
 
   const formatDate = (dateString: string) => {
