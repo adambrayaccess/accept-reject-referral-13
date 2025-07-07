@@ -4,6 +4,7 @@ import AcceptReferralDialog from './actions/AcceptReferralDialog';
 import RejectReferralDialog from './actions/RejectReferralDialog';
 import ReferralStatusIndicator from './actions/ReferralStatusIndicator';
 import { useState } from 'react';
+import { ArrowRightFromLine } from 'lucide-react';
 
 interface ReferralActionsProps {
   referral: Referral;
@@ -39,8 +40,14 @@ const ReferralActions = ({ referral, onStatusChange }: ReferralActionsProps) => 
   // Show discharge message when referral is discharged
   if (referral.status === 'discharged') {
     return (
-      <div className="p-4 bg-gray-50 border border-gray-200 rounded-lg text-center">
-        <p className="text-gray-700 font-medium">This referral has been Discharged</p>
+      <div className="border rounded-lg p-4 text-muted-foreground bg-muted/10 border-muted/20">
+        <div className="flex items-center gap-3">
+          <ArrowRightFromLine className="h-5 w-5 text-muted-foreground" />
+          <div>
+            <div className="font-medium">Referral Status: Discharged</div>
+            <div className="text-sm opacity-75">This referral has been discharged</div>
+          </div>
+        </div>
       </div>
     );
   }
