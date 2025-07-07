@@ -3,6 +3,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { Referral, TriageStatus } from '@/types/referral';
 import { fetchReferralById } from './referralFetchService';
 import { assignHCPToTeam } from '@/services/teamService';
+import { addToWaitingList } from '@/services/waitingList/waitingListEntriesService';
 
 interface TeamAllocationData {
   teamId?: string;
@@ -103,6 +104,63 @@ export const updateTriageStatus = async (
   try {
     console.log(`Updating referral ${referralId} triage status to ${triageStatus}`);
     
+    // Get the current referral to check specialty
+    const { data: referral } = await supabase
+      .from('referrals')
+      .select('specialty, triage_status')
+      .eq('id', referralId)
+      .single();
+    
+    if (!referral) {
+      console.error('Referral not found');
+      return false;
+    }
+    
+    // If setting to waiting-list, use the waiting list service
+    if (triageStatus === 'waiting-list' && referral.triage_status !== 'waiting-list') {
+      try {
+        await addToWaitingList({
+          referralId,
+          specialty: referral.specialty,
+          performedBy: 'Current User', // In real app, get from auth context
+          notes: notes || undefined
+        });
+        
+        // Handle team allocation if provided
+        if (teamAllocationData) {
+          const teamUpdates: any = {};
+          
+          if (teamAllocationData.teamId) {
+            teamUpdates.team_id = teamAllocationData.teamId;
+            teamUpdates.allocated_date = new Date().toISOString();
+            teamUpdates.allocated_by = 'Current User';
+          }
+          
+          if (teamAllocationData.assignedHCPId) {
+            teamUpdates.assigned_hcp_id = teamAllocationData.assignedHCPId;
+          }
+          
+          if (Object.keys(teamUpdates).length > 0) {
+            const { error: teamError } = await supabase
+              .from('referrals')
+              .update(teamUpdates)
+              .eq('id', referralId);
+            
+            if (teamError) {
+              console.error('Error updating team allocation:', teamError);
+            }
+          }
+        }
+        
+        console.log(`Successfully added referral ${referralId} to waiting list`);
+        return true;
+      } catch (error) {
+        console.error('Error adding to waiting list:', error);
+        return false;
+      }
+    }
+    
+    // For other triage status updates, use regular update
     const updates: any = {
       triage_status: triageStatus,
       updated_at: new Date().toISOString()

@@ -1814,6 +1814,15 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      add_to_waiting_list: {
+        Args: {
+          referral_id_param: string
+          specialty_param: string
+          performed_by_param: string
+          notes_param?: string
+        }
+        Returns: boolean
+      }
       complete_referral_pathway: {
         Args: {
           referral_id_param: string
