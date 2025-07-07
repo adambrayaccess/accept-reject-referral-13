@@ -116,7 +116,6 @@ const RTTPathwayTabContent = ({ referral }: RTTPathwayTabContentProps) => {
             <CarePathwayBadge carePathway={referral.carePathway} />
           </div>
 
-          <Separator />
         </>
       )}
 
@@ -145,7 +144,6 @@ const RTTPathwayTabContent = ({ referral }: RTTPathwayTabContentProps) => {
       {/* View Waiting List Section */}
       {referral.triageStatus === 'waiting-list' && (
         <>
-          <Separator />
           <div className="space-y-3">
             <Button
               variant="outline"
