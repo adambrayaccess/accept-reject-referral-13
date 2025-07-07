@@ -16,6 +16,11 @@ const RTTPathwayTabContent = ({ referral }: RTTPathwayTabContentProps) => {
   // Calculate RTT pathway if not present
   const rttPathway = referral.rttPathway || calculateRTTPathway(referral.created);
   
+  // Override pathway status if referral is discharged
+  const finalRttPathway = referral.status === 'discharged' 
+    ? { ...rttPathway, status: 'complete' }
+    : rttPathway;
+  
   // Mock waiting list allocation data (in a real app, this would come from the API)
   const waitingListAllocation = referral.triageStatus === 'waiting-list' ? {
     consultant: 'Dr. Sarah Mitchell',
@@ -34,6 +39,7 @@ const RTTPathwayTabContent = ({ referral }: RTTPathwayTabContentProps) => {
       case 'active':
         return <Clock className="w-4 h-4 text-blue-600" />;
       case 'completed':
+      case 'complete':
         return <CheckCircle className="w-4 h-4 text-green-600" />;
       case 'paused':
         return <AlertTriangle className="w-4 h-4 text-yellow-600" />;
@@ -67,19 +73,25 @@ const RTTPathwayTabContent = ({ referral }: RTTPathwayTabContentProps) => {
           <div>
             <div className="text-xs font-medium text-muted-foreground">Days Remaining</div>
             <div className="font-medium">
-              <RTTPathwayBadge 
-                breachRisk={rttPathway.breachRisk} 
-                daysRemaining={rttPathway.daysRemaining}
-                variant="compact"
-              />
+              {referral.status === 'discharged' ? (
+                <div className="inline-flex items-center gap-1 px-2 py-1 rounded text-xs font-medium text-muted-foreground bg-muted/30">
+                  <span>N/A</span>
+                </div>
+              ) : (
+                <RTTPathwayBadge 
+                  breachRisk={rttPathway.breachRisk} 
+                  daysRemaining={rttPathway.daysRemaining}
+                  variant="compact"
+                />
+              )}
             </div>
           </div>
           
           <div>
             <div className="text-xs font-medium text-muted-foreground">Pathway Status</div>
             <div className="flex items-center gap-2">
-              {getStatusIcon(rttPathway.status)}
-              <span className="font-medium capitalize">{rttPathway.status}</span>
+              {getStatusIcon(finalRttPathway.status)}
+              <span className="font-medium capitalize">{finalRttPathway.status}</span>
             </div>
           </div>
         </div>
@@ -159,6 +171,12 @@ const RTTPathwayTabContent = ({ referral }: RTTPathwayTabContentProps) => {
               </div>
             </div>
           </>
+        ) : referral.status === 'discharged' ? (
+          <div className="p-3 bg-muted/30 rounded-lg border">
+            <div className="text-sm text-muted-foreground">
+              Discharged from Waiting List
+            </div>
+          </div>
         ) : (
           <div className="p-3 bg-muted/30 rounded-lg border">
             <div className="text-sm text-muted-foreground">
