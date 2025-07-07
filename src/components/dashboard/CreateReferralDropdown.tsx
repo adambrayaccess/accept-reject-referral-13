@@ -141,7 +141,6 @@ INSERT INTO public.referrals (
           </DropdownMenuItem>
           <DropdownMenuItem 
             onClick={() => setIsAutoModalOpen(true)}
-            className="relative bg-gradient-to-r from-purple-50 to-purple-100 border border-purple-200 text-purple-900 hover:from-purple-100 hover:to-purple-200 hover:border-purple-300 focus:from-purple-100 focus:to-purple-200 focus:border-purple-300 transition-all duration-200"
           >
             <Sparkles className="mr-2 h-4 w-4 text-purple-600" />
             <span className="font-medium">Add Auto Referral</span>
