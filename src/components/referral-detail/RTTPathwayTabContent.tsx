@@ -1,7 +1,7 @@
 import { Referral } from '@/types/referral';
 import { Separator } from '@/components/ui/separator';
 import { Button } from '@/components/ui/button';
-import { Clock, Calendar, AlertTriangle, CheckCircle, Target, MapPin, ExternalLink, FileText } from 'lucide-react';
+import { Clock, Calendar, AlertTriangle, CheckCircle, Target, Timer, ExternalLink, FileText } from 'lucide-react';
 import { format } from 'date-fns';
 import { useNavigate } from 'react-router-dom';
 import RTTPathwayBadge from '@/components/cohort/RTTPathwayBadge';
@@ -123,7 +123,7 @@ const RTTPathwayTabContent = ({ referral }: RTTPathwayTabContentProps) => {
       {/* Waiting List Allocation Section */}
       <div className="space-y-3">
         <div className="flex items-center gap-2">
-          <MapPin className="w-4 h-4 text-muted-foreground" />
+          <Timer className="w-4 h-4 text-muted-foreground" />
           <h4 className="text-sm font-medium">Waiting List Allocation</h4>
         </div>
 
@@ -147,15 +147,11 @@ const RTTPathwayTabContent = ({ referral }: RTTPathwayTabContentProps) => {
         <>
           <Separator />
           <div className="space-y-3">
-            <div className="flex items-center gap-2">
-              <FileText className="w-4 h-4 text-muted-foreground" />
-              <h4 className="text-sm font-medium">Waiting List</h4>
-            </div>
             <Button
               variant="outline"
               size="sm"
               onClick={() => navigate(`/waiting-list-view/${referral.id}`)}
-              className="flex items-center gap-1 text-xs"
+              className="flex items-center gap-2 hover:bg-blue-50 hover:text-blue-700 hover:border-blue-200 transition-all duration-200 font-medium"
             >
               <ExternalLink className="w-3 h-3" />
               View Waiting List
