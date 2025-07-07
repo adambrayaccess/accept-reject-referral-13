@@ -90,7 +90,7 @@ const ClinicalTagsPopover = ({ referral, onTagsUpdated }: ClinicalTagsPopoverPro
   };
 
   return (
-    <Popover open={isOpen} onOpenChange={(open) => !open && setIsOpen(false)}>
+    <Popover open={isOpen} onOpenChange={setIsOpen}>
       <PopoverTrigger asChild>
         <Button variant="outline" size="sm" className="gap-2">
           <Tag className="h-4 w-4" />
