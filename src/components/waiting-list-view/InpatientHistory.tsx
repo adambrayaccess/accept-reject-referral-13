@@ -36,16 +36,18 @@ const InpatientHistory = ({ patientId, patientName, refreshTrigger }: InpatientH
     <>
       <Card>
         <CardHeader className="pb-3">
-          <CardTitle className="flex items-center gap-2 text-lg">
-            <BedDouble className="h-5 w-5" />
-            Inpatient History
-          </CardTitle>
+          <div className="flex items-center justify-between">
+            <CardTitle className="flex items-center gap-2 text-lg">
+              <BedDouble className="h-5 w-5" />
+              Inpatient History
+            </CardTitle>
+            <InpatientHistoryButton
+              onClick={() => setIsSheetOpen(true)}
+              admissionCount={admissions.length}
+            />
+          </div>
         </CardHeader>
-        <CardContent className="space-y-3">
-          <InpatientHistoryButton
-            onClick={() => setIsSheetOpen(true)}
-            admissionCount={admissions.length}
-          />
+        <CardContent>
           <p className="text-sm text-muted-foreground">
             Click "View Inpatient History" to see complete admission and discharge records
           </p>
