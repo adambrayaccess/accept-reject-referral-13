@@ -65,7 +65,20 @@ const ReferralWorkspace = ({ referral, onStatusChange, onSuggestionApplied }: Re
         <ParentReferralInfo childReferralId={referral.id} />
       )}
 
-      {/* Team Allocation Card - NEW */}
+      {/* Triage Actions Card - MOVED ABOVE Team Allocation */}
+      <Card>
+        <CardHeader className="pb-3">
+          <CardTitle className="text-lg flex items-center">
+            <Clipboard className="h-5 w-5 mr-2" />
+            Triage Actions
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="pt-0">
+          <ReferralActions referral={referral} onStatusChange={onStatusChange} />
+        </CardContent>
+      </Card>
+
+      {/* Team Allocation Card - NOW BELOW Triage Actions */}
       {referral.teamId && (
         <Card>
           <CardHeader className="pb-3">
@@ -89,19 +102,6 @@ const ReferralWorkspace = ({ referral, onStatusChange, onSuggestionApplied }: Re
           </CardContent>
         </Card>
       )}
-
-      {/* Triage Actions Card - MOVED ABOVE Appointment Status */}
-      <Card>
-        <CardHeader className="pb-3">
-          <CardTitle className="text-lg flex items-center">
-            <Clipboard className="h-5 w-5 mr-2" />
-            Triage Actions
-          </CardTitle>
-        </CardHeader>
-        <CardContent className="pt-0">
-          <ReferralActions referral={referral} onStatusChange={onStatusChange} />
-        </CardContent>
-      </Card>
 
       {/* Appointment Status Card - NOW BELOW Triage Actions */}
       <Card>
