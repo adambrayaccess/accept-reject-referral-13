@@ -9,7 +9,7 @@ import EnhancedAuditLog from './audit/EnhancedAuditLog';
 import SubReferralsList from './sub-referrals/SubReferralsList';
 import ParentReferralInfo from './sub-referrals/ParentReferralInfo';
 import PatientJourneyButton from './PatientJourneyButton';
-import ReferralTagging from './referral-tagging/ReferralTagging';
+
 import AppointmentStatus from './cohort/AppointmentStatus';
 import TeamBadge from './team/TeamBadge';
 import HCPBadge from './team/HCPBadge';
@@ -123,11 +123,6 @@ const ReferralWorkspace = ({ referral, onStatusChange, onSuggestionApplied }: Re
           onRefresh={refreshKey}
         />
       )}
-
-      <ReferralTagging 
-        referral={referral}
-        onTagsUpdated={handleTagsUpdated}
-      />
 
       <Card className="flex-1">
         <CardHeader className="pb-3">
