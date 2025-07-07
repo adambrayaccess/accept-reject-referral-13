@@ -36,7 +36,7 @@ const ReferralActions = ({ referral, onStatusChange }: ReferralActionsProps) => 
     onStatusChange();
   };
 
-  if (referral.status === 'new') {
+  if (referral.status === 'new' || (!referral.triageStatus || referral.triageStatus === 'pre-assessment')) {
     return (
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <AcceptReferralDialog referral={referral} onStatusChange={onStatusChange} />
