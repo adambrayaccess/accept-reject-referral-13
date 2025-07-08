@@ -180,7 +180,7 @@ const ReferralCard = ({
               <Accordion type="single" collapsible className="w-full">
                 <AccordionItem value="sub-referrals" className="border-0 border-t">
                   <AccordionTrigger 
-                    className="px-4 py-2 text-sm font-medium text-muted-foreground hover:no-underline"
+                    className="px-4 py-2 text-sm font-bold text-muted-foreground hover:no-underline uppercase tracking-wide"
                     onClick={(e) => e.stopPropagation()}
                   >
                     {referral.isSubReferral ? 'Parent Referral' : `Sub-Referrals (${referral.childReferralIds?.length || 0})`}
@@ -188,17 +188,25 @@ const ReferralCard = ({
                   <AccordionContent className="px-4 pb-4 pt-0" onClick={(e) => e.stopPropagation()}>
                     {referral.isSubReferral ? (
                       /* Sub-Referral: Show Parent Referral Details */
-                      <div className="space-y-2">
-                        <div className="flex items-center justify-between">
+                      <div className="space-y-3">
+                        <div className="grid grid-cols-2 gap-3">
                           <div>
                             <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">Parent Referral ID</div>
                             <div className="text-sm font-medium font-mono">{referral.parentReferralId || 'N/A'}</div>
                           </div>
+                          <div>
+                            <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">Specialty</div>
+                            <div className="text-sm font-medium">Cardiology</div>
+                          </div>
+                        </div>
+                        <div>
+                          <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">Triage Status</div>
+                          <div className="text-sm font-medium">Waiting List</div>
                         </div>
                         {referral.parentReferralId && (
                           <Link 
                             to={`/referral/${referral.parentReferralId}`}
-                            className="inline-flex items-center gap-1 text-xs text-primary hover:underline"
+                            className="inline-flex items-center gap-1 text-xs text-primary hover:underline font-bold"
                             onClick={(e) => {
                               e.stopPropagation();
                               e.preventDefault();
@@ -213,24 +221,36 @@ const ReferralCard = ({
                     ) : (
                       /* Parent Referral: Show Sub-Referrals */
                       <div className="space-y-3">
-                        {referral.childReferralIds?.map((childId) => (
-                          <div key={childId} className="flex items-center justify-between p-2 bg-muted/50 rounded">
-                            <div>
-                              <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">Sub-Referral ID</div>
-                              <div className="text-sm font-medium font-mono">{childId}</div>
+                        {referral.childReferralIds?.map((childId, index) => (
+                          <div key={childId} className="p-3 bg-muted/50 rounded space-y-2">
+                            <div className="grid grid-cols-2 gap-3">
+                              <div>
+                                <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">Sub-Referral ID</div>
+                                <div className="text-sm font-medium font-mono">{childId}</div>
+                              </div>
+                              <div>
+                                <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">Specialty</div>
+                                <div className="text-sm font-medium">{index === 0 ? 'Neurology' : 'Psychiatry'}</div>
+                              </div>
                             </div>
-                            <Link 
-                              to={`/referral/${childId}`}
-                              className="inline-flex items-center gap-1 text-xs text-primary hover:underline"
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                e.preventDefault();
-                                window.location.href = `/referral/${childId}`;
-                              }}
-                            >
-                              <ExternalLink className="h-3 w-3" />
-                              View
-                            </Link>
+                            <div className="flex items-center justify-between">
+                              <div>
+                                <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">Triage Status</div>
+                                <div className="text-sm font-medium">{index === 0 ? 'Pre-Assessment' : 'Assessed'}</div>
+                              </div>
+                              <Link 
+                                to={`/referral/${childId}`}
+                                className="inline-flex items-center gap-1 text-xs text-primary hover:underline font-bold"
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  e.preventDefault();
+                                  window.location.href = `/referral/${childId}`;
+                                }}
+                              >
+                                <ExternalLink className="h-3 w-3" />
+                                View
+                              </Link>
+                            </div>
                           </div>
                         ))}
                       </div>
