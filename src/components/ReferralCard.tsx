@@ -83,12 +83,19 @@ const ReferralCard = ({
           <div className="flex justify-between items-start mb-2">
             <div className="flex-1">
               <CardTitle className="text-lg mb-1">{referral.patient.name}</CardTitle>
-              <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                <span><span className="font-bold">Gender</span> {referral.patient.gender}</span>
-                <span>•</span>
-                <span><span className="font-bold">Date of Birth</span> {format(new Date(referral.patient.birthDate), 'dd/MM/yyyy')} ({patientAge} years)</span> 
-                <span>•</span>
-                <span><span className="font-bold">NHS No.</span> {referral.patient.nhsNumber}</span>
+              <div className="grid grid-cols-3 gap-3 text-sm">
+                <div>
+                  <div className="font-bold text-muted-foreground">Gender</div>
+                  <div>{referral.patient.gender}</div>
+                </div>
+                <div>
+                  <div className="font-bold text-muted-foreground">Date of Birth</div>
+                  <div>{format(new Date(referral.patient.birthDate), 'dd/MM/yyyy')} ({patientAge} years)</div>
+                </div>
+                <div>
+                  <div className="font-bold text-muted-foreground">NHS No.</div>
+                  <div>{referral.patient.nhsNumber}</div>
+                </div>
               </div>
             </div>
             <div className="flex items-center gap-2">
