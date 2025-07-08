@@ -186,7 +186,11 @@ const ReferralCard = ({
                           <Link 
                             to={`/referral/${referral.parentReferralId}`}
                             className="inline-flex items-center gap-1 text-xs text-primary hover:underline"
-                            onClick={(e) => e.stopPropagation()}
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              e.preventDefault();
+                              window.location.href = `/referral/${referral.parentReferralId}`;
+                            }}
                           >
                             <ExternalLink className="h-3 w-3" />
                             View Parent Referral
@@ -205,7 +209,11 @@ const ReferralCard = ({
                             <Link 
                               to={`/referral/${childId}`}
                               className="inline-flex items-center gap-1 text-xs text-primary hover:underline"
-                              onClick={(e) => e.stopPropagation()}
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                e.preventDefault();
+                                window.location.href = `/referral/${childId}`;
+                              }}
                             >
                               <ExternalLink className="h-3 w-3" />
                               View
