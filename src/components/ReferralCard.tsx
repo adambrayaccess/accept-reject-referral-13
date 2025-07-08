@@ -91,7 +91,7 @@ const ReferralCard = ({ referral }: ReferralCardProps) => {
                 <span>•</span>
                 <span><span className="font-bold">Date of Birth</span> {format(new Date(referral.patient.birthDate), 'dd/MM/yyyy')} ({patientAge} years)</span> 
                 <span>•</span>
-                <span><span className="font-bold">No.</span> {referral.patient.nhsNumber}</span>
+                <span><span className="font-bold">NHS No.</span> {referral.patient.nhsNumber}</span>
               </div>
             </div>
             <div className="flex items-center gap-2">
@@ -147,8 +147,8 @@ const ReferralCard = ({ referral }: ReferralCardProps) => {
         <CardContent className="pt-0 pb-2">
           <div className="grid grid-cols-2 gap-x-4 gap-y-3">
             <div>
-              <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">NHS</div>
-              <div className="text-sm font-medium font-mono">{referral.patient.nhsNumber}</div>
+              <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">Referral Type</div>
+              <div className="text-sm font-medium font-mono">ReferralTypeBadge referral={referral} size="m"</div>
             </div>
             <div>
               <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">UBRN</div>
@@ -160,7 +160,7 @@ const ReferralCard = ({ referral }: ReferralCardProps) => {
               <div className="text-sm font-medium">{referral.patient.phone || 'N/A'}</div>
             </div>
             <div>
-              <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">Date</div>
+              <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">Referral Date</div>
               <div className="text-sm font-medium">{formattedDate} at {formattedTime}</div>
             </div>
           </div>
