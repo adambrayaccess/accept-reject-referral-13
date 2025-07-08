@@ -54,9 +54,9 @@ const ReferralGrid = ({
 
   if (isLoading) {
     return (
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 py-6">
-        {[...Array(3)].map((_, index) => (
-          <div key={index} className="h-64 rounded-lg border border-border bg-card animate-pulse" />
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 py-6">
+        {[...Array(4)].map((_, index) => (
+          <div key={index} className="h-80 rounded-lg border border-border bg-card animate-pulse" />
         ))}
       </div>
     );
@@ -71,7 +71,7 @@ const ReferralGrid = ({
   }
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 py-6">
+    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 py-6">
       {filteredReferrals.map((referral) => (
         <ReferralCard key={referral.id} referral={referral} />
       ))}
