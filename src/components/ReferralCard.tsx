@@ -166,7 +166,7 @@ const ReferralCard = ({
           
           {/* Sub-Referral Accordion */}
           {(referral.isSubReferral || (referral.childReferralIds && referral.childReferralIds.length > 0)) && (
-            <div className="mt-3 -mx-4 -mb-2">
+            <div className="mt-3 -mx-4 -mb-2" onClick={(e) => e.stopPropagation()}>
               <Accordion type="single" collapsible className="w-full">
                 <AccordionItem value="sub-referrals" className="border-0 border-t">
                   <AccordionTrigger className="px-4 py-2 text-sm font-medium text-muted-foreground hover:no-underline">
