@@ -77,8 +77,8 @@ const ReferralCard = ({
     isPinned,
     togglePin
   } = usePinning();
-  return <Link to={`/referral/${referral.id}`}>
-      <Card className="hover:border-primary hover:shadow-md transition-all cursor-pointer h-full">
+  return (
+    <Card className="hover:border-primary hover:shadow-md transition-all h-full">
         <CardHeader className="pb-3">
           <div className="flex justify-between items-start mb-2">
             <div className="flex-1">
@@ -231,7 +231,17 @@ const ReferralCard = ({
             </div>
           )}
         </CardContent>
+        
+        <CardFooter className="pt-2 pb-3 px-6">
+          <Link 
+            to={`/referral/${referral.id}`}
+            className="inline-flex items-center gap-2 text-sm text-primary hover:underline font-medium"
+          >
+            <ExternalLink className="h-4 w-4" />
+            View Full Referral Details
+          </Link>
+        </CardFooter>
       </Card>
-    </Link>;
+    );
 };
 export default ReferralCard;
