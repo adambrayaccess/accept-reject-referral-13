@@ -57,15 +57,48 @@ const handler = async (req: Request): Promise<Response> => {
         created_at: new_record.created_at
       };
     } else if (action === 'UPDATE') {
+      // Skip updates that happen within 5 seconds of creation (likely automatic system updates)
+      const createdAt = new Date(new_record.created_at);
+      const updatedAt = new Date(new_record.updated_at);
+      const timeDifference = updatedAt.getTime() - createdAt.getTime();
+      
+      if (timeDifference < 5000) {
+        console.log('Skipping notification for recent update after creation');
+        return new Response(
+          JSON.stringify({ success: true, skipped: true, reason: 'Recent update after creation' }),
+          {
+            status: 200,
+            headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+          }
+        );
+      }
+      
+      // Only notify for meaningful changes
+      const hasStatusChange = old_record.status !== new_record.status;
+      const hasPriorityChange = old_record.priority !== new_record.priority;
+      const hasSpecialtyChange = old_record.specialty !== new_record.specialty;
+      const hasTriageStatusChange = old_record.triage_status !== new_record.triage_status;
+      
+      if (!hasStatusChange && !hasPriorityChange && !hasSpecialtyChange && !hasTriageStatusChange) {
+        console.log('Skipping notification for minor update');
+        return new Response(
+          JSON.stringify({ success: true, skipped: true, reason: 'No meaningful changes' }),
+          {
+            status: 200,
+            headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+          }
+        );
+      }
+
       // Determine what changed
       let changeDescription = 'has been updated';
-      if (old_record.status !== new_record.status) {
+      if (hasStatusChange) {
         changeDescription = `status changed from ${old_record.status} to ${new_record.status}`;
-      } else if (old_record.priority !== new_record.priority) {
+      } else if (hasPriorityChange) {
         changeDescription = `priority changed from ${old_record.priority} to ${new_record.priority}`;
-      } else if (old_record.specialty !== new_record.specialty) {
+      } else if (hasSpecialtyChange) {
         changeDescription = `specialty changed to ${new_record.specialty}`;
-      } else if (old_record.triage_status !== new_record.triage_status) {
+      } else if (hasTriageStatusChange) {
         changeDescription = `triage status updated to ${new_record.triage_status || 'none'}`;
       }
 
