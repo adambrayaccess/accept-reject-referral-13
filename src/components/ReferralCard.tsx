@@ -10,11 +10,9 @@ import ReferralSourceBadge from '@/components/dashboard/ReferralSourceBadge';
 import PinButton from '@/components/ui/pin-button';
 import { usePinning } from '@/hooks/usePinning';
 import SubReferralIndicator from '@/components/cohort/SubReferralIndicator';
-
 interface ReferralCardProps {
   referral: Referral;
 }
-
 
 // Helper functions for status display
 const getStatusText = (referral: Referral) => {
@@ -32,7 +30,6 @@ const getStatusText = (referral: Referral) => {
         return referral.triageStatus;
     }
   }
-
   switch (referral.status) {
     case 'new':
       return 'New';
@@ -44,7 +41,6 @@ const getStatusText = (referral: Referral) => {
       return referral.status.charAt(0).toUpperCase() + referral.status.slice(1);
   }
 };
-
 const getDotColor = (referral: Referral) => {
   if (referral.status === 'accepted' && referral.triageStatus) {
     switch (referral.triageStatus) {
@@ -60,7 +56,6 @@ const getDotColor = (referral: Referral) => {
         return 'text-gray-500';
     }
   }
-
   switch (referral.status) {
     case 'new':
       return 'text-blue-600';
@@ -72,15 +67,17 @@ const getDotColor = (referral: Referral) => {
       return 'text-gray-500';
   }
 };
-
-const ReferralCard = ({ referral }: ReferralCardProps) => {
+const ReferralCard = ({
+  referral
+}: ReferralCardProps) => {
   const formattedDate = format(new Date(referral.created), 'dd MMM yyyy');
   const formattedTime = format(new Date(referral.created), 'HH:mm');
   const patientAge = differenceInYears(new Date(), new Date(referral.patient.birthDate));
-  const { isPinned, togglePin } = usePinning();
-
-  return (
-    <Link to={`/referral/${referral.id}`}>
+  const {
+    isPinned,
+    togglePin
+  } = usePinning();
+  return <Link to={`/referral/${referral.id}`}>
       <Card className="hover:border-primary hover:shadow-md transition-all cursor-pointer h-full">
         <CardHeader className="pb-3">
           <div className="flex justify-between items-start mb-2">
@@ -95,16 +92,9 @@ const ReferralCard = ({ referral }: ReferralCardProps) => {
               </div>
             </div>
             <div className="flex items-center gap-2">
-              <PinButton
-                isPinned={isPinned(referral.id)}
-                onTogglePin={() => togglePin(referral.id)}
-                size="sm"
-                variant="ghost"
-              />
+              <PinButton isPinned={isPinned(referral.id)} onTogglePin={() => togglePin(referral.id)} size="sm" variant="ghost" />
               <div className="flex items-center gap-1">
-                <CircleDot 
-                  className={`h-3 w-3 ${getDotColor(referral)} fill-current`}
-                />
+                <CircleDot className={`h-3 w-3 ${getDotColor(referral)} fill-current`} />
                 <span className="text-xs font-bold text-muted-foreground">
                   {getStatusText(referral).toUpperCase()}
                 </span>
@@ -166,25 +156,13 @@ const ReferralCard = ({ referral }: ReferralCardProps) => {
             </div>
           </div>
 
-          <div className="flex items-center justify-between mt-3">
-            <div className="flex items-center gap-2">
-              <ReferralTypeBadge referral={referral} size="sm" />
-              {referral.attachments.length > 0 && (
-                <Badge variant="secondary" className="flex items-center gap-1 text-xs">
-                  <FileText className="h-3 w-3" />
-                  <span>{referral.attachments.length}</span>
-                </Badge>
-              )}
-            </div>
-          </div>
+          
           
           <div className="mt-2">
             <SubReferralIndicator referral={referral} variant="compact" />
           </div>
         </CardContent>
       </Card>
-    </Link>
-  );
+    </Link>;
 };
-
 export default ReferralCard;
