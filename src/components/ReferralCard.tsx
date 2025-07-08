@@ -9,6 +9,7 @@ import ReferralTypeBadge from '@/components/dashboard/ReferralTypeBadge';
 import ReferralStatusBadge from '@/components/dashboard/ReferralStatusBadge';
 import PinButton from '@/components/ui/pin-button';
 import { usePinning } from '@/hooks/usePinning';
+import SubReferralIndicator from '@/components/cohort/SubReferralIndicator';
 
 interface ReferralCardProps {
   referral: Referral;
@@ -70,6 +71,10 @@ const ReferralCard = ({ referral }: ReferralCardProps) => {
                   <span>{referral.attachments.length}</span>
                 </Badge>
               )}
+            </div>
+            
+            <div className="mt-2">
+              <SubReferralIndicator referral={referral} variant="compact" />
             </div>
           </div>
         </CardContent>

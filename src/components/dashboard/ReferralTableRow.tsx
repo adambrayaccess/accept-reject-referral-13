@@ -12,6 +12,7 @@ import ReferralSourceBadge from './ReferralSourceBadge';
 import ReferralTypeBadge from './ReferralTypeBadge';
 import PinButton from '@/components/ui/pin-button';
 import { usePinning } from '@/hooks/usePinning';
+import SubReferralIndicator from '@/components/cohort/SubReferralIndicator';
 
 const getStatusText = (referral: Referral) => {
   if (referral.status === 'accepted' && referral.triageStatus) {
@@ -189,7 +190,10 @@ const ReferralTableRow = ({
             <ReferralSourceBadge referral={referral} />
           </TableCell>
           <TableCell className="p-2">
-            <ReferralTypeBadge referral={referral} />
+            <div className="space-y-1">
+              <ReferralTypeBadge referral={referral} />
+              <SubReferralIndicator referral={referral} variant="compact" />
+            </div>
           </TableCell>
           <TableCell className="p-2">
             <div className="flex items-start gap-0.5">
