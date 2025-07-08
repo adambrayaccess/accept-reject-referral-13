@@ -1,16 +1,65 @@
 
+import { useState, useEffect } from 'react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/components/ui/hover-card';
-import { LayoutList, Plus } from 'lucide-react';
+import { LayoutList, Plus, ExternalLink } from 'lucide-react';
 import { Referral } from '@/types/referral';
+import { supabase } from '@/integrations/supabase/client';
+import { useNavigate } from 'react-router-dom';
 
 interface SubReferralIndicatorProps {
   referral: Referral;
   variant?: 'default' | 'compact';
 }
 
+interface ParentReferralInfo {
+  id: string;
+  specialty: string;
+  service?: string;
+  triage_status?: string;
+  status: string;
+}
+
 const SubReferralIndicator = ({ referral, variant = 'default' }: SubReferralIndicatorProps) => {
+  const [parentReferral, setParentReferral] = useState<ParentReferralInfo | null>(null);
+  const [isLoadingParent, setIsLoadingParent] = useState(false);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchParentReferral = async () => {
+      if (!referral.parentReferralId) return;
+      
+      setIsLoadingParent(true);
+      try {
+        const { data, error } = await supabase
+          .from('referrals')
+          .select('id, specialty, service, triage_status, status')
+          .eq('id', referral.parentReferralId)
+          .single();
+          
+        if (error) {
+          console.error('Error fetching parent referral:', error);
+        } else {
+          setParentReferral(data);
+        }
+      } catch (error) {
+        console.error('Error fetching parent referral:', error);
+      } finally {
+        setIsLoadingParent(false);
+      }
+    };
+
+    if (referral.isSubReferral && referral.parentReferralId) {
+      fetchParentReferral();
+    }
+  }, [referral.parentReferralId, referral.isSubReferral]);
+
+  const handleParentClick = () => {
+    if (referral.parentReferralId) {
+      navigate(`/referral/${referral.parentReferralId}`);
+    }
+  };
   const getSubReferralInfo = () => {
     const hasSubReferrals = referral.childReferralIds && referral.childReferralIds.length > 0;
     const subReferralCount = referral.childReferralIds?.length || 0;
@@ -38,16 +87,47 @@ const SubReferralIndicator = ({ referral, variant = 'default' }: SubReferralIndi
             </div>
           </HoverCardTrigger>
           <HoverCardContent className="w-80 p-4" side="top">
-            <div className="space-y-2">
+            <div className="space-y-3">
               <h4 className="text-sm font-semibold text-foreground">Sub-Referral Details</h4>
               <div className="text-sm text-muted-foreground">
                 This is a sub-referral of another referral in the system.
               </div>
               {subReferralInfo.parentReferralId && (
-                <div className="text-sm">
-                  <span className="font-medium">Parent Referral ID:</span>
-                  <br />
-                  <span className="text-muted-foreground">{subReferralInfo.parentReferralId}</span>
+                <div className="space-y-2 p-3 bg-muted/20 rounded-md">
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm font-medium">Parent Referral:</span>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={handleParentClick}
+                      className="h-auto p-1 text-primary hover:text-primary/80"
+                    >
+                      <ExternalLink className="h-3 w-3" />
+                    </Button>
+                  </div>
+                  {isLoadingParent ? (
+                    <div className="text-xs text-muted-foreground">Loading...</div>
+                  ) : parentReferral ? (
+                    <div className="space-y-1 text-xs">
+                      <div>
+                        <span className="font-medium">Service:</span> {parentReferral.service || parentReferral.specialty}
+                      </div>
+                      <div>
+                        <span className="font-medium">Triage Status:</span> {
+                          parentReferral.triage_status 
+                            ? parentReferral.triage_status.charAt(0).toUpperCase() + parentReferral.triage_status.slice(1).replace('-', ' ')
+                            : parentReferral.status.charAt(0).toUpperCase() + parentReferral.status.slice(1)
+                        }
+                      </div>
+                      <div className="text-muted-foreground pt-1">
+                        ID: {subReferralInfo.parentReferralId}
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="text-xs text-muted-foreground">
+                      Unable to load parent referral details
+                    </div>
+                  )}
                 </div>
               )}
             </div>
@@ -103,8 +183,25 @@ const SubReferralIndicator = ({ referral, variant = 'default' }: SubReferralIndi
             Sub-referral
           </Badge>
           {subReferralInfo.parentReferralId && (
-            <div className="text-xs text-muted-foreground">
-              Parent: {subReferralInfo.parentReferralId}
+            <div className="flex items-center justify-between">
+              <div className="text-xs text-muted-foreground">
+                Parent: {parentReferral ? 
+                  `${parentReferral.service || parentReferral.specialty} - ${
+                    parentReferral.triage_status 
+                      ? parentReferral.triage_status.charAt(0).toUpperCase() + parentReferral.triage_status.slice(1).replace('-', ' ')
+                      : parentReferral.status.charAt(0).toUpperCase() + parentReferral.status.slice(1)
+                  }` 
+                  : subReferralInfo.parentReferralId
+                }
+              </div>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={handleParentClick}
+                className="h-auto p-1 text-primary hover:text-primary/80"
+              >
+                <ExternalLink className="h-3 w-3" />
+              </Button>
             </div>
           )}
         </div>
