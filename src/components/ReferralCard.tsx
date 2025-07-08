@@ -145,23 +145,23 @@ const ReferralCard = ({ referral }: ReferralCardProps) => {
         </CardHeader>
 
         <CardContent className="pt-0 pb-2">
-          <div className="grid grid-cols-2 gap-x-4 gap-y-2 text-sm">
-            <div className="flex items-center gap-1">
-              <span className="text-muted-foreground text-xs">NHS:</span>
-              <span className="font-mono text-xs">{referral.patient.nhsNumber}</span>
+          <div className="grid grid-cols-2 gap-x-4 gap-y-3">
+            <div>
+              <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">NHS</div>
+              <div className="text-sm font-medium font-mono">{referral.patient.nhsNumber}</div>
             </div>
-            <div className="flex items-center gap-1">
-              <span className="text-muted-foreground text-xs">UBRN:</span>
-              <span className="font-mono text-xs truncate" title={referral.ubrn}>{referral.ubrn}</span>
+            <div>
+              <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">UBRN</div>
+              <div className="text-sm font-medium font-mono truncate" title={referral.ubrn}>{referral.ubrn}</div>
             </div>
             
-            <div className="flex items-center gap-1">
-              <Phone className="h-3 w-3 text-muted-foreground" />
-              <span className="text-xs">{referral.patient.phone || 'N/A'}</span>
+            <div>
+              <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">Phone</div>
+              <div className="text-sm font-medium">{referral.patient.phone || 'N/A'}</div>
             </div>
-            <div className="flex items-center gap-1">
-              <Calendar className="h-3 w-3 text-muted-foreground" />
-              <span className="text-xs">{formattedDate} at {formattedTime}</span>
+            <div>
+              <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">Date</div>
+              <div className="text-sm font-medium">{formattedDate} at {formattedTime}</div>
             </div>
           </div>
 
