@@ -89,7 +89,7 @@ const ReferralCard = ({ referral }: ReferralCardProps) => {
               <div className="flex items-center gap-2 text-sm text-muted-foreground">
                 <span><span className="font-bold">Gender</span> {referral.patient.gender}</span>
                 <span>•</span>
-                <span><span className="font-bold">Date of Birth</span> ({patientAge} years)</span> 
+                <span><span className="font-bold">Date of Birth</span> {format(new Date(referral.patient.birthDate), 'dd/MM/yyyy')} ({patientAge} years)</span> 
                 <span>•</span>
                 <span><span className="font-bold">No.</span> {referral.patient.nhsNumber}</span>
               </div>
