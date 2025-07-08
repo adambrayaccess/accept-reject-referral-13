@@ -47,7 +47,7 @@ const ReferralSourceBadge = ({ referral }: ReferralSourceBadgeProps) => {
 
   return (
     <div className="space-y-1">
-      <div className={`text-sm font-medium ${colorClass}`}>
+      <div className="text-sm font-medium text-black">
         {sourceText}
       </div>
       <div className="text-xs text-muted-foreground">
