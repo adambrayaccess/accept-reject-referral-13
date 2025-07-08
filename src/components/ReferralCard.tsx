@@ -200,6 +200,7 @@ const ReferralCard = ({
                             <div className="text-sm font-medium font-mono">{referral.parentReferralId || 'N/A'}</div>
                           </div>
                           <div>
+                            <div className="h-4" />
                             <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">Specialty</div>
                             <div className="text-sm font-medium">Cardiology</div>
                           </div>
