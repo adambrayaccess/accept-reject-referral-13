@@ -89,7 +89,7 @@ const ReferralCard = ({ referral }: ReferralCardProps) => {
               <div className="flex items-center gap-2 text-sm text-muted-foreground">
                 <span><span className="font-bold">Gender</span> {referral.patient.gender}</span>
                 <span>•</span>
-                <span><span className="font-bold">Date of Birth</span> ({new Date().getFullYear() - new Date(patient.birth_date).getFullYear()} years)</span> 
+                <span><span className="font-bold">Date of Birth</span> ({new Date().getFullYear() - new Date(patients.birth_date).getFullYear()} years)</span> 
                 <span>•</span>
                 <span><span className="font-bold">No.</span> {referral.patient.nhsNumber}</span>
               </div>
