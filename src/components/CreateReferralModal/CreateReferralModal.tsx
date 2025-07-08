@@ -15,7 +15,7 @@ interface CreateReferralModalProps {
 const CreateReferralModal = ({ isOpen, onClose, onSubmit }: CreateReferralModalProps) => {
   const [isCreating, setIsCreating] = useState(false);
   const [isCreatingPatient, setIsCreatingPatient] = useState(false);
-  const [formSubmitHandler, setFormSubmitHandler] = useState<((e?: React.FormEvent) => void) | null>(null);
+  const [formSubmitHandler, setFormSubmitHandler] = useState<(() => void) | null>(null);
 
   return (
     <Sheet open={isOpen} onOpenChange={onClose}>
@@ -37,7 +37,7 @@ const CreateReferralModal = ({ isOpen, onClose, onSubmit }: CreateReferralModalP
           
           <CreateReferralFooter
             onCancel={onClose}
-            onSubmit={formSubmitHandler || (() => {})}
+            onSubmit={() => formSubmitHandler?.()}
             isCreating={isCreating}
             isCreatingPatient={isCreatingPatient}
           />

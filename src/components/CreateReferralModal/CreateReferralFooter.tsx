@@ -3,7 +3,7 @@ import { Loader2 } from 'lucide-react';
 
 interface CreateReferralFooterProps {
   onCancel: () => void;
-  onSubmit: (e: React.FormEvent) => void;
+  onSubmit: () => void;
   isCreating: boolean;
   isCreatingPatient: boolean;
 }

@@ -16,7 +16,7 @@ interface CreateReferralFormProps {
   setIsCreating: (creating: boolean) => void;
   isCreatingPatient: boolean;
   setIsCreatingPatient: (creating: boolean) => void;
-  onFormSubmitReady: (handler: (e?: React.FormEvent) => void) => void;
+  onFormSubmitReady: (handler: () => void) => void;
 }
 
 const CreateReferralForm = ({
@@ -345,7 +345,7 @@ const CreateReferralForm = ({
 
   // Pass handleSubmit to parent component
   useEffect(() => {
-    onFormSubmitReady(handleSubmit);
+    onFormSubmitReady(() => handleSubmit());
   }, [onFormSubmitReady, handleSubmit]);
 
   return (
