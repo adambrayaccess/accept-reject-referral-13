@@ -148,7 +148,7 @@ const ReferralCard = ({ referral }: ReferralCardProps) => {
           <div className="grid grid-cols-2 gap-x-4 gap-y-3">
             <div>
               <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">Referral Type</div>
-              <ReferralTypeBadge referral={referral} size="sm" />
+              <div className="text-sm font-medium">{referral.referralType || 'External Referral'}</div>
             </div>
             <div>
               <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">UBRN</div>
