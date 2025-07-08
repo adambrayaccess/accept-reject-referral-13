@@ -55,7 +55,8 @@ const SubReferralIndicator = ({ referral, variant = 'default' }: SubReferralIndi
     }
   }, [referral.parentReferralId, referral.isSubReferral]);
 
-  const handleParentClick = () => {
+  const handleParentClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
     if (referral.parentReferralId) {
       navigate(`/referral/${referral.parentReferralId}`);
     }
@@ -99,8 +100,9 @@ const SubReferralIndicator = ({ referral, variant = 'default' }: SubReferralIndi
                     <Button
                       variant="ghost"
                       size="sm"
-                      onClick={handleParentClick}
+                      onClick={(e) => handleParentClick(e)}
                       className="h-auto p-1 text-primary hover:text-primary/80"
+                      title="Open parent referral"
                     >
                       <ExternalLink className="h-3 w-3" />
                     </Button>
@@ -197,8 +199,9 @@ const SubReferralIndicator = ({ referral, variant = 'default' }: SubReferralIndi
               <Button
                 variant="ghost"
                 size="sm"
-                onClick={handleParentClick}
+                onClick={(e) => handleParentClick(e)}
                 className="h-auto p-1 text-primary hover:text-primary/80"
+                title="Open parent referral"
               >
                 <ExternalLink className="h-3 w-3" />
               </Button>
