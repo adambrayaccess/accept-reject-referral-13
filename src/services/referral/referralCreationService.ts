@@ -80,7 +80,7 @@ export class ReferralCreationService {
           diagnosis: data.diagnosis,
           medications: data.medications?.join(','),
           allergies_info: data.allergies?.join(','),
-          notes: data.notes,
+          notes: data.notes ? `${data.notes}\n\nCreated using Lovable` : 'Created using Lovable',
           status: 'new',
           ai_generated: data.aiGenerated || false,
           confidence: data.confidence,
