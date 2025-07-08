@@ -1,7 +1,7 @@
 import { Referral } from '@/types/referral';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Calendar, Clock, FileText, Phone, User, Building, CircleDot, ExternalLink } from 'lucide-react';
+import { Calendar, Clock, FileText, Phone, User, Building, CircleDot, ExternalLink, LayoutList } from 'lucide-react';
 import { format, differenceInYears } from 'date-fns';
 import { Link } from 'react-router-dom';
 import ReferralPriorityBadge from '@/components/dashboard/ReferralPriorityBadge';
@@ -183,7 +183,10 @@ const ReferralCard = ({
                     className="px-4 py-2 text-sm font-bold text-muted-foreground hover:no-underline uppercase tracking-wide"
                     onClick={(e) => e.stopPropagation()}
                   >
-                    {referral.isSubReferral ? 'Parent Referral' : `Sub-Referrals (${referral.childReferralIds?.length || 0})`}
+                    <div className="flex items-center gap-2">
+                      <LayoutList className="h-4 w-4" />
+                      {referral.isSubReferral ? 'Parent Referral' : `Sub-Referrals (${referral.childReferralIds?.length || 0})`}
+                    </div>
                   </AccordionTrigger>
                   <AccordionContent className="px-4 pb-4 pt-0" onClick={(e) => e.stopPropagation()}>
                     {referral.isSubReferral ? (
