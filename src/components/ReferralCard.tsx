@@ -89,11 +89,9 @@ const ReferralCard = ({ referral }: ReferralCardProps) => {
               <div className="flex items-center gap-2 text-sm text-muted-foreground">
                 <span>Gender {referral.patient.gender}</span>
                 <span>•</span>
-                <span>NHS No. {referral.patient.nhsNumber}</span>
-                <span>•</span>
-                <span>UBRN {referral.ubrn}>{referral.ubrn}</span>
-                <span>•</span>
                 <span>Age {patientAge}</span>
+                <span>•</span>
+                <span>NHS No. {referral.patient.nhsNumber}</span>
               </div>
             </div>
             <div className="flex items-center gap-2">
