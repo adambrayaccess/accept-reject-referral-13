@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useToast } from '@/hooks/use-toast';
 import { fetchPractitionerById } from '@/services/practitionerService';
 import { createPatient } from '@/services/patientService';
@@ -184,7 +184,7 @@ const CreateReferralForm = ({
     }
   };
 
-  const handleSubmit = async (e?: React.FormEvent) => {
+  const handleSubmit = useCallback(async (e?: React.FormEvent) => {
     e?.preventDefault();
     
     if (!referralId || !specialty || !practitionerId || !patientName || !birthDate || !nhsNumber || !reason) {
@@ -310,7 +310,7 @@ const CreateReferralForm = ({
       setIsCreating(false);
       setIsCreatingPatient(false);
     }
-  };
+  }, [referralId, specialty, practitionerId, patientName, birthDate, nhsNumber, reason, selectedPatient, gender, address, phone, medications, allergies, notes, documents, priority, history, diagnosis, referralType, administrativeCategory, overseasStatus, patientAreaCareSetting, onSubmit, onClose, toast]);
 
   const resetForm = () => {
     setSelectedPatient(undefined);
