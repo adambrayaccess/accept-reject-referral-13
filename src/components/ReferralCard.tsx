@@ -169,8 +169,9 @@ const ReferralCard = ({
               to={`/referral/${referral.id}`}
               className="inline-flex items-center gap-2 text-sm text-primary hover:underline font-medium"
             >
-              <ExternalLink className="h-4 w-4" />
+              <FileText className="h-4 w-4" />
               View Full Referral Details
+              <ExternalLink className="h-4 w-4" />
             </Link>
           </div>
           
