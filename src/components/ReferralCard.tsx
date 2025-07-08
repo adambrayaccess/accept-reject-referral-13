@@ -78,7 +78,7 @@ const ReferralCard = ({
     togglePin
   } = usePinning();
   return (
-    <Card className="hover:border-primary hover:shadow-md transition-all h-full">
+    <Card className="hover:border-primary hover:shadow-md transition-all self-start">
         <CardHeader className="pb-3">
           <div className="flex justify-between items-start mb-2">
             <div className="flex-1">
