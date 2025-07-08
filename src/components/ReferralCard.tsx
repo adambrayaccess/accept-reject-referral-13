@@ -163,6 +163,16 @@ const ReferralCard = ({
             </div>
           </div>
 
+          {/* View Full Referral Details */}
+          <div className="mt-4 pt-3 border-t">
+            <Link 
+              to={`/referral/${referral.id}`}
+              className="inline-flex items-center gap-2 text-sm text-primary hover:underline font-medium"
+            >
+              <ExternalLink className="h-4 w-4" />
+              View Full Referral Details
+            </Link>
+          </div>
           
           {/* Sub-Referral Accordion */}
           {(referral.isSubReferral || (referral.childReferralIds && referral.childReferralIds.length > 0)) && (
@@ -231,16 +241,6 @@ const ReferralCard = ({
             </div>
           )}
         </CardContent>
-        
-        <CardFooter className="pt-2 pb-3 px-6">
-          <Link 
-            to={`/referral/${referral.id}`}
-            className="inline-flex items-center gap-2 text-sm text-primary hover:underline font-medium"
-          >
-            <ExternalLink className="h-4 w-4" />
-            View Full Referral Details
-          </Link>
-        </CardFooter>
       </Card>
     );
 };
