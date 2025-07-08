@@ -113,23 +113,24 @@ const ReferralCard = ({ referral }: ReferralCardProps) => {
           </div>
           
           {/* Emphasized Key Fields */}
-          <div className="grid grid-cols-2 gap-3 p-3 bg-muted/20 rounded-md">
-            <div>
-              <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">Specialty</div>
-              <div className="font-bold text-sm text-primary">{referral.specialty}</div>
+          <div className="grid grid-cols-1 gap-3 p-3 bg-muted/20 rounded-md">
+            <div className="grid grid-cols-2 gap-3">
+              <div>
+                <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">Specialty</div>
+                <div className="font-bold text-sm text-primary">{referral.specialty}</div>
+              </div>
+              <div>
+                <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">Priority</div>
+                <div><ReferralPriorityBadge priority={referral.priority} size="sm" /></div>
+              </div>
             </div>
-            <div>
-              <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">Priority</div>
-              <div><ReferralPriorityBadge priority={referral.priority} size="sm" /></div>
-            </div>
-          </div>
-
-          <div className="grid grid-cols-1 gap-2 mt-3">
             <div>
               <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wide mb-1">Reason for Referral</div>
               <div className="text-sm font-medium text-foreground line-clamp-2">{referral.clinicalInfo.reason}</div>
             </div>
-            
+          </div>
+
+          <div className="grid grid-cols-1 gap-2 mt-3">
             <div className="grid grid-cols-2 gap-3">
               <div>
                 <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">Referrer</div>
