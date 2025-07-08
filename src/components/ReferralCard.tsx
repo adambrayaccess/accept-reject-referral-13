@@ -119,7 +119,7 @@ const ReferralCard = ({
               <div className="font-bold text-sm text-primary">{referral.clinicalInfo.reason}</div>
             </div>
           </div>
-
+            <div className="h-4" />
           <div className="grid grid-cols-1 gap-2 mt-3">
             <div className="grid grid-cols-2 gap-3">
               <div>
