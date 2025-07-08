@@ -116,7 +116,7 @@ const ReferralCard = ({
             </div>
             <div>
               <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wide mb-1">Reason for Referral</div>
-              <div className="text-sm font-medium text-foreground line-clamp-2">{referral.clinicalInfo.reason}</div>
+              <div className="font-bold text-sm text-primary">{referral.clinicalInfo.reason}</div>
             </div>
           </div>
 
