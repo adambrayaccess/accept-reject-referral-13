@@ -81,11 +81,11 @@ const SubReferralIndicator = ({ referral, variant = 'default' }: SubReferralIndi
     if (subReferralInfo.isSubReferral) {
       return (
         <HoverCard>
-          <HoverCardTrigger asChild>
-            <div className="flex items-center gap-1 cursor-pointer">
-              <LayoutList className="h-3 w-3 text-blue-500" />
-              <span className="text-xs text-blue-600">Sub-referral</span>
-            </div>
+           <HoverCardTrigger asChild>
+             <div className="flex items-center gap-1 cursor-pointer">
+               <LayoutList className="h-3 w-3 font-bold" style={{ color: '#79264D' }} />
+               <span className="text-xs font-bold" style={{ color: '#79264D' }}>Sub-referral</span>
+             </div>
           </HoverCardTrigger>
           <HoverCardContent className="w-80 p-4" side="top">
             <div className="space-y-3">
@@ -141,12 +141,12 @@ const SubReferralIndicator = ({ referral, variant = 'default' }: SubReferralIndi
     if (subReferralInfo.hasSubReferrals) {
       return (
         <HoverCard>
-          <HoverCardTrigger asChild>
-            <div className="flex items-center gap-1 cursor-pointer">
-              <LayoutList className="h-3 w-3 text-green-500" />
-              <span className="text-xs text-green-600">
-                {subReferralInfo.subReferralCount} sub-referral{subReferralInfo.subReferralCount > 1 ? 's' : ''}
-              </span>
+           <HoverCardTrigger asChild>
+             <div className="flex items-center gap-1 cursor-pointer">
+               <LayoutList className="h-3 w-3 font-bold" style={{ color: '#79264D' }} />
+               <span className="text-xs font-bold" style={{ color: '#79264D' }}>
+                 {subReferralInfo.subReferralCount} sub-referral{subReferralInfo.subReferralCount > 1 ? 's' : ''}
+               </span>
             </div>
           </HoverCardTrigger>
           <HoverCardContent className="w-80 p-4" side="top">
@@ -179,14 +179,14 @@ const SubReferralIndicator = ({ referral, variant = 'default' }: SubReferralIndi
   return (
     <div className="space-y-1">
       {subReferralInfo.isSubReferral && (
-        <div className="space-y-1">
-          <Badge variant="outline" className="text-xs bg-blue-50 border-blue-200">
-            <LayoutList className="h-3 w-3 mr-1 text-blue-500" />
-            Sub-referral
+         <div className="space-y-1">
+           <Badge variant="outline" className="text-xs font-bold border-2" style={{ backgroundColor: '#79264D20', borderColor: '#79264D', color: '#79264D' }}>
+             <LayoutList className="h-3 w-3 mr-1 font-bold" style={{ color: '#79264D' }} />
+             Sub-referral
           </Badge>
           {subReferralInfo.parentReferralId && (
             <div className="flex items-center justify-between">
-              <div className="text-xs text-muted-foreground">
+              <div className="text-xs font-bold" style={{ color: '#79264D' }}>
                 Parent: {parentReferral ? 
                   `${parentReferral.service || parentReferral.specialty} - ${
                     parentReferral.triage_status 
@@ -211,10 +211,10 @@ const SubReferralIndicator = ({ referral, variant = 'default' }: SubReferralIndi
       )}
       
       {subReferralInfo.hasSubReferrals && (
-        <div className="space-y-1">
-          <Badge variant="outline" className="text-xs bg-green-50 border-green-200">
-            <LayoutList className="h-3 w-3 mr-1 text-green-500" />
-            {subReferralInfo.subReferralCount} Sub-referral{subReferralInfo.subReferralCount > 1 ? 's' : ''}
+         <div className="space-y-1">
+           <Badge variant="outline" className="text-xs font-bold border-2" style={{ backgroundColor: '#79264D20', borderColor: '#79264D', color: '#79264D' }}>
+             <LayoutList className="h-3 w-3 mr-1 font-bold" style={{ color: '#79264D' }} />
+             {subReferralInfo.subReferralCount} Sub-referral{subReferralInfo.subReferralCount > 1 ? 's' : ''}
           </Badge>
           <div className="text-xs text-muted-foreground">
             IDs: {referral.childReferralIds?.join(', ')}
