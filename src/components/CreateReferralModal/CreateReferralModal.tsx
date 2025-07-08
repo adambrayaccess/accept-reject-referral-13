@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import { Sheet, SheetContent } from '@/components/ui/sheet';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Referral } from '@/types/referral';
@@ -17,6 +17,10 @@ const CreateReferralModal = ({ isOpen, onClose, onSubmit }: CreateReferralModalP
   const [isCreatingPatient, setIsCreatingPatient] = useState(false);
   const [formSubmitHandler, setFormSubmitHandler] = useState<(() => void) | null>(null);
 
+  const handleFormSubmitReady = useCallback((handler: () => void) => {
+    setFormSubmitHandler(() => handler);
+  }, []);
+
   return (
     <Sheet open={isOpen} onOpenChange={onClose}>
       <SheetContent className="w-full sm:max-w-3xl lg:max-w-4xl">
@@ -31,7 +35,7 @@ const CreateReferralModal = ({ isOpen, onClose, onSubmit }: CreateReferralModalP
               setIsCreating={setIsCreating}
               isCreatingPatient={isCreatingPatient}
               setIsCreatingPatient={setIsCreatingPatient}
-              onFormSubmitReady={setFormSubmitHandler}
+              onFormSubmitReady={handleFormSubmitReady}
             />
           </div>
           
