@@ -1,7 +1,7 @@
 import { Referral } from '@/types/referral';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Calendar, Clock, FileText, Phone, User, Building, CircleDot } from 'lucide-react';
+import { Calendar, Clock, FileText, Phone, User, Building, CircleDot, ExternalLink } from 'lucide-react';
 import { format, differenceInYears } from 'date-fns';
 import { Link } from 'react-router-dom';
 import ReferralPriorityBadge from '@/components/dashboard/ReferralPriorityBadge';
@@ -9,7 +9,7 @@ import ReferralTypeBadge from '@/components/dashboard/ReferralTypeBadge';
 import ReferralSourceBadge from '@/components/dashboard/ReferralSourceBadge';
 import PinButton from '@/components/ui/pin-button';
 import { usePinning } from '@/hooks/usePinning';
-import SubReferralIndicator from '@/components/cohort/SubReferralIndicator';
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 interface ReferralCardProps {
   referral: Referral;
 }
@@ -164,10 +164,61 @@ const ReferralCard = ({
           </div>
 
           
-          
-          <div className="mt-2">
-            <SubReferralIndicator referral={referral} variant="compact" />
-          </div>
+          {/* Sub-Referral Accordion */}
+          {(referral.isSubReferral || (referral.childReferralIds && referral.childReferralIds.length > 0)) && (
+            <div className="mt-3 -mx-4 -mb-2">
+              <Accordion type="single" collapsible className="w-full">
+                <AccordionItem value="sub-referrals" className="border-0 border-t">
+                  <AccordionTrigger className="px-4 py-2 text-sm font-medium text-muted-foreground hover:no-underline">
+                    {referral.isSubReferral ? 'Parent Referral' : `Sub-Referrals (${referral.childReferralIds?.length || 0})`}
+                  </AccordionTrigger>
+                  <AccordionContent className="px-4 pb-4 pt-0">
+                    {referral.isSubReferral ? (
+                      /* Sub-Referral: Show Parent Referral Details */
+                      <div className="space-y-2">
+                        <div className="flex items-center justify-between">
+                          <div>
+                            <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">Parent Referral ID</div>
+                            <div className="text-sm font-medium font-mono">{referral.parentReferralId || 'N/A'}</div>
+                          </div>
+                        </div>
+                        {referral.parentReferralId && (
+                          <Link 
+                            to={`/referral/${referral.parentReferralId}`}
+                            className="inline-flex items-center gap-1 text-xs text-primary hover:underline"
+                            onClick={(e) => e.stopPropagation()}
+                          >
+                            <ExternalLink className="h-3 w-3" />
+                            View Parent Referral
+                          </Link>
+                        )}
+                      </div>
+                    ) : (
+                      /* Parent Referral: Show Sub-Referrals */
+                      <div className="space-y-3">
+                        {referral.childReferralIds?.map((childId) => (
+                          <div key={childId} className="flex items-center justify-between p-2 bg-muted/50 rounded">
+                            <div>
+                              <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">Sub-Referral ID</div>
+                              <div className="text-sm font-medium font-mono">{childId}</div>
+                            </div>
+                            <Link 
+                              to={`/referral/${childId}`}
+                              className="inline-flex items-center gap-1 text-xs text-primary hover:underline"
+                              onClick={(e) => e.stopPropagation()}
+                            >
+                              <ExternalLink className="h-3 w-3" />
+                              View
+                            </Link>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </AccordionContent>
+                </AccordionItem>
+              </Accordion>
+            </div>
+          )}
         </CardContent>
       </Card>
     </Link>;
