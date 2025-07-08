@@ -194,6 +194,7 @@ const ReferralCard = ({
                       <div className="space-y-3">
                         <div className="grid grid-cols-2 gap-3">
                           <div>
+                            <div className="h-4" />
                             <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">Parent Referral ID</div>
                             <div className="text-sm font-medium font-mono">{referral.parentReferralId || 'N/A'}</div>
                           </div>
