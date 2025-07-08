@@ -169,10 +169,13 @@ const ReferralCard = ({
             <div className="mt-3 -mx-4 -mb-2" onClick={(e) => e.stopPropagation()}>
               <Accordion type="single" collapsible className="w-full">
                 <AccordionItem value="sub-referrals" className="border-0 border-t">
-                  <AccordionTrigger className="px-4 py-2 text-sm font-medium text-muted-foreground hover:no-underline">
+                  <AccordionTrigger 
+                    className="px-4 py-2 text-sm font-medium text-muted-foreground hover:no-underline"
+                    onClick={(e) => e.stopPropagation()}
+                  >
                     {referral.isSubReferral ? 'Parent Referral' : `Sub-Referrals (${referral.childReferralIds?.length || 0})`}
                   </AccordionTrigger>
-                  <AccordionContent className="px-4 pb-4 pt-0">
+                  <AccordionContent className="px-4 pb-4 pt-0" onClick={(e) => e.stopPropagation()}>
                     {referral.isSubReferral ? (
                       /* Sub-Referral: Show Parent Referral Details */
                       <div className="space-y-2">
