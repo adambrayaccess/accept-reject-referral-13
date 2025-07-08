@@ -40,7 +40,9 @@ export const fetchReferrals = async (filters?: {
         audit_log(*),
         collaboration_notes(*),
         appointments(*),
-        attachments(*)
+        attachments(*),
+        rtt_pathways(*),
+        care_pathways(*)
       `);
 
     // Apply filters
