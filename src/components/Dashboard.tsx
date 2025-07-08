@@ -1,6 +1,6 @@
 
 import { useState, useEffect } from 'react';
-import { useToast } from '@/hooks/use-toast';
+import { useNotificationService } from '@/services/notificationService';
 import { useNavigate } from 'react-router-dom';
 import { Referral } from '@/types/referral';
 import { useSpecialtyData } from '@/hooks/useSpecialtyData';
@@ -15,7 +15,7 @@ import DashboardTabs from './dashboard/DashboardTabs';
 
 const Dashboard = () => {
   const [view, setView] = useState<'card' | 'list'>('card');
-  const { toast } = useToast();
+  const { showSpecialtyFilterChange } = useNotificationService();
   const navigate = useNavigate();
   const [selectedSpecialties, setSelectedSpecialties] = useState<string[]>([]);
   const [isSpecialtiesLoaded, setIsSpecialtiesLoaded] = useState(false);
@@ -83,10 +83,7 @@ const Dashboard = () => {
     setSelectedSpecialties(newSelection);
     if (newSelection.length > 0) {
       localStorage.setItem('selectedSpecialties', JSON.stringify(newSelection));
-      toast({
-        title: "Specialties Updated",
-        description: `Now triaging for ${newSelection.length === 1 ? newSelection[0] : `${newSelection.length} specialties`}`,
-      });
+      showSpecialtyFilterChange(newSelection);
     } else {
       localStorage.removeItem('selectedSpecialties');
     }

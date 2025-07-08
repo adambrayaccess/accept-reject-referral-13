@@ -8,6 +8,7 @@ import ReferralBasicInfoForm from '../referral-form/ReferralBasicInfoForm';
 import ReferralFormTabs from '../referral-form/ReferralFormTabs';
 import { DocumentFile } from '../referral-form/ReferralDocumentsTab';
 import { ReferralCreationService, ReferralCreationData } from '@/services/referral/referralCreationService';
+import { useNotificationService } from '@/services/notificationService';
 
 interface CreateReferralFormProps {
   onSubmit: (referral: Partial<Referral>) => void;
@@ -65,7 +66,7 @@ const CreateReferralForm = ({
   // Documents
   const [documents, setDocuments] = useState<DocumentFile[]>([]);
 
-  const { toast } = useToast();
+  const { showError } = useNotificationService();
 
   // Auto-generate referral ID
   useEffect(() => {
@@ -95,10 +96,6 @@ const CreateReferralForm = ({
         setGpEmail(patient.gpDetails.email || '');
       }
       
-      toast({
-        title: "Patient Selected",
-        description: `${patient.name} has been selected and fields auto-filled.`,
-      });
     } else {
       // Clear all fields
       setPatientName('');
@@ -137,11 +134,10 @@ const CreateReferralForm = ({
 
   const handleCreateNewPatient = async () => {
     if (!patientName || !birthDate || !nhsNumber) {
-      toast({
-        title: "Missing Information",
-        description: "Please fill in patient name, date of birth, and NHS number to create a new patient.",
-        variant: "destructive",
-      });
+      showError(
+        "Missing Information",
+        "Please fill in patient name, date of birth, and NHS number to create a new patient."
+      );
       return;
     }
 
@@ -161,24 +157,18 @@ const CreateReferralForm = ({
       
       if (createdPatient) {
         setSelectedPatient(createdPatient);
-        toast({
-          title: "Patient Created",
-          description: `${createdPatient.name} has been created and selected.`,
-        });
       } else {
-        toast({
-          title: "Creation Failed",
-          description: "Failed to create patient. Please try again.",
-          variant: "destructive",
-        });
+        showError(
+          "Creation Failed",
+          "Failed to create patient. Please try again."
+        );
       }
     } catch (error) {
       console.error('Error creating patient:', error);
-      toast({
-        title: "Creation Error",
-        description: "An error occurred while creating the patient.",
-        variant: "destructive",
-      });
+      showError(
+        "Creation Error",
+        "An error occurred while creating the patient."
+      );
     } finally {
       setIsCreatingPatient(false);
     }
@@ -188,22 +178,20 @@ const CreateReferralForm = ({
     e?.preventDefault();
     
     if (!referralId || !specialty || !practitionerId || !patientName || !birthDate || !nhsNumber || !reason) {
-      toast({
-        title: "Validation Error",
-        description: "Please fill in all required fields",
-        variant: "destructive",
-      });
+      showError(
+        "Validation Error",
+        "Please fill in all required fields"
+      );
       return;
     }
 
     const practitioner = await fetchPractitionerById(practitionerId);
     
     if (!practitioner) {
-      toast({
-        title: "Error",
-        description: "Selected practitioner not found",
-        variant: "destructive",
-      });
+      showError(
+        "Error",
+        "Selected practitioner not found"
+      );
       return;
     }
 
@@ -229,21 +217,19 @@ const CreateReferralForm = ({
         setIsCreatingPatient(false);
         
         if (!patientToUse) {
-          toast({
-            title: "Patient Creation Failed",
-            description: "Could not create patient record. Please try again.",
-            variant: "destructive",
-          });
+          showError(
+            "Patient Creation Failed",
+            "Could not create patient record. Please try again."
+          );
           return;
         }
       }
 
       if (!patientToUse) {
-        toast({
-          title: "Patient Required",
-          description: "Please select an existing patient or provide patient details to create a new one.",
-          variant: "destructive",
-        });
+        showError(
+          "Patient Required",
+          "Please select an existing patient or provide patient details to create a new one."
+        );
         return;
       }
 
@@ -284,33 +270,27 @@ const CreateReferralForm = ({
       const result = await ReferralCreationService.createReferral(creationData);
 
       if (result.success && result.referral) {
-        toast({
-          title: "Referral Created",
-          description: `Referral ${result.referral.ubrn} has been created successfully.`,
-        });
         
         onSubmit(result.referral);
         onClose();
         resetForm();
       } else {
-        toast({
-          title: "Creation Failed",
-          description: result.error || "Failed to create referral",
-          variant: "destructive",
-        });
+        showError(
+          "Creation Failed",
+          result.error || "Failed to create referral"
+        );
       }
     } catch (error) {
       console.error('Error creating referral:', error);
-      toast({
-        title: "Unexpected Error",
-        description: "An unexpected error occurred while creating the referral",
-        variant: "destructive",
-      });
+      showError(
+        "Unexpected Error",
+        "An unexpected error occurred while creating the referral"
+      );
     } finally {
       setIsCreating(false);
       setIsCreatingPatient(false);
     }
-  }, [referralId, specialty, practitionerId, patientName, birthDate, nhsNumber, reason, selectedPatient, gender, address, phone, medications, allergies, notes, documents, priority, history, diagnosis, referralType, administrativeCategory, overseasStatus, patientAreaCareSetting, onSubmit, onClose, toast]);
+  }, [referralId, specialty, practitionerId, patientName, birthDate, nhsNumber, reason, selectedPatient, gender, address, phone, medications, allergies, notes, documents, priority, history, diagnosis, referralType, administrativeCategory, overseasStatus, patientAreaCareSetting, onSubmit, onClose, showError]);
 
   const resetForm = () => {
     setSelectedPatient(undefined);

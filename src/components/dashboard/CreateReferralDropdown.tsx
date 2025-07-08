@@ -12,7 +12,7 @@ import CreateReferralModal from '@/components/CreateReferralModal';
 import AutoReferralSheet from '@/components/AutoReferralSheet';
 import { Referral } from '@/types/referral';
 import { supabase } from '@/integrations/supabase/client';
-import { useToast } from '@/hooks/use-toast';
+import { useNotificationService } from '@/services/notificationService';
 
 interface CreateReferralDropdownProps {
   onReferralCreated: (referral: Partial<Referral>) => void;
@@ -21,7 +21,7 @@ interface CreateReferralDropdownProps {
 const CreateReferralDropdown = ({ onReferralCreated }: CreateReferralDropdownProps) => {
   const [isManualModalOpen, setIsManualModalOpen] = useState(false);
   const [isAutoModalOpen, setIsAutoModalOpen] = useState(false);
-  const { toast } = useToast();
+  const { showError } = useNotificationService();
 
   const createTestReferral = async () => {
     try {
@@ -66,10 +66,6 @@ INSERT INTO public.referrals (
       console.log('🔄 Executing SQL Script for Test Referral:');
       console.log(sqlScript);
       
-      toast({
-        title: "Generating Test Referral",
-        description: "Executing SQL script to create test referral...",
-      });
 
       // Execute the equivalent operation using Supabase client (secure approach)
       const { data, error } = await supabase
@@ -93,27 +89,21 @@ INSERT INTO public.referrals (
 
       if (error) {
         console.error('❌ SQL Execution Failed:', error);
-        toast({
-          title: "SQL Execution Failed",
-          description: `Error executing test referral creation: ${error.message}`,
-          variant: "destructive"
-        });
+        showError(
+          "SQL Execution Failed",
+          `Error executing test referral creation: ${error.message}`
+        );
       } else {
         console.log('✅ SQL Execution Successful - New referral created:', data);
-        toast({
-          title: "Test Referral Created Successfully",
-          description: `SQL executed successfully! New referral ${data.ubrn} created with ID: ${data.id}`,
-        });
         // Refresh the referrals list if there's a callback
         onReferralCreated(data);
       }
     } catch (err) {
       console.error('💥 Unexpected SQL execution error:', err);
-      toast({
-        title: "SQL Execution Error",
-        description: "Unexpected error during test referral creation",
-        variant: "destructive"
-      });
+      showError(
+        "SQL Execution Error",
+        "Unexpected error during test referral creation"
+      );
     }
   };
 
