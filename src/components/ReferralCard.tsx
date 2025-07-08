@@ -87,11 +87,11 @@ const ReferralCard = ({ referral }: ReferralCardProps) => {
             <div className="flex-1">
               <CardTitle className="text-lg mb-1">{referral.patient.name}</CardTitle>
               <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                <span>Gender {referral.patient.gender}</span>
+                <span><span className="font-bold">Gender</span> {referral.patient.gender}</span>
                 <span>•</span>
-                <span>Age {patientAge}</span>
+                <span><span className="font-bold">Age</span> {patientAge}</span>
                 <span>•</span>
-                <span>NHS No. {referral.patient.nhsNumber}</span>
+                <span><span className="font-bold">No.</span> {referral.patient.nhsNumber}</span>
               </div>
             </div>
             <div className="flex items-center gap-2">
@@ -161,7 +161,7 @@ const ReferralCard = ({ referral }: ReferralCardProps) => {
             </div>
             <div className="flex items-center gap-1">
               <Calendar className="h-3 w-3 text-muted-foreground" />
-              <span className="text-xs">{formattedDate}</span>
+              <span className="text-xs">{formattedDate} at {formattedTime}</span>
             </div>
           </div>
 
@@ -174,9 +174,6 @@ const ReferralCard = ({ referral }: ReferralCardProps) => {
                   <span>{referral.attachments.length}</span>
                 </Badge>
               )}
-            </div>
-            <div className="text-xs text-muted-foreground">
-              {formattedTime}
             </div>
           </div>
           
