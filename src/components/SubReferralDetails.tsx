@@ -152,7 +152,7 @@ const SubReferralDetails = ({ childReferralIds }: SubReferralDetailsProps) => {
 
           <div className="flex items-center justify-between pt-2">
             <div className="text-xs text-muted-foreground">
-              Created: {new Date(subReferral.created_at).toLocaleDateString()}
+              <span className="font-bold">Created:</span> {new Date(subReferral.created_at).toLocaleDateString()}
             </div>
             <Link 
               to={`/referral/${subReferral.id}`}
