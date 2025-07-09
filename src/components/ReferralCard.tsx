@@ -221,7 +221,7 @@ const ReferralCard = ({
           </div>
 
           {/* View Full Referral Details */}
-          <div className="flex items-center gap-2 hover:bg-blue-50 hover:text-blue-700 hover:border-blue-200 transition-all duration-200 font-medium">  
+          <div className="mt-4 pt-3 border-t">
             <Button variant="outline" size="sm" asChild>
               <Link to={`/referral/${referral.id}`}>
                 <FileText className="h-4 w-4" />
