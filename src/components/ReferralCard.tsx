@@ -135,7 +135,7 @@ const ReferralCard = ({
         <CardHeader className="pb-3">
           <div className="flex justify-between items-start mb-2">
             <div className="flex-1">
-              <PatientDetailsPopover referral={referral}>
+              <PatientDetailsPopover patient={referral.patient}>
                 <CardTitle className="text-lg mb-1 cursor-pointer hover:text-primary transition-colors">
                   {referral.patient.name}
                 </CardTitle>

@@ -1,5 +1,4 @@
 import { Patient } from '@/types/patient';
-import { Referral, TriageStatus } from '@/types/referral';
 import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/components/ui/hover-card';
 import { Badge } from '@/components/ui/badge';
 import { format, differenceInYears } from 'date-fns';
@@ -8,31 +7,11 @@ import AllergyIndicator from '@/components/clinical/AllergyIndicator';
 import ReasonableAdjustmentsFlag from '@/components/clinical/ReasonableAdjustmentsFlag';
 
 interface PatientDetailsPopoverProps {
-  referral: Referral;
+  patient: Patient;
   children: React.ReactNode;
 }
 
-const getTriageStatusColor = (status?: TriageStatus) => {
-  switch (status) {
-    case 'pre-assessment':
-      return 'bg-blue-100 text-blue-800 border-blue-200';
-    case 'assessed':
-      return 'bg-green-100 text-green-800 border-green-200';
-    case 'pre-admission-assessment':
-      return 'bg-yellow-100 text-yellow-800 border-yellow-200';
-    case 'waiting-list':
-      return 'bg-purple-100 text-purple-800 border-purple-200';
-    case 'refer-to-another-specialty':
-      return 'bg-orange-100 text-orange-800 border-orange-200';
-    case 'discharged':
-      return 'bg-gray-100 text-gray-800 border-gray-200';
-    default:
-      return 'bg-gray-100 text-gray-800 border-gray-200';
-  }
-};
-
-const PatientDetailsPopover = ({ referral, children }: PatientDetailsPopoverProps) => {
-  const patient = referral.patient;
+const PatientDetailsPopover = ({ patient, children }: PatientDetailsPopoverProps) => {
   const age = differenceInYears(new Date(), new Date(patient.birthDate));
   const hasAllergies = patient.allergies && patient.allergies.length > 0;
   const hasAdjustments = patient.reasonableAdjustments?.hasAdjustments;
@@ -44,16 +23,11 @@ const PatientDetailsPopover = ({ referral, children }: PatientDetailsPopoverProp
       </HoverCardTrigger>
       <HoverCardContent className="w-96 p-4" side="right" align="start">
         <div className="space-y-4">
-          {/* Patient Header with Triage Status Color */}
-          <div className={`flex items-center gap-3 pb-3 border-b rounded-lg p-3 ${getTriageStatusColor(referral.triageStatus)}`}>
+          {/* Patient Header */}
+          <div className="flex items-center gap-3 pb-3 border-b">
             <div className="flex-1">
               <h3 className="font-semibold text-lg">{patient.name}</h3>
-              <p className="text-sm opacity-80">NHS: {patient.nhsNumber}</p>
-              {referral.triageStatus && (
-                <p className="text-xs font-medium mt-1 opacity-90">
-                  Status: {referral.triageStatus.replace('-', ' ').replace(/\b\w/g, l => l.toUpperCase())}
-                </p>
-              )}
+              <p className="text-sm text-muted-foreground">NHS: {patient.nhsNumber}</p>
             </div>
           </div>
 
