@@ -20,7 +20,6 @@ const PatientMetrics = ({ referral }: PatientMetricsProps) => {
 
   return (
     <>
-      <TableCell className="p-2 text-sm">{patientAge} years</TableCell>
       <TableCell className="p-2">
         <ReferralPriorityBadge priority={referral.priority} />
       </TableCell>

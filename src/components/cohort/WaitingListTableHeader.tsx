@@ -46,7 +46,6 @@ const WaitingListTableHeader = ({
           </span>
         </TableHead>
         <TableHead className="min-w-[140px]" scope="col" id="patient-name-header">Patient Name</TableHead>
-        <TableHead className="w-16" scope="col" id="age-header">Age</TableHead>
         <TableHead className="w-20" scope="col" id="priority-header">Priority</TableHead>
         <TableHead className="w-24" scope="col" id="days-waiting-header">Days Waiting</TableHead>
         <TableHead className="w-24" scope="col" id="location-header">Location</TableHead>
