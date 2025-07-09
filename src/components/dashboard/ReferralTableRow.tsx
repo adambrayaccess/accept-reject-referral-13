@@ -162,16 +162,26 @@ const ReferralTableRow = ({
                   <Button
                     variant="ghost"
                     size="sm"
-                    className="h-auto w-auto p-1"
+                    className="h-auto w-auto p-1 hover:bg-opacity-30"
                     style={{ 
                       backgroundColor: (referral.isSubReferral || (referral.childReferralIds && referral.childReferralIds.length > 0)) ? '#007A7A20' : 'transparent',
                       color: '#007A7A'
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.backgroundColor = '#007A7A40';
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.backgroundColor = (referral.isSubReferral || (referral.childReferralIds && referral.childReferralIds.length > 0)) ? '#007A7A20' : 'transparent';
                     }}
                     onClick={handleToggleExpanded}
                   >
                     <LayoutList className="h-3 w-3" />
                     {(referral.isSubReferral || (referral.childReferralIds && referral.childReferralIds.length > 0)) && (
-                      <ChevronDown className="h-2 w-2 ml-0.5" style={{ color: '#007A7A' }} />
+                      isExpanded ? (
+                        <ChevronDown className="h-2 w-2 ml-0.5" style={{ color: '#007A7A' }} />
+                      ) : (
+                        <ChevronRight className="h-2 w-2 ml-0.5" style={{ color: '#007A7A' }} />
+                      )
                     )}
                   </Button>
                 )}
