@@ -37,7 +37,7 @@ const PatientInfo = ({ referral, isDragDisabled, onNameClick, isExpanded, onTogg
             </Button>
           </PatientDetailsPopover>
           {/* Sub-referral expand/collapse button */}
-          {(referral.isSubReferral || (referral.childReferralIds && referral.childReferralIds.length > 0)) && onToggleExpanded && (
+          {onToggleExpanded && (
             <div className="relative mt-1">
               <Button
                 variant="ghost"
@@ -62,10 +62,12 @@ const PatientInfo = ({ referral, isDragDisabled, onNameClick, isExpanded, onTogg
                   <ChevronRight className="h-2 w-2 ml-0.5" style={{ color: '#007A7A' }} />
                 )}
               </Button>
-              <CircleDot 
-                className="absolute -top-1 -right-1 h-2 w-2 fill-current" 
-                style={{ color: '#613249' }}
-              />
+              {(referral.isSubReferral || (referral.childReferralIds && referral.childReferralIds.length > 0)) && (
+                <CircleDot 
+                  className="absolute -top-1 -right-1 h-2 w-2 fill-current" 
+                  style={{ color: '#613249' }}
+                />
+              )}
             </div>
           )}
         </div>
