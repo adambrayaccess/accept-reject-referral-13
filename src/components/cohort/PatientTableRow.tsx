@@ -10,7 +10,6 @@ import PatientInfo from './PatientInfo';
 import PatientMetrics from './PatientMetrics';
 import PatientReferralDetails from './PatientReferralDetails';
 import PatientStatusInfo from './PatientStatusInfo';
-import PatientRowActions from './PatientRowActions';
 import ReferralTableExpandedContent from '@/components/dashboard/ReferralTableExpandedContent';
 
 interface PatientTableRowProps {
@@ -138,8 +137,10 @@ const PatientTableRow = ({
                   />
                 </div>
               )}
-              <PatientRowActions referral={referral} />
             </div>
+          </TableCell>
+          <TableCell className="p-2">
+            <ChevronRight className="h-4 w-4 text-muted-foreground" />
           </TableCell>
         </TableRow>
       )}
