@@ -11,6 +11,11 @@ import SpecialtyBreakdown from '@/components/admin/SpecialtyBreakdown';
 import AdminPageSkeleton from '@/components/admin/AdminPageSkeleton';
 import AdminAICopilotButton from '@/components/admin/AdminAICopilotButton';
 import PageHeader from '@/components/PageHeader';
+import DischargeAnalyticsChart from '@/components/admin/DischargeAnalyticsChart';
+import ReferralSourceChart from '@/components/admin/ReferralSourceChart';
+import SpecialtyVolumeChart from '@/components/admin/SpecialtyVolumeChart';
+import ReferralTrendAnalysis from '@/components/admin/ReferralTrendAnalysis';
+import PerformanceMetrics from '@/components/admin/PerformanceMetrics';
 
 const AdminPage = () => {
   const [referrals, setReferrals] = useState<Referral[]>([]);
@@ -89,7 +94,23 @@ const AdminPage = () => {
         {/* Overall Statistics */}
         <OverallStatsCards stats={overallStats} />
 
-        {/* Specialty Breakdown */}
+        {/* Performance Metrics */}
+        <PerformanceMetrics referrals={referrals} />
+
+        {/* Analytics Charts Grid */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <DischargeAnalyticsChart referrals={referrals} />
+          <ReferralSourceChart referrals={referrals} />
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <SpecialtyVolumeChart referrals={referrals} />
+          <div className="lg:col-span-1">
+            <ReferralTrendAnalysis referrals={referrals} />
+          </div>
+        </div>
+
+        {/* Detailed Specialty Breakdown */}
         <SpecialtyBreakdown 
           specialtyStats={specialtyStats} 
           currentSpecialty={null}
