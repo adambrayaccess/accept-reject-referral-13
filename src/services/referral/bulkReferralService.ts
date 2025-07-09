@@ -104,12 +104,16 @@ export const fetchReferrals = async (filters?: {
       .filter(ref => !ref.isSubReferral)
       .map(ref => ref.id);
     
+    console.log('Parent referral IDs found:', parentReferralIds);
+    
     if (parentReferralIds.length > 0) {
       // Fetch child referral information in bulk
       const { data: childReferrals, error: childError } = await supabase
         .from('referrals')
         .select('id, parent_referral_id, specialty, triage_status')
         .in('parent_referral_id', parentReferralIds);
+      
+      console.log('Child referrals query result:', { childReferrals, childError });
       
       if (!childError && childReferrals) {
         // Group child referrals by parent ID
@@ -121,13 +125,23 @@ export const fetchReferrals = async (filters?: {
           return acc;
         }, {} as Record<string, any[]>);
         
-    // Update parent referrals with their child IDs
+        console.log('Children grouped by parent:', childrenByParent);
+        
+        // Update parent referrals with their child IDs
         mappedReferrals.forEach(referral => {
           if (!referral.isSubReferral && childrenByParent[referral.id]) {
             referral.childReferralIds = childrenByParent[referral.id].map(child => child.id);
             console.log(`Bulk Service: Parent referral ${referral.id} now has child IDs:`, referral.childReferralIds);
+          } else if (!referral.isSubReferral) {
+            console.log(`Bulk Service: Parent referral ${referral.id} has NO children - checking:`, {
+              hasChildren: !!childrenByParent[referral.id],
+              isSubReferral: referral.isSubReferral,
+              referralId: referral.id
+            });
           }
         });
+      } else {
+        console.log('Child referrals query failed or returned empty:', childError);
       }
     }
     
