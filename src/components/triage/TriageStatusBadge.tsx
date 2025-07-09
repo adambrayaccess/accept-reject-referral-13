@@ -64,7 +64,17 @@ const getTriageStatusColor = (status?: TriageStatus) => {
 };
 
 const TriageStatusBadge = ({ status }: TriageStatusBadgeProps) => {
-  if (!status) return null;
+  // Show 'New' badge for null/undefined status
+  if (!status) {
+    return (
+      <Badge 
+        variant="outline" 
+        className="text-xs bg-blue-50 text-blue-700 hover:bg-blue-100/80"
+      >
+        New
+      </Badge>
+    );
+  }
 
   return (
     <Badge 
