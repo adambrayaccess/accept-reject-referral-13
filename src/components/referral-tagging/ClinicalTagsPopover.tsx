@@ -94,7 +94,7 @@ const ClinicalTagsPopover = ({ referral, onTagsUpdated }: ClinicalTagsPopoverPro
       <PopoverTrigger asChild>
         <Button variant="outline" size="sm" className="gap-2">
           <Tag className="h-4 w-4" />
-          Clinical Tags
+          Tags
           {currentTags.length > 0 && (
             <span className="ml-1 bg-primary text-primary-foreground rounded-full px-2 py-0.5 text-xs">
               {currentTags.length}
