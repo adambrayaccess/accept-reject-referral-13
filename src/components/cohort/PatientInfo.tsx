@@ -1,7 +1,7 @@
 
 import { TableCell } from '@/components/ui/table';
 import { Button } from '@/components/ui/button';
-import { ChevronDown, ChevronRight, LayoutList, CircleDot } from 'lucide-react';
+import { ChevronDown, ChevronRight, LayoutList } from 'lucide-react';
 import { Referral } from '@/types/referral';
 import PatientDetailsPopover from '@/components/PatientDetailsPopover';
 
@@ -62,12 +62,6 @@ const PatientInfo = ({ referral, isDragDisabled, onNameClick, isExpanded, onTogg
                   <ChevronRight className="h-2 w-2 ml-0.5" style={{ color: '#007A7A' }} />
                 )}
               </Button>
-              {(referral.isSubReferral || (referral.childReferralIds && referral.childReferralIds.length > 0)) && (
-                <CircleDot 
-                  className="absolute -top-1 -right-1 h-2 w-2 fill-current" 
-                  style={{ color: '#613249' }}
-                />
-              )}
             </div>
           )}
         </div>
