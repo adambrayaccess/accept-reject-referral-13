@@ -236,7 +236,7 @@ const ReferralCard = ({
                     className="px-4 py-2 text-sm font-bold text-muted-foreground hover:no-underline uppercase tracking-wide"
                     onClick={(e) => e.stopPropagation()}
                   >
-                    <div className="flex items-center gap-2">
+                     <div className="flex items-center gap-2" style={{ color: '#79264D' }}>
                       <LayoutList className="h-4 w-4" />
                       {referral.isSubReferral ? 'Parent Referral' : `Sub-Referrals (${referral.childReferralIds?.length || 0})`}
                     </div>
