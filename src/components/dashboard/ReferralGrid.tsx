@@ -16,6 +16,7 @@ interface ReferralGridProps {
   onClearSelection?: () => void;
   isAllSelected?: boolean;
   isIndeterminate?: boolean;
+  onRefresh?: () => void;
 }
 
 const ReferralGrid = ({ 
@@ -30,7 +31,8 @@ const ReferralGrid = ({
   onSelectAll,
   onClearSelection,
   isAllSelected,
-  isIndeterminate
+  isIndeterminate,
+  onRefresh
 }: ReferralGridProps) => {
   if (view === 'list') {
     return (
@@ -45,7 +47,7 @@ const ReferralGrid = ({
         onSelectAll={onSelectAll}
         onClearSelection={onClearSelection}
         isAllSelected={isAllSelected}
-        isIndeterminate={isIndeterminate}
+        onRefresh={onRefresh}
       />
     );
   }
@@ -73,7 +75,7 @@ const ReferralGrid = ({
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 py-6">
       {filteredReferrals.map((referral) => (
-        <ReferralCard key={referral.id} referral={referral} />
+        <ReferralCard key={referral.id} referral={referral} onTagsUpdated={onRefresh} />
       ))}
     </div>
   );

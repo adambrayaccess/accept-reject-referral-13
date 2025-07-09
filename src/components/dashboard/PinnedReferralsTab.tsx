@@ -15,6 +15,7 @@ interface PinnedReferralsTabProps {
   onClearSelection: () => void;
   isAllSelected: boolean;
   isIndeterminate: boolean;
+  onRefresh?: () => void;
 }
 
 const PinnedReferralsTab = ({
@@ -24,7 +25,8 @@ const PinnedReferralsTab = ({
   onSelectAll,
   onClearSelection,
   isAllSelected,
-  isIndeterminate
+  isIndeterminate,
+  onRefresh
 }: PinnedReferralsTabProps) => {
   const [pinnedReferrals, setPinnedReferrals] = useState<Referral[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -102,6 +104,7 @@ const PinnedReferralsTab = ({
       onClearSelection={onClearSelection}
       isAllSelected={isAllSelected}
       isIndeterminate={isIndeterminate}
+      onRefresh={onRefresh}
     />
   );
 };

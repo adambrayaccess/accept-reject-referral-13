@@ -20,6 +20,7 @@ interface ReferralListProps {
   onClearSelection?: () => void;
   isAllSelected?: boolean;
   isIndeterminate?: boolean;
+  onRefresh?: () => void;
 }
 
 const ReferralList = ({ 
@@ -32,7 +33,8 @@ const ReferralList = ({
   onToggleSelection,
   onSelectAll,
   isAllSelected = false,
-  isIndeterminate = false
+  isIndeterminate = false,
+  onRefresh
 }: ReferralListProps) => {
   const [modalReferralId, setModalReferralId] = useState<string | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);

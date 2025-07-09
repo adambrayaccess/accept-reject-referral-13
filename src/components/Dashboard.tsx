@@ -146,6 +146,7 @@ const Dashboard = () => {
             onClearSelection={clearSelection}
             isAllSelected={isAllSelected}
             isIndeterminate={isIndeterminate}
+            onRefresh={handleRefresh}
           />
         </div>
       </div>

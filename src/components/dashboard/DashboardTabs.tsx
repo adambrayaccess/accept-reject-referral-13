@@ -18,6 +18,7 @@ interface DashboardTabsProps {
   onClearSelection: () => void;
   isAllSelected: (referrals: Referral[]) => boolean;
   isIndeterminate: (referrals: Referral[]) => boolean;
+  onRefresh: () => void;
 }
 
 const DashboardTabs = ({
@@ -32,7 +33,8 @@ const DashboardTabs = ({
   onSelectAll,
   onClearSelection,
   isAllSelected,
-  isIndeterminate
+  isIndeterminate,
+  onRefresh
 }: DashboardTabsProps) => {
   const { pinnedReferralIds } = usePinning();
   
@@ -79,6 +81,7 @@ const DashboardTabs = ({
           onClearSelection={onClearSelection}
           isAllSelected={isAllSelected(filteredReferrals.filter(r => r.status === 'new'))}
           isIndeterminate={isIndeterminate(filteredReferrals.filter(r => r.status === 'new'))}
+          onRefresh={onRefresh}
         />
       </EnhancedTabsContent>
 
@@ -96,6 +99,7 @@ const DashboardTabs = ({
           onClearSelection={onClearSelection}
           isAllSelected={isAllSelected(filteredReferrals.filter(r => r.status !== 'new'))}
           isIndeterminate={isIndeterminate(filteredReferrals.filter(r => r.status !== 'new'))}
+          onRefresh={onRefresh}
         />
       </EnhancedTabsContent>
 
@@ -108,6 +112,7 @@ const DashboardTabs = ({
           onClearSelection={onClearSelection}
           isAllSelected={isAllSelected(filteredReferrals)}
           isIndeterminate={isIndeterminate(filteredReferrals)}
+          onRefresh={onRefresh}
         />
       </EnhancedTabsContent>
 
@@ -124,6 +129,7 @@ const DashboardTabs = ({
           onClearSelection={onClearSelection}
           isAllSelected={isAllSelected(filteredReferrals)}
           isIndeterminate={isIndeterminate(filteredReferrals)}
+          onRefresh={onRefresh}
         />
       </EnhancedTabsContent>
     </EnhancedTabs>
