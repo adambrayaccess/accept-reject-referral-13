@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { TableCell, TableRow } from '@/components/ui/table';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
-import { ChevronDown, ChevronRight, GripVertical, CircleDot } from 'lucide-react';
+import { ChevronDown, ChevronRight, GripVertical, CircleDot, LayoutList } from 'lucide-react';
 import { format } from 'date-fns';
 import { Referral } from '@/types/referral';
 import { Draggable } from 'react-beautiful-dnd';
@@ -169,11 +169,7 @@ const ReferralTableRow = ({
                     }}
                     onClick={handleToggleExpanded}
                   >
-                    {isExpanded ? (
-                      <ChevronDown className="h-3 w-3" />
-                    ) : (
-                      <ChevronRight className="h-3 w-3" />
-                    )}
+                    <LayoutList className="h-3 w-3" />
                     {(referral.isSubReferral || (referral.childReferralIds && referral.childReferralIds.length > 0)) && (
                       <CircleDot className="h-2 w-2 fill-current ml-0.5" style={{ color: '#007A7A' }} />
                     )}
