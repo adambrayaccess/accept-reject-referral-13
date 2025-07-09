@@ -10,7 +10,7 @@ const ReferralTypeBadge = ({ referral, size = 'default' }: ReferralTypeBadgeProp
 
   return (
     <div 
-      className={`${sizeClasses} text-muted-foreground font-medium`}
+      className={`${sizeClasses} text-black font-medium`}
       title={`Referral Type: ${referral.referralType || 'External Referral'}`}
     >
       {referral.referralType || 'External'}
