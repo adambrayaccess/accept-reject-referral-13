@@ -9,6 +9,7 @@ interface SubReferral {
   triage_status: string | null;
   ubrn: string;
   priority: string;
+  referral_source: string | null;
   created_at: string;
 }
 
@@ -32,7 +33,7 @@ const SubReferralDetails = ({ childReferralIds }: SubReferralDetailsProps) => {
         
         const { data, error } = await supabase
           .from('referrals')
-          .select('id, specialty, triage_status, ubrn, priority, created_at')
+          .select('id, specialty, triage_status, ubrn, priority, referral_source, created_at')
           .in('id', childReferralIds)
           .order('created_at', { ascending: true });
 
@@ -140,6 +141,15 @@ const SubReferralDetails = ({ childReferralIds }: SubReferralDetailsProps) => {
               <div className="text-sm font-medium">
                 {getPriorityDisplay(subReferral.priority)}
               </div>
+            </div>
+          </div>
+
+          <div>
+            <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">
+              Referral Source
+            </div>
+            <div className="text-sm font-medium">
+              {subReferral.referral_source || 'Not specified'}
             </div>
           </div>
 
