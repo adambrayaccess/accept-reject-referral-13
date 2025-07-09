@@ -171,7 +171,7 @@ const ReferralTableRow = ({
                   >
                     <LayoutList className="h-3 w-3" />
                     {(referral.isSubReferral || (referral.childReferralIds && referral.childReferralIds.length > 0)) && (
-                      <CircleDot className="h-2 w-2 fill-current ml-0.5" style={{ color: '#007A7A' }} />
+                      <ChevronDown className="h-2 w-2 ml-0.5" style={{ color: '#007A7A' }} />
                     )}
                   </Button>
                 )}
