@@ -1,6 +1,7 @@
 
 import { TableCell } from '@/components/ui/table';
 import { Button } from '@/components/ui/button';
+import { ChevronDown, ChevronRight, LayoutList, CircleDot } from 'lucide-react';
 import { Referral } from '@/types/referral';
 import PatientDetailsPopover from '@/components/PatientDetailsPopover';
 
@@ -8,9 +9,11 @@ interface PatientInfoProps {
   referral: Referral;
   isDragDisabled: boolean;
   onNameClick?: (referral: Referral) => void;
+  isExpanded?: boolean;
+  onToggleExpanded?: (e: React.MouseEvent) => void;
 }
 
-const PatientInfo = ({ referral, isDragDisabled, onNameClick }: PatientInfoProps) => {
+const PatientInfo = ({ referral, isDragDisabled, onNameClick, isExpanded, onToggleExpanded }: PatientInfoProps) => {
   const handleNameClick = (e: React.MouseEvent) => {
     e.stopPropagation();
     if (!isDragDisabled && onNameClick) {
@@ -33,6 +36,38 @@ const PatientInfo = ({ referral, isDragDisabled, onNameClick }: PatientInfoProps
               {referral.patient.name}
             </Button>
           </PatientDetailsPopover>
+          {/* Sub-referral expand/collapse button */}
+          {(referral.isSubReferral || (referral.childReferralIds && referral.childReferralIds.length > 0)) && onToggleExpanded && (
+            <div className="relative mt-1">
+              <Button
+                variant="ghost"
+                size="sm"
+                className="h-auto w-auto p-1 hover:bg-opacity-30"
+                style={{ 
+                  backgroundColor: '#007A7A20',
+                  color: '#007A7A'
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.backgroundColor = '#007A7A40';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.backgroundColor = '#007A7A20';
+                }}
+                onClick={onToggleExpanded}
+              >
+                <LayoutList className="h-3 w-3" />
+                {isExpanded ? (
+                  <ChevronDown className="h-2 w-2 ml-0.5" style={{ color: '#007A7A' }} />
+                ) : (
+                  <ChevronRight className="h-2 w-2 ml-0.5" style={{ color: '#007A7A' }} />
+                )}
+              </Button>
+              <CircleDot 
+                className="absolute -top-1 -right-1 h-2 w-2 fill-current" 
+                style={{ color: '#613249' }}
+              />
+            </div>
+          )}
         </div>
       </div>
     </TableCell>

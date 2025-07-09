@@ -99,46 +99,12 @@ const PatientTableRow = ({
             referral={referral} 
             isDragDisabled={isDragDisabled} 
             onNameClick={onNameClick}
+            isExpanded={isExpanded}
+            onToggleExpanded={handleToggleExpanded}
           />
           <PatientMetrics referral={referral} />
           <PatientReferralDetails referral={referral} />
           <PatientStatusInfo referral={referral} />
-          <TableCell className="p-2">
-            <div className="flex items-center gap-2">
-              {/* Sub-referral expand/collapse button */}
-              {(referral.isSubReferral || (referral.childReferralIds && referral.childReferralIds.length > 0)) && (
-                <div className="relative">
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    className="h-auto w-auto p-1 hover:bg-opacity-30"
-                    style={{ 
-                      backgroundColor: '#007A7A20',
-                      color: '#007A7A'
-                    }}
-                    onMouseEnter={(e) => {
-                      e.currentTarget.style.backgroundColor = '#007A7A40';
-                    }}
-                    onMouseLeave={(e) => {
-                      e.currentTarget.style.backgroundColor = '#007A7A20';
-                    }}
-                    onClick={handleToggleExpanded}
-                  >
-                    <LayoutList className="h-3 w-3" />
-                    {isExpanded ? (
-                      <ChevronDown className="h-2 w-2 ml-0.5" style={{ color: '#007A7A' }} />
-                    ) : (
-                      <ChevronRight className="h-2 w-2 ml-0.5" style={{ color: '#007A7A' }} />
-                    )}
-                  </Button>
-                  <CircleDot 
-                    className="absolute -top-1 -right-1 h-2 w-2 fill-current" 
-                    style={{ color: '#613249' }}
-                  />
-                </div>
-              )}
-            </div>
-          </TableCell>
           <TableCell className="p-2">
             <ChevronRight className="h-4 w-4 text-muted-foreground" />
           </TableCell>
