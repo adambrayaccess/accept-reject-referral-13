@@ -1,6 +1,7 @@
 import { Referral } from '@/types/referral';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 import { Calendar, Clock, FileText, Phone, User, Building, CircleDot, ExternalLink, LayoutList } from 'lucide-react';
 import { format, differenceInYears } from 'date-fns';
 import { Link } from 'react-router-dom';
@@ -165,14 +166,13 @@ const ReferralCard = ({
 
           {/* View Full Referral Details */}
           <div className="mt-4 pt-3 border-t">
-            <Link 
-              to={`/referral/${referral.id}`}
-              className="inline-flex items-center gap-2 text-sm text-primary hover:underline font-medium"
-            >
-              <FileText className="h-4 w-4" />
-              View Full Referral Details
-              <ExternalLink className="h-4 w-4" />
-            </Link>
+            <Button variant="outline" size="sm" asChild>
+              <Link to={`/referral/${referral.id}`}>
+                <FileText className="h-4 w-4" />
+                View Full Referral Details
+                <ExternalLink className="h-4 w-4" />
+              </Link>
+            </Button>
           </div>
           
           {/* Sub-Referral Accordion */}
