@@ -16,7 +16,7 @@ const ReferralTableExpandedContent = ({ referral }: ReferralTableExpandedContent
       <div className="px-2 py-3 bg-muted/20">
         <div className="p-4 bg-muted/30 rounded-lg">
           <div className="flex items-center gap-2 mb-3">
-            <ArrowUp className="h-4 w-4" />
+            <LayoutList className="h-4 w-4" color="#613249" />
             <span className="font-bold text-sm" style={{ color: '#613249' }}>PARENT REFERRAL</span>
           </div>
           <div className="p-3 bg-background rounded space-y-2">
