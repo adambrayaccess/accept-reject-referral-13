@@ -72,18 +72,25 @@ const ReferralTableExpandedContent = ({ referral }: ReferralTableExpandedContent
                 Created: {new Date().toLocaleDateString()}
               </div>
               {referral.parentReferralId && (
-                <Link 
-                  to={`/referral/${referral.parentReferralId}`}
-                  className="inline-flex items-center gap-1 text-sm text-primary hover:underline font-bold"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    e.preventDefault();
-                    window.location.href = `/referral/${referral.parentReferralId}`;
-                  }}
+                <Button
+                  asChild
+                  variant="outline"
+                  size="sm"
+                  className="bg-teal-50 border-teal-200 text-teal-700 hover:bg-teal-100 hover:border-teal-300"
                 >
-                  <ExternalLink className="h-3 w-3" />
-                  View Referral
-                </Link>
+                  <Link 
+                    to={`/referral/${referral.parentReferralId}`}
+                    className="inline-flex items-center gap-1"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      e.preventDefault();
+                      window.location.href = `/referral/${referral.parentReferralId}`;
+                    }}
+                  >
+                    <ExternalLink className="h-3 w-3" />
+                    View Referral
+                  </Link>
+                </Button>
               )}
             </div>
           </div>

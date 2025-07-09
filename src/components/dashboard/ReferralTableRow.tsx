@@ -162,13 +162,20 @@ const ReferralTableRow = ({
                   <Button
                     variant="ghost"
                     size="sm"
-                    className="h-auto w-auto p-1"
+                    className={`h-auto w-auto p-1 ${
+                      (referral.isSubReferral || (referral.childReferralIds && referral.childReferralIds.length > 0))
+                        ? 'bg-teal-50 text-teal-600 hover:bg-teal-100' 
+                        : ''
+                    }`}
                     onClick={handleToggleExpanded}
                   >
                     {isExpanded ? (
-                      <ChevronDown className="h-3 w-3 text-muted-foreground" />
+                      <ChevronDown className="h-3 w-3" />
                     ) : (
-                      <ChevronRight className="h-3 w-3 text-muted-foreground" />
+                      <ChevronRight className="h-3 w-3" />
+                    )}
+                    {(referral.isSubReferral || (referral.childReferralIds && referral.childReferralIds.length > 0)) && (
+                      <CircleDot className="h-2 w-2 text-teal-500 fill-current ml-0.5" />
                     )}
                   </Button>
                 )}
