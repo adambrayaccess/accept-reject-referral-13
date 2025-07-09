@@ -6,14 +6,16 @@ import { Textarea } from '@/components/ui/textarea';
 import { Badge } from '@/components/ui/badge';
 import { Clipboard, Sparkles, Users } from 'lucide-react';
 import { TriageStatus } from '@/types/referral';
-import { updateTriageStatus } from '@/services/referralService';
+import { updateTriageStatus, updateReferralTags } from '@/services/referralService';
 import { useToast } from '@/hooks/use-toast';
 import TeamSelector from '@/components/team/TeamSelector';
 import { getSpecialtyIdByName } from '@/utils/legacySpecialtyUtils';
+import ClinicalTagsSelector from './ClinicalTagsSelector';
 
 interface TriageStatusUpdateProps {
   referralId: string;
   currentStatus?: TriageStatus;
+  currentTags?: string[];
   specialty: string;
   onStatusChange: () => void;
   aiSuggestedStatus?: TriageStatus;
@@ -32,6 +34,7 @@ const triageStatuses: { value: TriageStatus; label: string }[] = [
 const TriageStatusUpdate = ({ 
   referralId, 
   currentStatus, 
+  currentTags = [],
   specialty,
   onStatusChange, 
   aiSuggestedStatus,
@@ -41,6 +44,7 @@ const TriageStatusUpdate = ({
   const [triageNotes, setTriageNotes] = useState('');
   const [selectedTeamId, setSelectedTeamId] = useState<string>('');
   const [selectedHCPId, setSelectedHCPId] = useState<string>('');
+  const [selectedTags, setSelectedTags] = useState<string[]>(currentTags);
   const [isUpdatingStatus, setIsUpdatingStatus] = useState(false);
   const { toast } = useToast();
 
@@ -102,6 +106,15 @@ const TriageStatusUpdate = ({
       console.log(`updateTriageStatus result: ${updated}`);
       
       if (updated) {
+        // Update tags if they have changed
+        const tagsChanged = JSON.stringify(selectedTags.sort()) !== JSON.stringify(currentTags.sort());
+        if (tagsChanged) {
+          const tagsUpdated = await updateReferralTags(referralId, selectedTags);
+          if (!tagsUpdated) {
+            console.error('Failed to update tags, but status update succeeded');
+          }
+        }
+
         let successMessage = `Triage status changed to ${
           triageStatuses.find(s => s.value === triageStatus)?.label
         }`;
@@ -111,6 +124,10 @@ const TriageStatusUpdate = ({
             ? "assigned to healthcare professional"
             : "allocated to team";
           successMessage += ` and ${assignmentDetails}`;
+        }
+
+        if (tagsChanged) {
+          successMessage += ` and clinical tags updated`;
         }
 
         toast({
@@ -218,6 +235,13 @@ const TriageStatusUpdate = ({
           />
         </div>
       )}
+
+      {/* Clinical Tags Section */}
+      <ClinicalTagsSelector
+        currentTags={selectedTags}
+        onTagsChange={setSelectedTags}
+        isUpdating={isUpdatingStatus}
+      />
       
       <Textarea
         placeholder="Add notes about status change (optional)"

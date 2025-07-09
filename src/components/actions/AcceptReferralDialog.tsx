@@ -6,12 +6,13 @@ import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { CheckCircle, Clipboard } from 'lucide-react';
 import { Referral, TriageStatus } from '@/types/referral';
-import { updateReferralStatus, sendHL7Message } from '@/services/referralService';
+import { updateReferralStatus, updateReferralTags, sendHL7Message } from '@/services/referralService';
 import { useToast } from '@/hooks/use-toast';
 import { specialties } from '@/data/specialtyOptions';
 import { fetchAllHCPs, HCP } from '@/services/hcpService';
 import TeamSelector from '@/components/team/TeamSelector';
 import { getSpecialtyIdByName } from '@/utils/legacySpecialtyUtils';
+import ClinicalTagsSelector from '@/components/triage/ClinicalTagsSelector';
 interface AcceptReferralDialogProps {
   referral: Referral;
   onStatusChange: () => void;
@@ -55,6 +56,7 @@ const AcceptReferralDialog = ({
   const [selectedStatus, setSelectedStatus] = useState<TriageStatus | ''>('');
   const [selectedTeamId, setSelectedTeamId] = useState<string>('');
   const [selectedHCPId, setSelectedHCPId] = useState<string>('');
+  const [selectedTags, setSelectedTags] = useState<string[]>(referral.tags || []);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [databaseHCPs, setDatabaseHCPs] = useState<HCP[]>([]);
   const [isLoadingHCPs, setIsLoadingHCPs] = useState(false);
@@ -156,8 +158,18 @@ const AcceptReferralDialog = ({
         triageStatus: selectedStatus
       });
 
-      // 2. Send HL7 message to EPR
+      // 2. Update tags if they have changed
       if (statusUpdated) {
+        const currentTags = referral.tags || [];
+        const tagsChanged = JSON.stringify(selectedTags.sort()) !== JSON.stringify(currentTags.sort());
+        if (tagsChanged) {
+          const tagsUpdated = await updateReferralTags(referral.id, selectedTags);
+          if (!tagsUpdated) {
+            console.error('Failed to update tags, but status update succeeded');
+          }
+        }
+
+        // 3. Send HL7 message to EPR
         await sendHL7Message(referral.id, 'accept');
         let successMessage = "";
         if (selectedStatus === 'refer-to-another-specialty') {
@@ -170,6 +182,11 @@ const AcceptReferralDialog = ({
           const professional = databaseHCPs.find(hp => hp.id === finalProfessionalId);
           successMessage = `The referral has been accepted and allocated to ${professional?.name} with status: ${triageStatusOptions.find(s => s.value === selectedStatus)?.label}.`;
         }
+
+        if (tagsChanged) {
+          successMessage += ` Clinical tags have been updated.`;
+        }
+
         toast({
           title: "Referral Accepted",
           description: successMessage,
@@ -183,6 +200,7 @@ const AcceptReferralDialog = ({
         setSelectedStatus('');
         setSelectedTeamId('');
         setSelectedHCPId('');
+        setSelectedTags(referral.tags || []);
         setIsOpen(false);
         onStatusChange();
       } else {
@@ -282,6 +300,13 @@ const AcceptReferralDialog = ({
                 <label className="text-sm font-medium">Notes (Optional)</label>
                 <Textarea placeholder="Add optional notes (e.g., appointment details)" value={acceptNotes} onChange={e => setAcceptNotes(e.target.value)} rows={4} />
               </div>
+
+              {/* Clinical Tags Section */}
+              <ClinicalTagsSelector
+                currentTags={selectedTags}
+                onTagsChange={setSelectedTags}
+                isUpdating={isSubmitting}
+              />
             </div>
 
             <div className="flex flex-col sm:flex-row gap-3 pt-6">
