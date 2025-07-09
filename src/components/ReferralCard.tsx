@@ -228,7 +228,7 @@ const ReferralCard = ({
             <Button variant="outline" size="sm" asChild>
               <Link to={`/referral/${referral.id}`}>
                 <FileText className="h-4 w-4" />
-                View Full Referral Details
+                Open Referral & Triage
                 <ExternalLink className="h-4 w-4" />
               </Link>
             </Button>
