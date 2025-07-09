@@ -50,7 +50,7 @@ const ReferralSourceBadge = ({ referral }: ReferralSourceBadgeProps) => {
       <div className="text-sm font-medium text-black">
         {sourceText}
       </div>
-      <div className="text-xs text-muted-foreground">
+      <div className="text-xs text-black">
         {referral.referrer.organization || 'N/A'}
       </div>
     </div>
