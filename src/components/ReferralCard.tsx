@@ -2,7 +2,7 @@ import { Referral } from '@/types/referral';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Calendar, Clock, FileText, Phone, User, Building, CircleDot, ExternalLink, LayoutList } from 'lucide-react';
+import { Calendar, Clock, FileText, Phone, User, Building, CircleDot, ExternalLink, LayoutList, Tag } from 'lucide-react';
 import { format, differenceInYears } from 'date-fns';
 import { Link } from 'react-router-dom';
 import ReferralPriorityBadge from '@/components/dashboard/ReferralPriorityBadge';
@@ -11,6 +11,9 @@ import ReferralSourceBadge from '@/components/dashboard/ReferralSourceBadge';
 import PinButton from '@/components/ui/pin-button';
 import { usePinning } from '@/hooks/usePinning';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
+import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/components/ui/hover-card';
+import ClinicalTagsPopover from '@/components/referral-tagging/ClinicalTagsPopover';
+import { getTagStyle } from '@/utils/tagCategoryUtils';
 interface ReferralCardProps {
   referral: Referral;
 }
@@ -74,10 +77,62 @@ const ReferralCard = ({
   const formattedDate = format(new Date(referral.created), 'dd MMM yyyy');
   const formattedTime = format(new Date(referral.created), 'HH:mm');
   const patientAge = differenceInYears(new Date(), new Date(referral.patient.birthDate));
+  const tags = referral.tags || [];
   const {
     isPinned,
     togglePin
   } = usePinning();
+
+  // Clinical Tags Component
+  const ClinicalTagsButton = () => {
+    if (tags.length === 0) {
+      return (
+        <ClinicalTagsPopover 
+          referral={referral}
+          onTagsUpdated={() => {}} // For now, we don't need to handle updates in the card
+        />
+      );
+    }
+
+    return (
+      <div className="flex items-center gap-2">
+        <HoverCard>
+          <HoverCardTrigger asChild>
+            <div className="cursor-pointer">
+              <Badge 
+                variant="outline" 
+                className="text-xs bg-blue-50 text-blue-700 border-blue-200 hover:bg-blue-100 transition-colors"
+                aria-label={`${tags.length} clinical tag${tags.length === 1 ? '' : 's'}`}
+              >
+                <Tag className="h-3 w-3 mr-1" />
+                {tags.length}
+              </Badge>
+            </div>
+          </HoverCardTrigger>
+          <HoverCardContent className="w-80 p-4" side="bottom">
+            <div className="space-y-2">
+              <h4 className="text-sm font-semibold text-foreground">Clinical Tags</h4>
+              <div className="flex flex-wrap gap-2">
+                {tags.map(tag => (
+                  <Badge 
+                    key={tag} 
+                    variant="outline" 
+                    className={`text-xs ${getTagStyle(tag)}`}
+                  >
+                    {tag}
+                  </Badge>
+                ))}
+              </div>
+            </div>
+          </HoverCardContent>
+        </HoverCard>
+        <ClinicalTagsPopover 
+          referral={referral}
+          onTagsUpdated={() => {}} // For now, we don't need to handle updates in the card
+        />
+      </div>
+    );
+  };
   return (
     <Card className="hover:border-primary hover:shadow-md transition-all self-start">
         <CardHeader className="pb-3">
@@ -100,6 +155,7 @@ const ReferralCard = ({
               </div>
             </div>
             <div className="flex items-center gap-2">
+              <ClinicalTagsButton />
               <PinButton isPinned={isPinned(referral.id)} onTogglePin={() => togglePin(referral.id)} size="sm" variant="ghost" />
               <div className="flex items-center gap-1">
                 <CircleDot className={`h-3 w-3 ${getDotColor(referral)} fill-current`} />
