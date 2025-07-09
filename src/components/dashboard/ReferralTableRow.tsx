@@ -174,10 +174,6 @@ const ReferralTableRow = ({
               {referral.ubrn}
             </div>
           </TableCell>
-          <TableCell className="p-2 text-sm">
-            <div>{format(new Date(referral.created), 'dd MMM yyyy')}</div>
-            <div>{format(new Date(referral.created), 'HH:mm')}</div>
-          </TableCell>
           <TableCell className="p-2 font-mono text-sm">{referral.patient.phone || 'N/A'}</TableCell>
           <TableCell className="p-2 text-sm">
             <div>{referral.specialty}</div>
