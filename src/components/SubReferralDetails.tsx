@@ -164,7 +164,7 @@ const SubReferralDetails = ({ childReferralIds }: SubReferralDetailsProps) => {
               }}
             >
               <ExternalLink className="h-3 w-3" />
-              View
+              View Referral
             </Link>
           </div>
         </div>
