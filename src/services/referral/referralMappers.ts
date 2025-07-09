@@ -296,8 +296,8 @@ export const mapReferralData = (referral: any): Referral => {
     referringHospital: referral.referring_hospital,
     // Add enquiry number
     enquiryNumber: referral.enquiry_number,
-    // Calculate child referral IDs - this would need a separate query in practice
-    childReferralIds: []
+    // Initialize child referral IDs - will be populated by referral services
+    childReferralIds: undefined
   };
 
   // DISABLED: Automatically sync to FHIR when mapping (for real-time sync)

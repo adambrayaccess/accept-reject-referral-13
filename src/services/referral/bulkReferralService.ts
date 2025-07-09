@@ -121,10 +121,11 @@ export const fetchReferrals = async (filters?: {
           return acc;
         }, {} as Record<string, any[]>);
         
-        // Update parent referrals with their child IDs
+    // Update parent referrals with their child IDs
         mappedReferrals.forEach(referral => {
           if (!referral.isSubReferral && childrenByParent[referral.id]) {
             referral.childReferralIds = childrenByParent[referral.id].map(child => child.id);
+            console.log(`Bulk Service: Parent referral ${referral.id} now has child IDs:`, referral.childReferralIds);
           }
         });
       }

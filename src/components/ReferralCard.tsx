@@ -85,6 +85,16 @@ const ReferralCard = ({
     togglePin
   } = usePinning();
 
+  // Debug logs for sub-referral data
+  console.log('ReferralCard Debug:', {
+    referralId: referral.id,
+    isSubReferral: referral.isSubReferral,
+    parentReferralId: referral.parentReferralId,
+    childReferralIds: referral.childReferralIds,
+    hasChildReferrals: referral.childReferralIds && referral.childReferralIds.length > 0,
+    showAccordion: referral.isSubReferral || (referral.childReferralIds && referral.childReferralIds.length > 0)
+  });
+
   // Clinical Tags Component
   const ClinicalTagsButton = () => {
     return (
