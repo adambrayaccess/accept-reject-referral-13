@@ -13,8 +13,8 @@ const ReferralTableExpandedContent = ({ referral }: ReferralTableExpandedContent
   // If it's a sub-referral, show parent referral info
   if (referral.isSubReferral) {
     return (
-      <div className="px-2 py-3 bg-muted/20">
-        <div className="p-4 bg-white rounded-lg">
+      <div className="py-3 bg-muted/20 w-full">
+        <div className="mx-2 p-4 bg-white rounded-lg">
           <div className="flex items-center gap-2 mb-3">
             <LayoutList className="h-4 w-4" color="#613249" />
             <span className="font-bold text-sm" style={{ color: '#613249' }}>PARENT REFERRAL</span>
@@ -102,8 +102,8 @@ const ReferralTableExpandedContent = ({ referral }: ReferralTableExpandedContent
   // If it has sub-referrals, show them using the same component as ReferralCard
   if (referral.childReferralIds && referral.childReferralIds.length > 0) {
     return (
-      <div className="px-2 py-3 bg-muted/20">
-        <div className="p-4 bg-white rounded-lg">
+      <div className="py-3 bg-muted/20 w-full">
+        <div className="mx-2 p-4 bg-white rounded-lg">
           <div className="flex items-center gap-2 mb-3">
             <LayoutList className="h-4 w-4" color="#613249" />
             <span className="font-bold text-sm" style={{ color: '#613249' }}>SUB-REFERRALS ({referral.childReferralIds.length})</span>
@@ -116,8 +116,8 @@ const ReferralTableExpandedContent = ({ referral }: ReferralTableExpandedContent
 
   // Default case: no related referrals
   return (
-    <div className="px-2 py-3 bg-muted/20">
-      <div className="p-4 bg-muted/30 rounded-lg">
+    <div className="py-3 bg-muted/20 w-full">
+      <div className="mx-2 p-4 bg-muted/30 rounded-lg">
         <div className="text-sm text-muted-foreground">No related referrals found</div>
       </div>
     </div>
