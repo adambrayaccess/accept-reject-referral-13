@@ -13,6 +13,7 @@ import { usePinning } from '@/hooks/usePinning';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/components/ui/hover-card';
 import ClinicalTagsPopover from '@/components/referral-tagging/ClinicalTagsPopover';
+import SubReferralDetails from '@/components/SubReferralDetails';
 import { getTagStyle } from '@/utils/tagCategoryUtils';
 interface ReferralCardProps {
   referral: Referral;
@@ -277,51 +278,7 @@ const ReferralCard = ({
                       </div>
                     ) : (
                       /* Parent Referral: Show Sub-Referrals */
-                      <div className="space-y-3">
-                        {referral.childReferralIds?.map((childId, index) => {
-                          // For now, we'll need to fetch the child referral data
-                          // In a real implementation, you might want to pass this data down
-                          // or store it in the parent referral object
-                          return (
-                            <div key={childId} className="p-3 bg-muted/50 rounded space-y-2">
-                              <div className="grid grid-cols-2 gap-3">
-                                <div>
-                                  <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">Sub-Referral ID</div>
-                                  <div className="text-sm font-medium font-mono">{childId}</div>
-                                </div>
-                                <div>
-                                  <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">Specialty</div>
-                                  <div className="text-sm font-medium">
-                                    {/* This will be populated from actual data soon */}
-                                    {index === 0 ? 'Neurology' : index === 1 ? 'Psychiatry' : 'Specialist Service'}
-                                  </div>
-                                </div>
-                              </div>
-                              <div className="flex items-center justify-between">
-                                <div>
-                                  <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">Status</div>
-                                  <div className="text-sm font-medium">
-                                    {/* This will be populated from actual data soon */}
-                                    {index === 0 ? 'Pre-Assessment' : index === 1 ? 'Assessed' : 'New'}
-                                  </div>
-                                </div>
-                                <Link 
-                                  to={`/referral/${childId}`}
-                                  className="inline-flex items-center gap-1 text-xs text-primary hover:underline font-bold"
-                                  onClick={(e) => {
-                                    e.stopPropagation();
-                                    e.preventDefault();
-                                    window.location.href = `/referral/${childId}`;
-                                  }}
-                                >
-                                  <ExternalLink className="h-3 w-3" />
-                                  View
-                                </Link>
-                              </div>
-                            </div>
-                          );
-                        })}
-                      </div>
+                      <SubReferralDetails childReferralIds={referral.childReferralIds || []} />
                     )}
                   </AccordionContent>
                 </AccordionItem>
