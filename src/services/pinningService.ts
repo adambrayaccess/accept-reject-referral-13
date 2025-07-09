@@ -211,9 +211,15 @@ export class PinningService {
             
             // Update parent referrals with their child IDs
             data.forEach(item => {
-              if (!item.referrals.is_sub_referral && childrenByParent[item.referrals.id]) {
-                item.referrals.childReferralIds = childrenByParent[item.referrals.id].map(child => child.id);
-                console.log(`Pinned Service: Parent referral ${item.referrals.id} now has child IDs:`, item.referrals.childReferralIds);
+              if (!item.referrals.is_sub_referral) {
+                if (childrenByParent[item.referrals.id]) {
+                  item.referrals.childReferralIds = childrenByParent[item.referrals.id].map(child => child.id);
+                  console.log(`Pinned Service: Parent referral ${item.referrals.id} now has child IDs:`, item.referrals.childReferralIds);
+                } else {
+                  // Initialize as empty array if no children found
+                  item.referrals.childReferralIds = [];
+                  console.log(`Pinned Service: Parent referral ${item.referrals.id} has no children, initialized empty array`);
+                }
               }
             });
           }
