@@ -14,6 +14,7 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/
 import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/components/ui/hover-card';
 import ClinicalTagsPopover from '@/components/referral-tagging/ClinicalTagsPopover';
 import SubReferralDetails from '@/components/SubReferralDetails';
+import PatientDetailsPopover from '@/components/PatientDetailsPopover';
 import { getTagStyle } from '@/utils/tagCategoryUtils';
 interface ReferralCardProps {
   referral: Referral;
@@ -134,7 +135,11 @@ const ReferralCard = ({
         <CardHeader className="pb-3">
           <div className="flex justify-between items-start mb-2">
             <div className="flex-1">
-              <CardTitle className="text-lg mb-1">{referral.patient.name}</CardTitle>
+              <PatientDetailsPopover patient={referral.patient}>
+                <CardTitle className="text-lg mb-1 cursor-pointer hover:text-primary transition-colors">
+                  {referral.patient.name}
+                </CardTitle>
+              </PatientDetailsPopover>
               <div className="grid grid-cols-3 gap-3 text-sm">
                 <div>
                   <div className="font-bold text-muted-foreground">Gender</div>
