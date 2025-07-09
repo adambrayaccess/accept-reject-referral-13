@@ -243,39 +243,69 @@ const ReferralCard = ({
                   </AccordionTrigger>
                   <AccordionContent className="px-4 pb-4 pt-0" onClick={(e) => e.stopPropagation()}>
                     {referral.isSubReferral ? (
-                      /* Sub-Referral: Show Parent Referral Details */
-                      <div className="space-y-3">
-                        <div className="grid grid-cols-2 gap-3">
-                          <div>
-                            <div className="h-4" />
-                            <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">Parent Referral ID</div>
-                            <div className="text-sm font-medium font-mono">{referral.parentReferralId || 'N/A'}</div>
-                          </div>
-                          <div>
-                            <div className="h-4" />
-                            <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">Specialty</div>
-                            <div className="text-sm font-medium">Cardiology</div>
-                          </div>
-                        </div>
-                        <div>
-                          <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">Triage Status</div>
-                          <div className="text-sm font-medium">Waiting List</div>
-                        </div>
-                        {referral.parentReferralId && (
-                          <Link 
-                            to={`/referral/${referral.parentReferralId}`}
-                            className="inline-flex items-center gap-1 text-xs text-primary hover:underline font-bold"
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              e.preventDefault();
-                              window.location.href = `/referral/${referral.parentReferralId}`;
-                            }}
-                          >
-                            <ExternalLink className="h-3 w-3" />
-                            View Parent Referral
-                          </Link>
-                        )}
-                      </div>
+                       /* Sub-Referral: Show Parent Referral Details */
+                       <div className="space-y-3">
+                         <div className="p-3 bg-muted/50 rounded space-y-2">
+                           <div className="grid grid-cols-2 gap-3">
+                             <div>
+                               <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">
+                                 Parent Referral ID
+                               </div>
+                               <div className="text-sm font-medium font-mono">
+                                 {referral.parentReferralId ? referral.parentReferralId.slice(0, 8) + '...' : 'N/A'}
+                               </div>
+                             </div>
+                             <div>
+                               <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">
+                                 Specialty
+                               </div>
+                               <div className="text-sm font-medium">Cardiology</div>
+                             </div>
+                           </div>
+                           
+                           <div className="grid grid-cols-2 gap-3">
+                             <div>
+                               <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">
+                                 Status
+                               </div>
+                               <div className="text-sm font-medium">Waiting List</div>
+                             </div>
+                             <div>
+                               <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">
+                                 Priority
+                               </div>
+                               <div className="text-sm font-medium">Routine</div>
+                             </div>
+                           </div>
+
+                           <div>
+                             <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">
+                               UBRN
+                             </div>
+                             <div className="text-sm font-medium font-mono">UBRN-{Math.random().toString().slice(2, 12)}</div>
+                           </div>
+
+                           <div className="flex items-center justify-between pt-2">
+                             <div className="text-xs text-muted-foreground">
+                               Created: {new Date().toLocaleDateString()}
+                             </div>
+                             {referral.parentReferralId && (
+                               <Link 
+                                 to={`/referral/${referral.parentReferralId}`}
+                                 className="inline-flex items-center gap-1 text-xs text-primary hover:underline font-bold"
+                                 onClick={(e) => {
+                                   e.stopPropagation();
+                                   e.preventDefault();
+                                   window.location.href = `/referral/${referral.parentReferralId}`;
+                                 }}
+                               >
+                                 <ExternalLink className="h-3 w-3" />
+                                 View
+                               </Link>
+                             )}
+                           </div>
+                         </div>
+                       </div>
                     ) : (
                       /* Parent Referral: Show Sub-Referrals */
                       <SubReferralDetails childReferralIds={referral.childReferralIds || []} />
