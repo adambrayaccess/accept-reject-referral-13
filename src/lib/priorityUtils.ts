@@ -19,7 +19,7 @@ export const getPriorityCustomStyles = (priority: Referral['priority']) => {
     case 'urgent':
       return 'bg-[#973060] text-white hover:bg-[#973060]/80';
     case 'routine':
-      return 'bg-[#9FC1B5] text-[#2F453D] hover:bg-[#9FC1B5]/80';
+      return 'bg-[#F5F5F5] text-[#2F453D] hover:bg-[#F5F5F5]/80';
     default:
       return '';
   }
