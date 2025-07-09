@@ -58,7 +58,6 @@ const WaitingListTableHeader = ({
         <TableHead className="min-w-[120px]" scope="col" id="care-pathway-header">Care Pathway</TableHead>
         <TableHead className="min-w-[80px]" scope="col" id="rtt-header" title="Referral to Treatment pathway">RTT</TableHead>
         <TableHead className="min-w-[120px]" scope="col" id="assigned-team-header">Assigned Team</TableHead>
-        <TableHead className="min-w-[100px]" scope="col" id="sub-referrals-header">Sub-referrals</TableHead>
         <TableHead className="w-10" scope="col" aria-label="Actions column"></TableHead>
       </TableRow>
     </TableHeader>
