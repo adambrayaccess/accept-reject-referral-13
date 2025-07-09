@@ -14,6 +14,7 @@ import PinButton from '@/components/ui/pin-button';
 import { usePinning } from '@/hooks/usePinning';
 import PatientDetailsPopover from '@/components/PatientDetailsPopover';
 import PatientReferralDetails from '@/components/cohort/PatientReferralDetails';
+import TriageStatusBadge from '@/components/triage/TriageStatusBadge';
 import ReferralTableExpandedContent from './ReferralTableExpandedContent';
 
 const getStatusText = (referral: Referral) => {
@@ -208,7 +209,7 @@ const ReferralTableRow = ({
                 />
               </div>
             </TableCell>
-            <TableCell className="p-2 text-sm">{referral.patient.gender}</TableCell>
+            
             <TableCell className="p-2 font-mono text-sm">{referral.patient.nhsNumber}</TableCell>
             <TableCell className="p-2 font-mono text-sm">
               <div 
@@ -236,14 +237,7 @@ const ReferralTableRow = ({
               <ReferralTypeBadge referral={referral} />
             </TableCell>
             <TableCell className="p-2">
-              <div className="flex items-start gap-0.5">
-                <div 
-                  className="text-sm font-bold text-muted-foreground"
-                  title={`Status: ${getStatusText(referral)}`}
-                >
-                  {getStatusText(referral).toUpperCase()}
-                </div>
-              </div>
+              <TriageStatusBadge status={referral.triageStatus} />
             </TableCell>
             <TableCell className="p-2">
               <ChevronRight className="h-3 w-3 text-muted-foreground" />
@@ -253,7 +247,7 @@ const ReferralTableRow = ({
       </Draggable>
       {isExpanded && (
         <TableRow>
-          <TableCell colSpan={15} className="p-0 border-t-0">
+          <TableCell colSpan={14} className="p-0 border-t-0">
             <ReferralTableExpandedContent referral={referral} />
           </TableCell>
         </TableRow>
