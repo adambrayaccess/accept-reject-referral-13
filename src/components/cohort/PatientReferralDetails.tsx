@@ -20,10 +20,6 @@ const PatientReferralDetails = ({ referral }: PatientReferralDetailsProps) => {
         <div className="font-medium">{referral.referrer.name}</div>
         <div className="text-sm text-muted-foreground">{referral.referrer.organization}</div>
       </TableCell>
-      <TableCell className="p-2 text-sm">
-        <div>{format(new Date(referral.created), 'dd MMM yyyy')}</div>
-        <div>{format(new Date(referral.created), 'HH:mm')}</div>
-      </TableCell>
       <TableCell className="p-2">
         <div className="flex justify-center">
           {tags.length > 0 ? (
