@@ -157,8 +157,29 @@ const ReferralTableRow = ({
               </div>
             </TableCell>
             <TableCell className="p-2">
-              <div className="flex flex-col items-start gap-1">
-                <ReferralPriorityBadge priority={referral.priority} />
+              <ReferralPriorityBadge priority={referral.priority} />
+            </TableCell>
+            <TableCell className="p-2">
+              <div className="flex flex-col items-start gap-2">
+                <div className="flex items-center gap-2">
+                  <PatientDetailsPopover patient={referral.patient}>
+                    <Button
+                      variant="link"
+                      className="font-bold underline p-0 h-auto text-sm"
+                      style={{ color: '#007373' }}
+                      onClick={(e) => !isDragDisabled && onNameClick(e, referral.id)}
+                      disabled={isDragDisabled}
+                    >
+                      {referral.patient.name}
+                    </Button>
+                  </PatientDetailsPopover>
+                  <PinButton
+                    isPinned={isPinned(referral.id)}
+                    onTogglePin={() => togglePin(referral.id)}
+                    size="sm"
+                    variant="ghost"
+                  />
+                </div>
                 {hasExpandableContent && (
                   <div className="relative">
                     <Button
@@ -192,27 +213,6 @@ const ReferralTableRow = ({
                     )}
                   </div>
                 )}
-              </div>
-            </TableCell>
-            <TableCell className="p-2">
-              <div className="flex items-center gap-2">
-                <PatientDetailsPopover patient={referral.patient}>
-                  <Button
-                    variant="link"
-                    className="font-bold underline p-0 h-auto text-sm"
-                    style={{ color: '#007373' }}
-                    onClick={(e) => !isDragDisabled && onNameClick(e, referral.id)}
-                    disabled={isDragDisabled}
-                  >
-                    {referral.patient.name}
-                  </Button>
-                </PatientDetailsPopover>
-                <PinButton
-                  isPinned={isPinned(referral.id)}
-                  onTogglePin={() => togglePin(referral.id)}
-                  size="sm"
-                  variant="ghost"
-                />
               </div>
             </TableCell>
             
