@@ -299,9 +299,9 @@ const ReferralCard = ({
                                    window.location.href = `/referral/${referral.parentReferralId}`;
                                  }}
                                >
-                                 <ExternalLink className="h-3 w-3" />
-                                 View
-                               </Link>
+                                  <ExternalLink className="h-3 w-3" />
+                                  View Referral
+                                </Link>
                              )}
                            </div>
                          </div>
