@@ -52,26 +52,28 @@ const getDotColor = (referral: Referral) => {
   if (referral.status === 'accepted' && referral.triageStatus) {
     switch (referral.triageStatus) {
       case 'pre-assessment':
-        return 'text-yellow-600';
+        return 'text-blue-800';
       case 'assessed':
-        return 'text-purple-600';
+        return 'text-green-800';
       case 'waiting-list':
-        return 'text-blue-600';
+        return 'text-purple-800';
       case 'refer-to-another-specialty':
-        return 'text-gray-600';
+        return 'text-orange-800';
+      case 'discharged':
+        return 'text-gray-800';
       default:
-        return 'text-gray-500';
+        return 'text-gray-800';
     }
   }
   switch (referral.status) {
     case 'new':
-      return 'text-blue-600';
+      return 'text-blue-800';
     case 'accepted':
-      return 'text-green-600';
+      return 'text-green-800';
     case 'rejected':
       return 'text-red-600';
     default:
-      return 'text-gray-500';
+      return 'text-gray-800';
   }
 };
 const ReferralCard = ({
