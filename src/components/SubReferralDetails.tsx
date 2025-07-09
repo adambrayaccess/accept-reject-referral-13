@@ -144,20 +144,21 @@ const SubReferralDetails = ({ childReferralIds }: SubReferralDetailsProps) => {
             </div>
           </div>
 
-          <div>
-            <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">
-              Referral Source
+          <div className="grid grid-cols-2 gap-3">
+            <div>
+              <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">
+                UBRN
+              </div>
+              <div className="text-sm font-medium font-mono">{subReferral.ubrn}</div>
             </div>
-            <div className="text-sm font-medium">
-              {subReferral.referral_source || 'Not specified'}
+            <div>
+              <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">
+                Referral Source
+              </div>
+              <div className="text-sm font-medium">
+                {subReferral.referral_source || 'Not specified'}
+              </div>
             </div>
-          </div>
-
-          <div>
-            <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">
-              UBRN
-            </div>
-            <div className="text-sm font-medium font-mono">{subReferral.ubrn}</div>
           </div>
 
           <div className="flex items-center justify-between pt-2">
