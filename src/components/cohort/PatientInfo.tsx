@@ -2,6 +2,7 @@
 import { TableCell } from '@/components/ui/table';
 import { Button } from '@/components/ui/button';
 import { Referral } from '@/types/referral';
+import PatientDetailsPopover from '@/components/PatientDetailsPopover';
 
 interface PatientInfoProps {
   referral: Referral;
@@ -21,15 +22,17 @@ const PatientInfo = ({ referral, isDragDisabled, onNameClick }: PatientInfoProps
     <TableCell className="p-2">
       <div className="flex items-center justify-between">
         <div>
-          <Button
-            variant="link"
-            className="font-bold underline p-0 h-auto text-sm"
-            style={{ color: '#007373' }}
-            onClick={handleNameClick}
-            disabled={isDragDisabled}
-          >
-            {referral.patient.name}
-          </Button>
+          <PatientDetailsPopover patient={referral.patient}>
+            <Button
+              variant="link"
+              className="font-bold underline p-0 h-auto text-sm"
+              style={{ color: '#007373' }}
+              onClick={handleNameClick}
+              disabled={isDragDisabled}
+            >
+              {referral.patient.name}
+            </Button>
+          </PatientDetailsPopover>
           <div className="text-sm text-muted-foreground font-mono">
             NHS: {referral.patient.nhsNumber}
           </div>
