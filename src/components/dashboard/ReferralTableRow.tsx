@@ -157,7 +157,7 @@ const ReferralTableRow = ({
               </div>
             </TableCell>
             <TableCell className="p-2">
-              <div className="flex items-center gap-1">
+              <div className="flex flex-col items-start gap-1">
                 <ReferralPriorityBadge priority={referral.priority} />
                 {hasExpandableContent && (
                   <div className="relative">
