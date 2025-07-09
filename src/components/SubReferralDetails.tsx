@@ -156,7 +156,7 @@ const SubReferralDetails = ({ childReferralIds }: SubReferralDetailsProps) => {
             </div>
             <Link 
               to={`/referral/${subReferral.id}`}
-              className="inline-flex items-center gap-1 text-xs text-primary hover:underline font-bold"
+              className="inline-flex items-center gap-1 text-sm text-primary hover:underline font-bold"
               onClick={(e) => {
                 e.stopPropagation();
                 e.preventDefault();
