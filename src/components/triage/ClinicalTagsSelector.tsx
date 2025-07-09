@@ -54,7 +54,7 @@ const ClinicalTagsSelector = ({
         <CollapsibleTrigger className="flex items-center justify-between w-full text-left">
           <div className="flex items-center gap-2">
             <Tag className="h-4 w-4 text-muted-foreground" />
-            <h4 className="text-sm font-medium">Clinical Tags</h4>
+            <h4 className="text-sm font-bold">Clinical Tags</h4>
           </div>
           <ChevronDown className={`h-4 w-4 text-muted-foreground transition-transform ${isOpen ? 'rotate-180' : ''}`} />
         </CollapsibleTrigger>
