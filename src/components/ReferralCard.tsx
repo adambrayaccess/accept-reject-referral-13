@@ -185,7 +185,7 @@ const ReferralCard = ({
               <div>
                 <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">Referrer</div>
                 <div className="text-sm font-medium">{referral.referrer.name}</div>
-                <div className="text-xs text-muted-foreground">{referral.referrer.organization}</div>
+                <div className="text-xs text-black">{referral.referrer.organization}</div>
               </div>
               <div>
                 <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">Source</div>
