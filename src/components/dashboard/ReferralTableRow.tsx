@@ -177,12 +177,10 @@ const ReferralTableRow = ({
                     onClick={handleToggleExpanded}
                   >
                     <LayoutList className="h-3 w-3" />
-                    {(referral.isSubReferral || (referral.childReferralIds && referral.childReferralIds.length > 0)) && (
-                      isExpanded ? (
-                        <ChevronDown className="h-2 w-2 ml-0.5" style={{ color: '#007A7A' }} />
-                      ) : (
-                        <ChevronRight className="h-2 w-2 ml-0.5" style={{ color: '#007A7A' }} />
-                      )
+                    {isExpanded ? (
+                      <ChevronDown className="h-2 w-2 ml-0.5" style={{ color: '#007A7A' }} />
+                    ) : (
+                      <ChevronRight className="h-2 w-2 ml-0.5" style={{ color: '#007A7A' }} />
                     )}
                   </Button>
                 )}
