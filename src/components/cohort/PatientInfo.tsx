@@ -33,9 +33,6 @@ const PatientInfo = ({ referral, isDragDisabled, onNameClick }: PatientInfoProps
               {referral.patient.name}
             </Button>
           </PatientDetailsPopover>
-          <div className="text-sm text-muted-foreground font-mono">
-            NHS: {referral.patient.nhsNumber}
-          </div>
         </div>
       </div>
     </TableCell>
