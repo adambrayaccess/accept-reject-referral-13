@@ -41,6 +41,7 @@ const ReferralTableHeader = ({
         <TableHead className="min-w-[140px]">HCP referred to</TableHead>
         <TableHead className="min-w-[160px]">Reason for referral</TableHead>
         <TableHead className="w-20">Referrer</TableHead>
+        <TableHead className="w-20">Tags</TableHead>
         <TableHead className="w-16">Source</TableHead>
         <TableHead className="w-20">Status</TableHead>
         <TableHead className="w-10"></TableHead>

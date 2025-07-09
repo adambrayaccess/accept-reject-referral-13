@@ -7,12 +7,12 @@ import { format } from 'date-fns';
 import { Referral } from '@/types/referral';
 import { Draggable } from 'react-beautiful-dnd';
 import ReferralPriorityBadge from './ReferralPriorityBadge';
-// Removed ReferralStatusBadge import - using inline text instead
 import ReferralSourceBadge from './ReferralSourceBadge';
 import ReferralTypeBadge from './ReferralTypeBadge';
 import PinButton from '@/components/ui/pin-button';
 import { usePinning } from '@/hooks/usePinning';
-import SubReferralIndicator from '@/components/cohort/SubReferralIndicator';
+import PatientDetailsPopover from '@/components/PatientDetailsPopover';
+import PatientReferralDetails from '@/components/cohort/PatientReferralDetails';
 
 const getStatusText = (referral: Referral) => {
   if (referral.status === 'accepted' && referral.triageStatus) {
@@ -145,15 +145,17 @@ const ReferralTableRow = ({
           </TableCell>
           <TableCell className="p-2">
             <div className="flex items-center gap-2">
-              <Button
-                variant="link"
-                className="font-bold underline p-0 h-auto text-sm"
-                style={{ color: '#007373' }}
-                onClick={(e) => !isDragDisabled && onNameClick(e, referral.id)}
-                disabled={isDragDisabled}
-              >
-                {referral.patient.name}
-              </Button>
+              <PatientDetailsPopover patient={referral.patient}>
+                <Button
+                  variant="link"
+                  className="font-bold underline p-0 h-auto text-sm"
+                  style={{ color: '#007373' }}
+                  onClick={(e) => !isDragDisabled && onNameClick(e, referral.id)}
+                  disabled={isDragDisabled}
+                >
+                  {referral.patient.name}
+                </Button>
+              </PatientDetailsPopover>
               <PinButton
                 isPinned={isPinned(referral.id)}
                 onTogglePin={() => togglePin(referral.id)}
@@ -186,14 +188,12 @@ const ReferralTableRow = ({
               {referral.clinicalInfo.reason}
             </div>
           </TableCell>
+          <PatientReferralDetails referral={referral} />
           <TableCell className="p-2">
             <ReferralSourceBadge referral={referral} />
           </TableCell>
           <TableCell className="p-2">
-            <div className="space-y-1">
-              <ReferralTypeBadge referral={referral} />
-              <SubReferralIndicator referral={referral} variant="compact" />
-            </div>
+            <ReferralTypeBadge referral={referral} />
           </TableCell>
           <TableCell className="p-2">
             <div className="flex items-start gap-0.5">
