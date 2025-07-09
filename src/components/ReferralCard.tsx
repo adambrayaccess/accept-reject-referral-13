@@ -290,9 +290,9 @@ const ReferralCard = ({
                                Created: {new Date().toLocaleDateString()}
                              </div>
                              {referral.parentReferralId && (
-                               <Link 
-                                 to={`/referral/${referral.parentReferralId}`}
-                                 className="inline-flex items-center gap-1 text-xs text-primary hover:underline font-bold"
+                                <Link 
+                                  to={`/referral/${referral.parentReferralId}`}
+                                  className="inline-flex items-center gap-1 text-sm text-primary hover:underline font-bold"
                                  onClick={(e) => {
                                    e.stopPropagation();
                                    e.preventDefault();
