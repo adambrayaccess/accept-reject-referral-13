@@ -160,29 +160,37 @@ const ReferralTableRow = ({
               <div className="flex items-center gap-1">
                 <ReferralPriorityBadge priority={referral.priority} />
                 {hasExpandableContent && (
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    className="h-auto w-auto p-1 hover:bg-opacity-30"
-                    style={{ 
-                      backgroundColor: '#007A7A20',
-                      color: '#007A7A'
-                    }}
-                    onMouseEnter={(e) => {
-                      e.currentTarget.style.backgroundColor = '#007A7A40';
-                    }}
-                    onMouseLeave={(e) => {
-                      e.currentTarget.style.backgroundColor = '#007A7A20';
-                    }}
-                    onClick={handleToggleExpanded}
-                  >
-                    <LayoutList className="h-3 w-3" />
-                    {isExpanded ? (
-                      <ChevronDown className="h-2 w-2 ml-0.5" style={{ color: '#007A7A' }} />
-                    ) : (
-                      <ChevronRight className="h-2 w-2 ml-0.5" style={{ color: '#007A7A' }} />
+                  <div className="relative">
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="h-auto w-auto p-1 hover:bg-opacity-30"
+                      style={{ 
+                        backgroundColor: '#007A7A20',
+                        color: '#007A7A'
+                      }}
+                      onMouseEnter={(e) => {
+                        e.currentTarget.style.backgroundColor = '#007A7A40';
+                      }}
+                      onMouseLeave={(e) => {
+                        e.currentTarget.style.backgroundColor = '#007A7A20';
+                      }}
+                      onClick={handleToggleExpanded}
+                    >
+                      <LayoutList className="h-3 w-3" />
+                      {isExpanded ? (
+                        <ChevronDown className="h-2 w-2 ml-0.5" style={{ color: '#007A7A' }} />
+                      ) : (
+                        <ChevronRight className="h-2 w-2 ml-0.5" style={{ color: '#007A7A' }} />
+                      )}
+                    </Button>
+                    {(referral.isSubReferral || (referral.childReferralIds && referral.childReferralIds.length > 0)) && (
+                      <CircleDot 
+                        className="absolute -top-1 -right-1 h-2 w-2 fill-current" 
+                        style={{ color: '#613249' }}
+                      />
                     )}
-                  </Button>
+                  </div>
                 )}
               </div>
             </TableCell>
