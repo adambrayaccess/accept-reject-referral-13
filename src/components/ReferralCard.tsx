@@ -16,6 +16,7 @@ import ClinicalTagsPopover from '@/components/referral-tagging/ClinicalTagsPopov
 import { getTagStyle } from '@/utils/tagCategoryUtils';
 interface ReferralCardProps {
   referral: Referral;
+  onTagsUpdated?: () => void;
 }
 
 // Helper functions for status display
@@ -72,7 +73,8 @@ const getDotColor = (referral: Referral) => {
   }
 };
 const ReferralCard = ({
-  referral
+  referral,
+  onTagsUpdated = () => {}
 }: ReferralCardProps) => {
   const formattedDate = format(new Date(referral.created), 'dd MMM yyyy');
   const formattedTime = format(new Date(referral.created), 'HH:mm');
@@ -85,30 +87,17 @@ const ReferralCard = ({
 
   // Clinical Tags Component
   const ClinicalTagsButton = () => {
-    if (tags.length === 0) {
-      return (
-        <ClinicalTagsPopover 
-          referral={referral}
-          onTagsUpdated={() => {}} // For now, we don't need to handle updates in the card
-        />
-      );
-    }
-
     return (
-      <div className="flex items-center gap-2">
-        <HoverCard>
-          <HoverCardTrigger asChild>
-            <div className="cursor-pointer">
-              <Badge 
-                variant="outline" 
-                className="text-xs bg-blue-50 text-blue-700 border-blue-200 hover:bg-blue-100 transition-colors"
-                aria-label={`${tags.length} clinical tag${tags.length === 1 ? '' : 's'}`}
-              >
-                <Tag className="h-3 w-3 mr-1" />
-                {tags.length}
-              </Badge>
-            </div>
-          </HoverCardTrigger>
+      <HoverCard>
+        <HoverCardTrigger asChild>
+          <div>
+            <ClinicalTagsPopover 
+              referral={referral}
+              onTagsUpdated={onTagsUpdated}
+            />
+          </div>
+        </HoverCardTrigger>
+        {tags.length > 0 && (
           <HoverCardContent className="w-80 p-4" side="bottom">
             <div className="space-y-2">
               <h4 className="text-sm font-semibold text-foreground">Clinical Tags</h4>
@@ -125,12 +114,8 @@ const ReferralCard = ({
               </div>
             </div>
           </HoverCardContent>
-        </HoverCard>
-        <ClinicalTagsPopover 
-          referral={referral}
-          onTagsUpdated={() => {}} // For now, we don't need to handle updates in the card
-        />
-      </div>
+        )}
+      </HoverCard>
     );
   };
   return (
