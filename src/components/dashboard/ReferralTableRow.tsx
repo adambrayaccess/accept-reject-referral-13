@@ -165,14 +165,14 @@ const ReferralTableRow = ({
                     size="sm"
                     className="h-auto w-auto p-1 hover:bg-opacity-30"
                     style={{ 
-                      backgroundColor: (referral.isSubReferral || (referral.childReferralIds && referral.childReferralIds.length > 0)) ? '#007A7A20' : 'transparent',
+                      backgroundColor: '#007A7A20',
                       color: '#007A7A'
                     }}
                     onMouseEnter={(e) => {
                       e.currentTarget.style.backgroundColor = '#007A7A40';
                     }}
                     onMouseLeave={(e) => {
-                      e.currentTarget.style.backgroundColor = (referral.isSubReferral || (referral.childReferralIds && referral.childReferralIds.length > 0)) ? '#007A7A20' : 'transparent';
+                      e.currentTarget.style.backgroundColor = '#007A7A20';
                     }}
                     onClick={handleToggleExpanded}
                   >
