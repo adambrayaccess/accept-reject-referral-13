@@ -91,7 +91,7 @@ const ReferralTableExpandedContent = ({ referral }: ReferralTableExpandedContent
         <div className="p-4 bg-muted/30 rounded-lg">
           <div className="flex items-center gap-2 mb-3">
             <LayoutList className="h-4 w-4" />
-            <span className="font-bold text-sm" style={{ color: '#613249' }}>Sub-referrals ({referral.childReferralIds.length})</span>
+            <span className="font-bold text-sm" style={{ color: '#613249' }}>SUB-REFERRALS ({referral.childReferralIds.length})</span>
           </div>
           <SubReferralDetails childReferralIds={referral.childReferralIds} />
         </div>
