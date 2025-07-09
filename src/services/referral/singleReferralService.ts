@@ -48,8 +48,26 @@ export const fetchReferralById = async (referralId: string): Promise<Referral | 
       return null;
     }
 
+    // Fetch child referral IDs if this referral has children
+    let childReferralIds: string[] = [];
+    if (!referral.is_sub_referral) {
+      const { data: childReferrals, error: childError } = await supabase
+        .from('referrals')
+        .select('id, specialty, triage_status')
+        .eq('parent_referral_id', referralId);
+      
+      if (!childError && childReferrals) {
+        childReferralIds = childReferrals.map(child => child.id);
+      }
+    }
+
     console.log('Successfully fetched referral:', referral.id);
-    return mapReferralData(referral);
+    const mappedReferral = mapReferralData(referral);
+    
+    // Override the childReferralIds with the actual data
+    mappedReferral.childReferralIds = childReferralIds;
+    
+    return mappedReferral;
   } catch (error) {
     console.error('Error fetching referral:', error);
     return null;

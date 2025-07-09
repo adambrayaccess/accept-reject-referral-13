@@ -95,7 +95,42 @@ export const fetchReferrals = async (filters?: {
     }
 
     console.log(`Successfully fetched ${referrals?.length || 0} referrals`);
-    return referrals ? referrals.map(mapReferralData) : [];
+    
+    // Map referrals and populate child referral IDs for parent referrals
+    const mappedReferrals = referrals ? referrals.map(mapReferralData) : [];
+    
+    // Get all parent referral IDs
+    const parentReferralIds = mappedReferrals
+      .filter(ref => !ref.isSubReferral)
+      .map(ref => ref.id);
+    
+    if (parentReferralIds.length > 0) {
+      // Fetch child referral information in bulk
+      const { data: childReferrals, error: childError } = await supabase
+        .from('referrals')
+        .select('id, parent_referral_id, specialty, triage_status')
+        .in('parent_referral_id', parentReferralIds);
+      
+      if (!childError && childReferrals) {
+        // Group child referrals by parent ID
+        const childrenByParent = childReferrals.reduce((acc, child) => {
+          if (!acc[child.parent_referral_id]) {
+            acc[child.parent_referral_id] = [];
+          }
+          acc[child.parent_referral_id].push(child);
+          return acc;
+        }, {} as Record<string, any[]>);
+        
+        // Update parent referrals with their child IDs
+        mappedReferrals.forEach(referral => {
+          if (!referral.isSubReferral && childrenByParent[referral.id]) {
+            referral.childReferralIds = childrenByParent[referral.id].map(child => child.id);
+          }
+        });
+      }
+    }
+    
+    return mappedReferrals;
   } catch (error) {
     console.error('Error fetching referrals:', error);
     return [];
