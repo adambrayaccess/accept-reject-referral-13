@@ -88,7 +88,7 @@ const ReferralTableExpandedContent = ({ referral }: ReferralTableExpandedContent
   if (referral.childReferralIds && referral.childReferralIds.length > 0) {
     return (
       <div className="px-2 py-3 bg-muted/20">
-        <div className="p-4 bg-muted/30 rounded-lg">
+        <div className="p-4 bg-white rounded-lg">
           <div className="flex items-center gap-2 mb-3">
             <LayoutList className="h-4 w-4" color="#613249" />
             <span className="font-bold text-sm" style={{ color: '#613249' }}>SUB-REFERRALS ({referral.childReferralIds.length})</span>
