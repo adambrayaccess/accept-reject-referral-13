@@ -237,9 +237,6 @@ const ReferralTableRow = ({
             </TableCell>
             <TableCell className="p-2">
               <div className="flex items-start gap-0.5">
-                <CircleDot 
-                  className={`h-2 w-2 ${getDotColor(referral)} fill-current mt-0.5`}
-                />
                 <div 
                   className="text-sm font-bold text-muted-foreground"
                   title={`Status: ${getStatusText(referral)}`}
