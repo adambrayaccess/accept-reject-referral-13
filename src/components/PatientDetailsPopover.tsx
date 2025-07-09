@@ -21,7 +21,7 @@ const PatientDetailsPopover = ({ patient, children }: PatientDetailsPopoverProps
       <HoverCardTrigger asChild>
         {children}
       </HoverCardTrigger>
-      <HoverCardContent className="w-96 p-4 z-50" side="right" align="start" sideOffset={8}>
+      <HoverCardContent className="w-96 p-4 z-50 bg-background border" side="bottom" align="start" sideOffset={8}>
         <div className="space-y-4">
           {/* Patient Header */}
           <div className="flex items-center gap-3 pb-3 border-b">
