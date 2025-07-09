@@ -33,7 +33,7 @@ const ReferralTableHeader = ({
         <TableHead className="w-10"></TableHead>
         <TableHead className="w-16">Priority</TableHead>
         <TableHead className="min-w-[120px]">Name</TableHead>
-        <TableHead className="w-16">Gender</TableHead>
+        
         <TableHead className="min-w-[100px]">NHS Number</TableHead>
         <TableHead className="min-w-[80px]">UBRN</TableHead>
         <TableHead className="min-w-[100px]">Contact Number</TableHead>
