@@ -286,7 +286,7 @@ const ReferralCard = ({
                            </div>
 
                            <div className="flex items-center justify-between pt-2">
-                             <div className="text-xs text-muted-foreground">
+                             <div className="text-xs text-muted-foreground font-bold">
                                Created: {new Date().toLocaleDateString()}
                              </div>
                              {referral.parentReferralId && (
