@@ -8,12 +8,10 @@ import { fetchChildReferrals } from '@/services/referralService';
 import { format } from 'date-fns';
 import { useNavigate } from 'react-router-dom';
 import CreateSubReferralSheet from './CreateSubReferralSheet';
-
 interface SubReferralsListTableProps {
   parentReferralId: string;
   onRefresh?: number;
 }
-
 const getPriorityVariant = (priority: Referral['priority']) => {
   switch (priority) {
     case 'emergency':
@@ -24,7 +22,6 @@ const getPriorityVariant = (priority: Referral['priority']) => {
       return 'outline';
   }
 };
-
 const getStatusColor = (status: Referral['status']) => {
   switch (status) {
     case 'new':
@@ -37,7 +34,6 @@ const getStatusColor = (status: Referral['status']) => {
       return 'bg-gray-500';
   }
 };
-
 const getStatusVariant = (status: Referral['status']) => {
   switch (status) {
     case 'new':
@@ -54,14 +50,15 @@ const getStatusVariant = (status: Referral['status']) => {
       return 'secondary';
   }
 };
-
-const SubReferralsListTable = ({ parentReferralId, onRefresh }: SubReferralsListTableProps) => {
+const SubReferralsListTable = ({
+  parentReferralId,
+  onRefresh
+}: SubReferralsListTableProps) => {
   const [subReferrals, setSubReferrals] = useState<Referral[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [refreshKey, setRefreshKey] = useState(0);
   const [isCreateSheetOpen, setIsCreateSheetOpen] = useState(false);
   const navigate = useNavigate();
-
   const loadSubReferrals = async () => {
     setIsLoading(true);
     try {
@@ -73,55 +70,32 @@ const SubReferralsListTable = ({ parentReferralId, onRefresh }: SubReferralsList
       setIsLoading(false);
     }
   };
-
   const handleSubReferralCreated = () => {
     setRefreshKey(prev => prev + 1);
     loadSubReferrals();
   };
-
   useEffect(() => {
     loadSubReferrals();
   }, [parentReferralId, onRefresh, refreshKey]);
-
   const handleViewSubReferral = (subReferralId: string) => {
     navigate(`/referral/${subReferralId}`);
   };
-
   if (isLoading) {
-    return (
-      <div className="text-sm text-muted-foreground">Loading sub-referrals...</div>
-    );
+    return <div className="text-sm text-muted-foreground">Loading sub-referrals...</div>;
   }
-
-  return (
-    <div>
-      <div className="flex items-center justify-between mb-4">
-        <div className="flex items-center gap-2">
-          <LayoutList className="h-5 w-5" />
-          <span className="font-semibold">Sub-referrals ({subReferrals.length})</span>
-        </div>
-        <Button variant="outline" size="sm" onClick={() => setIsCreateSheetOpen(true)}>
-          <Plus className="mr-2 h-4 w-4" />
-          Create Sub-referral
-        </Button>
-      </div>
+  return <div>
       
-      {subReferrals.length === 0 ? (
-        <div className="text-sm text-muted-foreground">
+      
+      {subReferrals.length === 0 ? <div className="text-sm text-muted-foreground">
           No sub-referrals have been created yet.
-        </div>
-      ) : (
-        <div className="space-y-3">
-          {subReferrals.map((subReferral) => (
-            <div key={subReferral.id} className="border rounded-lg p-3 hover:bg-muted/50 transition-colors">
+        </div> : <div className="space-y-3">
+          {subReferrals.map(subReferral => <div key={subReferral.id} className="border rounded-lg p-3 hover:bg-muted/50 transition-colors">
               <div className="flex items-start justify-between gap-3">
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2 mb-1">
                     <div className={`w-2 h-2 rounded-full ${getStatusColor(subReferral.status)}`}></div>
                     <span className="font-medium text-sm">{subReferral.specialty}</span>
-                    {subReferral.service && (
-                      <span className="text-xs text-muted-foreground">- {subReferral.service}</span>
-                    )}
+                    {subReferral.service && <span className="text-xs text-muted-foreground">- {subReferral.service}</span>}
                     <Badge variant={getStatusVariant(subReferral.status)} className="text-xs">
                       {subReferral.status.toUpperCase()}
                     </Badge>
@@ -159,27 +133,14 @@ const SubReferralsListTable = ({ parentReferralId, onRefresh }: SubReferralsList
                     Ref: {subReferral.id} | UBRN: {subReferral.ubrn}
                   </div>
                 </div>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={() => handleViewSubReferral(subReferral.id)}
-                >
+                <Button variant="ghost" size="sm" onClick={() => handleViewSubReferral(subReferral.id)}>
                   <ExternalLink className="h-4 w-4" />
                 </Button>
               </div>
-            </div>
-          ))}
-        </div>
-      )}
+            </div>)}
+        </div>}
       
-      <CreateSubReferralSheet
-        parentReferralId={parentReferralId}
-        onSubReferralCreated={handleSubReferralCreated}
-        isOpen={isCreateSheetOpen}
-        onOpenChange={setIsCreateSheetOpen}
-      />
-    </div>
-  );
+      <CreateSubReferralSheet parentReferralId={parentReferralId} onSubReferralCreated={handleSubReferralCreated} isOpen={isCreateSheetOpen} onOpenChange={setIsCreateSheetOpen} />
+    </div>;
 };
-
 export default SubReferralsListTable;
