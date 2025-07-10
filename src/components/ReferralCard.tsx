@@ -13,7 +13,7 @@ import { usePinning } from '@/hooks/usePinning';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/components/ui/hover-card';
 import ClinicalTagsPopover from '@/components/referral-tagging/ClinicalTagsPopover';
-import SubReferralsList from '@/components/sub-referrals/SubReferralsList';
+import SubReferralsListTable from '@/components/sub-referrals/SubReferralsListTable';
 import ParentReferralInfo from '@/components/sub-referrals/ParentReferralInfo';
 import PatientDetailsPopover from '@/components/PatientDetailsPopover';
 import { getTagStyle } from '@/utils/tagCategoryUtils';
@@ -255,7 +255,7 @@ const ReferralCard = ({
                         <ParentReferralInfo childReferralId={referral.id} />
                      ) : (
                        /* Parent Referral: Show Sub-Referrals */
-                       <SubReferralsList parentReferralId={referral.id} />
+                       <SubReferralsListTable parentReferralId={referral.id} />
                     )}
                   </AccordionContent>
                 </AccordionItem>
