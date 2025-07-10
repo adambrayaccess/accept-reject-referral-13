@@ -146,7 +146,7 @@ const ReferralTableRow = ({
               }} onClick={handleToggleExpanded}>
                       <LayoutList className="h-3 w-3" />
                       <span className="mx-1 font-extrabold text-sm">
-                        {referral.childReferralIds?.length || 0}
+                        {(referral.parentReferralId ? 1 : 0) + (referral.childReferralIds?.length || 0)}
                       </span>
                       {isExpanded ? <ChevronDown className="h-2 w-2" style={{
                   color: '#007A7A'
