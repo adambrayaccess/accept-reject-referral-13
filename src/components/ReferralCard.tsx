@@ -3,7 +3,7 @@ import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/componen
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Calendar, Clock, FileText, Phone, User, Building, CircleDot, ExternalLink, LayoutList, Tag } from 'lucide-react';
-import TriageStatusPopover from '@/components/triage/TriageStatusPopover';
+import TriageStatusBadge from '@/components/triage/TriageStatusBadge';
 import { format, differenceInYears } from 'date-fns';
 import { Link } from 'react-router-dom';
 import ReferralPriorityBadge from '@/components/dashboard/ReferralPriorityBadge';
@@ -177,7 +177,7 @@ const ReferralCard = ({
             <div className="grid grid-cols-1 gap-3">
               <div>
                 <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">Status</div>
-                <TriageStatusPopover status={referral.triageStatus} />
+                <TriageStatusBadge status={referral.triageStatus} />
               </div>
             </div>
             <div>
