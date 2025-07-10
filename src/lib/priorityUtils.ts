@@ -17,11 +17,11 @@ export const getPriorityVariant = (priority: Referral['priority']) => {
 export const getPriorityCustomStyles = (priority: Referral['priority']) => {
   switch (priority) {
     case 'urgent':
-      return 'bg-[#973060] text-white hover:bg-[#973060]/80';
+      return 'bg-[#D4E5E5] text-[#2F453D] hover:bg-[#D4E5E5]/80';
     case 'routine':
-      return 'bg-[#F5F5F5] text-[#2F453D] hover:bg-[#F5F5F5]/80';
+      return 'bg-[#D4E5E5] text-[#2F453D] hover:bg-[#D4E5E5]/80';
     default:
-      return '';
+      return 'bg-[#D4E5E5] text-[#2F453D] hover:bg-[#D4E5E5]/80';
   }
 };
 
