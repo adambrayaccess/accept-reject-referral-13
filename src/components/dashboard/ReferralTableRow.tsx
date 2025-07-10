@@ -175,7 +175,9 @@ const ReferralTableRow = ({
                 {referral.clinicalInfo.reason}
               </div>
             </TableCell>
-            <PatientReferralDetails referral={referral} />
+            <TableCell className="p-2">
+              <PatientReferralDetails referral={referral} />
+            </TableCell>
             <TableCell className="p-2">
               <ReferralSourceBadge referral={referral} />
             </TableCell>
