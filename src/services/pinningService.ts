@@ -108,8 +108,6 @@ export class PinningService {
         return [];
       }
 
-      console.log('Fetching pinned referrals for user:', user.id);
-
       const { data, error } = await supabase
         .from('pinned_referrals')
         .select('referral_id')
@@ -121,9 +119,7 @@ export class PinningService {
         throw error;
       }
 
-      console.log('Pinned referrals data:', data);
       const referralIds = data.map(item => item.referral_id);
-      console.log('Mapped referral IDs:', referralIds);
 
       return referralIds;
     } catch (error) {
