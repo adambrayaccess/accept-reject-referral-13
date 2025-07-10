@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+// Card components removed - using direct content only
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { ArrowUp, ExternalLink } from 'lucide-react';
@@ -82,17 +82,7 @@ const ParentReferralInfoTable = ({ childReferralId }: ParentReferralInfoTablePro
 
   if (isLoading) {
     return (
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <ArrowUp className="h-5 w-5" />
-            Parent Referral
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="text-sm text-muted-foreground">Loading parent referral...</div>
-        </CardContent>
-      </Card>
+      <div className="text-sm text-muted-foreground">Loading parent referral...</div>
     );
   }
 
@@ -101,71 +91,61 @@ const ParentReferralInfoTable = ({ childReferralId }: ParentReferralInfoTablePro
   }
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle className="flex items-center gap-2">
-          <ArrowUp className="h-5 w-5" />
-          Parent Referral
-        </CardTitle>
-      </CardHeader>
-      <CardContent>
-        <div className="border rounded-lg p-3 bg-muted/30">
-          <div className="flex items-start justify-between gap-3">
-            <div className="flex-1 min-w-0">
-              <div className="flex items-center gap-2 mb-1">
-                <div className={`w-2 h-2 rounded-full ${getStatusColor(parentReferral.status)}`}></div>
-                <span className="font-medium text-sm">{parentReferral.specialty}</span>
-                {parentReferral.service && (
-                  <span className="text-xs text-muted-foreground">- {parentReferral.service}</span>
-                )}
-                <Badge variant={getStatusVariant(parentReferral.status)} className="text-xs">
-                  {parentReferral.status.toUpperCase()}
-                </Badge>
-                <Badge variant={getPriorityVariant(parentReferral.priority)} className="text-xs">
-                  {parentReferral.priority.toUpperCase()}
-                </Badge>
+    <div className="border rounded-lg p-3 bg-muted/30">
+      <div className="flex items-start justify-between gap-3">
+        <div className="flex-1 min-w-0">
+          <div className="flex items-center gap-2 mb-1">
+            <div className={`w-2 h-2 rounded-full ${getStatusColor(parentReferral.status)}`}></div>
+            <span className="font-medium text-sm">{parentReferral.specialty}</span>
+            {parentReferral.service && (
+              <span className="text-xs text-muted-foreground">- {parentReferral.service}</span>
+            )}
+            <Badge variant={getStatusVariant(parentReferral.status)} className="text-xs">
+              {parentReferral.status.toUpperCase()}
+            </Badge>
+            <Badge variant={getPriorityVariant(parentReferral.priority)} className="text-xs">
+              {parentReferral.priority.toUpperCase()}
+            </Badge>
+          </div>
+          <div className="text-xs text-muted-foreground mb-2">
+            Created: {format(new Date(parentReferral.created), 'dd MMM yyyy, HH:mm')}
+          </div>
+          
+          <div className="grid grid-cols-3 gap-3 mb-2">
+            <div>
+              <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">
+                Referral Organisation
               </div>
-              <div className="text-xs text-muted-foreground mb-2">
-                Created: {format(new Date(parentReferral.created), 'dd MMM yyyy, HH:mm')}
-              </div>
-              
-              <div className="grid grid-cols-3 gap-3 mb-2">
-                <div>
-                  <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">
-                    Referral Organisation
-                  </div>
-                  <div className="text-xs font-medium">{parentReferral.referrer.organization || 'N/A'}</div>
-                </div>
-                <div>
-                  <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">
-                    Referral Type
-                  </div>
-                  <div className="text-xs font-medium">{parentReferral.referralType || 'N/A'}</div>
-                </div>
-                <div>
-                  <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">
-                    Referral Source
-                  </div>
-                  <div className="text-xs font-medium">{parentReferral.referralSource || 'N/A'}</div>
-                </div>
-              </div>
-              
-              <div className="text-sm">{parentReferral.clinicalInfo.reason}</div>
-              <div className="text-xs text-muted-foreground mt-1">
-                Ref: {parentReferral.id} | UBRN: {parentReferral.ubrn}
-              </div>
+              <div className="text-xs font-medium">{parentReferral.referrer.organization || 'N/A'}</div>
             </div>
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={handleViewParent}
-            >
-              <ExternalLink className="h-4 w-4" />
-            </Button>
+            <div>
+              <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">
+                Referral Type
+              </div>
+              <div className="text-xs font-medium">{parentReferral.referralType || 'N/A'}</div>
+            </div>
+            <div>
+              <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">
+                Referral Source
+              </div>
+              <div className="text-xs font-medium">{parentReferral.referralSource || 'N/A'}</div>
+            </div>
+          </div>
+          
+          <div className="text-sm">{parentReferral.clinicalInfo.reason}</div>
+          <div className="text-xs text-muted-foreground mt-1">
+            Ref: {parentReferral.id} | UBRN: {parentReferral.ubrn}
           </div>
         </div>
-      </CardContent>
-    </Card>
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={handleViewParent}
+        >
+          <ExternalLink className="h-4 w-4" />
+        </Button>
+      </div>
+    </div>
   );
 };
 
