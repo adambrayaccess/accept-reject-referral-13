@@ -67,6 +67,32 @@ const ReferralTableExpandedContent = ({ referral }: ReferralTableExpandedContent
               </div>
             </div>
 
+            <div className="grid grid-cols-2 gap-3">
+              <div>
+                <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">
+                  Referral Organisation
+                </div>
+                <div className="text-sm font-medium">{referral.referrer?.organization || 'N/A'}</div>
+              </div>
+              <div>
+                <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">
+                  Referral Type
+                </div>
+                <div className="text-sm font-medium">{referral.referralType || 'N/A'}</div>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 gap-3">
+              <div>
+                <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">
+                  Clinical History
+                </div>
+                <div className="text-sm font-medium">
+                  {referral.clinicalInfo?.history || 'No clinical history available'}
+                </div>
+              </div>
+            </div>
+
             <div className="flex items-center justify-between pt-2">
               <div className="text-xs text-muted-foreground font-bold">
                 Created: {new Date().toLocaleDateString()}
