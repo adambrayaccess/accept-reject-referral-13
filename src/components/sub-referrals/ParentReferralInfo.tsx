@@ -109,6 +109,28 @@ const ParentReferralInfo = ({ childReferralId }: ParentReferralInfoProps) => {
               <div className="text-xs text-muted-foreground mb-2">
                 Created: {format(new Date(parentReferral.created), 'dd MMM yyyy, HH:mm')}
               </div>
+              
+              <div className="grid grid-cols-3 gap-3 mb-2">
+                <div>
+                  <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">
+                    Referral Organisation
+                  </div>
+                  <div className="text-xs font-medium">{parentReferral.referrer.organization || 'N/A'}</div>
+                </div>
+                <div>
+                  <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">
+                    Referral Type
+                  </div>
+                  <div className="text-xs font-medium">{parentReferral.referralType || 'N/A'}</div>
+                </div>
+                <div>
+                  <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">
+                    Referral Source
+                  </div>
+                  <div className="text-xs font-medium">{parentReferral.referralSource || 'N/A'}</div>
+                </div>
+              </div>
+              
               <div className="text-sm">{parentReferral.clinicalInfo.reason}</div>
               <div className="text-xs text-muted-foreground mt-1">
                 Ref: {parentReferral.id} | UBRN: {parentReferral.ubrn}
