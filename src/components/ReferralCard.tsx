@@ -134,9 +134,15 @@ const ReferralCard = ({
                 NHS No: {referral.patient.nhsNumber}
               </div>
               <div className="text-sm mt-4">
-                <div>
-                  <div className="font-bold text-muted-foreground">Gender</div>
-                  <div>{referral.patient.gender || "Not specified"}</div>
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <div className="font-bold text-muted-foreground">Gender</div>
+                    <div>{referral.patient.gender || "Not specified"}</div>
+                  </div>
+                  <div>
+                    <div className="font-bold text-muted-foreground">Date of Birth</div>
+                    <div>{format(new Date(referral.patient.birthDate), 'dd MMM yyyy')} ({patientAge}y)</div>
+                  </div>
                 </div>
               </div>
             </div>
