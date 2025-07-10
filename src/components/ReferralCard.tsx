@@ -144,22 +144,24 @@ const ReferralCard = ({
                   {referral.patient.name}
                 </CardTitle>
               </PatientDetailsPopover>
-              <div className="grid grid-cols-4 gap-3 text-sm">
-                <div>
-                  <div className="font-bold text-muted-foreground">Gender</div>
-                  <div>{referral.patient.gender}</div>
+              <div className="grid grid-cols-4 gap-1.5 text-xs">
+                <div className="min-w-0">
+                  <div className="font-bold text-muted-foreground text-xs">Gender</div>
+                  <div className="truncate">{referral.patient.gender}</div>
                 </div>
-                <div>
-                  <div className="font-bold text-muted-foreground">Date of Birth</div>
-                  <div>{format(new Date(referral.patient.birthDate), 'dd/MM/yyyy')} ({patientAge} years)</div>
+                <div className="min-w-0">
+                  <div className="font-bold text-muted-foreground text-xs">DOB</div>
+                  <div className="truncate" title={`${format(new Date(referral.patient.birthDate), 'dd/MM/yyyy')} (${patientAge} years)`}>
+                    {format(new Date(referral.patient.birthDate), 'dd/MM/yyyy')}
+                  </div>
                 </div>
-                <div>
-                  <div className="font-bold text-muted-foreground">NHS No.</div>
-                  <div>{referral.patient.nhsNumber}</div>
+                <div className="min-w-0">
+                  <div className="font-bold text-muted-foreground text-xs">NHS No.</div>
+                  <div className="truncate font-mono" title={referral.patient.nhsNumber}>{referral.patient.nhsNumber}</div>
                 </div>
-                <div>
-                  <div className="font-bold text-muted-foreground">Specialty</div>
-                  <div className="font-bold text-primary">{referral.specialty}</div>
+                <div className="min-w-0">
+                  <div className="font-bold text-muted-foreground text-xs">Specialty</div>
+                  <div className="font-bold text-primary truncate" title={referral.specialty}>{referral.specialty}</div>
                 </div>
               </div>
             </div>
