@@ -10,6 +10,8 @@ interface SubReferral {
   ubrn: string;
   priority: string;
   referral_source: string | null;
+  referral_type: string | null;
+  reason: string;
   created_at: string;
 }
 
@@ -33,7 +35,7 @@ const SubReferralDetails = ({ childReferralIds }: SubReferralDetailsProps) => {
         
         const { data, error } = await supabase
           .from('referrals')
-          .select('id, specialty, triage_status, ubrn, priority, referral_source, created_at')
+          .select('id, specialty, triage_status, ubrn, priority, referral_source, created_at, referral_type, reason')
           .in('id', childReferralIds)
           .order('created_at', { ascending: true });
 
@@ -108,7 +110,7 @@ const SubReferralDetails = ({ childReferralIds }: SubReferralDetailsProps) => {
     <div className="space-y-3">
       {subReferrals.map((subReferral) => (
         <div key={subReferral.id} className="p-3 bg-muted/50 rounded space-y-2">
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-3 gap-3">
             <div>
               <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">
                 Sub-Referral ID
@@ -123,9 +125,15 @@ const SubReferralDetails = ({ childReferralIds }: SubReferralDetailsProps) => {
               </div>
               <div className="text-sm font-medium">{subReferral.specialty}</div>
             </div>
+            <div>
+              <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">
+                Referral Type
+              </div>
+              <div className="text-sm font-medium">{subReferral.referral_type || 'N/A'}</div>
+            </div>
           </div>
           
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-3 gap-3">
             <div>
               <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">
                 Status
@@ -142,15 +150,6 @@ const SubReferralDetails = ({ childReferralIds }: SubReferralDetailsProps) => {
                 {getPriorityDisplay(subReferral.priority)}
               </div>
             </div>
-          </div>
-
-          <div className="grid grid-cols-2 gap-3">
-            <div>
-              <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">
-                UBRN
-              </div>
-              <div className="text-sm font-medium font-mono">{subReferral.ubrn}</div>
-            </div>
             <div>
               <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">
                 Referral Source
@@ -161,10 +160,30 @@ const SubReferralDetails = ({ childReferralIds }: SubReferralDetailsProps) => {
             </div>
           </div>
 
-          <div className="flex items-center justify-between pt-2">
-            <div className="text-xs text-muted-foreground">
-              <span className="font-bold">Created:</span> {new Date(subReferral.created_at).toLocaleDateString()}
+          <div className="grid grid-cols-3 gap-3">
+            <div>
+              <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">
+                UBRN
+              </div>
+              <div className="text-sm font-medium font-mono">{subReferral.ubrn}</div>
             </div>
+            <div>
+              <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">
+                Created
+              </div>
+              <div className="text-sm font-medium">
+                {new Date(subReferral.created_at).toLocaleDateString()}
+              </div>
+            </div>
+            <div>
+              <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">
+                Referral Reason
+              </div>
+              <div className="text-sm font-medium">{subReferral.reason || 'N/A'}</div>
+            </div>
+          </div>
+
+          <div className="flex justify-end pt-2">
             <Link 
               to={`/referral/${subReferral.id}`}
               className="inline-flex items-center gap-1 text-sm text-primary hover:underline font-bold"
