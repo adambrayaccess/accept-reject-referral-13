@@ -98,44 +98,30 @@ const ReferralCard = ({
     parentReferralId: referral.parentReferralId,
     childReferralIds: referral.childReferralIds,
     hasChildReferrals: referral.childReferralIds && referral.childReferralIds.length > 0,
-    showAccordion: referral.isSubReferral || (referral.childReferralIds && referral.childReferralIds.length > 0)
+    showAccordion: referral.isSubReferral || referral.childReferralIds && referral.childReferralIds.length > 0
   });
 
   // Clinical Tags Component
   const ClinicalTagsButton = () => {
-    return (
-      <HoverCard>
+    return <HoverCard>
         <HoverCardTrigger asChild>
           <div>
-            <ClinicalTagsPopover 
-              referral={referral}
-              onTagsUpdated={onTagsUpdated}
-            />
+            <ClinicalTagsPopover referral={referral} onTagsUpdated={onTagsUpdated} />
           </div>
         </HoverCardTrigger>
-        {tags.length > 0 && (
-          <HoverCardContent className="w-80 p-4" side="bottom">
+        {tags.length > 0 && <HoverCardContent className="w-80 p-4" side="bottom">
             <div className="space-y-2">
               <h4 className="text-sm font-semibold text-foreground">Clinical Tags</h4>
               <div className="flex flex-wrap gap-2">
-                {tags.map(tag => (
-                  <Badge 
-                    key={tag} 
-                    variant="outline" 
-                    className={`text-xs ${getTagStyle(tag)}`}
-                  >
+                {tags.map(tag => <Badge key={tag} variant="outline" className={`text-xs ${getTagStyle(tag)}`}>
                     {tag}
-                  </Badge>
-                ))}
+                  </Badge>)}
               </div>
             </div>
-          </HoverCardContent>
-        )}
-      </HoverCard>
-    );
+          </HoverCardContent>}
+      </HoverCard>;
   };
-  return (
-    <Card className="hover:border-primary hover:shadow-md transition-all self-start">
+  return <Card className="hover:border-primary hover:shadow-md transition-all self-start">
         <CardHeader className="pb-3">
           <div className="flex justify-between items-start mb-6">
             <div className="flex-1 pr-4">
@@ -211,7 +197,7 @@ const ReferralCard = ({
             </div>
             <div>
               <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">Referral Date</div>
-              <div className="text-sm font-medium">{formattedDate} at {formattedTime}</div>
+              <div className="text-sm font-bold ">{formattedDate} at {formattedTime}</div>
             </div>
           </div>
 
@@ -228,34 +214,26 @@ const ReferralCard = ({
           </div>
           
           {/* Sub-Referral Accordion */}
-          {(referral.isSubReferral || (referral.childReferralIds && referral.childReferralIds.length > 0)) && (
-            <div className="mt-3 -mx-4 -mb-2" onClick={(e) => e.stopPropagation()}>
+          {(referral.isSubReferral || referral.childReferralIds && referral.childReferralIds.length > 0) && <div className="mt-3 -mx-4 -mb-2" onClick={e => e.stopPropagation()}>
               <Accordion type="single" collapsible className="w-full">
                 <AccordionItem value="sub-referrals" className="border-0 border-t">
-                  <AccordionTrigger 
-                    className="px-4 py-2 text-sm font-bold text-muted-foreground hover:no-underline uppercase tracking-wide"
-                    onClick={(e) => e.stopPropagation()}
-                  >
-                     <div className="flex items-center gap-2" style={{ color: '#79264D' }}>
+                  <AccordionTrigger className="px-4 py-2 text-sm font-bold text-muted-foreground hover:no-underline uppercase tracking-wide" onClick={e => e.stopPropagation()}>
+                     <div className="flex items-center gap-2" style={{
+                color: '#79264D'
+              }}>
                       <LayoutList className="h-4 w-4" />
                       {referral.isSubReferral ? 'Parent Referral' : `Sub-Referrals (${referral.childReferralIds?.length || 0})`}
                     </div>
                   </AccordionTrigger>
-                  <AccordionContent className="px-4 pb-4 pt-0" onClick={(e) => e.stopPropagation()}>
-                     {referral.isSubReferral ? (
-                        /* Sub-Referral: Show Parent Referral Details */
-                        <ParentReferralInfoTable childReferralId={referral.id} />
-                     ) : (
-                       /* Parent Referral: Show Sub-Referrals */
-                       <SubReferralsListTable parentReferralId={referral.id} />
-                    )}
+                  <AccordionContent className="px-4 pb-4 pt-0" onClick={e => e.stopPropagation()}>
+                     {referral.isSubReferral ? (/* Sub-Referral: Show Parent Referral Details */
+              <ParentReferralInfoTable childReferralId={referral.id} />) : (/* Parent Referral: Show Sub-Referrals */
+              <SubReferralsListTable parentReferralId={referral.id} />)}
                   </AccordionContent>
                 </AccordionItem>
               </Accordion>
-            </div>
-          )}
+            </div>}
         </CardContent>
-      </Card>
-    );
+      </Card>;
 };
 export default ReferralCard;
