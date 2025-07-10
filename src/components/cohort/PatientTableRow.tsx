@@ -113,7 +113,7 @@ const PatientTableRow = ({
     </Draggable>
     {isExpanded && (
       <TableRow>
-        <TableCell colSpan={12} className="p-0 border-t-0">
+        <TableCell colSpan={14} className="p-0 border-t-0">
           <ReferralTableExpandedContent referral={referral} />
         </TableCell>
       </TableRow>
