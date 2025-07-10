@@ -169,8 +169,8 @@ const ReferralCard = ({
           <div className="grid grid-cols-1 gap-3 p-3 bg-primary/10 rounded-md">
             <div className="grid grid-cols-1 gap-3">
               <div>
-                <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">Status</div>
-                <TriageStatusBadge status={referral.triageStatus} />
+                <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">Phone</div>
+                <div className="text-sm font-medium">{referral.patient.phone || 'N/A'}</div>
               </div>
             </div>
             <div>
@@ -206,8 +206,8 @@ const ReferralCard = ({
             </div>
             
             <div>
-              <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">Phone</div>
-              <div className="text-sm font-medium">{referral.patient.phone || 'N/A'}</div>
+              <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">Triage Status</div>
+              <TriageStatusBadge status={referral.triageStatus} />
             </div>
             <div>
               <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">Referral Date</div>
