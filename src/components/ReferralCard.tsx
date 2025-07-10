@@ -162,12 +162,12 @@ const ReferralCard = ({
           <div className="grid grid-cols-1 gap-2 mt-3">
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">Referrer</div>
+                <div className="text-xs font-bold text-muted-foreground uppercase tracking-wide">Referrer</div>
                 <div className="text-sm font-medium">{referral.referrer.name}</div>
                 <div className="text-xs text-black">{referral.referrer.organization}</div>
               </div>
               <div>
-                <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">Source</div>
+                <div className="text-xs font-bold text-muted-foreground uppercase tracking-wide">Source</div>
                 <ReferralSourceBadge referral={referral} />
               </div>
             </div>
@@ -177,20 +177,20 @@ const ReferralCard = ({
         <CardContent className="pt-0 pb-2">
           <div className="grid grid-cols-2 gap-x-4 gap-y-3">
             <div>
-              <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">Referral Type</div>
+              <div className="text-xs font-bold text-muted-foreground uppercase tracking-wide">Referral Type</div>
               <div className="text-sm font-medium">{referral.referralType || 'External Referral'}</div>
             </div>
             <div>
-              <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">UBRN</div>
+              <div className="text-xs font-bold text-muted-foreground uppercase tracking-wide">UBRN</div>
               <div className="text-sm font-medium font-mono truncate" title={referral.ubrn}>{referral.ubrn}</div>
             </div>
             
             <div>
-              <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">Triage Status</div>
+              <div className="text-xs font-bold text-muted-foreground uppercase tracking-wide">Triage Status</div>
               <TriageStatusBadge status={referral.triageStatus} />
             </div>
             <div>
-              <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">Referral Date</div>
+              <div className="text-xs font-bold text-muted-foreground uppercase tracking-wide">Referral Date</div>
               <div className="text-sm font-medium">{formattedDate} at {formattedTime}</div>
             </div>
           </div>
