@@ -3,6 +3,7 @@ import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/componen
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Calendar, Clock, FileText, Phone, User, Building, CircleDot, ExternalLink, LayoutList, Tag } from 'lucide-react';
+import TriageStatusBadge from '@/components/triage/TriageStatusBadge';
 import { format, differenceInYears } from 'date-fns';
 import { Link } from 'react-router-dom';
 import ReferralPriorityBadge from '@/components/dashboard/ReferralPriorityBadge';
@@ -176,12 +177,7 @@ const ReferralCard = ({
               </div>
               <div>
                 <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">Status</div>
-                <div className="flex items-center gap-1">
-                  <CircleDot className={`h-3 w-3 ${getDotColor(referral)} fill-current`} />
-                  <span className="text-xs font-bold text-muted-foreground">
-                    {getStatusText(referral).toUpperCase()}
-                  </span>
-                </div>
+                <TriageStatusBadge status={referral.triageStatus} />
               </div>
             </div>
             <div>
