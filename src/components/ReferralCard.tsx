@@ -144,8 +144,8 @@ const ReferralCard = ({
                   {referral.patient.name}
                 </CardTitle>
               </PatientDetailsPopover>
-              <div className="flex justify-between text-sm mt-4">
-                <div className="space-y-3">
+              <div className="flex justify-between text-sm mt-4 gap-6">
+                <div className="flex-1 space-y-3">
                   <div>
                     <div className="font-bold text-muted-foreground">Gender</div>
                     <div>{referral.patient.gender}</div>
@@ -155,7 +155,7 @@ const ReferralCard = ({
                     <div>{format(new Date(referral.patient.birthDate), 'dd/MM/yyyy')} ({patientAge} years)</div>
                   </div>
                 </div>
-                <div className="space-y-3">
+                <div className="flex-1 space-y-3 text-right">
                   <div>
                     <div className="font-bold text-muted-foreground">NHS No.</div>
                     <div>{referral.patient.nhsNumber}</div>
