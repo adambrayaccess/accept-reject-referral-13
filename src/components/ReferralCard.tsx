@@ -144,7 +144,7 @@ const ReferralCard = ({
                   {referral.patient.name}
                 </CardTitle>
               </PatientDetailsPopover>
-              <div className="grid grid-cols-3 gap-3 text-sm">
+              <div className="grid grid-cols-4 gap-3 text-sm">
                 <div>
                   <div className="font-bold text-muted-foreground">Gender</div>
                   <div>{referral.patient.gender}</div>
@@ -156,6 +156,10 @@ const ReferralCard = ({
                 <div>
                   <div className="font-bold text-muted-foreground">NHS No.</div>
                   <div>{referral.patient.nhsNumber}</div>
+                </div>
+                <div>
+                  <div className="font-bold text-muted-foreground">Specialty</div>
+                  <div className="font-bold text-primary">{referral.specialty}</div>
                 </div>
               </div>
             </div>
@@ -170,11 +174,7 @@ const ReferralCard = ({
           
           {/* Emphasized Key Fields */}
           <div className="grid grid-cols-1 gap-3 p-3 bg-primary/10 rounded-md">
-            <div className="grid grid-cols-2 gap-3">
-              <div>
-                <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">Specialty</div>
-                <div className="font-bold text-sm text-primary">{referral.specialty}</div>
-              </div>
+            <div className="grid grid-cols-1 gap-3">
               <div>
                 <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">Status</div>
                 <TriageStatusBadge status={referral.triageStatus} />
