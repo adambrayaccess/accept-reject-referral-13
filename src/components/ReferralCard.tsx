@@ -161,7 +161,6 @@ const ReferralCard = ({
             </div>
             <div className="flex flex-col items-end gap-2">
               <div className="flex items-center gap-2">
-                <ClinicalTagsButton />
                 <PinButton isPinned={isPinned(referral.id)} onTogglePin={() => togglePin(referral.id)} size="sm" variant="ghost" />
                 <div>
                   <ReferralPriorityBadge priority={referral.priority} size="sm" />
@@ -224,8 +223,8 @@ const ReferralCard = ({
             </div>
           </div>
 
-          {/* View Full Referral Details */}
-          <div className="mt-4 pt-3 border-t">
+          {/* View Full Referral Details and Tags */}
+          <div className="mt-4 pt-3 border-t flex justify-between items-center">
             <Button variant="outline" size="sm" asChild>
               <Link to={`/referral/${referral.id}`}>
                 <FileText className="h-4 w-4" />
@@ -233,6 +232,7 @@ const ReferralCard = ({
                 <ExternalLink className="h-4 w-4" />
               </Link>
             </Button>
+            <ClinicalTagsButton />
           </div>
           
           {/* Sub-Referral Accordion */}
