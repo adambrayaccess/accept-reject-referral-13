@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { ExternalLink } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { Badge } from '@/components/ui/badge';
 import { supabase } from '@/integrations/supabase/client';
 
 interface SubReferral {
@@ -72,6 +73,25 @@ const SubReferralDetails = ({ childReferralIds }: SubReferralDetailsProps) => {
     }
   };
 
+  const getStatusVariant = (triageStatus: string | null) => {
+    if (!triageStatus) return 'default';
+    
+    switch (triageStatus) {
+      case 'waiting-list':
+        return 'secondary';
+      case 'pre-assessment':
+        return 'default';
+      case 'assessed':
+        return 'default';
+      case 'refer-to-another-specialty':
+        return 'outline';
+      case 'discharged':
+        return 'destructive';
+      default:
+        return 'secondary';
+    }
+  };
+
   const getPriorityDisplay = (priority: string) => {
     switch (priority) {
       case 'urgent':
@@ -138,8 +158,13 @@ const SubReferralDetails = ({ childReferralIds }: SubReferralDetailsProps) => {
               <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">
                 Status
               </div>
-              <div className="text-sm font-medium">
-                {getStatusDisplay(subReferral.triage_status)}
+              <div className="flex items-center gap-2">
+                <div className="text-sm font-medium">
+                  {getStatusDisplay(subReferral.triage_status)}
+                </div>
+                <Badge variant={getStatusVariant(subReferral.triage_status)} className="text-xs">
+                  {getStatusDisplay(subReferral.triage_status).toUpperCase()}
+                </Badge>
               </div>
             </div>
             <div>
