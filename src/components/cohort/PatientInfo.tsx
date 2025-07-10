@@ -1,10 +1,8 @@
-
 import { TableCell } from '@/components/ui/table';
 import { Button } from '@/components/ui/button';
 import { ChevronDown, ChevronRight, LayoutList } from 'lucide-react';
 import { Referral } from '@/types/referral';
 import PatientDetailsPopover from '@/components/PatientDetailsPopover';
-
 interface PatientInfoProps {
   referral: Referral;
   isDragDisabled: boolean;
@@ -12,65 +10,54 @@ interface PatientInfoProps {
   isExpanded?: boolean;
   onToggleExpanded?: (e: React.MouseEvent) => void;
 }
-
-const PatientInfo = ({ referral, isDragDisabled, onNameClick, isExpanded, onToggleExpanded }: PatientInfoProps) => {
+const PatientInfo = ({
+  referral,
+  isDragDisabled,
+  onNameClick,
+  isExpanded,
+  onToggleExpanded
+}: PatientInfoProps) => {
   const handleNameClick = (e: React.MouseEvent) => {
     e.stopPropagation();
     if (!isDragDisabled && onNameClick) {
       onNameClick(referral);
     }
   };
-
-  return (
-    <TableCell className="p-2">
+  return <TableCell className="p-2">
       <div className="flex items-center justify-between">
         <div>
           <PatientDetailsPopover patient={referral.patient}>
-            <Button
-              variant="link"
-              className="font-bold underline p-0 h-auto text-sm"
-              style={{ color: '#007373' }}
-              onClick={handleNameClick}
-              disabled={isDragDisabled}
-            >
+            <Button variant="link" className="font-bold underline p-0 h-auto text-sm" style={{
+            color: '#007373'
+          }} onClick={handleNameClick} disabled={isDragDisabled}>
               {referral.patient.name}
             </Button>
           </PatientDetailsPopover>
           {/* Sub-referral expand/collapse button */}
-          {onToggleExpanded && (
-            <div className="relative mt-1">
-              <Button
-                variant="ghost"
-                size="sm"
-                className="h-auto w-auto p-1 hover:bg-opacity-30"
-                style={{ 
-                  backgroundColor: '#007A7A20',
-                  color: '#007A7A'
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.backgroundColor = '#007A7A40';
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.backgroundColor = '#007A7A20';
-                }}
-                onClick={onToggleExpanded}
-              >
+          {onToggleExpanded && <div className="relative mt-1">
+              <Button variant="ghost" size="sm" className="h-auto w-auto p-1 hover:bg-opacity-30" style={{
+            backgroundColor: '#007A7A20',
+            color: '#007A7A'
+          }} onMouseEnter={e => {
+            e.currentTarget.style.backgroundColor = '#007A7A40';
+          }} onMouseLeave={e => {
+            e.currentTarget.style.backgroundColor = '#007A7A20';
+          }} onClick={onToggleExpanded}>
                 <LayoutList className="h-3 w-3" />
-                <span className="text-xs font-medium mx-1" style={{ color: '#007A7A' }}>
+                <span style={{
+              color: '#007A7A'
+            }} className="mx-1 text-sm font-extrabold">
                   {referral.childReferralIds?.length || 0}
                 </span>
-                {isExpanded ? (
-                  <ChevronDown className="h-2 w-2" style={{ color: '#007A7A' }} />
-                ) : (
-                  <ChevronRight className="h-2 w-2" style={{ color: '#007A7A' }} />
-                )}
+                {isExpanded ? <ChevronDown className="h-2 w-2" style={{
+              color: '#007A7A'
+            }} /> : <ChevronRight className="h-2 w-2" style={{
+              color: '#007A7A'
+            }} />}
               </Button>
-            </div>
-          )}
+            </div>}
         </div>
       </div>
-    </TableCell>
-  );
+    </TableCell>;
 };
-
 export default PatientInfo;
