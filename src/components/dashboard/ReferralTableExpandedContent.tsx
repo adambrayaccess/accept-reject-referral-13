@@ -20,7 +20,7 @@ const ReferralTableExpandedContent = ({ referral }: ReferralTableExpandedContent
             <span className="font-bold text-sm" style={{ color: '#613249' }}>PARENT REFERRAL</span>
           </div>
           <div className="p-3 bg-muted/50 rounded space-y-2">
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-3 gap-3">
               <div>
                 <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">
                   Parent Referral ID
@@ -35,9 +35,15 @@ const ReferralTableExpandedContent = ({ referral }: ReferralTableExpandedContent
                 </div>
                 <div className="text-sm font-medium">Cardiology</div>
               </div>
+              <div>
+                <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">
+                  Referral Organisation
+                </div>
+                <div className="text-sm font-medium">{referral.referrer?.organization || 'N/A'}</div>
+              </div>
             </div>
             
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-3 gap-3">
               <div>
                 <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">
                   Status
@@ -50,9 +56,15 @@ const ReferralTableExpandedContent = ({ referral }: ReferralTableExpandedContent
                 </div>
                 <div className="text-sm font-medium">Routine</div>
               </div>
+              <div>
+                <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">
+                  Referral Type
+                </div>
+                <div className="text-sm font-medium">{referral.referralType || 'N/A'}</div>
+              </div>
             </div>
 
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-3 gap-3">
               <div>
                 <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">
                   UBRN
@@ -65,31 +77,11 @@ const ReferralTableExpandedContent = ({ referral }: ReferralTableExpandedContent
                 </div>
                 <div className="text-sm font-medium">GP Referral</div>
               </div>
-            </div>
-
-            <div className="grid grid-cols-2 gap-3">
               <div>
                 <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">
-                  Referral Organisation
+                  Referral Reason
                 </div>
-                <div className="text-sm font-medium">{referral.referrer?.organization || 'N/A'}</div>
-              </div>
-              <div>
-                <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">
-                  Referral Type
-                </div>
-                <div className="text-sm font-medium">{referral.referralType || 'N/A'}</div>
-              </div>
-            </div>
-
-            <div className="grid grid-cols-1 gap-3">
-              <div>
-                <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">
-                  Clinical History
-                </div>
-                <div className="text-sm font-medium">
-                  {referral.clinicalInfo?.history || 'No clinical history available'}
-                </div>
+                <div className="text-sm font-medium">{referral.clinicalInfo?.reason || 'N/A'}</div>
               </div>
             </div>
 
