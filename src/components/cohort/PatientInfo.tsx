@@ -56,10 +56,13 @@ const PatientInfo = ({ referral, isDragDisabled, onNameClick, isExpanded, onTogg
                 onClick={onToggleExpanded}
               >
                 <LayoutList className="h-3 w-3" />
+                <span className="text-xs font-medium mx-1" style={{ color: '#007A7A' }}>
+                  {referral.childReferralIds?.length || 0}
+                </span>
                 {isExpanded ? (
-                  <ChevronDown className="h-2 w-2 ml-0.5" style={{ color: '#007A7A' }} />
+                  <ChevronDown className="h-2 w-2" style={{ color: '#007A7A' }} />
                 ) : (
-                  <ChevronRight className="h-2 w-2 ml-0.5" style={{ color: '#007A7A' }} />
+                  <ChevronRight className="h-2 w-2" style={{ color: '#007A7A' }} />
                 )}
               </Button>
             </div>
