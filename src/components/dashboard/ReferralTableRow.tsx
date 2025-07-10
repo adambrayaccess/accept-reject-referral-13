@@ -171,7 +171,7 @@ const ReferralTableRow = ({
               <div className="text-sm text-muted-foreground">{referral.referrer.name}</div>
             </TableCell>
             <TableCell className="p-2 max-w-32">
-              <div className="text-sm truncate" title={referral.clinicalInfo.reason}>
+              <div className="text-sm break-words" title={referral.clinicalInfo.reason}>
                 {referral.clinicalInfo.reason}
               </div>
             </TableCell>
