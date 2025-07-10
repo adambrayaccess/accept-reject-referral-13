@@ -37,6 +37,23 @@ const getStatusColor = (status: Referral['status']) => {
   }
 };
 
+const getStatusVariant = (status: Referral['status']) => {
+  switch (status) {
+    case 'new':
+      return 'default';
+    case 'accepted':
+      return 'default';
+    case 'rejected':
+      return 'destructive';
+    case 'completed':
+      return 'secondary';
+    case 'discharged':
+      return 'outline';
+    default:
+      return 'secondary';
+  }
+};
+
 const ParentReferralInfo = ({ childReferralId }: ParentReferralInfoProps) => {
   const [parentReferral, setParentReferral] = useState<Referral | null>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -102,6 +119,9 @@ const ParentReferralInfo = ({ childReferralId }: ParentReferralInfoProps) => {
                 {parentReferral.service && (
                   <span className="text-xs text-muted-foreground">- {parentReferral.service}</span>
                 )}
+                <Badge variant={getStatusVariant(parentReferral.status)} className="text-xs">
+                  {parentReferral.status.toUpperCase()}
+                </Badge>
                 <Badge variant={getPriorityVariant(parentReferral.priority)} className="text-xs">
                   {parentReferral.priority.toUpperCase()}
                 </Badge>
