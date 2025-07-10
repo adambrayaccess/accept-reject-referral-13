@@ -87,7 +87,7 @@ const ClinicalTagsPopover = ({
       <PopoverTrigger asChild>
         <div className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-blue-50 text-blue-800 border border-blue-200 rounded-full text-xs font-medium cursor-pointer hover:bg-blue-100 transition-colors">
           <Tag className="h-3 w-3" />
-          Clinical Tags
+          Tags
           {currentTags.length > 0 && <span className="bg-blue-800 text-white rounded-full px-1.5 py-0.5 text-xs font-medium">
               {currentTags.length}
             </span>}
