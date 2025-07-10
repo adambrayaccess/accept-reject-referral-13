@@ -126,20 +126,17 @@ const ReferralCard = ({
           <div className="flex justify-between items-start mb-6">
             <div className="flex-1 pr-4">
               <PatientDetailsPopover patient={referral.patient}>
-                <CardTitle className="text-lg mb-3 cursor-pointer hover:text-primary transition-colors">
+                <CardTitle className="text-lg mb-1 cursor-pointer hover:text-primary transition-colors">
                   {referral.patient.name}
                 </CardTitle>
               </PatientDetailsPopover>
+              <div className="text-sm text-muted-foreground mb-3">
+                NHS No: {referral.patient.nhsNumber}
+              </div>
               <div className="text-sm mt-4">
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <div className="font-bold text-muted-foreground">NHS No.</div>
-                    <div>{referral.patient.nhsNumber}</div>
-                  </div>
-                  <div>
-                    <div className="font-bold text-muted-foreground">Gender</div>
-                    <div>{referral.patient.gender || 'Not specified'}</div>
-                  </div>
+                <div>
+                  <div className="font-bold text-muted-foreground">Gender</div>
+                  <div>{referral.patient.gender || "Not specified"}</div>
                 </div>
               </div>
             </div>
