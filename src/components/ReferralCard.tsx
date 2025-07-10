@@ -167,12 +167,6 @@ const ReferralCard = ({
           
           {/* Emphasized Key Fields */}
           <div className="grid grid-cols-1 gap-3 p-3 bg-primary/10 rounded-md">
-            <div className="grid grid-cols-1 gap-3">
-              <div>
-                <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">Phone</div>
-                <div className="text-sm font-medium">{referral.patient.phone || 'N/A'}</div>
-              </div>
-            </div>
             <div>
               <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wide mb-1">Reason for Referral</div>
               <div className="font-bold text-sm text-primary">{referral.clinicalInfo.reason}</div>
