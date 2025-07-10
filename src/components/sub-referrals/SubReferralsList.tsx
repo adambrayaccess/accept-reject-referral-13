@@ -39,6 +39,23 @@ const getStatusColor = (status: Referral['status']) => {
   }
 };
 
+const getStatusVariant = (status: Referral['status']) => {
+  switch (status) {
+    case 'new':
+      return 'default';
+    case 'accepted':
+      return 'default';
+    case 'rejected':
+      return 'destructive';
+    case 'completed':
+      return 'secondary';
+    case 'discharged':
+      return 'outline';
+    default:
+      return 'secondary';
+  }
+};
+
 const SubReferralsList = ({ parentReferralId, onRefresh }: SubReferralsListProps) => {
   const [subReferrals, setSubReferrals] = useState<Referral[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -118,6 +135,9 @@ const SubReferralsList = ({ parentReferralId, onRefresh }: SubReferralsListProps
                       {subReferral.service && (
                         <span className="text-xs text-muted-foreground">- {subReferral.service}</span>
                       )}
+                      <Badge variant={getStatusVariant(subReferral.status)} className="text-xs">
+                        {subReferral.status.toUpperCase()}
+                      </Badge>
                       <Badge variant={getPriorityVariant(subReferral.priority)} className="text-xs">
                         {subReferral.priority.toUpperCase()}
                       </Badge>
@@ -125,6 +145,28 @@ const SubReferralsList = ({ parentReferralId, onRefresh }: SubReferralsListProps
                     <div className="text-xs text-muted-foreground mb-2">
                       Created: {format(new Date(subReferral.created), 'dd MMM yyyy, HH:mm')}
                     </div>
+                    
+                    <div className="grid grid-cols-3 gap-3 mb-2">
+                      <div>
+                        <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">
+                          Referral Organisation
+                        </div>
+                        <div className="text-xs font-medium">{subReferral.referrer.organization || 'N/A'}</div>
+                      </div>
+                      <div>
+                        <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">
+                          Referral Type
+                        </div>
+                        <div className="text-xs font-medium">{subReferral.referralType || 'N/A'}</div>
+                      </div>
+                      <div>
+                        <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">
+                          Referral Source
+                        </div>
+                        <div className="text-xs font-medium">{subReferral.referralSource || 'N/A'}</div>
+                      </div>
+                    </div>
+                    
                     <div className="text-sm">{subReferral.clinicalInfo.reason}</div>
                     <div className="text-xs text-muted-foreground mt-1">
                       Ref: {subReferral.id} | UBRN: {subReferral.ubrn}
