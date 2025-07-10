@@ -32,12 +32,12 @@ const ReferralTableHeader = ({
         </TableHead>
         <TableHead className="w-10"></TableHead>
         <TableHead className="w-16">Priority</TableHead>
-        <TableHead className="min-w-[120px]">Name</TableHead>
+        <TableHead className="min-w-[120px]">Patient Name</TableHead>
         <TableHead className="min-w-[100px]">NHS Number</TableHead>
         <TableHead className="min-w-[80px]">UBRN</TableHead>
-        <TableHead className="min-w-[100px]">Contact Number</TableHead>
-        <TableHead className="min-w-[140px]">HCP referred to</TableHead>
-        <TableHead className="min-w-[160px] font-bold">Reason for referral</TableHead>
+        <TableHead className="min-w-[100px]">Contact</TableHead>
+        <TableHead className="min-w-[140px]">Referred To</TableHead>
+        <TableHead className="min-w-[160px] font-bold">Reason for Referral</TableHead>
         <TableHead className="min-w-[140px]">Tags</TableHead>
         <TableHead className="w-16">Source</TableHead>
         <TableHead className="w-16">Type</TableHead>
