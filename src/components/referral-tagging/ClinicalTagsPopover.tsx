@@ -10,39 +10,37 @@ import CustomTagInput from './CustomTagInput';
 import CurrentTagsDisplay from './CurrentTagsDisplay';
 import { useToast } from '@/hooks/use-toast';
 import { updateReferralTags } from '@/services/referralService';
-
 interface ClinicalTagsPopoverProps {
   referral: Referral;
   onTagsUpdated: () => void;
 }
-
-const ClinicalTagsPopover = ({ referral, onTagsUpdated }: ClinicalTagsPopoverProps) => {
+const ClinicalTagsPopover = ({
+  referral,
+  onTagsUpdated
+}: ClinicalTagsPopoverProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const [isUpdating, setIsUpdating] = useState(false);
-  const { toast } = useToast();
-  
+  const {
+    toast
+  } = useToast();
   const currentTags = referral.tags || [];
-
   const handleAddTag = async (tag: string) => {
     if (currentTags.includes(tag)) return;
-    
     setIsUpdating(true);
     try {
       const updatedTags = [...currentTags, tag];
       const success = await updateReferralTags(referral.id, updatedTags);
-      
       if (success) {
         toast({
           title: "Tag Added",
-          description: `Added "${tag}" to referral`,
+          description: `Added "${tag}" to referral`
         });
-        
         onTagsUpdated();
       } else {
         toast({
           title: "Error",
           description: "Failed to add tag",
-          variant: "destructive",
+          variant: "destructive"
         });
       }
     } catch (error) {
@@ -50,31 +48,28 @@ const ClinicalTagsPopover = ({ referral, onTagsUpdated }: ClinicalTagsPopoverPro
       toast({
         title: "Error",
         description: "Failed to add tag",
-        variant: "destructive",
+        variant: "destructive"
       });
     } finally {
       setIsUpdating(false);
     }
   };
-
   const handleRemoveTag = async (tag: string) => {
     setIsUpdating(true);
     try {
       const updatedTags = currentTags.filter(t => t !== tag);
       const success = await updateReferralTags(referral.id, updatedTags);
-      
       if (success) {
         toast({
           title: "Tag Removed",
-          description: `Removed "${tag}" from referral`,
+          description: `Removed "${tag}" from referral`
         });
-        
         onTagsUpdated();
       } else {
         toast({
           title: "Error",
           description: "Failed to remove tag",
-          variant: "destructive",
+          variant: "destructive"
         });
       }
     } catch (error) {
@@ -82,24 +77,20 @@ const ClinicalTagsPopover = ({ referral, onTagsUpdated }: ClinicalTagsPopoverPro
       toast({
         title: "Error",
         description: "Failed to remove tag",
-        variant: "destructive",
+        variant: "destructive"
       });
     } finally {
       setIsUpdating(false);
     }
   };
-
-  return (
-    <Popover open={isOpen} onOpenChange={setIsOpen}>
+  return <Popover open={isOpen} onOpenChange={setIsOpen}>
       <PopoverTrigger asChild>
         <div className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-blue-50 text-blue-800 border border-blue-200 rounded-full text-xs font-medium cursor-pointer hover:bg-blue-100 transition-colors">
           <Tag className="h-3 w-3" />
           Clinical Tags
-          {currentTags.length > 0 && (
-            <span className="bg-blue-800 text-white rounded-full px-1.5 py-0.5 text-xs font-bold">
+          {currentTags.length > 0 && <span className="bg-blue-800 text-white rounded-full px-1.5 py-0.5 text-xs font-medium">
               {currentTags.length}
-            </span>
-          )}
+            </span>}
         </div>
       </PopoverTrigger>
       <PopoverContent className="w-96 p-4 bg-white border shadow-lg z-50" align="start">
@@ -109,45 +100,22 @@ const ClinicalTagsPopover = ({ referral, onTagsUpdated }: ClinicalTagsPopoverPro
               <Tag className="h-4 w-4" />
               <h3 className="font-semibold">Clinical Tags</h3>
             </div>
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => setIsOpen(false)}
-              className="h-6 w-6 p-0 hover:bg-muted"
-            >
+            <Button variant="ghost" size="sm" onClick={() => setIsOpen(false)} className="h-6 w-6 p-0 hover:bg-muted">
               <X className="h-4 w-4" />
             </Button>
           </div>
           
-          <CurrentTagsDisplay 
-            tags={currentTags}
-            onRemoveTag={handleRemoveTag}
-            isUpdating={isUpdating}
-          />
+          <CurrentTagsDisplay tags={currentTags} onRemoveTag={handleRemoveTag} isUpdating={isUpdating} />
 
-          {Object.entries(CLINICAL_TAG_CATEGORIES).map(([categoryName, tags]) => (
-            <div key={categoryName}>
-              <TagCategorySection
-                categoryName={categoryName}
-                tags={tags}
-                currentTags={currentTags}
-                onAddTag={handleAddTag}
-                onRemoveTag={handleRemoveTag}
-                isUpdating={isUpdating}
-              />
-            </div>
-          ))}
+          {Object.entries(CLINICAL_TAG_CATEGORIES).map(([categoryName, tags]) => <div key={categoryName}>
+              <TagCategorySection categoryName={categoryName} tags={tags} currentTags={currentTags} onAddTag={handleAddTag} onRemoveTag={handleRemoveTag} isUpdating={isUpdating} />
+            </div>)}
 
           <Separator />
           
-          <CustomTagInput 
-            onAddTag={handleAddTag}
-            isUpdating={isUpdating}
-          />
+          <CustomTagInput onAddTag={handleAddTag} isUpdating={isUpdating} />
         </div>
       </PopoverContent>
-    </Popover>
-  );
+    </Popover>;
 };
-
 export default ClinicalTagsPopover;
