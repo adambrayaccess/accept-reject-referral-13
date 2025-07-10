@@ -161,11 +161,8 @@ const ReferralCard = ({
             <div className="flex items-center gap-2">
               <ClinicalTagsButton />
               <PinButton isPinned={isPinned(referral.id)} onTogglePin={() => togglePin(referral.id)} size="sm" variant="ghost" />
-              <div className="flex items-center gap-1">
-                <CircleDot className={`h-3 w-3 ${getDotColor(referral)} fill-current`} />
-                <span className="text-xs font-bold text-muted-foreground">
-                  {getStatusText(referral).toUpperCase()}
-                </span>
+              <div>
+                <ReferralPriorityBadge priority={referral.priority} size="sm" />
               </div>
             </div>
           </div>
@@ -178,8 +175,13 @@ const ReferralCard = ({
                 <div className="font-bold text-sm text-primary">{referral.specialty}</div>
               </div>
               <div>
-                <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">Priority</div>
-                <div><ReferralPriorityBadge priority={referral.priority} size="sm" /></div>
+                <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">Status</div>
+                <div className="flex items-center gap-1">
+                  <CircleDot className={`h-3 w-3 ${getDotColor(referral)} fill-current`} />
+                  <span className="text-xs font-bold text-muted-foreground">
+                    {getStatusText(referral).toUpperCase()}
+                  </span>
+                </div>
               </div>
             </div>
             <div>
