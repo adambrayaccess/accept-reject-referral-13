@@ -35,7 +35,7 @@ const ReferralTableExpandedContent = ({ referral }: ReferralTableExpandedContent
             <LayoutList className="h-4 w-4" color="#613249" />
             <span className="font-bold text-sm" style={{ color: '#613249' }}>SUB-REFERRALS ({referral.childReferralIds.length})</span>
           </div>
-          <SubReferralDetails childReferralIds={referral.childReferralIds} />
+          <SubReferralDetails childReferralIds={referral.childReferralIds} parentReferralId={referral.id} />
         </div>
       </div>
     );
