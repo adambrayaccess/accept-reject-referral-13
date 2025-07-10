@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { TableCell, TableRow } from '@/components/ui/table';
 import { Button } from '@/components/ui/button';
@@ -16,7 +15,6 @@ import PatientDetailsPopover from '@/components/PatientDetailsPopover';
 import PatientReferralDetails from '@/components/cohort/PatientReferralDetails';
 import TriageStatusBadge from '@/components/triage/TriageStatusBadge';
 import ReferralTableExpandedContent from './ReferralTableExpandedContent';
-
 const getStatusText = (referral: Referral) => {
   if (referral.status === 'accepted' && referral.triageStatus) {
     switch (referral.triageStatus) {
@@ -32,7 +30,6 @@ const getStatusText = (referral: Referral) => {
         return referral.triageStatus;
     }
   }
-
   switch (referral.status) {
     case 'new':
       return 'New';
@@ -44,7 +41,6 @@ const getStatusText = (referral: Referral) => {
       return referral.status.charAt(0).toUpperCase() + referral.status.slice(1);
   }
 };
-
 const getDotColor = (referral: Referral) => {
   if (referral.status === 'accepted' && referral.triageStatus) {
     switch (referral.triageStatus) {
@@ -60,7 +56,6 @@ const getDotColor = (referral: Referral) => {
         return 'text-gray-500';
     }
   }
-
   switch (referral.status) {
     case 'new':
       return 'text-blue-600';
@@ -72,7 +67,6 @@ const getDotColor = (referral: Referral) => {
       return 'text-gray-500';
   }
 };
-
 interface ReferralTableRowProps {
   referral: Referral;
   index: number;
@@ -82,29 +76,28 @@ interface ReferralTableRowProps {
   isSelected?: boolean;
   onToggleSelection?: (referralId: string) => void;
 }
-
-const ReferralTableRow = ({ 
-  referral, 
-  index, 
-  onNameClick, 
-  onRowClick, 
+const ReferralTableRow = ({
+  referral,
+  index,
+  onNameClick,
+  onRowClick,
   isDragDisabled = false,
   isSelected = false,
   onToggleSelection
 }: ReferralTableRowProps) => {
-  const { isPinned, togglePin } = usePinning();
+  const {
+    isPinned,
+    togglePin
+  } = usePinning();
   const [isExpanded, setIsExpanded] = useState(false);
-  
   const handleCheckboxChange = (e: React.MouseEvent) => {
     e.stopPropagation();
     onToggleSelection?.(referral.id);
   };
-
   const handleToggleExpanded = (e: React.MouseEvent) => {
     e.stopPropagation();
     setIsExpanded(!isExpanded);
   };
-
   const handleRowClick = () => {
     if (!isDragDisabled) {
       onRowClick(referral.id);
@@ -113,46 +106,17 @@ const ReferralTableRow = ({
 
   // Check if this referral has expandable content (show for all referrals to check)
   const hasExpandableContent = true;
-
-  return (
-    <>
-      <Draggable 
-        key={referral.id} 
-        draggableId={referral.id} 
-        index={index} 
-        isDragDisabled={isDragDisabled}
-      >
-        {(provided, snapshot) => (
-          <TableRow 
-            ref={provided.innerRef}
-            {...provided.draggableProps}
-            className={`bg-white hover:bg-gray-50 cursor-pointer ${
-              snapshot.isDragging ? 'bg-gray-100 shadow-lg' : ''
-            } ${isDragDisabled ? 'opacity-50' : ''} ${
-              isSelected ? 'bg-blue-50' : ''
-            }`}
-            onClick={handleRowClick}
-          >
+  return <>
+      <Draggable key={referral.id} draggableId={referral.id} index={index} isDragDisabled={isDragDisabled}>
+        {(provided, snapshot) => <TableRow ref={provided.innerRef} {...provided.draggableProps} className={`bg-white hover:bg-gray-50 cursor-pointer ${snapshot.isDragging ? 'bg-gray-100 shadow-lg' : ''} ${isDragDisabled ? 'opacity-50' : ''} ${isSelected ? 'bg-blue-50' : ''}`} onClick={handleRowClick}>
             <TableCell className="p-2" onClick={handleCheckboxChange}>
-              <Checkbox
-                checked={isSelected}
-                onCheckedChange={(checked) => {
-                  console.log('Checkbox changed:', checked, 'for referral:', referral.id);
-                  onToggleSelection?.(referral.id);
-                }}
-                aria-label={`Select referral for ${referral.patient.name}`}
-              />
+              <Checkbox checked={isSelected} onCheckedChange={checked => {
+            console.log('Checkbox changed:', checked, 'for referral:', referral.id);
+            onToggleSelection?.(referral.id);
+          }} aria-label={`Select referral for ${referral.patient.name}`} />
             </TableCell>
             <TableCell className="p-2">
-              <div 
-                {...provided.dragHandleProps}
-                className={`p-1 hover:bg-muted rounded ${
-                  isDragDisabled 
-                    ? 'cursor-not-allowed opacity-50' 
-                    : 'cursor-grab active:cursor-grabbing'
-                }`}
-                onClick={(e) => e.stopPropagation()}
-              >
+              <div {...provided.dragHandleProps} className={`p-1 hover:bg-muted rounded ${isDragDisabled ? 'cursor-not-allowed opacity-50' : 'cursor-grab active:cursor-grabbing'}`} onClick={e => e.stopPropagation()}>
                 <GripVertical className="h-3 w-3 text-muted-foreground" />
               </div>
             </TableCell>
@@ -163,68 +127,43 @@ const ReferralTableRow = ({
               <div className="flex flex-col items-start gap-2">
                 <div className="flex items-center gap-2">
                   <PatientDetailsPopover patient={referral.patient}>
-                    <Button
-                      variant="link"
-                      className="font-bold underline p-0 h-auto text-sm"
-                      style={{ color: '#007373' }}
-                      onClick={(e) => !isDragDisabled && onNameClick(e, referral.id)}
-                      disabled={isDragDisabled}
-                    >
+                    <Button variant="link" className="font-bold underline p-0 h-auto text-sm" style={{
+                  color: '#007373'
+                }} onClick={e => !isDragDisabled && onNameClick(e, referral.id)} disabled={isDragDisabled}>
                       {referral.patient.name}
                     </Button>
                   </PatientDetailsPopover>
-                  <PinButton
-                    isPinned={isPinned(referral.id)}
-                    onTogglePin={() => togglePin(referral.id)}
-                    size="sm"
-                    variant="ghost"
-                  />
+                  <PinButton isPinned={isPinned(referral.id)} onTogglePin={() => togglePin(referral.id)} size="sm" variant="ghost" />
                 </div>
-                {hasExpandableContent && (
-                  <div className="relative">
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      className="h-auto w-auto p-1 hover:bg-opacity-30"
-                      style={{ 
-                        backgroundColor: '#007A7A20',
-                        color: '#007A7A'
-                      }}
-                      onMouseEnter={(e) => {
-                        e.currentTarget.style.backgroundColor = '#007A7A40';
-                      }}
-                      onMouseLeave={(e) => {
-                        e.currentTarget.style.backgroundColor = '#007A7A20';
-                      }}
-                      onClick={handleToggleExpanded}
-                    >
+                {hasExpandableContent && <div className="relative">
+                    <Button variant="ghost" size="sm" className="h-auto w-auto p-1 hover:bg-opacity-30" style={{
+                backgroundColor: '#007A7A20',
+                color: '#007A7A'
+              }} onMouseEnter={e => {
+                e.currentTarget.style.backgroundColor = '#007A7A40';
+              }} onMouseLeave={e => {
+                e.currentTarget.style.backgroundColor = '#007A7A20';
+              }} onClick={handleToggleExpanded}>
                       <LayoutList className="h-3 w-3" />
-                      <span className="mx-1 text-xs font-medium">
+                      <span className="mx-1 font-extrabold text-sm">
                         {referral.childReferralIds?.length || 0}
                       </span>
-                      {isExpanded ? (
-                        <ChevronDown className="h-2 w-2" style={{ color: '#007A7A' }} />
-                      ) : (
-                        <ChevronRight className="h-2 w-2" style={{ color: '#007A7A' }} />
-                      )}
+                      {isExpanded ? <ChevronDown className="h-2 w-2" style={{
+                  color: '#007A7A'
+                }} /> : <ChevronRight className="h-2 w-2" style={{
+                  color: '#007A7A'
+                }} />}
                     </Button>
-                    {(referral.isSubReferral || (referral.childReferralIds && referral.childReferralIds.length > 0)) && (
-                      <CircleDot 
-                        className="absolute -top-1 -right-1 h-2 w-2 fill-current" 
-                        style={{ color: '#613249' }}
-                      />
-                    )}
-                  </div>
-                )}
+                    {(referral.isSubReferral || referral.childReferralIds && referral.childReferralIds.length > 0) && <CircleDot className="absolute -top-1 -right-1 h-2 w-2 fill-current" style={{
+                color: '#613249'
+              }} />}
+                  </div>}
               </div>
             </TableCell>
             
             <TableCell className="p-2 font-mono text-sm">{referral.patient.nhsNumber}</TableCell>
             <TableCell className="p-2 font-mono text-sm">
-              <div 
-                className="max-w-[5rem] truncate" 
-                title={referral.ubrn}
-              >
+              <div className="max-w-[5rem] truncate" title={referral.ubrn}>
                 {referral.ubrn}
               </div>
             </TableCell>
@@ -251,18 +190,13 @@ const ReferralTableRow = ({
             <TableCell className="p-2">
               <ChevronRight className="h-3 w-3 text-muted-foreground" />
             </TableCell>
-          </TableRow>
-        )}
+          </TableRow>}
       </Draggable>
-      {isExpanded && (
-        <TableRow>
+      {isExpanded && <TableRow>
           <TableCell colSpan={14} className="p-0 border-t-0">
             <ReferralTableExpandedContent referral={referral} />
           </TableCell>
-        </TableRow>
-      )}
-    </>
-  );
+        </TableRow>}
+    </>;
 };
-
 export default ReferralTableRow;
