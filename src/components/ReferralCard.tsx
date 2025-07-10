@@ -130,7 +130,7 @@ const ReferralCard = ({
                   {referral.patient.name}
                 </CardTitle>
               </PatientDetailsPopover>
-              <div className="text-sm text-muted-foreground mb-3">
+              <div className="text-sm font-bold text-muted-foreground mb-3">
                 NHS No: {referral.patient.nhsNumber}
               </div>
               <div className="text-sm mt-4">
