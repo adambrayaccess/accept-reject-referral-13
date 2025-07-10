@@ -134,7 +134,7 @@ const ReferralCard = ({
                 NHS No: {referral.patient.nhsNumber}
               </div>
               <div className="text-sm mt-4">
-                <div className="grid grid-cols-2 gap-2">
+                <div className="grid grid-cols-2 gap-1">
                   <div>
                     <div className="font-bold text-muted-foreground">Gender</div>
                     <div>{referral.patient.gender || "Not specified"}</div>
