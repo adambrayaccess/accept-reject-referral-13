@@ -89,6 +89,13 @@ export const fetchTeamById = async (teamId: string): Promise<Team | null> => {
   try {
     console.log('Fetching team by ID:', teamId);
     
+    // Validate that teamId is a proper UUID format to prevent database errors
+    const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+    if (!uuidRegex.test(teamId)) {
+      console.warn('Invalid team ID format (not UUID):', teamId);
+      return null;
+    }
+    
     const { data, error } = await supabase
       .from('teams')
       .select('*')
@@ -122,6 +129,13 @@ export const fetchTeamById = async (teamId: string): Promise<Team | null> => {
 export const fetchHCPsByTeam = async (teamId: string) => {
   try {
     console.log('Fetching HCPs by team ID:', teamId);
+    
+    // Validate that teamId is a proper UUID format to prevent database errors
+    const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+    if (!uuidRegex.test(teamId)) {
+      console.warn('Invalid team ID format (not UUID):', teamId);
+      return [];
+    }
     
     const { data, error } = await supabase
       .from('hcp')

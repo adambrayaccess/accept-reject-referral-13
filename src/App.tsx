@@ -16,7 +16,14 @@ import AuthPage from "./pages/AuthPage";
 import ProtectedRoute from "./components/auth/ProtectedRoute";
 import { useReferralNotifications } from "./hooks/useReferralNotifications";
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: false,
+      refetchOnWindowFocus: false,
+    },
+  },
+});
 
 const AppContent: React.FC = () => {
   useReferralNotifications();
