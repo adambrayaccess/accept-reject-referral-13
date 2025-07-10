@@ -14,7 +14,7 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/
 import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/components/ui/hover-card';
 import ClinicalTagsPopover from '@/components/referral-tagging/ClinicalTagsPopover';
 import SubReferralsListTable from '@/components/sub-referrals/SubReferralsListTable';
-import ParentReferralInfo from '@/components/sub-referrals/ParentReferralInfo';
+import ParentReferralInfoTable from '@/components/sub-referrals/ParentReferralInfoTable';
 import PatientDetailsPopover from '@/components/PatientDetailsPopover';
 import { getTagStyle } from '@/utils/tagCategoryUtils';
 interface ReferralCardProps {
@@ -252,7 +252,7 @@ const ReferralCard = ({
                   <AccordionContent className="px-4 pb-4 pt-0" onClick={(e) => e.stopPropagation()}>
                      {referral.isSubReferral ? (
                         /* Sub-Referral: Show Parent Referral Details */
-                        <ParentReferralInfo childReferralId={referral.id} />
+                        <ParentReferralInfoTable childReferralId={referral.id} />
                      ) : (
                        /* Parent Referral: Show Sub-Referrals */
                        <SubReferralsListTable parentReferralId={referral.id} />
