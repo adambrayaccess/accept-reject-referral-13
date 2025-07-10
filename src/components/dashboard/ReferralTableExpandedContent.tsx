@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { ExternalLink, LayoutList, ArrowUp } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import SubReferralDetails from '@/components/SubReferralDetails';
+import ParentReferralInfoTable from '@/components/sub-referrals/ParentReferralInfoTable';
 
 interface ReferralTableExpandedContentProps {
   referral: Referral;
@@ -19,99 +20,7 @@ const ReferralTableExpandedContent = ({ referral }: ReferralTableExpandedContent
             <LayoutList className="h-4 w-4" color="#613249" />
             <span className="font-bold text-sm" style={{ color: '#613249' }}>PARENT REFERRAL</span>
           </div>
-          <div className="p-3 bg-muted/50 rounded space-y-2">
-            <div className="grid grid-cols-3 gap-3">
-              <div>
-                <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">
-                  Parent Referral ID
-                </div>
-                <div className="text-sm font-medium font-mono">
-                  {referral.parentReferralId ? referral.parentReferralId.slice(0, 8) + '...' : 'N/A'}
-                </div>
-              </div>
-              <div>
-                <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">
-                  Specialty
-                </div>
-                <div className="text-sm font-medium">Cardiology</div>
-              </div>
-              <div>
-                <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">
-                  Referral Organisation
-                </div>
-                <div className="text-sm font-medium">{referral.referrer?.organization || 'N/A'}</div>
-              </div>
-            </div>
-            
-            <div className="grid grid-cols-3 gap-3">
-              <div>
-                <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">
-                  Status
-                </div>
-                <div className="text-sm font-medium">Waiting List</div>
-              </div>
-              <div>
-                <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">
-                  Priority
-                </div>
-                <div className="text-sm font-medium">Routine</div>
-              </div>
-              <div>
-                <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">
-                  Referral Type
-                </div>
-                <div className="text-sm font-medium">{referral.referralType || 'N/A'}</div>
-              </div>
-            </div>
-
-            <div className="grid grid-cols-3 gap-3">
-              <div>
-                <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">
-                  UBRN
-                </div>
-                <div className="text-sm font-medium font-mono">UBRN-{Math.random().toString().slice(2, 12)}</div>
-              </div>
-              <div>
-                <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">
-                  Referral Source
-                </div>
-                <div className="text-sm font-medium">GP Referral</div>
-              </div>
-              <div>
-                <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">
-                  Referral Reason
-                </div>
-                <div className="text-sm font-medium">{referral.clinicalInfo?.reason || 'N/A'}</div>
-              </div>
-            </div>
-
-            <div className="flex items-center justify-between pt-2">
-              <div className="text-xs text-muted-foreground font-bold">
-                Created: {new Date().toLocaleDateString()}
-              </div>
-              {referral.parentReferralId && (
-                <Button
-                  asChild
-                  variant="outline"
-                  size="sm"
-                  className="bg-teal-50 border-teal-200 text-teal-700 hover:bg-teal-100 hover:border-teal-300"
-                >
-                  <Link 
-                    to={`/referral/${referral.parentReferralId}`}
-                    className="inline-flex items-center gap-1"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      e.preventDefault();
-                      window.location.href = `/referral/${referral.parentReferralId}`;
-                    }}
-                  >
-                    <ExternalLink className="h-3 w-3" />
-                    View Referral
-                  </Link>
-                </Button>
-              )}
-            </div>
-          </div>
+          <ParentReferralInfoTable childReferralId={referral.id} />
         </div>
       </div>
     );
