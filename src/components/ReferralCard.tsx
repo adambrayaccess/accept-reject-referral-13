@@ -131,9 +131,15 @@ const ReferralCard = ({
                 </CardTitle>
               </PatientDetailsPopover>
               <div className="text-sm mt-4">
-                <div>
-                  <div className="font-bold text-muted-foreground">NHS No.</div>
-                  <div>{referral.patient.nhsNumber}</div>
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <div className="font-bold text-muted-foreground">NHS No.</div>
+                    <div>{referral.patient.nhsNumber}</div>
+                  </div>
+                  <div>
+                    <div className="font-bold text-muted-foreground">Gender</div>
+                    <div>{referral.patient.gender || 'Not specified'}</div>
+                  </div>
                 </div>
               </div>
             </div>
