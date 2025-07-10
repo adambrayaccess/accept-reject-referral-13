@@ -154,9 +154,7 @@ const ReferralTableRow = ({
                   color: '#007A7A'
                 }} />}
                     </Button>
-                    {(referral.isSubReferral || referral.childReferralIds && referral.childReferralIds.length > 0) && <CircleDot className="absolute -top-1 -right-1 h-2 w-2 fill-current" style={{
-                color: '#613249'
-              }} />}
+                    {referral.isSubReferral || referral.childReferralIds && referral.childReferralIds.length > 0}
                   </div>}
               </div>
             </TableCell>
