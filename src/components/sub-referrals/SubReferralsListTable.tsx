@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+// Card components removed - using direct content only
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { ExternalLink, LayoutList, Plus } from 'lucide-react';
@@ -89,101 +89,88 @@ const SubReferralsListTable = ({ parentReferralId, onRefresh }: SubReferralsList
 
   if (isLoading) {
     return (
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <LayoutList className="h-5 w-5" />
-            Sub-referrals
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="text-sm text-muted-foreground">Loading sub-referrals...</div>
-        </CardContent>
-      </Card>
+      <div className="text-sm text-muted-foreground">Loading sub-referrals...</div>
     );
   }
 
   return (
-    <Card>
-      <CardHeader>
-        <div className="flex items-center justify-between">
-          <CardTitle className="flex items-center gap-2">
-            <LayoutList className="h-5 w-5" />
-            Sub-referrals ({subReferrals.length})
-          </CardTitle>
-          <Button variant="outline" size="sm" onClick={() => setIsCreateSheetOpen(true)}>
-            <Plus className="mr-2 h-4 w-4" />
-            Create Sub-referral
-          </Button>
+    <div>
+      <div className="flex items-center justify-between mb-4">
+        <div className="flex items-center gap-2">
+          <LayoutList className="h-5 w-5" />
+          <span className="font-semibold">Sub-referrals ({subReferrals.length})</span>
         </div>
-      </CardHeader>
-      <CardContent>
-        {subReferrals.length === 0 ? (
-          <div className="text-sm text-muted-foreground">
-            No sub-referrals have been created yet.
-          </div>
-        ) : (
-          <div className="space-y-3">
-            {subReferrals.map((subReferral) => (
-              <div key={subReferral.id} className="border rounded-lg p-3 hover:bg-muted/50 transition-colors">
-                <div className="flex items-start justify-between gap-3">
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-2 mb-1">
-                      <div className={`w-2 h-2 rounded-full ${getStatusColor(subReferral.status)}`}></div>
-                      <span className="font-medium text-sm">{subReferral.specialty}</span>
-                      {subReferral.service && (
-                        <span className="text-xs text-muted-foreground">- {subReferral.service}</span>
-                      )}
-                      <Badge variant={getStatusVariant(subReferral.status)} className="text-xs">
-                        {subReferral.status.toUpperCase()}
-                      </Badge>
-                      <Badge variant={getPriorityVariant(subReferral.priority)} className="text-xs">
-                        {subReferral.priority.toUpperCase()}
-                      </Badge>
-                    </div>
-                    <div className="text-xs text-muted-foreground mb-2">
-                      Created: {format(new Date(subReferral.created), 'dd MMM yyyy, HH:mm')}
-                    </div>
-                    
-                    <div className="grid grid-cols-3 gap-3 mb-2">
-                      <div>
-                        <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">
-                          Referral Organisation
-                        </div>
-                        <div className="text-xs font-medium">{subReferral.referrer.organization || 'N/A'}</div>
+        <Button variant="outline" size="sm" onClick={() => setIsCreateSheetOpen(true)}>
+          <Plus className="mr-2 h-4 w-4" />
+          Create Sub-referral
+        </Button>
+      </div>
+      
+      {subReferrals.length === 0 ? (
+        <div className="text-sm text-muted-foreground">
+          No sub-referrals have been created yet.
+        </div>
+      ) : (
+        <div className="space-y-3">
+          {subReferrals.map((subReferral) => (
+            <div key={subReferral.id} className="border rounded-lg p-3 hover:bg-muted/50 transition-colors">
+              <div className="flex items-start justify-between gap-3">
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center gap-2 mb-1">
+                    <div className={`w-2 h-2 rounded-full ${getStatusColor(subReferral.status)}`}></div>
+                    <span className="font-medium text-sm">{subReferral.specialty}</span>
+                    {subReferral.service && (
+                      <span className="text-xs text-muted-foreground">- {subReferral.service}</span>
+                    )}
+                    <Badge variant={getStatusVariant(subReferral.status)} className="text-xs">
+                      {subReferral.status.toUpperCase()}
+                    </Badge>
+                    <Badge variant={getPriorityVariant(subReferral.priority)} className="text-xs">
+                      {subReferral.priority.toUpperCase()}
+                    </Badge>
+                  </div>
+                  <div className="text-xs text-muted-foreground mb-2">
+                    Created: {format(new Date(subReferral.created), 'dd MMM yyyy, HH:mm')}
+                  </div>
+                  
+                  <div className="grid grid-cols-3 gap-3 mb-2">
+                    <div>
+                      <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">
+                        Referral Organisation
                       </div>
-                      <div>
-                        <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">
-                          Referral Type
-                        </div>
-                        <div className="text-xs font-medium">{subReferral.referralType || 'N/A'}</div>
-                      </div>
-                      <div>
-                        <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">
-                          Referral Source
-                        </div>
-                        <div className="text-xs font-medium">{subReferral.referralSource || 'N/A'}</div>
-                      </div>
+                      <div className="text-xs font-medium">{subReferral.referrer.organization || 'N/A'}</div>
                     </div>
-                    
-                    <div className="text-sm">{subReferral.clinicalInfo.reason}</div>
-                    <div className="text-xs text-muted-foreground mt-1">
-                      Ref: {subReferral.id} | UBRN: {subReferral.ubrn}
+                    <div>
+                      <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">
+                        Referral Type
+                      </div>
+                      <div className="text-xs font-medium">{subReferral.referralType || 'N/A'}</div>
+                    </div>
+                    <div>
+                      <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">
+                        Referral Source
+                      </div>
+                      <div className="text-xs font-medium">{subReferral.referralSource || 'N/A'}</div>
                     </div>
                   </div>
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => handleViewSubReferral(subReferral.id)}
-                  >
-                    <ExternalLink className="h-4 w-4" />
-                  </Button>
+                  
+                  <div className="text-sm">{subReferral.clinicalInfo.reason}</div>
+                  <div className="text-xs text-muted-foreground mt-1">
+                    Ref: {subReferral.id} | UBRN: {subReferral.ubrn}
+                  </div>
                 </div>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => handleViewSubReferral(subReferral.id)}
+                >
+                  <ExternalLink className="h-4 w-4" />
+                </Button>
               </div>
-            ))}
-          </div>
-        )}
-      </CardContent>
+            </div>
+          ))}
+        </div>
+      )}
       
       <CreateSubReferralSheet
         parentReferralId={parentReferralId}
@@ -191,7 +178,7 @@ const SubReferralsListTable = ({ parentReferralId, onRefresh }: SubReferralsList
         isOpen={isCreateSheetOpen}
         onOpenChange={setIsCreateSheetOpen}
       />
-    </Card>
+    </div>
   );
 };
 
