@@ -45,18 +45,18 @@ const WaitingListTableHeader = ({
             {isIndeterminate ? 'Some referrals are selected' : isAllSelected ? 'All referrals are selected' : 'No referrals are selected'}
           </span>
         </TableHead>
-        <TableHead className="min-w-[140px]" scope="col" id="patient-name-header">Patient Name</TableHead>
-        <TableHead className="w-20" scope="col" id="priority-header">Priority</TableHead>
-        <TableHead className="w-24" scope="col" id="days-waiting-header">Days Waiting</TableHead>
-        <TableHead className="w-24" scope="col" id="location-header">Location</TableHead>
-        <TableHead className="min-w-[120px]" scope="col" id="referrer-header">Referrer</TableHead>
-        <TableHead className="w-24" scope="col" id="date-header">Date</TableHead>
-        <TableHead className="min-w-[100px]" scope="col" id="tags-header">Tags</TableHead>
-        <TableHead className="min-w-[120px]" scope="col" id="appointment-status-header">Appointment Status</TableHead>
-        <TableHead className="min-w-[100px]" scope="col" id="target-date-header">Target Date</TableHead>
-        <TableHead className="min-w-[120px]" scope="col" id="care-pathway-header">Care Pathway</TableHead>
-        <TableHead className="min-w-[80px]" scope="col" id="rtt-header" title="Referral to Treatment pathway">RTT</TableHead>
-        <TableHead className="min-w-[120px]" scope="col" id="assigned-team-header">Assigned Team</TableHead>
+        <TableHead className="w-[200px]" scope="col" id="patient-name-header">Patient Name</TableHead>
+        <TableHead className="w-[80px]" scope="col" id="priority-header">Priority</TableHead>
+        <TableHead className="w-[100px]" scope="col" id="days-waiting-header">Days Waiting</TableHead>
+        <TableHead className="w-[120px]" scope="col" id="location-header">Location</TableHead>
+        <TableHead className="w-[160px]" scope="col" id="referrer-header">Referrer</TableHead>
+        <TableHead className="w-[100px]" scope="col" id="date-header">Date</TableHead>
+        <TableHead className="w-[140px]" scope="col" id="tags-header">Tags</TableHead>
+        <TableHead className="w-[140px]" scope="col" id="appointment-status-header">Appointment Status</TableHead>
+        <TableHead className="w-[120px]" scope="col" id="target-date-header">Target Date</TableHead>
+        <TableHead className="w-[140px]" scope="col" id="care-pathway-header">Care Pathway</TableHead>
+        <TableHead className="w-[80px]" scope="col" id="rtt-header" title="Referral to Treatment pathway">RTT</TableHead>
+        <TableHead className="w-[160px]" scope="col" id="assigned-team-header">Assigned Team</TableHead>
         <TableHead className="w-10" scope="col" aria-label="Actions column"></TableHead>
       </TableRow>
     </TableHeader>
