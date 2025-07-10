@@ -144,7 +144,7 @@ const ReferralCard = ({
                   {referral.patient.name}
                 </CardTitle>
               </PatientDetailsPopover>
-              <div className="flex justify-between text-sm mt-4">
+              <div className="flex justify-between text-sm mt-4 w-3/4">
                 <div>
                   <div className="font-bold text-muted-foreground">Gender</div>
                   <div>{referral.patient.gender}</div>
@@ -157,17 +157,19 @@ const ReferralCard = ({
                   <div className="font-bold text-muted-foreground">NHS No.</div>
                   <div>{referral.patient.nhsNumber}</div>
                 </div>
-                <div>
-                  <div className="font-bold text-muted-foreground">Specialty</div>
-                  <div className="font-bold text-primary">{referral.specialty}</div>
-                </div>
               </div>
             </div>
-            <div className="flex items-center gap-2">
-              <ClinicalTagsButton />
-              <PinButton isPinned={isPinned(referral.id)} onTogglePin={() => togglePin(referral.id)} size="sm" variant="ghost" />
-              <div>
-                <ReferralPriorityBadge priority={referral.priority} size="sm" />
+            <div className="flex flex-col items-end gap-2">
+              <div className="flex items-center gap-2">
+                <ClinicalTagsButton />
+                <PinButton isPinned={isPinned(referral.id)} onTogglePin={() => togglePin(referral.id)} size="sm" variant="ghost" />
+                <div>
+                  <ReferralPriorityBadge priority={referral.priority} size="sm" />
+                </div>
+              </div>
+              <div className="text-right">
+                <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">Specialty</div>
+                <div className="font-bold text-primary">{referral.specialty}</div>
               </div>
             </div>
           </div>
