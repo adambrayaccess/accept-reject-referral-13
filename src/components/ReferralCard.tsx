@@ -144,7 +144,7 @@ const ReferralCard = ({
                   {referral.patient.name}
                 </CardTitle>
               </PatientDetailsPopover>
-              <div className="grid grid-cols-4 gap-4 text-sm mt-4">
+              <div className="flex justify-between text-sm mt-4">
                 <div>
                   <div className="font-bold text-muted-foreground">Gender</div>
                   <div>{referral.patient.gender}</div>
