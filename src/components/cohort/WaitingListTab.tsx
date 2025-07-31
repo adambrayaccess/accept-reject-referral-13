@@ -1,6 +1,7 @@
 
 import { Button } from '@/components/ui/button';
-import { Users } from 'lucide-react';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Users, Table2, Filter } from 'lucide-react';
 import { Referral } from '@/types/referral';
 import WaitingListTable from './WaitingListTable';
 import WaitingListControls from './WaitingListControls';
@@ -75,19 +76,60 @@ const WaitingListTab = ({
         </div>
       )}
 
-      <div className="flex flex-col gap-4">
-        <div className="flex flex-col lg:flex-row gap-4 items-start lg:items-center">
-          <div className="w-full lg:flex-1">
-            <WaitingListControls
-              filters={filters}
-              updateFilters={updateFilters}
-              clearFilters={clearFilters}
-              sortField={sortField}
-              setSortField={setSortField}
-              sortDirection={sortDirection}
-              setSortDirection={setSortDirection}
+      <Tabs defaultValue="list" className="w-full">
+        <TabsList variant="default" size="md" className="w-fit">
+          <TabsTrigger 
+            value="list" 
+            variant="default" 
+            size="md"
+            className="flex items-center gap-2"
+          >
+            <Table2 className="h-4 w-4" />
+            Patient List
+          </TabsTrigger>
+          <TabsTrigger 
+            value="filters" 
+            variant="default" 
+            size="md"
+            className="flex items-center gap-2"
+          >
+            <Filter className="h-4 w-4" />
+            Filters & Controls
+          </TabsTrigger>
+        </TabsList>
+
+        <TabsContent value="list" className="space-y-4">
+          <div className="w-full lg:w-auto lg:flex-shrink-0">
+            <AIAssistantActions 
+              selectedReferrals={selectedReferrals}
+              onClearSelection={clearSelection}
+              context="waitingList"
             />
           </div>
+          
+          <WaitingListTable
+            referrals={referrals}
+            isLoading={isLoading || isReordering}
+            selectedReferrals={selectedReferrals}
+            onSelectReferral={toggleReferralSelection}
+            onReorderReferrals={reorderReferrals}
+            onSelectAll={selectAll}
+            onClearSelection={clearSelection}
+            isAllSelected={isAllSelected}
+            isIndeterminate={isIndeterminate}
+          />
+        </TabsContent>
+
+        <TabsContent value="filters" className="space-y-4">
+          <WaitingListControls
+            filters={filters}
+            updateFilters={updateFilters}
+            clearFilters={clearFilters}
+            sortField={sortField}
+            setSortField={setSortField}
+            sortDirection={sortDirection}
+            setSortDirection={setSortDirection}
+          />
           
           <div className="w-full lg:w-auto lg:flex-shrink-0">
             <AIAssistantActions 
@@ -96,20 +138,8 @@ const WaitingListTab = ({
               context="waitingList"
             />
           </div>
-        </div>
-      </div>
-
-      <WaitingListTable
-        referrals={referrals}
-        isLoading={isLoading || isReordering}
-        selectedReferrals={selectedReferrals}
-        onSelectReferral={toggleReferralSelection}
-        onReorderReferrals={reorderReferrals}
-        onSelectAll={selectAll}
-        onClearSelection={clearSelection}
-        isAllSelected={isAllSelected}
-        isIndeterminate={isIndeterminate}
-      />
+        </TabsContent>
+      </Tabs>
     </div>
   );
 };
