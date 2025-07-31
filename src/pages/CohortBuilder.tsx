@@ -76,20 +76,33 @@ const CohortBuilder = () => {
         />
 
         <Tabs defaultValue="waitingList" className="w-full">
-          <div className="flex justify-center mb-3">
-            <div className="w-full max-w-2xl">
-              <TabsList variant="grid" size="md">
-                <TabsTrigger value="waitingList" variant="grid" size="md">
-                  Waiting List
-                </TabsTrigger>
-                <TabsTrigger value="stats" variant="grid" size="md">
-                  Stats & Reports
-                </TabsTrigger>
-                <TabsTrigger value="tagged" variant="grid" size="md">
-                  Tagged Patients
-                </TabsTrigger>
-              </TabsList>
-            </div>
+          <div className="flex justify-center mb-6">
+            <TabsList variant="default" size="md" className="w-fit bg-muted">
+              <TabsTrigger 
+                value="waitingList" 
+                variant="default" 
+                size="md"
+                className="data-[state=active]:bg-background data-[state=active]:shadow-sm"
+              >
+                Waiting List
+              </TabsTrigger>
+              <TabsTrigger 
+                value="stats" 
+                variant="default" 
+                size="md"
+                className="data-[state=active]:bg-background data-[state=active]:shadow-sm"
+              >
+                Stats & Reports
+              </TabsTrigger>
+              <TabsTrigger 
+                value="tagged" 
+                variant="default" 
+                size="md"
+                className="data-[state=active]:bg-background data-[state=active]:shadow-sm"
+              >
+                Tagged Patients
+              </TabsTrigger>
+            </TabsList>
           </div>
           
           <TabsContent value="waitingList" className="space-y-6">
