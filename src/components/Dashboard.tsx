@@ -138,27 +138,27 @@ const Dashboard = () => {
             onClearSelection={clearSelection}
           />
 
-          <EnhancedTabs defaultValue="new" className="w-full">
+          <Tabs defaultValue="new" className="w-full">
             <div className="flex justify-center mb-3">
               <div className="w-full max-w-3xl">
-                <EnhancedTabsList variant="default">
-                  <EnhancedTabsTrigger value="new" variant="default">
+                <TabsList variant="default">
+                  <TabsTrigger value="new" variant="default">
                     Awaiting Triage ({referrals.filter(r => r.status === 'new').length})
-                  </EnhancedTabsTrigger>
-                  <EnhancedTabsTrigger value="processed" variant="default">
+                  </TabsTrigger>
+                  <TabsTrigger value="processed" variant="default">
                     Processed ({referrals.filter(r => r.status !== 'new').length})
-                  </EnhancedTabsTrigger>
-                  <EnhancedTabsTrigger value="pinned" variant="default">
+                  </TabsTrigger>
+                  <TabsTrigger value="pinned" variant="default">
                     Pinned ({pinnedReferralIds.size})
-                  </EnhancedTabsTrigger>
-                  <EnhancedTabsTrigger value="all" variant="default">
+                  </TabsTrigger>
+                  <TabsTrigger value="all" variant="default">
                     All Referrals
-                  </EnhancedTabsTrigger>
-                </EnhancedTabsList>
+                  </TabsTrigger>
+                </TabsList>
               </div>
             </div>
 
-            <EnhancedTabsContent value="new">
+            <TabsContent value="new">
               <ReferralGrid 
                 referrals={filteredReferrals} 
                 isLoading={isLoading} 
@@ -181,9 +181,9 @@ const Dashboard = () => {
                 isIndeterminate={isIndeterminate(filteredReferrals.filter(r => r.status === 'new'))}
                 onRefresh={handleRefresh}
               />
-            </EnhancedTabsContent>
+            </TabsContent>
 
-            <EnhancedTabsContent value="processed">
+            <TabsContent value="processed">
               <ReferralGrid 
                 referrals={filteredReferrals} 
                 isLoading={isLoading} 
@@ -206,9 +206,9 @@ const Dashboard = () => {
                 isIndeterminate={isIndeterminate(filteredReferrals.filter(r => r.status !== 'new'))}
                 onRefresh={handleRefresh}
               />
-            </EnhancedTabsContent>
+            </TabsContent>
 
-            <EnhancedTabsContent value="pinned">
+            <TabsContent value="pinned">
               <PinnedReferralsTab
                 view={view}
                 selectedIds={selectedIds}
@@ -225,9 +225,9 @@ const Dashboard = () => {
                 isIndeterminate={isIndeterminate(filteredReferrals)}
                 onRefresh={handleRefresh}
               />
-            </EnhancedTabsContent>
+            </TabsContent>
 
-            <EnhancedTabsContent value="all">
+            <TabsContent value="all">
               <ReferralGrid 
                 referrals={filteredReferrals} 
                 isLoading={isLoading} 
@@ -248,8 +248,8 @@ const Dashboard = () => {
                 isIndeterminate={isIndeterminate(filteredReferrals)}
                 onRefresh={handleRefresh}
               />
-            </EnhancedTabsContent>
-          </EnhancedTabs>
+            </TabsContent>
+          </Tabs>
         </div>
       </div>
     </div>

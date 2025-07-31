@@ -458,9 +458,9 @@ const AutoReferralSheet = ({ isOpen, onClose, onSubmit }: AutoReferralSheetProps
         
         <ScrollArea className="h-[calc(100vh-180px)]">
           <div className="pr-4 space-y-6">
-            <EnhancedTabs defaultValue="documents" className="w-full">
-              <EnhancedTabsList variant="grid" size="md" className="bg-gradient-to-r from-purple-50 to-purple-100 border-purple-200">
-                <EnhancedTabsTrigger 
+            <Tabs defaultValue="documents" className="w-full">
+              <TabsList variant="grid" size="md" className="bg-gradient-to-r from-purple-50 to-purple-100 border-purple-200">
+                <TabsTrigger
                   value="documents" 
                   variant="grid" 
                   size="md"
@@ -468,8 +468,8 @@ const AutoReferralSheet = ({ isOpen, onClose, onSubmit }: AutoReferralSheetProps
                 >
                   <Upload className="h-4 w-4 mr-2" />
                   Upload Documents
-                </EnhancedTabsTrigger>
-                <EnhancedTabsTrigger 
+                </TabsTrigger>
+                <TabsTrigger
                   value="input" 
                   variant="grid" 
                   size="md"
@@ -477,8 +477,8 @@ const AutoReferralSheet = ({ isOpen, onClose, onSubmit }: AutoReferralSheetProps
                 >
                   <FileText className="h-4 w-4 mr-2" />
                   Manual Input
-                </EnhancedTabsTrigger>
-                <EnhancedTabsTrigger 
+                </TabsTrigger>
+                <TabsTrigger 
                   value="preview" 
                   variant="grid" 
                   size="md"
@@ -486,11 +486,11 @@ const AutoReferralSheet = ({ isOpen, onClose, onSubmit }: AutoReferralSheetProps
                 >
                   <User className="h-4 w-4 mr-2" />
                   Generated Referral
-                </EnhancedTabsTrigger>
-              </EnhancedTabsList>
+                </TabsTrigger>
+              </TabsList>
 
               {/* Document Upload Tab */}
-              <EnhancedTabsContent value="documents" className="space-y-6 mt-6">
+              <TabsContent value="documents" className="space-y-6 mt-6">
                 <Alert className="border-purple-200 bg-gradient-to-r from-purple-50 to-purple-100">
                   <Upload className="h-4 w-4" />
                   <AlertDescription>
@@ -636,10 +636,10 @@ const AutoReferralSheet = ({ isOpen, onClose, onSubmit }: AutoReferralSheetProps
                     )}
                   </div>
                 )}
-              </EnhancedTabsContent>
+              </TabsContent>
 
               {/* Manual Input Tab */}
-              <EnhancedTabsContent value="input" className="space-y-6 mt-6">
+              <TabsContent value="input" className="space-y-6 mt-6">
                 <Alert className="border-purple-200 bg-gradient-to-r from-purple-50 to-purple-100">
                   <FileText className="h-4 w-4" />
                   <AlertDescription>
@@ -735,10 +735,10 @@ const AutoReferralSheet = ({ isOpen, onClose, onSubmit }: AutoReferralSheetProps
                     </CardContent>
                   </Card>
                 )}
-              </EnhancedTabsContent>
+              </TabsContent>
 
               {/* Generated Referral Preview Tab */}
-              <EnhancedTabsContent value="preview" className="space-y-6 mt-6">
+              <TabsContent value="preview" className="space-y-6 mt-6">
                 {!generatedData ? (
                   <Alert className="border-purple-200 bg-gradient-to-r from-purple-50 to-purple-100">
                     <Clock className="h-4 w-4" />
@@ -841,8 +841,8 @@ const AutoReferralSheet = ({ isOpen, onClose, onSubmit }: AutoReferralSheetProps
                     </Card>
                   </div>
                 )}
-              </EnhancedTabsContent>
-            </EnhancedTabs>
+              </TabsContent>
+            </Tabs>
 
             {/* Action Buttons */}
             <div className="flex justify-end gap-3 pt-4 border-t border-purple-100">

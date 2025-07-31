@@ -75,24 +75,24 @@ const CohortBuilder = () => {
           onAISuggestionApplied={refreshWaitingList}
         />
 
-        <EnhancedTabs defaultValue="waitingList" className="w-full">
+        <Tabs defaultValue="waitingList" className="w-full">
           <div className="flex justify-center mb-3">
             <div className="w-full max-w-2xl">
-              <EnhancedTabsList variant="grid" size="md">
-                <EnhancedTabsTrigger value="waitingList" variant="grid" size="md">
+              <TabsList variant="grid" size="md">
+                <TabsTrigger value="waitingList" variant="grid" size="md">
                   Waiting List
-                </EnhancedTabsTrigger>
-                <EnhancedTabsTrigger value="stats" variant="grid" size="md">
+                </TabsTrigger>
+                <TabsTrigger value="stats" variant="grid" size="md">
                   Stats & Reports
-                </EnhancedTabsTrigger>
-                <EnhancedTabsTrigger value="tagged" variant="grid" size="md">
+                </TabsTrigger>
+                <TabsTrigger value="tagged" variant="grid" size="md">
                   Tagged Patients
-                </EnhancedTabsTrigger>
-              </EnhancedTabsList>
+                </TabsTrigger>
+              </TabsList>
             </div>
           </div>
           
-          <EnhancedTabsContent value="waitingList" className="space-y-6">
+          <TabsContent value="waitingList" className="space-y-6">
             <WaitingListTab
               referrals={waitingListReferrals}
               isLoading={waitingListLoading}
@@ -114,24 +114,24 @@ const CohortBuilder = () => {
               reorderReferrals={reorderReferrals}
               selectedSpecialties={selectedSpecialties}
             />
-          </EnhancedTabsContent>
+          </TabsContent>
           
-          <EnhancedTabsContent value="stats" className="space-y-6">
+          <TabsContent value="stats" className="space-y-6">
             <WaitingListStatsTab
               referrals={waitingListReferrals}
               isLoading={waitingListLoading}
             />
-          </EnhancedTabsContent>
+          </TabsContent>
           
-          <EnhancedTabsContent value="tagged">
+          <TabsContent value="tagged">
             <TaggedPatientsTab
               referrals={waitingListReferrals}
               isLoading={waitingListLoading}
               selectedReferrals={waitingListSelected}
               toggleReferralSelection={toggleWaitingListSelection}
             />
-          </EnhancedTabsContent>
-        </EnhancedTabs>
+          </TabsContent>
+        </Tabs>
       </div>
     </div>
   );

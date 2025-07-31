@@ -161,29 +161,29 @@ const WaitingListReferralDetail = ({ referral, relatedReferrals, onUpdate }: Wai
         </div>
       </CardHeader>
       <CardContent className="pt-0">
-        <EnhancedTabs defaultValue="rtt-pathway">
+        <Tabs defaultValue="rtt-pathway">
           <div className="mb-3">
-            <EnhancedTabsList variant="default">
-              <EnhancedTabsTrigger value="rtt-pathway" variant="default">
+            <TabsList variant="default">
+              <TabsTrigger value="rtt-pathway" variant="default">
                 RTT/Pathway
-              </EnhancedTabsTrigger>
-              <EnhancedTabsTrigger value="patient" variant="default">
+              </TabsTrigger>
+              <TabsTrigger value="patient" variant="default">
                 Patient
-              </EnhancedTabsTrigger>
-              <EnhancedTabsTrigger value="clinical" variant="default">
+              </TabsTrigger>
+              <TabsTrigger value="clinical" variant="default">
                 Clinical
-              </EnhancedTabsTrigger>
-              <EnhancedTabsTrigger value="referrer" variant="default">
+              </TabsTrigger>
+              <TabsTrigger value="referrer" variant="default">
                 Referrer
-              </EnhancedTabsTrigger>
-            </EnhancedTabsList>
+              </TabsTrigger>
+            </TabsList>
           </div>
           
-          <EnhancedTabsContent value="rtt-pathway" className="space-y-3">
+          <TabsContent value="rtt-pathway" className="space-y-3">
             <WaitingListRTTPathwayTabContent referral={referral} />
-          </EnhancedTabsContent>
+          </TabsContent>
           
-          <EnhancedTabsContent value="patient" className="space-y-3">
+          <TabsContent value="patient" className="space-y-3">
             {isEditing ? (
               <EditablePatientTabContent 
                 referral={referral} 
@@ -194,9 +194,9 @@ const WaitingListReferralDetail = ({ referral, relatedReferrals, onUpdate }: Wai
             ) : (
               <PatientTabContent referral={referral} relatedReferrals={relatedReferrals} />
             )}
-          </EnhancedTabsContent>
+          </TabsContent>
           
-          <EnhancedTabsContent value="clinical" className="space-y-3">
+          <TabsContent value="clinical" className="space-y-3">
             {isEditing ? (
               <EditableClinicalTabContent 
                 referral={referral}
@@ -206,9 +206,9 @@ const WaitingListReferralDetail = ({ referral, relatedReferrals, onUpdate }: Wai
             ) : (
               <ClinicalTabContent referral={referral} />
             )}
-          </EnhancedTabsContent>
+          </TabsContent>
           
-          <EnhancedTabsContent value="referrer" className="space-y-3">
+          <TabsContent value="referrer" className="space-y-3">
             {isEditing ? (
               <EditableReferrerTabContent 
                 referral={referral}
@@ -218,8 +218,8 @@ const WaitingListReferralDetail = ({ referral, relatedReferrals, onUpdate }: Wai
             ) : (
               <ReferrerTabContent referral={referral} />
             )}
-          </EnhancedTabsContent>
-        </EnhancedTabs>
+          </TabsContent>
+        </Tabs>
       </CardContent>
     </Card>
   );
