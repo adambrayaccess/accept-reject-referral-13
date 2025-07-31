@@ -164,17 +164,17 @@ const ReferralDetail = ({ referral, relatedReferrals, onUpdate }: ReferralDetail
       <CardContent className="pt-0">
         <EnhancedTabs defaultValue="patient">
           <div className="mb-3">
-            <EnhancedTabsList variant="grid" size="md">
-              <EnhancedTabsTrigger value="patient" variant="grid" size="md">
+            <EnhancedTabsList variant="default">
+              <EnhancedTabsTrigger value="patient" variant="default">
                 Patient
               </EnhancedTabsTrigger>
-              <EnhancedTabsTrigger value="clinical" variant="grid" size="md">
+              <EnhancedTabsTrigger value="clinical" variant="default">
                 Clinical
               </EnhancedTabsTrigger>
-              <EnhancedTabsTrigger value="referrer" variant="grid" size="md">
+              <EnhancedTabsTrigger value="referrer" variant="default">
                 Referrer
               </EnhancedTabsTrigger>
-              <EnhancedTabsTrigger value="rtt-pathway" variant="grid" size="md">
+              <EnhancedTabsTrigger value="rtt-pathway" variant="default">
                 RTT/Pathway
               </EnhancedTabsTrigger>
             </EnhancedTabsList>

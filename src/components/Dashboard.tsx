@@ -141,17 +141,17 @@ const Dashboard = () => {
           <EnhancedTabs defaultValue="new" className="w-full">
             <div className="flex justify-center mb-3">
               <div className="w-full max-w-3xl">
-                <EnhancedTabsList variant="grid" size="md">
-                  <EnhancedTabsTrigger value="new" variant="grid" size="md">
+                <EnhancedTabsList variant="default">
+                  <EnhancedTabsTrigger value="new" variant="default">
                     Awaiting Triage ({referrals.filter(r => r.status === 'new').length})
                   </EnhancedTabsTrigger>
-                  <EnhancedTabsTrigger value="processed" variant="grid" size="md">
+                  <EnhancedTabsTrigger value="processed" variant="default">
                     Processed ({referrals.filter(r => r.status !== 'new').length})
                   </EnhancedTabsTrigger>
-                  <EnhancedTabsTrigger value="pinned" variant="grid" size="md">
+                  <EnhancedTabsTrigger value="pinned" variant="default">
                     Pinned ({pinnedReferralIds.size})
                   </EnhancedTabsTrigger>
-                  <EnhancedTabsTrigger value="all" variant="grid" size="md">
+                  <EnhancedTabsTrigger value="all" variant="default">
                     All Referrals
                   </EnhancedTabsTrigger>
                 </EnhancedTabsList>

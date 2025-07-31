@@ -33,17 +33,17 @@ const MedicalHistory = ({ patient }: MedicalHistoryProps) => {
       <CardContent className="pt-0 overflow-hidden">
         <EnhancedTabs defaultValue="vitals" className="space-y-3">
           <div className="mb-3">
-            <EnhancedTabsList variant="grid" size="md">
-              <EnhancedTabsTrigger value="vitals" variant="grid" size="md">
+            <EnhancedTabsList variant="default">
+              <EnhancedTabsTrigger value="vitals" variant="default">
                 Vital Signs
               </EnhancedTabsTrigger>
-              <EnhancedTabsTrigger value="test-results" variant="grid" size="md">
+              <EnhancedTabsTrigger value="test-results" variant="default">
                 Test Results
               </EnhancedTabsTrigger>
-              <EnhancedTabsTrigger value="medications" variant="grid" size="md">
+              <EnhancedTabsTrigger value="medications" variant="default">
                 Medication History
               </EnhancedTabsTrigger>
-              <EnhancedTabsTrigger value="mha" variant="grid" size="md">
+              <EnhancedTabsTrigger value="mha" variant="default">
                 MHA
               </EnhancedTabsTrigger>
             </EnhancedTabsList>
