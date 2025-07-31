@@ -99,6 +99,7 @@ const Dashboard = () => {
 
   return (
     <div className="min-h-screen bg-gray-50">
+      {/* Dashboard main container */}
       <PageHeader searchValue={searchTerm} onSearchChange={setSearchTerm} />
       
       <div className="space-y-6">
