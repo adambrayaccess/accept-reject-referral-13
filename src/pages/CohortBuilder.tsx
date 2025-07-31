@@ -1,7 +1,7 @@
 
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { EnhancedTabs, EnhancedTabsContent, EnhancedTabsList, EnhancedTabsTrigger } from '@/components/ui/enhanced-tabs';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import CohortBuilderHeader from '@/components/cohort/CohortBuilderHeader';
 import WaitingListTab from '@/components/cohort/WaitingListTab';
 import WaitingListStatsTab from '@/components/cohort/WaitingListStatsTab';

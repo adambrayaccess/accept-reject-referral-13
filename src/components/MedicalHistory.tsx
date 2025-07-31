@@ -1,6 +1,6 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { EnhancedTabs, EnhancedTabsContent, EnhancedTabsList, EnhancedTabsTrigger } from '@/components/ui/enhanced-tabs';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Patient } from '@/types/patient';
 import VitalSignsTab from './medical-history/VitalSignsTab';
 import TestResultsTab from './medical-history/TestResultsTab';
@@ -31,40 +31,40 @@ const MedicalHistory = ({ patient }: MedicalHistoryProps) => {
         <CardTitle className="text-lg">Medical History</CardTitle>
       </CardHeader>
       <CardContent className="pt-0 overflow-hidden">
-        <EnhancedTabs defaultValue="vitals" className="space-y-3">
+        <Tabs defaultValue="vitals" className="space-y-3">
           <div className="mb-3">
-            <EnhancedTabsList variant="default">
-              <EnhancedTabsTrigger value="vitals" variant="default">
+            <TabsList variant="default">
+              <TabsTrigger value="vitals" variant="default">
                 Vital Signs
-              </EnhancedTabsTrigger>
-              <EnhancedTabsTrigger value="test-results" variant="default">
+              </TabsTrigger>
+              <TabsTrigger value="test-results" variant="default">
                 Test Results
-              </EnhancedTabsTrigger>
-              <EnhancedTabsTrigger value="medications" variant="default">
+              </TabsTrigger>
+              <TabsTrigger value="medications" variant="default">
                 Medication History
-              </EnhancedTabsTrigger>
-              <EnhancedTabsTrigger value="mha" variant="default">
+              </TabsTrigger>
+              <TabsTrigger value="mha" variant="default">
                 MHA
-              </EnhancedTabsTrigger>
-            </EnhancedTabsList>
+              </TabsTrigger>
+            </TabsList>
           </div>
 
-          <EnhancedTabsContent value="vitals">
+          <TabsContent value="vitals">
             <VitalSignsTab vitalSigns={patient.medicalHistory.vitalSigns} />
-          </EnhancedTabsContent>
+          </TabsContent>
 
-          <EnhancedTabsContent value="test-results">
+          <TabsContent value="test-results">
             <TestResultsTab testResults={patient.medicalHistory.testResults} />
-          </EnhancedTabsContent>
+          </TabsContent>
 
-          <EnhancedTabsContent value="medications">
+          <TabsContent value="medications">
             <MedicationHistoryTab medicationHistory={patient.medicalHistory.medicationHistory} />
-          </EnhancedTabsContent>
+          </TabsContent>
 
-          <EnhancedTabsContent value="mha">
+          <TabsContent value="mha">
             <MHATab mhaSections={patient.medicalHistory.mhaSections} />
-          </EnhancedTabsContent>
-        </EnhancedTabs>
+          </TabsContent>
+        </Tabs>
       </CardContent>
     </Card>
   );

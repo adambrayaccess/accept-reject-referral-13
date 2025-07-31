@@ -1,5 +1,4 @@
-
-import { EnhancedTabs, EnhancedTabsContent, EnhancedTabsList, EnhancedTabsTrigger } from '@/components/ui/enhanced-tabs';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import EnhancedPatientDetailsForm from './EnhancedPatientDetailsForm';
 import GPDetailsForm from './GPDetailsForm';
 import EnhancedClinicalDetailsForm from './EnhancedClinicalDetailsForm';
@@ -121,15 +120,15 @@ const ReferralFormTabs = ({
   setDocuments,
 }: ReferralFormTabsProps) => {
   return (
-    <EnhancedTabs defaultValue="patient" className="w-full">
-      <EnhancedTabsList variant="grid" size="md">
-        <EnhancedTabsTrigger value="patient" variant="grid" size="md">Patient Details</EnhancedTabsTrigger>
-        <EnhancedTabsTrigger value="gp" variant="grid" size="md">Referrer</EnhancedTabsTrigger>
-        <EnhancedTabsTrigger value="clinical" variant="grid" size="md">Clinical Information</EnhancedTabsTrigger>
-        <EnhancedTabsTrigger value="documents" variant="grid" size="md">Documents</EnhancedTabsTrigger>
-      </EnhancedTabsList>
+    <Tabs defaultValue="patient" className="w-full">
+      <TabsList variant="grid" size="md">
+        <TabsTrigger value="patient" variant="grid" size="md">Patient Details</TabsTrigger>
+        <TabsTrigger value="gp" variant="grid" size="md">Referrer</TabsTrigger>
+        <TabsTrigger value="clinical" variant="grid" size="md">Clinical Information</TabsTrigger>
+        <TabsTrigger value="documents" variant="grid" size="md">Documents</TabsTrigger>
+      </TabsList>
       
-      <EnhancedTabsContent value="patient" className="mt-4">
+      <TabsContent value="patient" className="mt-4">
         <EnhancedPatientDetailsForm
           selectedPatient={selectedPatient}
           onPatientSelect={onPatientSelect}
@@ -154,9 +153,9 @@ const ReferralFormTabs = ({
           patientAreaCareSetting={patientAreaCareSetting}
           setPatientAreaCareSetting={setPatientAreaCareSetting}
         />
-      </EnhancedTabsContent>
+      </TabsContent>
       
-      <EnhancedTabsContent value="gp" className="mt-4">
+      <TabsContent value="gp" className="mt-4">
         <GPDetailsForm
           practitionerId={practitionerId}
           setPractitionerId={setPractitionerId}
@@ -174,9 +173,9 @@ const ReferralFormTabs = ({
           setGpEmail={setGpEmail}
           selectedPatientGP={selectedPatient?.gpDetails}
         />
-      </EnhancedTabsContent>
+      </TabsContent>
       
-      <EnhancedTabsContent value="clinical" className="mt-4">
+      <TabsContent value="clinical" className="mt-4">
         <EnhancedClinicalDetailsForm
           reason={reason}
           setReason={setReason}
@@ -192,15 +191,15 @@ const ReferralFormTabs = ({
           setNotes={setNotes}
           selectedPatient={selectedPatient}
         />
-      </EnhancedTabsContent>
+      </TabsContent>
       
-      <EnhancedTabsContent value="documents" className="mt-4">
+      <TabsContent value="documents" className="mt-4">
         <ReferralDocumentsTab
           documents={documents}
           setDocuments={setDocuments}
         />
-      </EnhancedTabsContent>
-    </EnhancedTabs>
+      </TabsContent>
+    </Tabs>
   );
 };
 

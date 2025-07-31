@@ -1,13 +1,13 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { EnhancedTabs, EnhancedTabsContent, EnhancedTabsList, EnhancedTabsTrigger } from '@/components/ui/enhanced-tabs';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
 const TabsGuide = () => {
   return (
     <div className="space-y-6">
       <Card>
         <CardHeader>
-          <CardTitle>Enhanced Tabs System</CardTitle>
+          <CardTitle>Tabs System</CardTitle>
         </CardHeader>
         <CardContent className="space-y-6">
           <div>
@@ -16,47 +16,47 @@ const TabsGuide = () => {
             <div className="space-y-4">
               <div>
                 <h4 className="font-medium mb-2">Default - For primary navigation</h4>
-                <EnhancedTabs defaultValue="tab1">
-                  <EnhancedTabsList variant="default" size="md">
-                    <EnhancedTabsTrigger value="tab1" variant="default" size="md">Tab 1</EnhancedTabsTrigger>
-                    <EnhancedTabsTrigger value="tab2" variant="default" size="md">Tab 2</EnhancedTabsTrigger>
-                    <EnhancedTabsTrigger value="tab3" variant="default" size="md">Tab 3</EnhancedTabsTrigger>
-                  </EnhancedTabsList>
-                </EnhancedTabs>
+                <Tabs defaultValue="tab1">
+                  <TabsList variant="default" size="md">
+                    <TabsTrigger value="tab1" variant="default" size="md">Tab 1</TabsTrigger>
+                    <TabsTrigger value="tab2" variant="default" size="md">Tab 2</TabsTrigger>
+                    <TabsTrigger value="tab3" variant="default" size="md">Tab 3</TabsTrigger>
+                  </TabsList>
+                </Tabs>
               </div>
 
               <div>
                 <h4 className="font-medium mb-2">Compact - For secondary navigation</h4>
-                <EnhancedTabs defaultValue="tab1">
-                  <EnhancedTabsList variant="compact" size="sm">
-                    <EnhancedTabsTrigger value="tab1" variant="compact" size="sm">Compact 1</EnhancedTabsTrigger>
-                    <EnhancedTabsTrigger value="tab2" variant="compact" size="sm">Compact 2</EnhancedTabsTrigger>
-                    <EnhancedTabsTrigger value="tab3" variant="compact" size="sm">Compact 3</EnhancedTabsTrigger>
-                  </EnhancedTabsList>
-                </EnhancedTabs>
+                <Tabs defaultValue="tab1">
+                  <TabsList variant="compact" size="sm">
+                    <TabsTrigger value="tab1" variant="compact" size="sm">Compact 1</TabsTrigger>
+                    <TabsTrigger value="tab2" variant="compact" size="sm">Compact 2</TabsTrigger>
+                    <TabsTrigger value="tab3" variant="compact" size="sm">Compact 3</TabsTrigger>
+                  </TabsList>
+                </Tabs>
               </div>
 
               <div>
                 <h4 className="font-medium mb-2">Pills - For filters and selections</h4>
-                <EnhancedTabs defaultValue="tab1">
-                  <EnhancedTabsList variant="pills" size="sm">
-                    <EnhancedTabsTrigger value="tab1" variant="pills" size="sm">Filter 1</EnhancedTabsTrigger>
-                    <EnhancedTabsTrigger value="tab2" variant="pills" size="sm">Filter 2</EnhancedTabsTrigger>
-                    <EnhancedTabsTrigger value="tab3" variant="pills" size="sm">Filter 3</EnhancedTabsTrigger>
-                  </EnhancedTabsList>
-                </EnhancedTabs>
+                <Tabs defaultValue="tab1">
+                  <TabsList variant="pills" size="sm">
+                    <TabsTrigger value="tab1" variant="pills" size="sm">Filter 1</TabsTrigger>
+                    <TabsTrigger value="tab2" variant="pills" size="sm">Filter 2</TabsTrigger>
+                    <TabsTrigger value="tab3" variant="pills" size="sm">Filter 3</TabsTrigger>
+                  </TabsList>
+                </Tabs>
               </div>
 
               <div>
                 <h4 className="font-medium mb-2">Grid - For main page sections</h4>
-                <EnhancedTabs defaultValue="tab1">
-                  <EnhancedTabsList variant="grid" size="md">
-                    <EnhancedTabsTrigger value="tab1" variant="grid" size="md">Section 1</EnhancedTabsTrigger>
-                    <EnhancedTabsTrigger value="tab2" variant="grid" size="md">Section 2</EnhancedTabsTrigger>
-                    <EnhancedTabsTrigger value="tab3" variant="grid" size="md">Section 3</EnhancedTabsTrigger>
-                    <EnhancedTabsTrigger value="tab4" variant="grid" size="md">Section 4</EnhancedTabsTrigger>
-                  </EnhancedTabsList>
-                </EnhancedTabs>
+                <Tabs defaultValue="tab1">
+                  <TabsList variant="grid" size="md">
+                    <TabsTrigger value="tab1" variant="grid" size="md">Section 1</TabsTrigger>
+                    <TabsTrigger value="tab2" variant="grid" size="md">Section 2</TabsTrigger>
+                    <TabsTrigger value="tab3" variant="grid" size="md">Section 3</TabsTrigger>
+                    <TabsTrigger value="tab4" variant="grid" size="md">Section 4</TabsTrigger>
+                  </TabsList>
+                </Tabs>
               </div>
             </div>
           </div>

@@ -11,7 +11,7 @@ import StatisticsBar from './dashboard/StatisticsBar';
 import DashboardHeader from './dashboard/DashboardHeader';
 import DashboardControls from './dashboard/DashboardControls';
 import SelectionBanner from './dashboard/SelectionBanner';
-import { EnhancedTabs, EnhancedTabsContent, EnhancedTabsList, EnhancedTabsTrigger } from '@/components/ui/enhanced-tabs';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import ReferralGrid from './dashboard/ReferralGrid';
 import PinnedReferralsTab from './dashboard/PinnedReferralsTab';
 import { usePinning } from '@/hooks/usePinning';

@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { Referral } from '@/types/referral';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { EnhancedTabs, EnhancedTabsContent, EnhancedTabsList, EnhancedTabsTrigger } from '@/components/ui/enhanced-tabs';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Badge } from '@/components/ui/badge';
 import { Pencil, Save, X } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
@@ -162,25 +162,25 @@ const ReferralDetail = ({ referral, relatedReferrals, onUpdate }: ReferralDetail
         </div>
       </CardHeader>
       <CardContent className="pt-0">
-        <EnhancedTabs defaultValue="patient">
+        <Tabs defaultValue="patient">
           <div className="mb-3">
-            <EnhancedTabsList variant="default">
-              <EnhancedTabsTrigger value="patient" variant="default">
+            <TabsList variant="default">
+              <TabsTrigger value="patient" variant="default">
                 Patient
-              </EnhancedTabsTrigger>
-              <EnhancedTabsTrigger value="clinical" variant="default">
+              </TabsTrigger>
+              <TabsTrigger value="clinical" variant="default">
                 Clinical
-              </EnhancedTabsTrigger>
-              <EnhancedTabsTrigger value="referrer" variant="default">
+              </TabsTrigger>
+              <TabsTrigger value="referrer" variant="default">
                 Referrer
-              </EnhancedTabsTrigger>
-              <EnhancedTabsTrigger value="rtt-pathway" variant="default">
+              </TabsTrigger>
+              <TabsTrigger value="rtt-pathway" variant="default">
                 RTT/Pathway
-              </EnhancedTabsTrigger>
-            </EnhancedTabsList>
+              </TabsTrigger>
+            </TabsList>
           </div>
           
-          <EnhancedTabsContent value="patient" className="space-y-3">
+          <TabsContent value="patient" className="space-y-3">
             {isEditing ? (
               <EditablePatientTabContent 
                 referral={referral} 
@@ -191,9 +191,9 @@ const ReferralDetail = ({ referral, relatedReferrals, onUpdate }: ReferralDetail
             ) : (
               <PatientTabContent referral={referral} relatedReferrals={relatedReferrals} />
             )}
-          </EnhancedTabsContent>
+          </TabsContent>
           
-          <EnhancedTabsContent value="clinical" className="space-y-3">
+          <TabsContent value="clinical" className="space-y-3">
             {isEditing ? (
               <EditableClinicalTabContent 
                 referral={referral}
@@ -203,9 +203,9 @@ const ReferralDetail = ({ referral, relatedReferrals, onUpdate }: ReferralDetail
             ) : (
               <ClinicalTabContent referral={referral} />
             )}
-          </EnhancedTabsContent>
+          </TabsContent>
           
-          <EnhancedTabsContent value="referrer" className="space-y-3">
+          <TabsContent value="referrer" className="space-y-3">
             {isEditing ? (
               <EditableReferrerTabContent 
                 referral={referral}
@@ -215,12 +215,12 @@ const ReferralDetail = ({ referral, relatedReferrals, onUpdate }: ReferralDetail
             ) : (
               <ReferrerTabContent referral={referral} />
             )}
-          </EnhancedTabsContent>
+          </TabsContent>
           
-          <EnhancedTabsContent value="rtt-pathway" className="space-y-3">
+          <TabsContent value="rtt-pathway" className="space-y-3">
             <RTTPathwayTabContent referral={referral} />
-          </EnhancedTabsContent>
-        </EnhancedTabs>
+          </TabsContent>
+        </Tabs>
       </CardContent>
     </Card>
   );

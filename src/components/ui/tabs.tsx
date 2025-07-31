@@ -1,4 +1,3 @@
-
 import * as React from "react";
 import * as TabsPrimitive from "@radix-ui/react-tabs";
 import { ChevronLeft, ChevronRight, Loader2 } from "lucide-react";
@@ -373,11 +372,3 @@ function TabsContent({
 }
 
 export { Tabs, TabsList, TabsTrigger, TabsContent };
-
-// Backward compatibility aliases
-export { 
-  Tabs as EnhancedTabs, 
-  TabsList as EnhancedTabsList, 
-  TabsTrigger as EnhancedTabsTrigger, 
-  TabsContent as EnhancedTabsContent 
-};

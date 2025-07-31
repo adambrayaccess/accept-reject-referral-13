@@ -1,5 +1,5 @@
 
-import { EnhancedTabs, EnhancedTabsList, EnhancedTabsTrigger } from '@/components/ui/enhanced-tabs';
+import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
 export type VitalSignType = 'news2' | 'temperature' | 'heartRate' | 'respiration';
 
