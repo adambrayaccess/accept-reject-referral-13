@@ -11,9 +11,13 @@ import StatisticsBar from './dashboard/StatisticsBar';
 import DashboardHeader from './dashboard/DashboardHeader';
 import DashboardControls from './dashboard/DashboardControls';
 import SelectionBanner from './dashboard/SelectionBanner';
-import DashboardTabs from './dashboard/DashboardTabs';
+import { EnhancedTabs, EnhancedTabsContent, EnhancedTabsList, EnhancedTabsTrigger } from '@/components/ui/enhanced-tabs';
+import ReferralGrid from './dashboard/ReferralGrid';
+import PinnedReferralsTab from './dashboard/PinnedReferralsTab';
+import { usePinning } from '@/hooks/usePinning';
 
 const Dashboard = () => {
+  const { pinnedReferralIds } = usePinning();
   const [view, setView] = useState<'card' | 'list'>('card');
   const { showSpecialtyFilterChange } = useNotificationService();
   const navigate = useNavigate();
@@ -133,21 +137,118 @@ const Dashboard = () => {
             onClearSelection={clearSelection}
           />
 
-          <DashboardTabs
-            referrals={referrals}
-            filteredReferrals={filteredReferrals}
-            isLoading={isLoading}
-            isReordering={isReordering}
-            view={view}
-            onReorder={handleReorderReferrals}
-            selectedIds={selectedIds}
-            onToggleSelection={toggleSelection}
-            onSelectAll={() => selectAll(filteredReferrals)}
-            onClearSelection={clearSelection}
-            isAllSelected={isAllSelected}
-            isIndeterminate={isIndeterminate}
-            onRefresh={handleRefresh}
-          />
+          <EnhancedTabs defaultValue="new" className="w-full">
+            <div className="flex justify-center mb-3">
+              <div className="w-full max-w-3xl">
+                <EnhancedTabsList variant="grid" size="md">
+                  <EnhancedTabsTrigger value="new" variant="grid" size="md">
+                    Awaiting Triage ({referrals.filter(r => r.status === 'new').length})
+                  </EnhancedTabsTrigger>
+                  <EnhancedTabsTrigger value="processed" variant="grid" size="md">
+                    Processed ({referrals.filter(r => r.status !== 'new').length})
+                  </EnhancedTabsTrigger>
+                  <EnhancedTabsTrigger value="pinned" variant="grid" size="md">
+                    Pinned ({pinnedReferralIds.size})
+                  </EnhancedTabsTrigger>
+                  <EnhancedTabsTrigger value="all" variant="grid" size="md">
+                    All Referrals
+                  </EnhancedTabsTrigger>
+                </EnhancedTabsList>
+              </div>
+            </div>
+
+            <EnhancedTabsContent value="new">
+              <ReferralGrid 
+                referrals={filteredReferrals} 
+                isLoading={isLoading} 
+                isReordering={isReordering}
+                filter={(r) => r.status === 'new'}
+                view={view}
+                onReorder={handleReorderReferrals}
+                selectedIds={selectedIds}
+                onToggleSelection={toggleSelection}
+                onSelectAll={() => {
+                  const newReferrals = filteredReferrals.filter(r => r.status === 'new');
+                  if (isAllSelected(newReferrals)) {
+                    clearSelection();
+                  } else {
+                    selectAll(newReferrals);
+                  }
+                }}
+                onClearSelection={clearSelection}
+                isAllSelected={isAllSelected(filteredReferrals.filter(r => r.status === 'new'))}
+                isIndeterminate={isIndeterminate(filteredReferrals.filter(r => r.status === 'new'))}
+                onRefresh={handleRefresh}
+              />
+            </EnhancedTabsContent>
+
+            <EnhancedTabsContent value="processed">
+              <ReferralGrid 
+                referrals={filteredReferrals} 
+                isLoading={isLoading} 
+                isReordering={isReordering}
+                filter={(r) => r.status !== 'new'}
+                view={view}
+                onReorder={handleReorderReferrals}
+                selectedIds={selectedIds}
+                onToggleSelection={toggleSelection}
+                onSelectAll={() => {
+                  const processedReferrals = filteredReferrals.filter(r => r.status !== 'new');
+                  if (isAllSelected(processedReferrals)) {
+                    clearSelection();
+                  } else {
+                    selectAll(processedReferrals);
+                  }
+                }}
+                onClearSelection={clearSelection}
+                isAllSelected={isAllSelected(filteredReferrals.filter(r => r.status !== 'new'))}
+                isIndeterminate={isIndeterminate(filteredReferrals.filter(r => r.status !== 'new'))}
+                onRefresh={handleRefresh}
+              />
+            </EnhancedTabsContent>
+
+            <EnhancedTabsContent value="pinned">
+              <PinnedReferralsTab
+                view={view}
+                selectedIds={selectedIds}
+                onToggleSelection={toggleSelection}
+                onSelectAll={() => {
+                  if (isAllSelected(filteredReferrals)) {
+                    clearSelection();
+                  } else {
+                    selectAll(filteredReferrals);
+                  }
+                }}
+                onClearSelection={clearSelection}
+                isAllSelected={isAllSelected(filteredReferrals)}
+                isIndeterminate={isIndeterminate(filteredReferrals)}
+                onRefresh={handleRefresh}
+              />
+            </EnhancedTabsContent>
+
+            <EnhancedTabsContent value="all">
+              <ReferralGrid 
+                referrals={filteredReferrals} 
+                isLoading={isLoading} 
+                isReordering={isReordering}
+                view={view} 
+                onReorder={handleReorderReferrals}
+                selectedIds={selectedIds}
+                onToggleSelection={toggleSelection}
+                onSelectAll={() => {
+                  if (isAllSelected(filteredReferrals)) {
+                    clearSelection();
+                  } else {
+                    selectAll(filteredReferrals);
+                  }
+                }}
+                onClearSelection={clearSelection}
+                isAllSelected={isAllSelected(filteredReferrals)}
+                isIndeterminate={isIndeterminate(filteredReferrals)}
+                onRefresh={handleRefresh}
+              />
+            </EnhancedTabsContent>
+          </EnhancedTabs>
         </div>
       </div>
     </div>
