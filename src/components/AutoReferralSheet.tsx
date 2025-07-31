@@ -1,3 +1,4 @@
+// Fixed: Replaced EnhancedTabs with standard Tabs components
 import { useState } from 'react';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription } from '@/components/ui/sheet';
 import { ScrollArea } from '@/components/ui/scroll-area';
